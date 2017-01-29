@@ -36,7 +36,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #define SNDRELAY_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "SoundRelay.h"
 #include <Thing/SoundThing.h>
 #include <Game.h>

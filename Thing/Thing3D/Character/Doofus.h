@@ -192,7 +192,7 @@
 #ifndef DOOFUS_H
 #define DOOFUS_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/NavigationNet.h>
 #include <Thing/Bouy.h>

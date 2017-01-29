@@ -144,7 +144,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Cutscene.h"
 #include <Game.h>
 #include <Update.h>

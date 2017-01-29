@@ -54,7 +54,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define FLAGBASE_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "FlagBase.h"
 #include <Thing/Thing3D/Flag.h>
 #include <SampleMaster.h>

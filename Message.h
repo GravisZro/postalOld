@@ -108,7 +108,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 //#include <dude.h>
 
 ////////////////////////////////////////////////////////////////////////////////

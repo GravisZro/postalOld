@@ -30,7 +30,7 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
 #include <cstdint>
 #include <cstring>

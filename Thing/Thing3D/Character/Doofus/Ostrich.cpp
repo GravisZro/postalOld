@@ -88,7 +88,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define OSTRICH_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <math.h>
 
 #include "Ostrich.h"

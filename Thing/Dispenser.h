@@ -52,7 +52,7 @@
 #ifndef DISPENSER_H
 #define DISPENSER_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
 #include <Thing.h>
 #include <Scene.h>

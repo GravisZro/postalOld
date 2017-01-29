@@ -101,7 +101,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #define SOUNDTHING_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "SoundThing.h"
 #include <Game.h>
 

@@ -86,7 +86,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #define WARP_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
 #include "Warp.h"
 #include <Game.h>

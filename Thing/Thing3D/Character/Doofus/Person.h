@@ -78,7 +78,7 @@
 #ifndef PERSON_H
 #define PERSON_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Thing3D/Character/Doofus.h>
 #include <Personatorium.h>

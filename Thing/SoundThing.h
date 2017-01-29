@@ -66,7 +66,7 @@
 #ifndef SOUNDTHING_H
 #define SOUNDTHING_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <SampleMaster.h>
 

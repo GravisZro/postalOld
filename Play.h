@@ -66,7 +66,7 @@
 #ifndef PLAY_H
 #define PLAY_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Menus.h>
 #include <Network/NetClient.h>
 #include <Network/NetServer.h>

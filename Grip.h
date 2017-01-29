@@ -24,7 +24,7 @@
 
 #include <math.h>
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Camera.h>
 
 

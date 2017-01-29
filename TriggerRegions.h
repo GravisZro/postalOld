@@ -28,13 +28,10 @@
 #ifndef TRIGGER_REGIONS_H
 #define TRIGGER_REGIONS_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <TriggerRgn.h>
-#ifdef PATHS_IN_INCLUDES
-   #include <ORANGE/MultiGrid/MultiGridIndirect.h>
-#else
-   #include <multigridindirect.h>
-#endif
+#include <ORANGE/MultiGrid/MultiGridIndirect.h>
+
 #include <Realm.h>
 
 // See the cpp file for usage details...

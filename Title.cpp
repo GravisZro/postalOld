@@ -168,7 +168,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define TITLE_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Title.h"
 #include <Game.h>
 #include <Update.h>

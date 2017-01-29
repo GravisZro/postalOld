@@ -45,7 +45,7 @@
 #ifndef NETDLG_H
 #define NETDLG_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Network/NetClient.h>
 #include <Network/NetServer.h>
 

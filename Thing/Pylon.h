@@ -45,7 +45,7 @@
 #ifndef PYLON_H
 #define PYLON_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Smash.h>
 #include <Thing/Thing3D.h>

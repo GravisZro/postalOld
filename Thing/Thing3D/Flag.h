@@ -31,7 +31,7 @@
 #ifndef FLAG_H
 #define FLAG_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Thing3D.h>
 

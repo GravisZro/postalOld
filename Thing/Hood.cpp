@@ -178,7 +178,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Hood.h"
 #include <Game.h>
 #include <Realm.h>

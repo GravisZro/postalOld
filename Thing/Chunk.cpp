@@ -54,7 +54,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #define CHUNK_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Chunk.h"
 #include <Reality.h>
 

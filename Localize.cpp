@@ -184,7 +184,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define LOCALIZE_CPP
 
-//#include <Toolkit/RSPiX.h>
+//#include <RSPiX.h>
 #include "Localize.h"
 #include <CompileOptions.h>
 //#include <Realm.h>

@@ -35,7 +35,7 @@
 #ifndef SENTRY_H
 #define SENTRY_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Thing3D/Character/Doofus.h>
 

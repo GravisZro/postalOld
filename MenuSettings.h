@@ -25,12 +25,8 @@
 #ifndef MENUSETTINGS_H
 #define MENUSETTINGS_H
 
-#include <Toolkit/RSPiX.h>
-#ifdef PATHS_IN_INCLUDES
-   #include <WishPiX/Prefs/prefs.h>
-#else
-   #include <prefs.h>
-#endif
+#include <RSPiX.h>
+#include <Prefs/prefs.h>
 
 #include <Settings.h>
 #include <Localize.h>

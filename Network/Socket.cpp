@@ -84,7 +84,7 @@
 
 #include <ctype.h>
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Socket.h"
 
 

@@ -29,7 +29,7 @@
 #ifndef GOALTIMER_H
 #define GOALTIMER_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 
 // CGoalTimer keeps track of the time and goal for a challenge level

@@ -26,7 +26,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "BufQ.h"
 
 // Nothing to do here.  It's all in the header for maximum inlining!

@@ -28,7 +28,7 @@
 #ifndef NETCLIENT_H
 #define NETCLIENT_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Network/Socket.h>
 #include <Network/Net.h>
 #include <Network/NetMsgr.h>

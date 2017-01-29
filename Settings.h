@@ -22,12 +22,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <Toolkit/RSPiX.h>
-#ifdef PATHS_IN_INCLUDES
-   #include <ORANGE/CDT/flist.h>
-#else
-   #include <flist.h>
-#endif
+#include <RSPiX.h>
+#include <ORANGE/CDT/flist.h>
 
 class RPrefs;
 class RFile;

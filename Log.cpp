@@ -25,7 +25,7 @@
 //
 //    12/23/97 SPA   Moved from Play.cpp to seperate file
 ////////////////////////////////////////////////////////////////////////////////
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Game.h>
 #include <Network/Net.h>
 #include <Network/NetMsgr.h>

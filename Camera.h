@@ -30,7 +30,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Scene.h>
 #include <Thing/Hood.h>
 

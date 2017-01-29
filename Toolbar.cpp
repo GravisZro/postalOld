@@ -61,7 +61,7 @@
 //    09/27/99 JMI   Eliminated boolean performance warnings.
 //
 ////////////////////////////////////////////////////////////////////////////////
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Thing/Thing3D/Character/Dude.h>
 #include <StockPile.h>
 #include <Thing/Hood.h>

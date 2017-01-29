@@ -94,7 +94,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "NetClient.h"
 #include <Network/NetDlg.h>
 

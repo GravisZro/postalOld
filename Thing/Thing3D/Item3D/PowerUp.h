@@ -79,7 +79,7 @@
 #ifndef POWERUP_H
 #define POWERUP_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Thing3D/Item3D.h>
 #include <StockPile.h>

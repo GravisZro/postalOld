@@ -25,7 +25,7 @@
 #ifndef NETBROWSE_H
 #define NETBROWSE_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Network/Socket.h>
 #include <Network/Net.h>
 

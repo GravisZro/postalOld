@@ -320,7 +320,7 @@
 #ifndef REALM_H
 #define REALM_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Scene.h>
 #include <Thing.h>
 #include <Thing/Hood.h>
@@ -338,15 +338,9 @@
 // PATHS_IN_INCLUDES.  Blue.h includes system.h so you can include that
 // instead.
 ///////////////////////////////////////////////////////////////////////////////
-#ifdef PATHS_IN_INCLUDES
-   #include <WishPiX/ResourceManager/resmgr.h>
-   #include <ORANGE/MultiGrid/MultiGrid.h>
-   #include <ORANGE/MultiGrid/MultiGridIndirect.h>
-#else
-   #include <resmgr.h>
-   #include <multigrid.h>
-   #include <multigridindirect.h>
-#endif
+#include <ResourceManager/resmgr.h>
+#include <ORANGE/MultiGrid/MultiGrid.h>
+#include <ORANGE/MultiGrid/MultiGridIndirect.h>
 
 // The overall "universe" in which a game takes place is represented by one or
 // more CRealm's.  A realm is basically a collection of objects plus a handfull

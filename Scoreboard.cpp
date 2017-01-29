@@ -185,7 +185,7 @@
 // C Headers
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Scoreboard.h"
 #include <Thing/Thing3D/Character/Dude.h>
 #include <Toolbar.h>

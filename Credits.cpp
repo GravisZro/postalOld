@@ -92,7 +92,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // SCROLL PAGE HACK:  CURRENTLY USES COLOR 244 = {128,0,0}, 245 = {255,0,0}
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Credits.h"
 #include <Game.h>
 #include <Update.h>

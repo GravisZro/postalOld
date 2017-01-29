@@ -55,7 +55,7 @@
 #ifndef BAND_H
 #define BAND_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Thing/Thing3D/Character/Doofus.h>
 
 // CBand is a class of marching band members for the parade

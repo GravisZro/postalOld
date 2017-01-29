@@ -38,7 +38,7 @@
 #ifndef NAVIGATIONNET_H
 #define NAVIGATIONNET_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Bouy.h>
 #include <map>

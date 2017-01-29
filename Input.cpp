@@ -186,7 +186,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Input.h"
 #include <CompileOptions.h>
 

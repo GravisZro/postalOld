@@ -20,15 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////
 #ifndef ALPHA_H
 #define ALPHA_H
-#include <Toolkit/System.h>
 
-#ifdef PATHS_IN_INCLUDES
-   #include <GREEN/Image/Image.h>
-   #include <GREEN/BLiT/BLIT.H>
-#else
-   #include <Toolkit/Image/Image.h>
-   #include <Toolkit/BLiT/BLIT.H>
-#endif
+#include <BLUE/System.h>
+
+#include <GREEN/Image/Image.h>
+#include <GREEN/BLiT/BLIT.H>
 
 //////////////////////////////////////////////////////////////////////////////
 // Macros.

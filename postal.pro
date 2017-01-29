@@ -1,20 +1,22 @@
+#SmartHeap Stuff.  Normally, we define these in debug mode and comment them out otherwise.
+#DEFINES += "NOSHMALLOC"
+#DEFINES += "MEM_DEBUG"
+#DEFINES += "DEFINE_NEW_MACRO"
+
+#Define this for debug mode, comment it out otherwise.
+#DEFINES += "_DEBUG"
+
+# LOCALE: US,UK,GERMAN,FRENCH
+DEFINES += "LOCALE=US"
+
+INCLUDEPATH += Toolkit/RSPiX
+INCLUDEPATH += Toolkit/WishPiX
+
 HEADERS += \
     PostalAttrib.h \
-    PostalPrefix.h \
-    PostalPrefixD.h \
-    PostalPrefixFrench.h \
-    PostalPrefixFrenchD.h \
-    PostalPrefixGerman.h \
-    PostalPrefixGermanD.h \
-    PostalPrefixUK.h \
-    PostalPrefixUKD.h \
-    PostalPrefixUS.h \
-    PostalPrefixUSD.h \
     Network/ProtoBSDIP.h \
     Reality.h \
     Realm.h \
-    RSPiXPrefix.h \
-    RSPiXPrefixD.h \
     SampleMaster.h \
     Scene.h \
     Scoreboard.h \

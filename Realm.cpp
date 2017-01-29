@@ -336,7 +336,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define REALM_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Realm.h"
 #include <Game.h>
 #include <Reality.h>

@@ -48,7 +48,7 @@
 // Includes.
 //------------------------------------------------------------------------------
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
 #include "TexEdit.h"
 

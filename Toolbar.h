@@ -43,7 +43,7 @@
 #ifndef TOOL_BAR_H
 #define TOOL_BAR_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Thing/Hood.h>
 
 // Because I do NOT yet want to be forced to put the entire clas in the header, I

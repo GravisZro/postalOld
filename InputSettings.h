@@ -72,11 +72,7 @@
 #ifndef INPUTSETTINGS_H
 #define INPUTSETTINGS_H
 
-#ifdef PATHS_IN_INCLUDES
-   #include <WishPiX/Prefs/prefs.h>
-#else
-   #include <Prefs/prefs.h>
-#endif
+#include <Prefs/prefs.h>
 
 #include <Settings.h>
 #include <Localize.h>

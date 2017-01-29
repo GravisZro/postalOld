@@ -95,7 +95,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #define DEMON_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Demon.h"
 #include <Game.h>
 #include <Thing/Thing3D/Character/Dude.h>

@@ -80,7 +80,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define FLAG_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Flag.h"
 #include <Thing/Thing3D/FlagBase.h>
 #include <SampleMaster.h>

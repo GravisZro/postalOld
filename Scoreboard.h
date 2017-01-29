@@ -48,7 +48,7 @@
 #ifndef SCORE_H
 #define SCORE_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Game.h>
 #include <Realm.h>
 #include <Network/Net.h>

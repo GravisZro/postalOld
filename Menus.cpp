@@ -361,12 +361,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define MENUS_CPP
 
-#include <Toolkit/RSPiX.h>
-#ifdef PATHS_IN_INCLUDES
-   #include <WishPiX/Menu/menu.h>
-#else
-   #include <menu.h>
-#endif
+#include <RSPiX.h>
+#include <Menu/menu.h>
+
 #include "Menus.h"
 #include <Game.h>
 #include <Play.h>

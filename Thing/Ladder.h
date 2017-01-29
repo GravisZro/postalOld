@@ -32,7 +32,7 @@
 #ifndef LADDER_H
 #define LADDER_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Character.h>
 

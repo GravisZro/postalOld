@@ -94,7 +94,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define SENTRY_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Sentry.h"
 #include <Game.h>
 #include <SampleMaster.h>

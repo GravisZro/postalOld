@@ -48,7 +48,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define WEAPON_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Weapon.h"
 #include <Reality.h>
 

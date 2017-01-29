@@ -119,12 +119,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <Toolkit/RSPiX.h>
-#ifdef PATHS_IN_INCLUDES
-   #include <WishPiX/ResourceManager/resmgr.h>
-#else
-   #include <resmgr.h>
-#endif
+#include <RSPiX.h>
+#include <ResourceManager/resmgr.h>
 
 #include <Settings.h>
 #include <Localize.h>

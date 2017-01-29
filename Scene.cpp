@@ -318,7 +318,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define SCENE_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Scene.h"
 #include <Game.h>
 #include <AlphaBlit.h>

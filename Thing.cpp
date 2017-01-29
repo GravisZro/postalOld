@@ -236,7 +236,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define THING_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "Thing.h"
 #include <Realm.h>
 

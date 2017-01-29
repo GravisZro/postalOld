@@ -60,7 +60,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include "NetMsgr.h"
 #include <Network/NetDlg.h>
 

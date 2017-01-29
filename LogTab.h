@@ -41,7 +41,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
 class RFile;
 

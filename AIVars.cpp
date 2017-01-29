@@ -59,7 +59,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <LogTab.h>
 #include <Thing/Thing3D/Character/Doofus/Person.h>
 #include <Thing/Thing3D.h>

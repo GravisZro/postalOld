@@ -30,19 +30,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Includes.
 //////////////////////////////////////////////////////////////////////////////
-/*
-#include <System.h>
 
-#ifdef PATHS_IN_INCLUDES
-   #include <GREEN/Image/Image.h>
-   #include <GREEN/BLiT/BLIT.H"
-#else
-   #include <Image.h>
-   #include <BLIT.H"
-#endif
-#else
-*/
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Alpha.h>
 
 

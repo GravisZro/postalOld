@@ -57,7 +57,7 @@
 #ifndef FIREBALL_H
 #define FIREBALL_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <AlphaAnimType.h>
 #include <Smash.h>

@@ -124,8 +124,8 @@
     #include <sys/time.h>
 #endif
 
-#include <Toolkit/RSPiX.h>
-#include <WishPiX/Prefs/prefs.h>
+#include <RSPiX.h>
+#include <Prefs/prefs.h>
 
 #include <Localize.h>
 #include <Game.h>
@@ -151,7 +151,7 @@
 #include <windows.h>
 #endif
 #include <steam/steam_api.h>
-#include <WishPiX/Menu/menu.h>
+#include <Menu/menu.h>
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////

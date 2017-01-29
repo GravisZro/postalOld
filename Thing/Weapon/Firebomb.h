@@ -55,7 +55,7 @@
 #ifndef FIREBOMB_H
 #define FIREBOMB_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Fire.h>
 #include <Weapon.h>

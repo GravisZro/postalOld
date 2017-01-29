@@ -68,7 +68,7 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 
 // CWeapon is the base class for the weapons

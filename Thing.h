@@ -257,15 +257,10 @@
 #ifndef THING_H
 #define THING_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 
-#ifdef PATHS_IN_INCLUDES
-   #include <ORANGE/Channel/channel.h>
-   #include <ORANGE/CDT/PQueue.h>
-#else
-   #include <channel.h>
-   #include <pqueue.h>
-#endif
+#include <ORANGE/Channel/channel.h>
+#include <ORANGE/CDT/PQueue.h>
 
 #include <Game.h>
 #include <Message.h>

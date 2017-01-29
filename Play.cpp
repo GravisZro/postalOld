@@ -333,7 +333,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define PLAY_CPP
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <main.h>
 #include <Input.h>
 #include <Game.h>

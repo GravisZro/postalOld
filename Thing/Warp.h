@@ -44,7 +44,7 @@
 #ifndef WARP_H
 #define WARP_H
 
-#include <Toolkit/RSPiX.h>
+#include <RSPiX.h>
 #include <Realm.h>
 #include <StockPile.h>
 #include <Thing/Thing3D/Character/Dude.h>
