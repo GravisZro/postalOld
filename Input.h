@@ -30,7 +30,7 @@
 //
 //    03/14/97 JMI   Added macros for space key.
 //
-//    03/24/97 JMI   Changed typedef for UINPUT from U16 to U32.
+//    03/24/97 JMI   Changed typedef for uint64_t from uint16_t to uint32_t.
 //                   Added INPUT_ROT_MASK.  The first 9 bits are now reserved
 //                   for a rotation value between 0 and 359 inclusive.  This
 //                   pushed all the other bits up a bit, but I don't think that
@@ -61,7 +61,7 @@
 //                   Also, added INPUT_NEXT_LEVEL.
 //                   Added an RInputEvent* to GetLocalInput() proto.
 //                   externs for m_aInputs were not specifying a type and, there-
-//                   fore, it was an 'int' array instead of UINPUT.
+//                   fore, it was an 'int' array instead of uint64_t.
 //
 //    04/22/97 JMI   Added extern of g_InputSettings.
 //
@@ -129,7 +129,7 @@
 #define INPUT_MAX_DUDES 32
 
 
-// Macros to access bits within an UINPUT type.  There are two types of macros:
+// Macros to access bits within an uint64_t type.  There are two types of macros:
 // "masks" and "bit numbers".  The masks are designed to set or get the value
 // of a bit.  The bit numbers are designed to make it easier to shift the bits
 // around.  Note that the bit numbers go from 0 to 'n' (currently 15).
@@ -235,11 +235,6 @@ enum INPUT_MODE {
    INPUT_MODE_PLAYBACK
 };
 
-// UINPUT type
-// Had to rename this from INPUT because of a pre-existing type
-// Redefined to U64 because we ran out of input room.
-typedef U64 UINPUT;
-
 // Global input settings.
 extern CInputSettings g_InputSettings;
 
@@ -325,7 +320,7 @@ extern bool InputIsDemoOver(void);     // Returns true when demo is over
 // Get local input
 //
 ////////////////////////////////////////////////////////////////////////////////
-extern UINPUT GetLocalInput(           // Returns local input structure.
+extern uint64_t GetLocalInput(           // Returns local input structure.
    CRealm* prealm,                     // In:  Realm (used to access realm timer)
    RInputEvent* pie  = nullptr);       // In:  Latest input event.  nullptr to
                                        // disable cheats in a way that will be
@@ -337,10 +332,10 @@ extern UINPUT GetLocalInput(           // Returns local input structure.
 // Get input for specified dude
 //
 ////////////////////////////////////////////////////////////////////////////////
-inline UINPUT GetInput(int16_t sDudeNumber)
+inline uint64_t GetInput(int16_t sDudeNumber)
    {
    ASSERT(sDudeNumber < INPUT_MAX_DUDES);
-   extern UINPUT m_aInputs[INPUT_MAX_DUDES];
+   extern uint64_t m_aInputs[INPUT_MAX_DUDES];
    return m_aInputs[sDudeNumber];
    }
 
@@ -350,10 +345,10 @@ inline UINPUT GetInput(int16_t sDudeNumber)
 // Set input for specified dude
 //
 ////////////////////////////////////////////////////////////////////////////////
-inline void SetInput(int16_t sDudeNumber, UINPUT input)
+inline void SetInput(int16_t sDudeNumber, uint64_t input)
    {
    ASSERT(sDudeNumber < INPUT_MAX_DUDES);
-   extern UINPUT m_aInputs[INPUT_MAX_DUDES];
+   extern uint64_t m_aInputs[INPUT_MAX_DUDES];
    m_aInputs[sDudeNumber] = input;
    }
 

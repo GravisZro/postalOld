@@ -62,7 +62,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Includes.
 //////////////////////////////////////////////////////////////////////////////
-#include <stdio.h>
+#include <cstdio>
 #include <stdarg.h>
 #include <signal.h>
 #include <time.h>
@@ -111,7 +111,7 @@ char* Debug_FileName(char* pszPath)
 ///////////////////////////////////////////////////////////////////////////////
 void rspTrace(char const *frmt, ... )
 	{
-	static short	sSem	= 0;
+	static int16_t	sSem	= 0;
 
 	// If something called by TRACE calls TRACE, we'd be likely to continue
 	// forever until stack overflow occurred.  So don't allow re-entrance.

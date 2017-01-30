@@ -424,7 +424,7 @@ int16_t CThing3d::Load(                           // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    // Call the CThing base class load to get the instance ID
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
@@ -560,7 +560,7 @@ void CThing3d::Suspend(void)
    if (m_sSuspend == 0)
       {
       // Store current delta so we can restore it.
-      long  lCurTime          = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime          = m_pRealm->m_time.GetGameTime();
       m_lPrevTime             = lCurTime - m_lPrevTime;
       m_lAnimPrevUpdateTime   = lCurTime - m_lAnimPrevUpdateTime;
       }
@@ -580,7 +580,7 @@ void CThing3d::Resume(void)
    // This method is far from precise, but I'm hoping it's good enough.
    if (m_sSuspend == 0)
       {
-      long  lCurTime          = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime          = m_pRealm->m_time.GetGameTime();
       m_lPrevTime             = lCurTime - m_lPrevTime;
       m_lAnimPrevUpdateTime   = lCurTime - m_lAnimPrevUpdateTime;
       }
@@ -591,7 +591,7 @@ void CThing3d::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CThing3d::Render(void)
    {
-   U16   u16CombinedAttributes;
+   uint16_t   u16CombinedAttributes;
    int16_t sLightTally;
    GetEffectAttributes(m_dX, m_dZ, &u16CombinedAttributes, &sLightTally);
 
@@ -850,7 +850,7 @@ bool CThing3d::WhileBlownUp(void)   // Returns true until state is complete.
    double   dNewX, dNewY, dNewZ;
 
    // Get time from last call in seconds.
-   long     lCurTime = m_pRealm->m_time.GetGameTime();
+   int32_t     lCurTime = m_pRealm->m_time.GetGameTime();
    double   dSeconds = double(lCurTime - m_lPrevTime) / 1000.0;
 
    // Update Velocities ////////////////////////////////////////////////////////
@@ -1499,11 +1499,11 @@ void CThing3d::UpdateFirePosition(void)
 void CThing3d::GetFloorAttributes(  // Returns nothing.
    int16_t    sX,                  // In:  X coord.
    int16_t    sZ,                  // In:  Z coord.
-   U16*     pu16Attrib,          // Out: Combined attribs, if not nullptr.
+   uint16_t*     pu16Attrib,          // Out: Combined attribs, if not nullptr.
    int16_t*   psHeight)            // Out: Max height, if not nullptr.
    {
-   U16   u16CurAttrib;
-   U16   u16CombinedAttrib = 0;
+   uint16_t   u16CurAttrib;
+   uint16_t   u16CombinedAttrib = 0;
    int16_t sLightTally       = 0;
    int16_t sMaxHeight        = -32767;
    int16_t sCurHeight;
@@ -1545,11 +1545,11 @@ void CThing3d::GetFloorAttributes(  // Returns nothing.
 void CThing3d::GetEffectAttributes( // Returns nothing.
    int16_t    sX,                     // In:  X coord.
    int16_t    sZ,                     // In:  Z coord.
-   U16*     pu16Attrib,             // Out: Combined attribs, if not nullptr.
+   uint16_t*     pu16Attrib,             // Out: Combined attribs, if not nullptr.
    int16_t*   psLightBits)            // Out: Tally of light bits set, if not nullptr.
    {
-   U16   u16CurAttrib;
-   U16   u16CombinedAttrib = 0;
+   uint16_t   u16CurAttrib;
+   uint16_t   u16CombinedAttrib = 0;
    int16_t sLightTally       = 0;
 
    const Point2D* p2d;
@@ -1581,7 +1581,7 @@ void CThing3d::GetLayer(   // Returns nothing.
    int16_t  sZ,              // In:  Z coord.
    int16_t* psLayer)         // Out: Combined layer.
    {
-   U16   u16CombinedLayer  = 0;
+   uint16_t   u16CombinedLayer  = 0;
 
    const Point2D* p2d;
    for (p2d = m_pap2dAttribCheckPoints; p2d->sX != ATTRIB_CHECK_TERMINATOR; p2d++)
@@ -1625,7 +1625,7 @@ void CThing3d::GetLinkPoint(  // Returns nothing.
 // (virtual).
 ////////////////////////////////////////////////////////////////////////////////
 CThing3d* CThing3d::DetachChild( // Returns ptr to the child or nullptr, if none.
-   U16*     pu16InstanceId,      // In:  Instance ID of child to detach.
+   uint16_t*     pu16InstanceId,      // In:  Instance ID of child to detach.
                                  // Out: CIdBank::IdNil.
    RTransform* ptrans)           // In:  Transform for positioning child.
    {
@@ -1816,11 +1816,11 @@ void CThing3d::PlaySample(                            // Returns nothing.
                                                       // Negative indicates to use the distance to the
                                                       // ear to determine the volume.
    SampleMaster::SoundInstance*  psi /*= nullptr */,  // Out: Handle for adjusting sound volume
-   long* plSampleDuration /*= nullptr */,             // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime /*= -1*/,                      // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration /*= nullptr */,             // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime /*= -1*/,                      // In:  Where to loop back to in milliseconds.
                                                       // -1 indicates no looping (unless m_sLoop is
                                                       // explicitly set).
-   long lLoopEndTime /*= 0*/,                         // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime /*= 0*/,                         // In:  Where to loop back from in milliseconds.
                                                       // In:  If less than 1, the end + lLoopEndTime is used.
    bool bPurgeSample /*= false*/)                     // In:  Call ReleaseAndPurge rather than Release after playing
    {

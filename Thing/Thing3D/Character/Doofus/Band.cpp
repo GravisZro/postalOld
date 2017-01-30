@@ -174,7 +174,7 @@
 #include <SampleMaster.h>
 #include <Thing/Thing3D/Item3D.h>
 
-#include <CompileOptions.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros/types/etc.
@@ -205,10 +205,10 @@ double CBand::ms_dMingleBouyDist = 15*15;
 double CBand::ms_dExplosionVelocity = 180.0;
 double CBand::ms_dMaxMarchVel = 30.0;
 double CBand::ms_dMaxRunVel = 80.0;
-long CBand::ms_lMingleTime = 400;
+int32_t CBand::ms_lMingleTime = 400;
 int16_t CBand::ms_sStartingHitPoints = 100;
 SampleMaster::SoundInstance CBand::ms_siBandSongInstance = 0;
-U16   CBand::ms_idBandLeader  = CIdBank::IdNil;    // The person who adjusts the band sound
+uint16_t   CBand::ms_idBandLeader  = CIdBank::IdNil;    // The person who adjusts the band sound
                                                    // volume or IdNil.
 
 // Let this auto-init to 0
@@ -319,7 +319,7 @@ int16_t CBand::Load(               // Returns 0 if successfull, non-zero otherwi
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
 
@@ -548,8 +548,8 @@ void CBand::Update(void)
    double dZ;
    double dStartX;
    double dStartZ;
-   long lThisTime;
-   long lTimeDifference;
+   int32_t lThisTime;
+   int32_t lTimeDifference;
    CThing* pDemon = nullptr;
 
    if (!m_sSuspend)
@@ -1158,7 +1158,7 @@ int16_t CBand::EditModify(void)
                RGuiItem*   pguiSel  = plbChildTypes->GetSel();
                if (pguiSel)
                   {
-                  itChild  = (CItem3d::ItemType)pguiSel->m_ulUserData;
+                  itChild  = (CItem3d::ItemType)(uint8_t)pguiSel->m_ulUserData;
                   }
                else
                   {

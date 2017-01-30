@@ -51,7 +51,7 @@
 //		02/19/97 BRH	Fixed bug in spherical region collision detect where a
 //							+ sign was typoed as = causing the distance to be off. 
 //
-//		06/28/97 MJR	Changed __int64 to S64 for mac compatability.
+//		06/28/97 MJR	Changed __int64 to int64_t for mac compatability.
 //
 //////////////////////////////////////////////////////////////////////////////
 #include <math.h>
@@ -95,8 +95,8 @@ RRectangularRegion::RRectangularRegion(RPt* pPoint, RRectangle* pRect)
 	rect.lBottom = pRect->lBottom;
 }
 
-RRectangularRegion::RRectangularRegion(long lX, long lY,
-                    long lLeft, long lRight, long lTop, long lBottom)
+RRectangularRegion::RRectangularRegion(int32_t lX, int32_t lY,
+                    int32_t lLeft, int32_t lRight, int32_t lTop, int32_t lBottom)
 {
 	m_lAbsX = lX;
 	m_lAbsY = lY;
@@ -125,13 +125,13 @@ RRectangularRegion::RRectangularRegion(long lX, long lY,
 //
 //////////////////////////////////////////////////////////////////////////////
 
-short RRectangularRegion::Collide(long lX, long lY)
+int16_t RRectangularRegion::Collide(int32_t lX, int32_t lY)
 {
 	RPt point(lX, lY);
 	return Collide(&point);
 }
 
-short RRectangularRegion::Collide(RPt* pPoint)		
+int16_t RRectangularRegion::Collide(RPt* pPoint)		
 {
 	if (pPoint->X >= rect.lLeft + m_lAbsX  &&
 	    pPoint->X <= rect.lRight + m_lAbsX &&
@@ -142,10 +142,10 @@ short RRectangularRegion::Collide(RPt* pPoint)
 		return NO_COLLISION;
 }
 
-short RRectangularRegion::Collide(R2DRay* /*pRay*/)
+int16_t RRectangularRegion::Collide(R2DRay* /*pRay*/)
 {
 	TRACE("RRectangularRegion::Collide(R2DRay* pRay,...): NYI!\n");
-	short sReturn = NO_COLLISION;
+	int16_t sReturn = NO_COLLISION;
 
 //	long fx1, fx2, fy1, fy2;
 
@@ -173,7 +173,7 @@ short RRectangularRegion::Collide(R2DRay* /*pRay*/)
 	return sReturn;
 }
 
-short RRectangularRegion::Collide(RRectangularRegion* pRegion, short /*bFullCheck*/)
+int16_t RRectangularRegion::Collide(RRectangularRegion* pRegion, int16_t /*bFullCheck*/)
 {
 	if (rect.lRight + m_lAbsX < pRegion->rect.lLeft + pRegion->m_lAbsX)
 		return NO_COLLISION;
@@ -187,7 +187,7 @@ short RRectangularRegion::Collide(RRectangularRegion* pRegion, short /*bFullChec
 		return COLLISION;
 }
 
-short RRectangularRegion::Collide(RCircularRegion* /*pRegion*/, short /*bFullCheck*/)
+int16_t RRectangularRegion::Collide(RCircularRegion* /*pRegion*/, int16_t /*bFullCheck*/)
 	{
 	TRACE("RRectangularRegion::Collide(RCircularRegion* pRegion,...): NYI!\n");
 
@@ -237,8 +237,8 @@ RCubicRegion::RCubicRegion(R3DPoint* pPoint, RCube* pCube)
 	cube.lBack = pCube->lBack;
 }
 
-RCubicRegion::RCubicRegion(long lX, long lY, long lZ, long lLeft, long lRight, 
-                           long lTop, long lBottom, long lFront, long lBack)
+RCubicRegion::RCubicRegion(int32_t lX, int32_t lY, int32_t lZ, int32_t lLeft, int32_t lRight, 
+                           int32_t lTop, int32_t lBottom, int32_t lFront, int32_t lBack)
 {
 	m_lAbsX = lX;
 	m_lAbsY = lY;
@@ -253,7 +253,7 @@ RCubicRegion::RCubicRegion(long lX, long lY, long lZ, long lLeft, long lRight,
 
 //////////////////////////////////////////////////////////////////////////////
 
-short RCubicRegion::Collide(R3DPoint* pPoint)
+int16_t RCubicRegion::Collide(R3DPoint* pPoint)
 {
 	if (pPoint->X < cube.lLeft + m_lAbsX)
 		return NO_COLLISION;
@@ -271,13 +271,13 @@ short RCubicRegion::Collide(R3DPoint* pPoint)
 		return COLLISION;
 }
 
-short RCubicRegion::Collide(R3DRay* /*pRay*/)
+int16_t RCubicRegion::Collide(R3DRay* /*pRay*/)
 	{
 	TRACE("RCubicRegion::Collide(R3DRay* pRay,...): NYI!\n");
 	return NO_COLLISION;
 	}
 
-short RCubicRegion::Collide(RCubicRegion* pRegion)
+int16_t RCubicRegion::Collide(RCubicRegion* pRegion)
 {
 	if (cube.lRight + m_lAbsX < pRegion->cube.lLeft + pRegion->m_lAbsX)
 		return NO_COLLISION;
@@ -296,7 +296,7 @@ short RCubicRegion::Collide(RCubicRegion* pRegion)
 	
 }
 
-short RCubicRegion::Collide(RSphericalRegion* /*pRegion*/)
+int16_t RCubicRegion::Collide(RSphericalRegion* /*pRegion*/)
 	{
 	TRACE("RCubicRegion::Collide(RSphericalRegion* pSpherical,...): NYI!\n");
 	return NO_COLLISION;
@@ -341,8 +341,8 @@ RCircularRegion::RCircularRegion(R2DPoint* pPoint, RCircle* pCircle)
 	circle.lRadius = pCircle->lRadius;
 }
 
-RCircularRegion::RCircularRegion(long lX, long lY, 
-                                 long lXCirc, long lYCirc, long lRadius)
+RCircularRegion::RCircularRegion(int32_t lX, int32_t lY, 
+                                 int32_t lXCirc, int32_t lYCirc, int32_t lRadius)
 {
 	m_lAbsX = lX;
 	m_lAbsY = lY;
@@ -353,7 +353,7 @@ RCircularRegion::RCircularRegion(long lX, long lY,
 
 //////////////////////////////////////////////////////////////////////////////
 
-short RCircularRegion::Collide(R2DPoint* pPoint)
+int16_t RCircularRegion::Collide(R2DPoint* pPoint)
 {
 	long dx = pPoint->X - circle.X;
 	long dy = pPoint->Y - circle.Y;
@@ -364,13 +364,13 @@ short RCircularRegion::Collide(R2DPoint* pPoint)
 		return COLLISION;
 }
 
-short RCircularRegion::Collide(R2DRay* /*pRay*/)
+int16_t RCircularRegion::Collide(R2DRay* /*pRay*/)
 	{
 	TRACE("RCircularRegion::Collide(R2DRay* pRay,...): NYI!\n");
 	return NO_COLLISION;
 	}
 
-short RCircularRegion::Collide(RCircularRegion* pRegion)
+int16_t RCircularRegion::Collide(RCircularRegion* pRegion)
 {
 	long dx = circle.X - pRegion->circle.X;
 	long dy = circle.Y - pRegion->circle.Y;
@@ -383,7 +383,7 @@ short RCircularRegion::Collide(RCircularRegion* pRegion)
 		return COLLISION;
 }
 
-short RCircularRegion::Collide(RRectangularRegion* /*pRegion*/)
+int16_t RCircularRegion::Collide(RRectangularRegion* /*pRegion*/)
 	{
 	TRACE("RCircularRegion::Collide(RRectangularRegion* pRegion,...): NYI!\n");
 	// same as ray but one for each side of the rectangle
@@ -430,9 +430,9 @@ RSphericalRegion::RSphericalRegion(R3DPoint* pPoint, RSphere* pSphere)
 	sphere.lRadius = pSphere->lRadius;
 }
 
-RSphericalRegion::RSphericalRegion(long lX, long lY, long lZ,
-											  long lXSphere, long lYSphere, long lZSphere,
-											  long lRadius)
+RSphericalRegion::RSphericalRegion(int32_t lX, int32_t lY, int32_t lZ,
+											  int32_t lXSphere, int32_t lYSphere, int32_t lZSphere,
+											  int32_t lRadius)
 {
 	m_lAbsX = lX;
 	m_lAbsY = lY;
@@ -445,7 +445,7 @@ RSphericalRegion::RSphericalRegion(long lX, long lY, long lZ,
 
 //////////////////////////////////////////////////////////////////////////////
 
-short RSphericalRegion::Collide(R3DPoint* pPoint)
+int16_t RSphericalRegion::Collide(R3DPoint* pPoint)
 {
 	long dx = sphere.X + m_lAbsX - pPoint->X;
 	long dy = sphere.Y + m_lAbsY - pPoint->Y;
@@ -458,7 +458,7 @@ short RSphericalRegion::Collide(R3DPoint* pPoint)
 		return COLLISION;
 }
 
-short RSphericalRegion::Collide(R3DRay* pRay)
+int16_t RSphericalRegion::Collide(R3DRay* pRay)
 	{
 	TRACE("RSphericalRegion::Collide(): NYI!\n");
 
@@ -466,27 +466,27 @@ short RSphericalRegion::Collide(R3DRay* pRay)
 	}
 
 // Query function to tell if a line intersects.
-short RSphericalRegion::Collide(R3DLine* pline)
+int16_t RSphericalRegion::Collide(R3DLine* pline)
 	{
 #if 0		// Currently, I don't understand the input
 			// params and/or also I noticed that this
 			// seems to be a circle vs line function...
 			// Is the jump to 3D trivial?
 			// Also, I think there's a typo where
-			// it says 'long lCirDist = SQR(lRelCenX) + SQR(lRelCenX);'
+			// it says 'int32_t lCirDist = SQR(lRelCenX) + SQR(lRelCenX);'
 			// I'm assuming that the second lRelCenX should be lRelCenY.
 			// Blech...making attempt to take to 3D.
-	//***************************** FUNCTION UINPUT **
-	long lRelCenX = sphere.X - pline->X1;
-	long lRelCenY = sphere.Y - pline->Y1;
+	//***************************** FUNCTION uint64_t **
+	int32_t lRelCenX = sphere.X - pline->X1;
+	int32_t lRelCenY = sphere.Y - pline->Y1;
 	// JMI: Added Z component:
-	long lRelCenZ = sphere.Z - pline->Z1;
+	int32_t lRelCenZ = sphere.Z - pline->Z1;
 
-	long lDelX = (pline->X1 - pline->X2);
-	long lDelY = (pline->Y1 - pline->Y2); 
+	int32_t lDelX = (pline->X1 - pline->X2);
+	int32_t lDelY = (pline->Y1 - pline->Y2); 
 	// JMI: Added Z component:
-	long lDelZ = (pline->Z1 - pline->Z2);
-	short sCirR = sphere.lRadius;	// the circle radius
+	int32_t lDelZ = (pline->Z1 - pline->Z2);
+	int16_t sCirR = sphere.lRadius;	// the circle radius
 	//***********************************************
 
 	// DO RANGE CHECKS FIRST SINCE THEY ARE LESS EXPENSIVE:
@@ -498,9 +498,9 @@ short RSphericalRegion::Collide(R3DLine* pline)
 
 		// 2) is it in my range?:
 		// JMI: Added Z component:
-		long lCirDist = SQR(lRelCenX) + SQR(lRelCenY) + SQR(lRelCenZ);
+		int32_t lCirDist = SQR(lRelCenX) + SQR(lRelCenY) + SQR(lRelCenZ);
 		// JMI: Added Z component:
-		long	lLineLen = SQR(lDelX) + SQR(lDelY) + SQR(lDelZ);
+		int32_t	lLineLen = SQR(lDelX) + SQR(lDelY) + SQR(lDelZ);
 
 		// OVERHEAD for range check:
 		double dCirLen = sqrt(double(lCirDist));
@@ -526,17 +526,17 @@ short RSphericalRegion::Collide(R3DLine* pline)
 
 		}
 #else	// 2D version on X and Z.
-	//***************************** FUNCTION UINPUT **
-	long lRelCenX = sphere.X - pline->X1;
-//	long lRelCenY = sphere.Y - pline->Y1;
+	//***************************** FUNCTION uint64_t **
+	int32_t lRelCenX = sphere.X - pline->X1;
+//	int32_t lRelCenY = sphere.Y - pline->Y1;
 	// JMI: Added Z component:
-	long lRelCenZ = sphere.Z - pline->Z1;
+	int32_t lRelCenZ = sphere.Z - pline->Z1;
 
-	long lDelX = (pline->X2 - pline->X1);
-//	long lDelY = (pline->Y2 - pline->Y1); 
+	int32_t lDelX = (pline->X2 - pline->X1);
+//	int32_t lDelY = (pline->Y2 - pline->Y1); 
 	// JMI: Added Z component:
-	long lDelZ = (pline->Z2 - pline->Z1);
-	short sCirR = sphere.lRadius;	// the circle radius
+	int32_t lDelZ = (pline->Z2 - pline->Z1);
+	int16_t sCirR = sphere.lRadius;	// the circle radius
 	//***********************************************
 
 	// DO RANGE CHECKS FIRST SINCE THEY ARE LESS EXPENSIVE:
@@ -548,9 +548,9 @@ short RSphericalRegion::Collide(R3DLine* pline)
 
 		// 2) is it in my range?:
 		// JMI: Added Z component:
-		long lCirDist = SQR(lRelCenX)/* + SQR(lRelCenY)*/ + SQR(lRelCenZ);
+		int32_t lCirDist = SQR(lRelCenX)/* + SQR(lRelCenY)*/ + SQR(lRelCenZ);
 		// JMI: Added Z component:
-		long	lLineLen = SQR(lDelX)/* + SQR(lDelY)*/ + SQR(lDelZ);
+		int32_t	lLineLen = SQR(lDelX)/* + SQR(lDelY)*/ + SQR(lDelZ);
 
 		// OVERHEAD for range check:
 		double dCirLen = sqrt(double(lCirDist));
@@ -561,7 +561,7 @@ short RSphericalRegion::Collide(R3DLine* pline)
 			// JMI: Added Z component:
 			long b = -2 * (lRelCenX * lDelX + /*lRelCenY * lDelY*/ + lDelZ * lRelCenZ);
 			long c = lCirDist - SQR(sCirR);
-			S64 d = (S64(b)*S64(b) - S64(4*a)*S64(c));
+			int64_t d = (int64_t(b)*int64_t(b) - int64_t(4*a)*int64_t(c));
 
 			if (d >= 0)
 				{
@@ -580,7 +580,7 @@ short RSphericalRegion::Collide(R3DLine* pline)
 	return NO_COLLISION;
 	}
 
-short RSphericalRegion::Collide(RSphericalRegion* pRegion)
+int16_t RSphericalRegion::Collide(RSphericalRegion* pRegion)
 {
 	long dx = sphere.X + m_lAbsX - pRegion->sphere.X + pRegion->m_lAbsX;
 	long dy = sphere.Y + m_lAbsY - pRegion->sphere.Y + pRegion->m_lAbsY;
@@ -594,7 +594,7 @@ short RSphericalRegion::Collide(RSphericalRegion* pRegion)
 		return COLLISION;
 }
 
-short RSphericalRegion::Collide(RCubicRegion* /*pRegion*/)
+int16_t RSphericalRegion::Collide(RCubicRegion* /*pRegion*/)
 	{
 	TRACE("RSphericalRegion::Collide(RCubicRegion* pRegion,...): NYI!\n");
 	// Same as ray but one for each side of the cube

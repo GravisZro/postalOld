@@ -62,7 +62,7 @@ class COstrich : public CDoofus
       static double ms_dExplosionVelocity;// How high he will get blown up.
       static double ms_dMaxMarchVel;      // How fast to march
       static double ms_dMaxRunVel;        // Hos fast to run
-      static long ms_lStateChangeTime;    // How long to go before changing states
+      static int32_t ms_lStateChangeTime;    // How long to go before changing states
       static int16_t ms_sStartingHitPoints; // How many hit points to start with
 
    //---------------------------------------------------------------------------
@@ -116,7 +116,7 @@ class COstrich : public CDoofus
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

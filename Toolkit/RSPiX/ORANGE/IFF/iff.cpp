@@ -140,9 +140,9 @@ RIff::~RIff(void)
 // Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::CreateChunk(FCC fccChunk, FCC fccForm /*= 0*/)
+int16_t RIff::CreateChunk(FCC fccChunk, FCC fccForm /*= 0*/)
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 	
 	// Attempt to allocate CHUNK for stack . . .
 	PCHUNK	pChunk = new CHUNK;
@@ -157,7 +157,7 @@ short RIff::CreateChunk(FCC fccChunk, FCC fccForm /*= 0*/)
 			pChunk->fccForm	= fccForm;
 			pChunk->lSizePos	= Tell();
 
-			long lDummySize = 0L;
+			int32_t lDummySize = 0L;
 			// Attempt to write 32 bit size field space . . .
 			if (Write(&lDummySize, 1L) == 1L)
 				{
@@ -216,9 +216,9 @@ short RIff::CreateChunk(FCC fccChunk, FCC fccForm /*= 0*/)
 // Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::EndChunk(FCC fccChunk /*= 0*/, FCC fccForm /*= 0*/)
+int16_t RIff::EndChunk(FCC fccChunk /*= 0*/, FCC fccForm /*= 0*/)
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Get top.
 	PCHUNK	pChunk;
@@ -240,14 +240,14 @@ short RIff::EndChunk(FCC fccChunk /*= 0*/, FCC fccForm /*= 0*/)
 			}
 
 		// Get current file position.
-		long	lCurPos	= Tell();
+		int32_t	lCurPos	= Tell();
 		// Get size.
-		long lSize = lCurPos - (pChunk->lSizePos + sizeof(pChunk->ulSize));
+		int32_t lSize = lCurPos - (pChunk->lSizePos + sizeof(pChunk->ulSize));
 		// If size is not WORD aligned . . .
 		if ((lSize % 2) != 0)
 			{
 			// Write a pad byte.
-			U8	u8Dummy	= 0;
+			uint8_t	u8Dummy	= 0;
 			Write(&u8Dummy);
 			// Increment size and current position.
 			lSize++;
@@ -300,9 +300,9 @@ short RIff::EndChunk(FCC fccChunk /*= 0*/, FCC fccForm /*= 0*/)
 // Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::Close(void)
+int16_t RIff::Close(void)
 	{
-	short sRes = RFile::Close(); 
+	int16_t sRes = RFile::Close(); 
 
 	Init();
 	
@@ -325,9 +325,9 @@ short RIff::Close(void)
 // or "AIFF" chunk.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::Find(char const * pszPath) // Returns 0 on success.
+int16_t RIff::Find(char const * pszPath) // Returns 0 on success.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	if (*pszPath == '.')
 		{
@@ -399,12 +399,12 @@ short RIff::Find(char const * pszPath) // Returns 0 on success.
 // them.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::Next(void)	// Returns 0 if successful, 1 if no more chunks, 
+int16_t RIff::Next(void)	// Returns 0 if successful, 1 if no more chunks, 
 								// negative on error.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
-	long	lNextPos		= GetNextChunkPos(&m_chunk);
+	int32_t	lNextPos		= GetNextChunkPos(&m_chunk);
 	
 	// Get the containing chunk.
 	PCHUNK	pchunk;
@@ -461,10 +461,10 @@ short RIff::Next(void)	// Returns 0 if successful, 1 if no more chunks,
 // After calling Descend, there is no current chunk until Next is called.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::Descend(void)	// Returns 0 if successful, 1 if no subchunks,
+int16_t RIff::Descend(void)	// Returns 0 if successful, 1 if no subchunks,
 									// negative on error.                           
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// We should only descend into chunks that are FORMs.
 	if (m_chunk.fccForm != 0L)
@@ -522,10 +522,10 @@ short RIff::Descend(void)	// Returns 0 if successful, 1 if no subchunks,
 // are valid.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::Ascend(void)	// Returns 0 if successful, 1 if no more chunks,
+int16_t RIff::Ascend(void)	// Returns 0 if successful, 1 if no more chunks,
 									// negative on error.                           
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Attempt to pop stack . . .
 	PCHUNK	pchunk;
@@ -582,12 +582,12 @@ void RIff::Init()
 // Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::RelSeek(long lPos)
+int16_t RIff::RelSeek(int32_t lPos)
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Determine distance to destination.
-	long	lDistance	= lPos - Tell();
+	int32_t	lDistance	= lPos - Tell();
 	// If there is a distance . . .
 	if (lDistance != 0)
 		{
@@ -609,7 +609,7 @@ short RIff::RelSeek(long lPos)
 // Determine if fcc is a FORM type.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::IsForm(	// Returns TRUE if fcc is a form; FALSE otherwise.
+int16_t RIff::IsForm(	// Returns TRUE if fcc is a form; FALSE otherwise.
 	FCC fcc)
 	{
 	FCC*	pfcc	= (m_endian == LittleEndian)	? ms_afccRiffForms 
@@ -627,7 +627,7 @@ short RIff::IsForm(	// Returns TRUE if fcc is a form; FALSE otherwise.
 // Read chunk header.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RIff::ReadChunkHeader(void)	// Returns 0 on success.
+int16_t RIff::ReadChunkHeader(void)	// Returns 0 on success.
 	{
 	// Read common header info.
 	Read(&(m_chunk.fccChunk));
@@ -648,7 +648,7 @@ short RIff::ReadChunkHeader(void)	// Returns 0 on success.
 		m_chunk.fccForm	= 0L;
 		}
 
-	short sRes	= 0;
+	int16_t sRes	= 0;
 	// Error only if CNFile thinks so.
 	if (Error() == 0)
 		{

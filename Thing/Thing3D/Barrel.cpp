@@ -134,8 +134,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // These are default values -- actually values are set using the editor!
-long CBarrel::ms_lExplosionWait = 0;         // Time to wait after explosion before fire
-long CBarrel::ms_lExplosionDelay = 150;      // Delay before explosion is set off by another
+int32_t CBarrel::ms_lExplosionWait = 0;         // Time to wait after explosion before fire
+int32_t CBarrel::ms_lExplosionDelay = 150;      // Delay before explosion is set off by another
 int16_t CBarrel::ms_sNumFires = 6;             // Number of fires to create after explosion
 
 // Let this auto-init to 0
@@ -178,7 +178,7 @@ int16_t CBarrel::Load(          // Returns 0 if successfull, non-zero otherwise
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
    // Call the base load function to get ID, position, etc.
@@ -422,8 +422,8 @@ void CBarrel::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CBarrel::Update(void)
 {
-   long lThisTime;
-   long lTimeDifference;
+   int32_t lThisTime;
+   int32_t lTimeDifference;
 
    if (!m_sSuspend)
    {

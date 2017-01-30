@@ -47,7 +47,7 @@
 //
 //  CreateRegionMap - Begin your session
 //
-//  UINPUT: Size of map in pixels, maximum number of overlapping planes,
+//  uint64_t: Size of map in pixels, maximum number of overlapping planes,
 //          and TILE SIZE for palettes.  (Should be as large as possible
 //          without causing greater than the maximum number of tiles to overlap.]
 //          sMaxPlanes must NOT exceed MGI_MAX_PLANES!
@@ -70,14 +70,14 @@ RMultiGridIndirect*  CreateRegionMap(int16_t sWidth,int16_t sHeight,int16_t sMax
    RMultiGridIndirect* pMGI = new RMultiGridIndirect;
    if (!pMGI)
       {
-      TRACE("CreateRegionMap: alloc error!\n";
+      TRACE("CreateRegionMap: alloc error!\n");
 
       return nullptr;
       }
 
    if (pMGI->Alloc(sWidth,sHeight,sMaxPlanes,sTileW,sTileH) != SUCCESS)
       {
-      TRACE("CreateRegionMap: alloc error!\n";
+      TRACE("CreateRegionMap: alloc error!\n");
       return nullptr;
       }
 
@@ -86,13 +86,13 @@ RMultiGridIndirect*  CreateRegionMap(int16_t sWidth,int16_t sHeight,int16_t sMax
 
    if (!pmg)
       {
-      TRACE("CreateRegionMap: alloc error!\n";
+      TRACE("CreateRegionMap: alloc error!\n");
       return nullptr;
       }
 
    if (pmg->Alloc(sWidth,sHeight) != SUCCESS)
       {
-      TRACE("CreateRegionMap: alloc error!\n";
+      TRACE("CreateRegionMap: alloc error!\n");
       delete pmg;
       return nullptr;
       }
@@ -129,7 +129,7 @@ int16_t StrafeAddRegion(RMultiGridIndirect* pMGI,TriggerRgn regions[256])
       if (regions[i].pimRgn)
          {
          if (pMGI->AddFSPR1(regions[i].pimRgn,regions[i].sX,regions[i].sY,
-            UCHAR(i),TriggerRgn::MaxRgnWidth,TriggerRgn::MaxRgnHeight)
+            uint8_t(i),TriggerRgn::MaxRgnWidth,TriggerRgn::MaxRgnHeight)
             != SUCCESS)
             {
             TRACE("StrafeAddRegion:: Problem installing region %hd\n",i);
@@ -166,14 +166,14 @@ int16_t CompressMap(RMultiGridIndirect* pMGI,int16_t sTileW,int16_t sTileH)
 //
 void  SpewTriggers(CRealm* pRealm,  uint16_t   usDudeUID,int16_t sX,int16_t sZ)
    {
-   UCHAR aucHitList[MGI_MAX_PLANES];
+   uint8_t aucHitList[MGI_MAX_PLANES];
    if (pRealm->m_pTriggerMap == nullptr) return; // No triggers
 
    int16_t sMax = pRealm->m_pTriggerMap->m_sMaxPlanes;
 
    // GET THE ATTRIBUTE MAP FOR THE TRIGGERS:
    pRealm->m_pTriggerMap->GetVal(aucHitList,sX,sZ);
-   UCHAR*   pHit = aucHitList;
+   uint8_t*   pHit = aucHitList;
    GameMessage msg;
 
    msg.msg_DudeTrigger.eType = typeDudeTrigger;

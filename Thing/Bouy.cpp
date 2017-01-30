@@ -191,7 +191,7 @@ int16_t CBouy::Load(                              // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    GameMessage msg;
    // Call the base load to get the u16InstanceID
@@ -217,9 +217,9 @@ int16_t CBouy::Load(                              // Returns 0 if successfull, n
       pFile->Read(&m_dY);
       pFile->Read(&m_dZ);
 
-      U16 u16Data;
-      U16 u16NumLinks;
-      U16 i;
+      uint16_t u16Data;
+      uint16_t u16NumLinks;
+      uint16_t i;
       // Get number of links to be read
       pFile->Read(&u16NumLinks);
       for (i = 0; i < u16NumLinks; i++)
@@ -311,7 +311,7 @@ int16_t CBouy::Save(                              // Returns 0 if successfull, n
    pFile->Write(&m_dY);
    pFile->Write(&m_dZ);
 
-   U16 u16Data = m_sNumDirectLinks;
+   uint16_t u16Data = m_sNumDirectLinks;
    // Save the number of links that will follow in the file
    pFile->Write(&u16Data);
    CBouy* pLinkedBouy = m_aplDirectLinks.GetHead();
@@ -712,16 +712,16 @@ void CBouy::Unlink(void)
 int16_t CBouy::BuildRoutingTable(void)
 {
    int16_t sResult = SUCCESS;
-   UCHAR* aVisited = nullptr;
-   UCHAR* aDistance = nullptr;
-   UCHAR* aParent = nullptr;
-   UCHAR* pucCurrentNode = nullptr;
-   UCHAR* pucAdjNode = nullptr;
+   uint8_t* aVisited = nullptr;
+   uint8_t* aDistance = nullptr;
+   uint8_t* aParent = nullptr;
+   uint8_t* pucCurrentNode = nullptr;
+   uint8_t* pucAdjNode = nullptr;
    CBouy* pTraverseBouy = nullptr;
 
    ASSERT(m_pParentNavNet);
    int16_t sCurrentNumNodes = m_pParentNavNet->GetNumNodes();
-   RQueue <UCHAR, 256> bfsQueue;
+   RQueue <uint8_t, 256> bfsQueue;
 
    // Make sure there is enough space in the routing table, or
    // reallocate it if there isn't enough.
@@ -729,14 +729,14 @@ int16_t CBouy::BuildRoutingTable(void)
    {
       if (m_paucRouteTable)
          free(m_paucRouteTable);
-      m_paucRouteTable = (UCHAR*) malloc(sCurrentNumNodes);
+      m_paucRouteTable = (uint8_t*) malloc(sCurrentNumNodes);
       m_sRouteTableSize = sCurrentNumNodes;
    }
 
    // Allocate memory for use in building the BSF tree
-   aVisited = (UCHAR*) malloc(sCurrentNumNodes);
-   aDistance = (UCHAR*) malloc(sCurrentNumNodes);
-   aParent = (UCHAR*) malloc(sCurrentNumNodes);
+   aVisited = (uint8_t*) malloc(sCurrentNumNodes);
+   aDistance = (uint8_t*) malloc(sCurrentNumNodes);
+   aParent = (uint8_t*) malloc(sCurrentNumNodes);
 
    if (m_paucRouteTable != nullptr &&
        aVisited != nullptr &&
@@ -781,8 +781,8 @@ int16_t CBouy::BuildRoutingTable(void)
       // and aParent provides a way to build the routing table by traversing
       // backwards.
 
-      UCHAR ucCurrentDistance;
-      UCHAR curr;
+      uint8_t ucCurrentDistance;
+      uint8_t curr;
       int16_t j;
 
       for (j = 1; j < sCurrentNumNodes; j++)
@@ -845,7 +845,7 @@ int16_t CBouy::BuildRoutingTable(void)
 // NextRouteNode - Tells you which node to go to next to get to your destination
 ////////////////////////////////////////////////////////////////////////////////
 
-UCHAR CBouy::NextRouteNode(UCHAR dst)
+uint8_t CBouy::NextRouteNode(uint8_t dst)
 {
    if (dst >= m_pParentNavNet->GetNumNodes())
       return 255;

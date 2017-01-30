@@ -55,16 +55,16 @@ class CFlag : public CThing3d
    //---------------------------------------------------------------------------
    public:
       CAnim3D*    m_panimCurBase;               // current animation for the base
-      U16         m_u16FlagID;                  // Used to match flag & base
+      uint16_t         m_u16FlagID;                  // Used to match flag & base
 
    protected:
       CAnim3D     m_animFlagWave;               // animation for the flag waving
-      U32         m_u32IncludeBits;             // Bits to include for Smash collision
-      U32         m_u32DontcareBits;            // Bits to ignore for Smash collision
-      U32         m_u32ExcludeBits;             // Bits to exclude for Smash collision
-      long        m_lTimeBonus;                 // Flag stores a time bonus for
+      uint32_t         m_u32IncludeBits;             // Bits to include for Smash collision
+      uint32_t         m_u32DontcareBits;            // Bits to ignore for Smash collision
+      uint32_t         m_u32ExcludeBits;             // Bits to exclude for Smash collision
+      int32_t        m_lTimeBonus;                 // Flag stores a time bonus for
                                                 // special game play modes.
-      U16         m_u16FlagColor;               // Color of flag;
+      uint16_t         m_u16FlagColor;               // Color of flag;
       int16_t       m_sSavedX;                    // Save the position of the flagbase
       int16_t       m_sSavedY;                    // Save the position of the flagbase
       int16_t       m_sSavedZ;                    // Save the position of the flagbase
@@ -136,7 +136,7 @@ class CFlag : public CThing3d
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

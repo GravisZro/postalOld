@@ -134,7 +134,7 @@ void RPushBtn::Compose(			// Returns nothing.
 	RGuiItem::Compose(pim);
 
 	// Draw pushbtn stuff.
-	short	sX, sY, sW, sH;
+	int16_t	sX, sY, sW, sH;
 	// Get client relative to border so we know where to
 	// put the text.
 	GetClient(&sX, &sY, &sW, &sH);
@@ -211,25 +211,25 @@ void RPushBtn::CursorEvent(	// Returns nothing.
 //////////////////////////////////////////////////////////////////////////////
 void RPushBtn::DrawBorder(			// Returns nothing.
 	RImage* pim	/*= nullptr */,			// Dest image, uses m_im if nullptr.
-	short sInvert	/*= FALSE*/)	// Inverts border if TRUE.
+	int16_t sInvert	/*= FALSE*/)	// Inverts border if TRUE.
 	{
-	short	sVertShadowPos;
-	short	sHorzShadowPos;
-	short	sVertHighlightPos;
-	short sHorzHighlightPos;
-	short sVertEdgePos;
-	short sHorzEdgePos;
-	short	sShadowThickness		= m_sBorderThickness;
-	short	sEdgeThickness			= m_sBorderThickness;
-	short	sHighlightThickness	= m_sBorderThickness;
+	int16_t	sVertShadowPos;
+	int16_t	sHorzShadowPos;
+	int16_t	sVertHighlightPos;
+	int16_t sHorzHighlightPos;
+	int16_t sVertEdgePos;
+	int16_t sHorzEdgePos;
+	int16_t	sShadowThickness		= m_sBorderThickness;
+	int16_t	sEdgeThickness			= m_sBorderThickness;
+	int16_t	sHighlightThickness	= m_sBorderThickness;
 
 	if (pim == nullptr)
 		{
 		pim	= &m_im;
 		}
 
-	short sW	= pim->m_sWidth;
-	short	sH	= pim->m_sHeight;
+	int16_t sW	= pim->m_sWidth;
+	int16_t	sH	= pim->m_sHeight;
 
 	m_sInvertedBorder	= sInvert;
 
@@ -280,7 +280,7 @@ void RPushBtn::DrawBorder(			// Returns nothing.
 // (virtual	(Overridden here)).
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPushBtn::GetTopLeftBorderThickness(void)	// Returns border thickness 
+int16_t RPushBtn::GetTopLeftBorderThickness(void)	// Returns border thickness 
 																// including edge effect.
 	{
 	if (m_sBorderThickness == 0)
@@ -297,7 +297,7 @@ short RPushBtn::GetTopLeftBorderThickness(void)	// Returns border thickness
 // (virtual	(Overridden here)).
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPushBtn::GetBottomRightBorderThickness(void)	// Returns border thickness 
+int16_t RPushBtn::GetBottomRightBorderThickness(void)	// Returns border thickness 
 																		// including edge effect.
 	{
 	if (m_sBorderThickness == 0)

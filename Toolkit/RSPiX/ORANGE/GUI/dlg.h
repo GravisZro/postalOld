@@ -99,10 +99,10 @@ class RDlg : public RGuiItem
 		// Get the "client" area (i.e., non-border/title area) relative to this
 		// item.  Calls base class version.
 		void GetClient(		// Returns nothing.
-			short* psX,			// Out: X position unless nullptr.
-			short* psY,			// Out: Y position unless nullptr.
-			short* psW,			// Out: Width unless nullptr.
-			short* psH);		// Out: Height unless nullptr.
+			int16_t* psX,			// Out: X position unless nullptr.
+			int16_t* psY,			// Out: Y position unless nullptr.
+			int16_t* psW,			// Out: Width unless nullptr.
+			int16_t* psH);		// Out: Height unless nullptr.
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -119,8 +119,8 @@ class RDlg : public RGuiItem
 //////////////////////////////////////////////////////////////////////////////
 
 	public:	// Member variables.
-		short m_sMoveOffsetX;
-		short m_sMoveOffsetY;
+		int16_t m_sMoveOffsetX;
+		int16_t m_sMoveOffsetY;
 
 	protected:	// Internal typedefs.
 

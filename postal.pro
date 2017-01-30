@@ -6,8 +6,36 @@
 #Define this for debug mode, comment it out otherwise.
 #DEFINES += "_DEBUG"
 
-# LOCALE: US,UK,GERMAN,FRENCH
+DEFINES += "US=1"
+DEFINES += "UK=2"
+DEFINES += "GERMAN=3"
+DEFINES += "FRENCH=4"
+DEFINES += "JAPAN=5"
+
+# LOCALE: US,UK,GERMAN,FRENCH,JAPAN
 DEFINES += "LOCALE=US"
+
+#DEFINES += "APP_NAME=\"\\\"Postal Plus MP\\\"\""
+#DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS MP\\\"\""
+
+
+#DEFINES += "APP_NAME=\"\\\"Postal Plus Demo\\\"\""
+#DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS DEMO\\\"\""
+
+
+#DEFINES += "APP_NAME=\"\\\"Postal Plus\\\"\""
+#DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS\\\"\""
+
+DEFINES += "APP_NAME=\"\\\"Postal\\\"\""
+DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL\\\"\""
+
+DEFINES += "PREFS_FILE=\"\\\"Postal.ini\\\"\""
+
+DEFINES += "ALLOW_JOYSTICK"
+
+DEFINES += "MULTIPLAYER_REMOVED"
+DEFINES += "EDITOR_REMOVED"
+DEFINES += "LOADLEVEL_REMOVED"
 
 INCLUDEPATH += Toolkit/RSPiX
 INCLUDEPATH += Toolkit/WishPiX
@@ -41,7 +69,6 @@ HEADERS += \
     Bulletfest.h \
     Camera.h \
     Collision.h \
-    CompileOptions.h \
     Crawler.h \
     Credits.h \
     CtrlBuf.h \
@@ -86,7 +113,6 @@ HEADERS += \
     Thing/GameEdit.h \
     Thing/GoalTimer.h \
     Thing/Hood.h \
-    Thing/Ladder.h \
     Thing/NavigationNet.h \
     Thing/Pylon.h \
     Thing/SoundRelay.h \
@@ -128,7 +154,6 @@ HEADERS += \
     Toolkit/RSPiX/GREEN/3D/user3d.h \
     Toolkit/RSPiX/GREEN/3D/zbuffer.h \
     Toolkit/RSPiX/GREEN/BLiT/_BlitInt.H \
-    Toolkit/RSPiX/GREEN/BLiT/_ic.h \
     Toolkit/RSPiX/GREEN/BLiT/alphablit.h \
     Toolkit/RSPiX/GREEN/BLiT/BLIT.H \
     Toolkit/RSPiX/GREEN/BLiT/Cfnt.h \
@@ -143,10 +168,8 @@ HEADERS += \
     Toolkit/RSPiX/GREEN/Image/PalFile.h \
     Toolkit/RSPiX/GREEN/Image/SpecialTyp.h \
     Toolkit/RSPiX/GREEN/InputEvent/InputEvent.h \
-    Toolkit/RSPiX/GREEN/Joy/Joy.h \
     Toolkit/RSPiX/GREEN/Mix/mix.h \
     Toolkit/RSPiX/GREEN/Mix/MixBuf.h \
-    Toolkit/RSPiX/GREEN/RAMFlx/Ramflx.h \
     Toolkit/RSPiX/GREEN/Sample/sample.h \
     Toolkit/RSPiX/GREEN/Snd/snd.h \
     Toolkit/RSPiX/GREEN/SndFx/SndFx.h \
@@ -169,19 +192,11 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/color/dithermatch.h \
     Toolkit/RSPiX/ORANGE/Debug/profile.h \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.h \
-    Toolkit/RSPiX/ORANGE/DynaLink/dynalink.h \
     Toolkit/RSPiX/ORANGE/File/file.h \
-    Toolkit/RSPiX/ORANGE/Flx/Flx.h \
-    Toolkit/RSPiX/ORANGE/GameLib/ANIMDATA.H \
     Toolkit/RSPiX/ORANGE/GameLib/ANIMSPRT.H \
-    Toolkit/RSPiX/ORANGE/GameLib/ATTRIB.H \
-    Toolkit/RSPiX/ORANGE/GameLib/EVENT.H \
-    Toolkit/RSPiX/ORANGE/GameLib/GRIP.H \
-    Toolkit/RSPiX/ORANGE/GameLib/PAL.H \
     Toolkit/RSPiX/ORANGE/GameLib/Region.h \
     Toolkit/RSPiX/ORANGE/GameLib/Shapes.h \
     Toolkit/RSPiX/ORANGE/GameLib/SPRITE.H \
-    Toolkit/RSPiX/ORANGE/GameLib/UNIV.H \
     Toolkit/RSPiX/ORANGE/GUI/btn.h \
     Toolkit/RSPiX/ORANGE/GUI/dlg.h \
     Toolkit/RSPiX/ORANGE/GUI/edit.h \
@@ -198,8 +213,6 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/ImageTools/lasso.h \
     Toolkit/RSPiX/ORANGE/Laymage/laymage.h \
     Toolkit/RSPiX/ORANGE/Meter/meter.h \
-    Toolkit/RSPiX/ORANGE/MFC_Cntl/MFCool.h \
-    Toolkit/RSPiX/ORANGE/MFC_Cntl/RSPXBlue.h \
     Toolkit/RSPiX/ORANGE/MsgBox/MsgBox.h \
     Toolkit/RSPiX/ORANGE/MTask/mtask.h \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGrid.h \
@@ -231,7 +244,8 @@ HEADERS += \
     Toolkit/WishPiX/Prefs/prefline.h \
     Toolkit/WishPiX/Prefs/prefs.h \
     Toolkit/WishPiX/ResourceManager/resmgr.h \
-    Toolkit/WishPiX/Spry/spry.h
+    Toolkit/WishPiX/Spry/spry.h \
+    Toolkit/variant.h
 
 SOURCES += \
     Network/ProtoBSDIP.cpp \
@@ -298,7 +312,6 @@ SOURCES += \
     Thing/GameEdit.cpp \
     Thing/GoalTimer.cpp \
     Thing/Hood.cpp \
-    Thing/Ladder.cpp \
     Thing/NavigationNet.cpp \
     Thing/Pylon.cpp \
     Thing/SoundRelay.cpp \
@@ -343,15 +356,9 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/3D/types3d.cpp \
     Toolkit/RSPiX/GREEN/3D/zbuffer.cpp \
     Toolkit/RSPiX/GREEN/BLiT/alphablit.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLIT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLITINIT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLiTT.cpp \
     Toolkit/RSPiX/GREEN/BLiT/CFNT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/Fspr1.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/FSPR8.cpp \
     Toolkit/RSPiX/GREEN/BLiT/line.cpp \
     Toolkit/RSPiX/GREEN/BLiT/mono.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/print.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Rotate96.cpp \
     Toolkit/RSPiX/GREEN/BLiT/RPrint.cpp \
     Toolkit/RSPiX/GREEN/BLiT/ScaleFlat.cpp \
@@ -362,12 +369,8 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/Image/pal.cpp \
     Toolkit/RSPiX/GREEN/Image/PalFile.cpp \
     Toolkit/RSPiX/GREEN/InputEvent/InputEvent.cpp \
-    Toolkit/RSPiX/GREEN/Joy/Joy.cpp \
     Toolkit/RSPiX/GREEN/Mix/mix.cpp \
     Toolkit/RSPiX/GREEN/Mix/MixBuf.cpp \
-    Toolkit/RSPiX/GREEN/RAMFlx/Ramflx.cpp \
-    Toolkit/RSPiX/GREEN/RAMFlx/Ramflxp.cpp \
-    Toolkit/RSPiX/GREEN/RAMFlx/RAMMAIN.CPP \
     Toolkit/RSPiX/GREEN/Sample/sample.cpp \
     Toolkit/RSPiX/GREEN/Snd/snd.cpp \
     Toolkit/RSPiX/GREEN/SndFx/SndFx.cpp \
@@ -382,17 +385,10 @@ SOURCES += \
     Toolkit/RSPiX/ORANGE/Debug/profile.cpp \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.cpp \
     Toolkit/RSPiX/ORANGE/File/file.cpp \
-    Toolkit/RSPiX/ORANGE/Flx/Flx.cpp \
-    Toolkit/RSPiX/ORANGE/Flx/Flxp.cpp \
-    Toolkit/RSPiX/ORANGE/Flx/MAIN.CPP \
-    Toolkit/RSPiX/ORANGE/Flx/SAMPMAIN.CPP \
     Toolkit/RSPiX/ORANGE/GameLib/ANIMSPRT.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/ATTRIB.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/EVENT.CPP \
     Toolkit/RSPiX/ORANGE/GameLib/Region.cpp \
     Toolkit/RSPiX/ORANGE/GameLib/SHAPES.cpp \
     Toolkit/RSPiX/ORANGE/GameLib/SPRITE.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/UNIV.cpp \
     Toolkit/RSPiX/ORANGE/GUI/btn.cpp \
     Toolkit/RSPiX/ORANGE/GUI/dlg.cpp \
     Toolkit/RSPiX/ORANGE/GUI/edit.cpp \
@@ -408,8 +404,6 @@ SOURCES += \
     Toolkit/RSPiX/ORANGE/ImageTools/lasso.cpp \
     Toolkit/RSPiX/ORANGE/Laymage/laymage.cpp \
     Toolkit/RSPiX/ORANGE/Meter/meter.cpp \
-    Toolkit/RSPiX/ORANGE/MFC_Cntl/MFCool.cpp \
-    Toolkit/RSPiX/ORANGE/MFC_Cntl/RSPXBlue.cpp \
     Toolkit/RSPiX/ORANGE/MsgBox/MsgBox.cpp \
     Toolkit/RSPiX/ORANGE/MTask/mtask.cpp \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGrid.cpp \

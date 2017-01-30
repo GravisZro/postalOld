@@ -270,13 +270,13 @@
 //    03/21/97 JMI   Now deletes launched weapon when launch is interrupted.
 //                   Also, added a minimum time to the got shot animation.
 //
-//    03/24/97 JMI   Now utilize new input rotation embedded in UINPUT value.
+//    03/24/97 JMI   Now utilize new input rotation embedded in uint64_t value.
 //
 //    03/25/97 JMI   Now uses main_runnogun*.* for run animation.
 //
 //    03/26/97 JMI   Changed STATUS_FONT_SIZE from 30 to 24.
 //
-//    03/26/97 JMI   When I added the rotation value built into the UINPUT,
+//    03/26/97 JMI   When I added the rotation value built into the uint64_t,
 //                   and then ignored the rotation value when dying, the net
 //                   effect was the guy would snap to rotation 0, when dying.
 //                   Fixed.
@@ -299,7 +299,7 @@
 //    03/31/97 JMI   Took out INPUT_* macro definitions since input.h now
 //                   defines them correctly.
 //
-//    04/01/97 JMI   UINPUT now stores the delta rotation in the first 10 bits
+//    04/01/97 JMI   uint64_t now stores the delta rotation in the first 10 bits
 //                   as 0..720 representing delta values between -360 and 360.
 //
 //    04/02/97 JMI   Changed all resource animation names to use the
@@ -1118,7 +1118,7 @@
 #include <Thing/Chunk.h>
 #include <Thing/Warp.h>
 #include <Scoreboard.h>
-#include <CompileOptions.h>   // For sales cheat.
+   // For sales cheat.
 #include <Play.h>
 
 //#ifdef MOBILE
@@ -1318,9 +1318,9 @@ double CDude::ms_dDegPerSec      = 240.0;       // Degrees of rotation per secon
 
 double CDude::ms_dVertVelJump    = 100.0;       // Velocity of jump.
 
-U32   CDude::ms_u32CollideBitsInclude = CSmash::Character | CSmash::Barrel | CSmash::SpecialBarrel | CSmash::Sentry;
-U32   CDude::ms_u32CollideBitsDontcare = CSmash::Bad;
-U32   CDude::ms_u32CollideBitsExclude = 0;
+uint32_t   CDude::ms_u32CollideBitsInclude = CSmash::Character | CSmash::Barrel | CSmash::SpecialBarrel | CSmash::Sentry;
+uint32_t   CDude::ms_u32CollideBitsDontcare = CSmash::Bad;
+uint32_t   CDude::ms_u32CollideBitsExclude = 0;
 
 // Let this auto-init to 0
 int16_t CDude::ms_sFileCount;
@@ -1660,7 +1660,7 @@ int16_t CDude::Load(                              // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  File version being loaded.
+   uint32_t ulFileVersion)                         // In:  File version being loaded.
    {
    int16_t sResult = 0;
 
@@ -1721,7 +1721,7 @@ int16_t CDude::Load(                              // Returns 0 if successfull, n
                {
                pFile->Read(&m_stockpile.m_sNumGrenades);
 
-               U32   u32Temp;
+               uint32_t   u32Temp;
                pFile->Read(&u32Temp);
                m_state  = (CCharacter::State)u32Temp;
 
@@ -1825,7 +1825,7 @@ void CDude::Suspend(void)
    if (m_sSuspend == 0)
       {
       // Store current delta so we can restore it.
-      long  lCurTime    = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime    = m_pRealm->m_time.GetGameTime();
       m_lNextBulletTime = lCurTime - m_lNextBulletTime;
       }
 
@@ -1841,7 +1841,7 @@ void CDude::Resume(void)
 
    if (m_sSuspend == 0)
       {
-      long  lCurTime    = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime    = m_pRealm->m_time.GetGameTime();
       m_lNextBulletTime = lCurTime - m_lNextBulletTime;
       }
    }
@@ -1855,10 +1855,10 @@ void CDude::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Advance the animation timer.
-      long  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
+      int32_t  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
       m_lAnimTime       += lDifTime;
 
       // Update prev time.
@@ -2065,7 +2065,7 @@ void CDude::Update(void)
          case State_Throw:
             {
 #if 1
-            U8 u8Event  = *( (U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
+            uint8_t u8Event  = *( (uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
             // Check for release point in animation . . .
             if (u8Event > 0)
                {
@@ -2139,7 +2139,7 @@ void CDude::Update(void)
             m_lAnimTime -= lDifTime;
             // Tune the time.  Note that this is automathematically negative when
             // velocity is negative.
-            long  lDifAnimTime   = lDifTime * (m_dVel / RUN_ANIM_VELOCITY);
+            int32_t  lDifAnimTime   = lDifTime * (m_dVel / RUN_ANIM_VELOCITY);
 
             m_lAnimTime += lDifAnimTime;
 
@@ -2154,7 +2154,7 @@ void CDude::Update(void)
             m_lAnimTime -= lDifTime;
             // Tune the time.  Note that this is automathematically negative when
             // velocity is negative.
-            long  lDifAnimTime   = lDifTime * (m_dVel / RUN_ANIM_VELOCITY);
+            int32_t  lDifAnimTime   = lDifTime * (m_dVel / RUN_ANIM_VELOCITY);
 
             m_lAnimTime += lDifAnimTime;
 
@@ -2232,7 +2232,7 @@ void CDude::Update(void)
             break;
          case State_Suicide:
             // Check for moment of firing weapon . . .
-            if (*((U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime))) > 0
+            if (*((uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime))) > 0
                && m_bBrainSplatted == false)    // ***FUDGE***
                {
                // Play shot fire.
@@ -2267,7 +2267,7 @@ void CDude::Update(void)
                }
             else if (m_bGenericEvent1 == false)
                {
-               U8 u8Event  = *( (U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
+               uint8_t u8Event  = *( (uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
 
                if (u8Event > 1)  // ***FUDGE***
                   {
@@ -2299,7 +2299,7 @@ void CDude::Update(void)
          case State_Launch:
 #if 0
             {
-            U8 u8Event  = *( (U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
+            uint8_t u8Event  = *( (uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
             // Check for launch point in animation . . .
             if (u8Event > 0)
                {
@@ -2443,7 +2443,7 @@ void CDude::Update(void)
                }
             else
                {
-               U8 u8Event  = *( (U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
+               uint8_t u8Event  = *( (uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
                // Check for show point in anim . . .
                if (u8Event > 0)
                   {
@@ -2592,7 +2592,7 @@ void CDude::ProcessInput(     // Returns nothing.
    double*  pdMaxBackVel,     // Out: Maximum backward velocity.
    int16_t*   psStrafeAngle)    // Out: Strafe angle.
    {
-   UINPUT input = 0;
+   uint64_t input = 0;
    // Get user input
    input = GetInput(m_sDudeNum);
 
@@ -3371,7 +3371,7 @@ else
 // Applies accelerations, velocities, reacts to terrain obstructions, etc.
 ////////////////////////////////////////////////////////////////////////////////
 void CDude::ProcessForces( // Returns nothing.
-   long     lCurTime,      // In:  Current game time.
+   int32_t     lCurTime,      // In:  Current game time.
    double   dMaxForeVel,   // Out: Maximum forward velocity.
    double   dMaxBackVel,   // Out: Maximum backward velocity.
    int16_t    sStrafeAngle)  // Out: Strafe angle.
@@ -3580,8 +3580,8 @@ int16_t CDude::EditNew(                           // Returns 0 if successfull, n
 inline
 void SetText(              // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
-   long        lVal)       // In:  Value to set text to.
+   int32_t        lId,        // In:  ID of GUI to set text.
+   int32_t        lVal)       // In:  Value to set text to.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)
@@ -4551,7 +4551,7 @@ void CDude::ArmWeapon(                    // Returns nothing.
       int16_t*   psNumLeft;
       GetWeaponInfo(weapon, &m_eWeaponType, &psNumLeft);
 
-      ULONG weaponFlag = 0;
+      uint32_t weaponFlag = 0;
       switch (weapon)
          {
          case Grenade: weaponFlag = FLAG_USED_GRENADE; break;
@@ -4798,7 +4798,7 @@ CWeapon* CDude::ShootWeapon(              // Returns the weapon ptr or nullptr.
 ////////////////////////////////////////////////////////////////////////////////
 void CDude::Damage(        // Returns nothing.
    int16_t sHitPoints,       // Hit points of damage to do.
-   U16   u16ShooterId)     // In:  Thing responsible for damage.
+   uint16_t   u16ShooterId)     // In:  Thing responsible for damage.
    {
    // Remember if already dead . . .
    bool  bDead = m_bDead;
@@ -5200,7 +5200,7 @@ bool CDude::WhileBlownUp(void)   // Returns true until state is complete.
    double   dNewX, dNewY, dNewZ;
 
    // Get time from last call in seconds.
-   long     lCurTime = m_pRealm->m_time.GetGameTime();
+   int32_t     lCurTime = m_pRealm->m_time.GetGameTime();
    double   dSeconds = double(lCurTime - m_lPrevTime) / 1000.0;
 
    // Update Velocities ////////////////////////////////////////////////////////
@@ -5751,7 +5751,7 @@ void CDude::PlayStep(void)          // Returns nothing.
    if (m_panimCur->m_pevent)
       {
       // If the current event is different from the last . . .
-      U8 u8Event  = *((U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime)) );
+      uint8_t u8Event  = *((uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime)) );
       if (u8Event > 0 && u8Event != m_u8LastEvent)
          {
          PlaySample(g_smidStep, SampleMaster::Unspecified);
@@ -5915,7 +5915,7 @@ void CDude::TakePowerUp(      // Returns nothing.
       (*pppowerup)->PickUpFeedback();
 
       // Store its ID so we can attempt to get it if it does persist.
-      U16   idInstance  = (*pppowerup)->GetInstanceID();
+      uint16_t   idInstance  = (*pppowerup)->GetInstanceID();
 
       // Let powerup decide if it should persist.
       (*pppowerup)->RepaginateNow();
@@ -5948,7 +5948,7 @@ void CDude::TakePowerUp(      // Returns nothing.
    if (*pppowerup)
       {
       // Store its ID so we can attempt to get it if it does persist.
-      U16   idInstance  = (*pppowerup)->GetInstanceID();
+      uint16_t   idInstance  = (*pppowerup)->GetInstanceID();
 
       // Toss it.
       TossPowerUp(*pppowerup, 130);
@@ -6128,7 +6128,7 @@ void CDude::DropAllFlags(  // Returns nothing.
       // Get the next now b/c this won't be a sibling after we detach it.
       pflagNext   = GetNextFlag(pflag);
 
-      U16   u16IdFlag   = pflag->GetInstanceID();
+      uint16_t   u16IdFlag   = pflag->GetInstanceID();
 
       // Detach the flag.
       DetachChild(

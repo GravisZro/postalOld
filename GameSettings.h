@@ -159,26 +159,26 @@ class CGameSettings : CSettings
       int16_t    m_sNetSendInputInterval;            // Interval between sending input
       int16_t    m_sNetMaxFrameLag;                  // Maximum lag between output frame and input seq
       int16_t    m_sNetTimePerFrame;                 // Time per frame
-      long     m_lNetMaxBlockingTime;              // Maximum network blocking time
-      long     m_lNetForceAbortTime;               // Maximum time after which to force abort
+      int32_t     m_lNetMaxBlockingTime;              // Maximum network blocking time
+      int32_t     m_lNetForceAbortTime;               // Maximum time after which to force abort
 /*** 12/5/97 AJC ***/
       char     m_szNetSyncLogFile[RSP_MAX_PATH+1]; // Log file name for recording network syn time
       RFile    m_rfNetSyncLog;                     // Log file for network syn time
-      long     m_lStartRealmTime;                  // Time when a client receives START_REALM from server
+      int32_t     m_lStartRealmTime;                  // Time when a client receives START_REALM from server
       char     m_bLogNetTime;                      // True, if user wants to log net time
 /*** 12/5/97 AJC ***/
 /*** 01/14/98 SPA ***/
-      long     m_lPeerDropMaxWaitTime;             // Maximum time to wait for peer data before
+      int32_t     m_lPeerDropMaxWaitTime;             // Maximum time to wait for peer data before
                                              // dropping peer (in seconds!!)
 /*** 01/14/98 SPA ***/
 
-      long     m_lInitialDemoTimeOut;              // Initial demo timeout.
-      long     m_lPersistentDemoTimeOut;           // Persistent demo timeout.
+      int32_t     m_lInitialDemoTimeOut;              // Initial demo timeout.
+      int32_t     m_lPersistentDemoTimeOut;           // Persistent demo timeout.
       int16_t    m_sCanRecordDemos;                  // TRUE, if the user can record demos.
       char     m_szDemoDebugMovie[RSP_MAX_PATH];   // If supplied, turns on recording of demo movie to this file name
       int16_t    m_sNumAvailableDemos;               // Number of available demos
 
-      long     m_alTitleDurations[MAX_TITLE_SCREENS];// Time spent on title screen while "loading".
+      int32_t     m_alTitleDurations[MAX_TITLE_SCREENS];// Time spent on title screen while "loading".
 
       int16_t    m_sGammaVal;                        // Gamma brighten value for palette.
       int16_t    m_sUseCurrentDeviceDimensions;      // If TRUE, the current display device dimensions are not changed.

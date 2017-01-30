@@ -308,7 +308,7 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszCDPath, sizeof(m_pszCDPath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup"), CLocale::Get("BadCDPath_s_s"), "CD", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadCDPath_s_s"_lookup, "CD", "Paths");
 
    pPrefs->GetVal("Paths", "HD", "", m_pszHDPath);
 #if defined(PANDORA) || defined(ODROID)
@@ -318,7 +318,7 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszHDPath, sizeof(m_pszHDPath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "HD", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "HD", "Paths");
 
    pPrefs->GetVal("Paths", "VD", "", m_pszVDPath);
 #if defined(PANDORA) || defined(ODROID)
@@ -328,7 +328,7 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszVDPath, sizeof(m_pszVDPath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "VD", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "VD", "Paths");
 
    pPrefs->GetVal("Paths", "Sound", "", m_pszSoundPath);
 #if defined(PANDORA) || defined(ODROID)
@@ -338,7 +338,7 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszSoundPath, sizeof(m_pszSoundPath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "Sound", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "Sound", "Paths");
 
    pPrefs->GetVal("Paths", "Game", "", m_pszGamePath);
 #if defined(PANDORA) || defined(ODROID)
@@ -348,7 +348,7 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszGamePath, sizeof(m_pszGamePath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "Game", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "Game", "Paths");
 
    pPrefs->GetVal("Paths", "Hoods", "", m_pszHoodsPath);
 #if defined(PANDORA) || defined(ODROID)
@@ -358,25 +358,25 @@ int16_t CGameSettings::LoadPrefs(
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_pszHoodsPath, sizeof(m_pszHoodsPath));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "Hoods", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "Hoods", "Paths");
 
    pPrefs->GetVal("Paths", "NoSakDir", "", m_szNoSakDir);
    sResult = (strlen(m_szNoSakDir) + 1) <= RSP_MAX_PATH ? 0 : -1;
    if (sResult == 0)
       sResult = CorrectifyBasePath(m_szNoSakDir, sizeof(m_szNoSakDir));
    if (sResult)
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "NoSakDir", "Paths");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "NoSakDir", "Paths");
 
    pPrefs->GetVal("Realms", "File", "", m_pszRealmPrefsFile);
    if (strlen(m_pszRealmPrefsFile) == 0)
       {
       sResult = -1;
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "File", "Realms");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "File", "Realms");
       }
    else if ((strlen(m_pszRealmPrefsFile) + 1) >= RSP_MAX_PATH)
       {
       sResult = -1;
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadPath_s_s"), "File", "Realms");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "File", "Realms");
       }
 
    pPrefs->GetVal("Game", "RecentDifficulty", m_sDifficulty, &m_sDifficulty);
@@ -512,8 +512,8 @@ int16_t CGameSettings::SavePrefs(
    pPrefs->SetVal("Multiplayer", "Protocol", m_usProtocol);
    pPrefs->SetVal("Multiplayer", "Name", m_szPlayerName);
    pPrefs->SetVal("Multiplayer", "Color", m_sPlayerColorIndex);
-   pPrefs->SetVal("Multiplayer", "Bandwidth", (long)m_sNetBandwidth);
-   pPrefs->SetVal("Multiplayer", "HostMinBandwidth", (long)m_sHostMinBandwidth);
+   pPrefs->SetVal("Multiplayer", "Bandwidth", (int32_t)m_sNetBandwidth);
+   pPrefs->SetVal("Multiplayer", "HostMinBandwidth", (int32_t)m_sHostMinBandwidth);
    pPrefs->SetVal("Multiplayer", "HostMaxPlayers", m_sHostMaxPlayers);
    pPrefs->SetVal("Multiplayer", "HostName", m_szHostName);
    pPrefs->SetVal("Multiplayer", "HostResetScoresEachLevel", m_sHostResetScoresEachLevel);

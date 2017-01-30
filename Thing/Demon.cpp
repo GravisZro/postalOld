@@ -110,8 +110,8 @@
 // Static variables
 ////////////////////////////////////////////////////////////////////////////////
 
-long CDemon::ms_lMinIdleTime = 2000;      // Time before saying next thing
-long CDemon::ms_lBonusKillTime = 5000;    // Kill an amount in this time, get bonus
+int32_t CDemon::ms_lMinIdleTime = 2000;      // Time before saying next thing
+int32_t CDemon::ms_lBonusKillTime = 5000;    // Kill an amount in this time, get bonus
 
 // Sound banks of explosion comments indexed by m_sSoundBank.
 SampleMasterID* CDemon::ms_apsmidExplosion[NumSoundBanks][NumExplosionComments]  =
@@ -405,7 +405,7 @@ int16_t CDemon::Load(                       // Returns 0 if successfull, non-zer
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
    if (sResult == 0)
@@ -468,10 +468,10 @@ int16_t CDemon::Load(                       // Returns 0 if successfull, non-zer
          case 1:
             {
             // For backwards compatability.
-            long  alDummy[2];
+            int32_t  alDummy[2];
             char  szResNameDummy[RSP_MAX_PATH];
-            pFile->Read(&alDummy[0]/*(long*)&m_bInitiallyEnabled*/);
-            pFile->Read(&alDummy[0]/*(long*)&m_bInitiallyRepeats*/);
+            pFile->Read(&alDummy[0]/*(int32_t*)&m_bInitiallyEnabled*/);
+            pFile->Read(&alDummy[0]/*(int32_t*)&m_bInitiallyRepeats*/);
             pFile->Read(alDummy/*m_lMinTime*/, 2);
             pFile->Read(alDummy/*m_lRndTime*/, 2);
             pFile->Read(szResNameDummy/*m_szResName*/);
@@ -815,7 +815,7 @@ void CDemon::ProcessMessages(void)
 {
    SampleMasterID* psmid = &g_smidNil;
    bool bFoundSample = false;
-   long lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
    // Check queue of messages.
    GameMessage msg;

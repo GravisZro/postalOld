@@ -409,8 +409,8 @@ static int16_t ms_asBulletDamageChart[16] =
 // scene scaling.
 ////////////////////////////////////////////////////////////////////////////////
 inline
-long GetRandSway(    // Returns sway value.
-   long     lRange,  // In:  Total range of output value.
+int32_t GetRandSway(    // Returns sway value.
+   int32_t     lRange,  // In:  Total range of output value.
    double   dScale)  // In:  Scaling.
    {
    // There's two approaches possible here:
@@ -433,7 +433,7 @@ int16_t CCharacter::Load(                         // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    // Call the CThing base class load to get the instance ID
    int16_t sResult = CThing3d::Load(pFile, bEditMode, sFileCount, ulFileVersion);
@@ -581,7 +581,7 @@ bool CCharacter::WhileBurning(void) // Returns true until state is complete.
 
    // Get time from last call in seconds.  Should this be passed in so we don't
    // update m_lPrevTime???
-   long     lCurTime = m_pRealm->m_time.GetGameTime();
+   int32_t     lCurTime = m_pRealm->m_time.GetGameTime();
    double   dSeconds = double(lCurTime - m_lPrevTime) / 1000.0;
    m_lPrevTime       = lCurTime;
 
@@ -599,7 +599,7 @@ bool CCharacter::WhileBurning(void) // Returns true until state is complete.
          {
          // Brightness is the ratio of the amount of time expired to the
          // total time multiplied by the destination brightness.
-         long  lTimeExpired   = MIN(lCurTime + BURN_DURATION - m_lCharacterTimer, (long)BURN_DURATION);
+         int32_t  lTimeExpired   = MIN(lCurTime + BURN_DURATION - m_lCharacterTimer, (int32_t)BURN_DURATION);
          m_sBrightness        = lTimeExpired * BURNT_BRIGHTNESS / BURN_DURATION;
 
          // If time has expired . . .
@@ -652,13 +652,13 @@ bool CCharacter::WhileDying(void)   // Returns true until state is complete.
 // weapon via ShootWeapon() when the event hits 2.
 ////////////////////////////////////////////////////////////////////////////////
 bool CCharacter::WhileHoldingWeapon(   // Returns true when weapon is released.
-   U32 u32BitsInclude,                 // In:  Collision bits to pass to ShootWeapon
-   U32 u32BitsDontcare,                // In:  Collision bits to pass to ShootWeapon
-   U32 u32BitsExclude)                 // In:  Collision bits to pass to ShootWeapon
+   uint32_t u32BitsInclude,                 // In:  Collision bits to pass to ShootWeapon
+   uint32_t u32BitsDontcare,                // In:  Collision bits to pass to ShootWeapon
+   uint32_t u32BitsExclude)                 // In:  Collision bits to pass to ShootWeapon
    {
    bool  bReleased   = false; // Assume not released.
 
-   U8 u8Event  = *( (U8*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
+   uint8_t u8Event  = *( (uint8_t*)(m_panimCur->m_pevent->GetAtTime(m_lAnimTime) ) );
    // Check for show point in animation . . .
    if (u8Event > 0)
       {
@@ -1548,7 +1548,7 @@ bool CCharacter::IsPathClear( // Returns true, if the entire path is clear.
    int16_t sMinZ       = 0;
 
    int16_t sCurH;
-   U16   u16Attribute;
+   uint16_t   u16Attribute;
 
    // Scan while in realm.
    while (

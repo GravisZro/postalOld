@@ -48,7 +48,7 @@
 #ifndef DEATHWAD_H
 #define DEATHWAD_H
 
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 #include <StockPile.h>
 
 // CDeathWad is an unguided projectile weapon class.
@@ -64,9 +64,9 @@ class CDeathWad : public CWeapon
    //---------------------------------------------------------------------------
    public:
       // Collision bits
-      U32         m_u32CollideIncludeBits;
-      U32         m_u32CollideDontcareBits;
-      U32         m_u32CollideExcludeBits;
+      uint32_t         m_u32CollideIncludeBits;
+      uint32_t         m_u32CollideDontcareBits;
+      uint32_t         m_u32CollideExcludeBits;
       CStockPile  m_stockpile;         // Arsenal.
 
    protected:
@@ -89,8 +89,8 @@ class CDeathWad : public CWeapon
       static const double  ms_dTraversalRate;         // Units moved each iteration while traversing the weapon path.
       static const double  ms_dThrustDelta;           // Distance between thrust feedbacks.
       static const int16_t   ms_sOffScreenDist;         // Go off screen this far before blowing up
-      static const long    ms_lSmokeTimeToLive;       // Time for smoke to stick around.
-      static const long    ms_lFireBallTimeToLive;    // Time for fireball to stick around.
+      static const int32_t    ms_lSmokeTimeToLive;       // Time for smoke to stick around.
+      static const int32_t    ms_lFireBallTimeToLive;    // Time for fireball to stick around.
       static const int16_t   ms_sFinalExplosionStagger; // Amount to stagger final explosions.
       static const int16_t   ms_sCollisionRadius;       // Collision radius.
       static const double  ms_dKickVelocity;          // Velocity for kick from launch.
@@ -173,7 +173,7 @@ class CDeathWad : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

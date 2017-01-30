@@ -238,7 +238,7 @@ RResMgr::~RResMgr(void)
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::Get(									// Returns 0 on success.
+int16_t RResMgr::Get(									// Returns 0 on success.
 	RString strFilename,								// In:  Resource name
 	void** hRes,										// Out: Pointer to resource returned here
 	RFile::Endian	endian,							// In:  Endian nature of resource file
@@ -246,7 +246,7 @@ short RResMgr::Get(									// Returns 0 on success.
 	GenericDestroyResFunc* pfnDestroy,			// In:  Pointer to "destroy" function object
 	GenericLoadResFunc* pfnLoad)					// In:  Pointer to "load" function object
 	{
-	short sReturn = SUCCESS;
+	int16_t sReturn = SUCCESS;
 
 	// Map iterator (one of the best things about STL is how readable it is)
 	pair<resclassMap::iterator, bool> p(m_map.begin(), false);
@@ -345,7 +345,7 @@ short RResMgr::Get(									// Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::GetInstance(						// Returns 0 on success.
+int16_t RResMgr::GetInstance(						// Returns 0 on success.
 	RString strFilename,								// In:  Resource name
 	void** hRes,										// Out: Pointer to resource returned here
 	RFile::Endian	endian,							// In:  Endian nature of resource file
@@ -353,7 +353,7 @@ short RResMgr::GetInstance(						// Returns 0 on success.
 	GenericDestroyResFunc* pfnDestroy,			// In:  Pointer to "destroy" function object
 	GenericLoadResFunc* pfnLoad)					// In:  Pointer to "load" function object
 	{
-	short	sReturn	= SUCCESS;	// Assume success for return.
+	int16_t	sReturn	= SUCCESS;	// Assume success for return.
 	// Assume failure for safety.
 	*hRes	= nullptr;
 
@@ -574,13 +574,13 @@ void RResMgr::FreeAllResources(void)
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::Statistics(RString strStatFile)
+int16_t RResMgr::Statistics(RString strStatFile)
 {
 #if PLATFORM_UNIX   // avoid STL on Unix.  --ryan.
     fprintf(stderr, "STUBBED: %s:%d\n", __FILE__, __LINE__);
     return FAILURE;
 #else
-	short sReturn = SUCCESS;
+	int16_t sReturn = SUCCESS;
 	ofstream txtout;
 	resclassMap::iterator i;
 	
@@ -650,16 +650,16 @@ short RResMgr::Statistics(RString strStatFile)
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
+int16_t RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 {
 #if PLATFORM_UNIX   // avoid STL on Unix.  --ryan.
     return FAILURE;
 #else
-	short sReturn = SUCCESS;
+	int16_t sReturn = SUCCESS;
 	ifstream script;
 	RString line;
 	RString resname;
-//	USHORT usType;
+//	uint16_t usType;
 	char buffer[256];
 	RFile sak;
 
@@ -674,7 +674,7 @@ short RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 		{
 			script.getline(buffer, 256);
 			resname = buffer;
-			if (resname[(long) 0] != ';' && resname[(long) 0] != ' ' && resname.GetLen() > 0)
+			if (resname[(int32_t) 0] != ';' && resname[(int32_t) 0] != ' ' && resname.GetLen() > 0)
 			{
 				NormalizeResName(&resname);
 				m_LoadList.push_back(resname);
@@ -682,7 +682,7 @@ short RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 			}
 /*
 			script >> line;
-			if (line[(long) 0] == ';' || line.GetLen() == 0)
+			if (line[(int32_t) 0] == ';' || line.GetLen() == 0)
 				script.getline(buffer, 256);
 			else
 			{
@@ -704,8 +704,8 @@ short RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 		accessVector::iterator iFilename;
 //		typeVector::iterator iType = m_TypeList.begin();
 		RFile	fileRes;
-		U8	au8Transfer[TRANSFER_BUF_SIZE];
-		long	lNumBytes;
+		uint8_t	au8Transfer[TRANSFER_BUF_SIZE];
+		int32_t	lNumBytes;
 		pair <dupSet::iterator, bool> p(m_duplicateSet.begin(), false);
 		m_duplicateSet.erase(m_duplicateSet.begin(), m_duplicateSet.end());
 
@@ -795,12 +795,12 @@ short RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::WriteSakHeader(RFile* prf)
+int16_t RResMgr::WriteSakHeader(RFile* prf)
 {
-	short sReturn = SUCCESS;
-	ULONG ulFileType = SAK_COOKIE;
-	ULONG ulCurrentVersion = SAK_CURRENT_VERSION;
-	USHORT usNumPairs = m_DirectoryMap.size();
+	int16_t sReturn = SUCCESS;
+	uint32_t ulFileType = SAK_COOKIE;
+	uint32_t ulCurrentVersion = SAK_CURRENT_VERSION;
+	uint16_t usNumPairs = m_DirectoryMap.size();
 	dirMap::iterator m;
 
 	if (prf && prf->IsOpen())
@@ -847,15 +847,15 @@ short RResMgr::WriteSakHeader(RFile* prf)
 //
 //////////////////////////////////////////////////////////////////////
 
-short RResMgr::OpenSak(RString strSakFile)
+int16_t RResMgr::OpenSak(RString strSakFile)
 {
-	short sReturn = SUCCESS;
-	ULONG ulFileType;
-	ULONG ulFileVersion;
-	USHORT usNumPairs;
-	USHORT i;
+	int16_t sReturn = SUCCESS;
+	uint32_t ulFileType;
+	uint32_t ulFileVersion;
+	uint16_t usNumPairs;
+	uint16_t i;
 	char char_buffer[256];
-	long lOffset;
+	int32_t lOffset;
 	RString strFilename;
 
 	if (m_rfSak.IsOpen())
@@ -939,14 +939,14 @@ short RResMgr::OpenSak(RString strSakFile)
 
 void RResMgr::SetBasePath(RString strBasepath)
 {
-	short sLast = strBasepath.GetLen();
+	int16_t sLast = strBasepath.GetLen();
 	if (sLast > 0)
 		sLast--;
 
 	// If base path doesn't end with a slash, add one
-	if (strBasepath[(long) sLast] != RSP_SYSTEM_PATH_SEPARATOR)
+	if (strBasepath[(int32_t) sLast] != RSP_SYSTEM_PATH_SEPARATOR)
 		strBasepath += RSP_SYSTEM_PATH_SEPARATOR;
-	// Make sure it is short enough to work with rspix functions
+	// Make sure it is int16_t enough to work with rspix functions
 	ASSERT(strBasepath.GetLen() < RSP_MAX_PATH);
 	m_strBasepath = strBasepath;
 }

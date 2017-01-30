@@ -135,7 +135,7 @@
 extern CGameSettings g_GameSettings;
 
 // Check for cookie flag
-extern long g_lCookieMonster;
+extern int32_t g_lCookieMonster;
 
 // Global screen buffer
 extern RImage* g_pimScreenBuf;
@@ -166,11 +166,11 @@ extern RResMgr g_resmgrShell;
 extern RResMgr g_resmgrRes;
 
 // Time codes for registry values and expiration date
-extern long g_lRegTime;
-extern long g_lRegValue;
-extern long g_lExpTime;
-extern long g_lExpValue;
-extern long g_lReleaseTime;
+extern int32_t g_lRegTime;
+extern int32_t g_lRegValue;
+extern int32_t g_lExpTime;
+extern int32_t g_lExpValue;
+extern int32_t g_lReleaseTime;
 
 // Loaded and saved games use this stockpile to transfer to/from the
 // dude's stockpile
@@ -300,7 +300,7 @@ extern int16_t Game_SavePlayersGame(  // Returns SUCCESS if all goes well
 ////////////////////////////////////////////////////////////////////////////////
 #define SeedRand SeedRandom
 extern void SeedRandom(
-   long lSeed);
+   int32_t lSeed);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -313,11 +313,11 @@ extern void SeedRandom(
 #if defined(_DEBUG) || defined(TRACENASSERT)
 
    #define GetRandom()  GetRandomDebug(__FILE__, __LINE__)
-   extern long GetRandomDebug(char const * FILE_MACRO, long LINE_MACRO);
+   extern int32_t GetRandomDebug(char const * FILE_MACRO, int32_t LINE_MACRO);
 
 #else
 
-   extern long GetRandom(void);
+   extern int32_t GetRandom(void);
 
 #endif   // defined(_DEBUG) || defined(TRACENASSERT)
 
@@ -333,9 +333,9 @@ extern void SeedRandom(
 extern int SynchLog(    // Result of expr.
    double   expr,       // In:  Expression to evaluate.
    char const *      pszFile,    // In:  Calling file.
-   long     lLine,      // In:  Calling line.
+   int32_t  lLine,      // In:  Calling line.
    char const *      pszExpr,    // In:  Original C++ source expression.
-   U32      u32User);   // In:  A user value that is intended to be consistent.
+   uint32_t      u32User);   // In:  A user value that is intended to be consistent.
 
 ////////////////////////////////////////////////////////////////////////////////
 // If 'LOG_IFS' macro is defined, this will redefine 'if' such that it will
@@ -365,7 +365,7 @@ extern int SynchLog(    // Result of expr.
 //
 ////////////////////////////////////////////////////////////////////////////////
 extern void PalTranOn(
-   long lTime = -1);                               // In:  How long transition should take (or -1 for default)
+   int32_t lTime = -1);                               // In:  How long transition should take (or -1 for default)
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -503,9 +503,9 @@ extern int Stat_KilledCivilians;
 extern int Stat_TotalKilled;
 extern int Stat_LevelsPlayed;
 
-extern long playthroughMS;
+extern int32_t playthroughMS;
 
-extern ULONG Flag_Achievements;
+extern uint32_t Flag_Achievements;
 #define FLAG_USED_M16             (1<<0)
 #define FLAG_USED_SHOTGUN         (1<<1)
 #define FLAG_USED_DBL_SHOTGUN     (1<<2)

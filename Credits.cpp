@@ -97,7 +97,7 @@
 #include <Game.h>
 #include <Update.h>
 #include <SampleMaster.h>
-#include <CompileOptions.h>
+
 #include <ORANGE/Parse/SimpleBatch.h>
 #include <GREEN/Mix/MixBuf.h>
 
@@ -155,11 +155,11 @@ public:
    char  m_szNewName[64];        // resource name
    bool  m_bActive;
    // All times in milliseconds...
-   long  m_lActivationTime;      // also delay time
-   long  m_lFadeOutTime;         // also in delta time form
-   long  m_lBlackTime;           // also in delta time form
-   long  m_lFadeInTime;          // also in delta time form
-   UCHAR m_TransitionPalette[1024];
+   int32_t m_lActivationTime;      // also delay time
+   int32_t m_lFadeOutTime;         // also in delta time form
+   int32_t m_lBlackTime;           // also in delta time form
+   int32_t m_lFadeInTime;          // also in delta time form
+   uint8_t m_TransitionPalette[1024];
    enum BackState { Inactive,FadeOut,Black,FadeIn };
    BackState   m_eState;
    enum ActivationType { OnEnter,OnExit };
@@ -233,7 +233,7 @@ public:
 class CTextChunk
    {
 public:
-   long  m_lNumPhrases;
+   int32_t m_lNumPhrases;
    CTextPhrase m_tHead; // bookends
    CTextPhrase m_tTail;
    int16_t m_sGlobalTopY;
@@ -294,7 +294,7 @@ public:
       {
       if (m_pimCache)
          {
-         //TRACE("Already rendered\n";// legal!
+         //TRACE("Already rendered\n");// legal!
          return;
          }
 
@@ -377,13 +377,13 @@ extern void SetAll();
 class CScrollMaster
    {
 public:
-   long        m_lGlobalHeight;
-   long        m_lCurrentTopY;
-   long        m_lCurrentBottomY;
-   long        m_lTotalChunks;
+   int32_t     m_lGlobalHeight;
+   int32_t     m_lCurrentTopY;
+   int32_t     m_lCurrentBottomY;
+   int32_t     m_lTotalChunks;
    CTextChunk* m_pTopActiveChunk;
    CTextChunk* m_pBottomActiveChunk;
-   long        m_lActivationTime;
+   int32_t     m_lActivationTime;
    RRect       m_rDisplay;
    double      m_dScrollRate; // screens/sec
 
@@ -480,7 +480,7 @@ public:
    int16_t Update(RPrint* pPrint)
       {
       // calculate current global scroll location:
-      m_lCurrentBottomY = long(double(rspGetMilliseconds() - m_lActivationTime)
+      m_lCurrentBottomY = int32_t(double(rspGetMilliseconds() - m_lActivationTime)
          * m_dScrollRate * m_rDisplay.sH / 1000.0);
       m_lCurrentTopY = (m_lCurrentBottomY - m_rDisplay.sH);
 
@@ -614,7 +614,7 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
    {
    if (m_pStream)
       {
-      TRACE("CFileTextInput::ParseTextInput: Stream in progress.\n";
+      TRACE("CFileTextInput::ParseTextInput: Stream in progress.\n");
       return FAILURE;
       }
    else
@@ -687,7 +687,7 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
 
          if (sLocalY < 0)
             {
-            TRACE("ERROR - you backed up above the strip!\n";
+            TRACE("ERROR - you backed up above the strip!\n");
             sLocalY = 0;
             }
          continue;
@@ -722,7 +722,7 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
       //-----------------------------------------------------
       if (!strcmp(pszToken,"skip")) // signals a new chunk!
          {
-         //TRACE("New chunk!\n";
+         //TRACE("New chunk!\n");
          bNewChunk = true;
 
          sMaxH = MAX(sMaxH,int16_t(sLocalY + sCurFontSize));
@@ -816,7 +816,7 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
       //-----------------------------------------------------
       if (*pCurPhrase->m_szText)
          {
-         TRACE("Error - already text\n";
+         TRACE("Error - already text\n");
          }
 
       // Set latest states
@@ -942,15 +942,15 @@ int16_t ScrollPage(char* pszBackground,char* pszScrollScript,double dScrollRate,
    pScript->m_pStream->Start(&print);
 
    // Wait until user input
-   long lKey = 0;
+   int32_t lKey = 0;
    int16_t sButtons = 0;
    int16_t sJoyPress = 0;
 
 //******************  STATISTICAL ANALYSIS!
 /*
-long lTimeCount[256] = {0,}; // bucket sort
+int32_t lTimeCount[256] = {0,}; // bucket sort
 */
-long lRunningTime,lPrevTime;
+int32_t lRunningTime,lPrevTime;
 lRunningTime = lPrevTime = rspGetMilliseconds();
 
    while ( (pScript->m_pStream->Update(&print) == SUCCESS) && !lKey && !sButtons && !(rspGetQuitStatus()) && !sJoyPress)
@@ -1082,7 +1082,7 @@ int16_t Credits(SampleMasterID* pMusic,
    rspUpdateDisplay();
 
    // Wait a while or until user input
-   long lKey = 0;
+   int32_t lKey = 0;
    int16_t sButtons = 0;
    do {
       UpdateSystem();
@@ -1170,16 +1170,16 @@ int16_t Credits(SampleMasterID* pMusic,
       true);
 
 
-   long  lTimeToFade = 15000;
-   long  lStartTime = rspGetMilliseconds();
+   int32_t lTimeToFade = 15000;
+   int32_t lStartTime = rspGetMilliseconds();
 
    // Copy the palette:
-   UCHAR PaletteCopy[256 * 3] = {0,};
+   uint8_t PaletteCopy[256 * 3] = {0,};
 
    rspGetPaletteEntries(10,236,PaletteCopy+30,PaletteCopy + 31,PaletteCopy + 32,3);
 
    //====================================================================
-   long lCurTime;
+   int32_t lCurTime;
 
    while ( (lCurTime = rspGetMilliseconds() - lStartTime) < lTimeToFade)
       {

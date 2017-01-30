@@ -140,7 +140,7 @@ class CPerson : public CDoofus
 
       // This is the one CPerson that can log its AI table transitions or
       // CIdBank::IdNil.
-      static U16  ms_u16IdLogAI;
+      static uint16_t  ms_u16IdLogAI;
 
       // "Constant" values that we want to be able to tune using the editor
       static double ms_dLongRange;     // Squared distance (500 pixels away)
@@ -148,14 +148,14 @@ class CPerson : public CDoofus
       static double ms_dInRangeHigh;   // Squared distance to be in range with weapon
       static double ms_dThrowHorizVel; // Horizontal throw velocity
       static double ms_dMaxCrawlVel;   // Speed at which cop crawls when writhing
-      static long ms_lRandomAvoidTime; // Time to wander before looking again
-      static long ms_lReseekTime;      // Do a 'find' again
-      static long ms_lWatchWaitTime;   // Time to watch shot go
-      static long ms_lReselectDudeTime;// Time to go without finding a dude
+      static int32_t ms_lRandomAvoidTime; // Time to wander before looking again
+      static int32_t ms_lReseekTime;      // Do a 'find' again
+      static int32_t ms_lWatchWaitTime;   // Time to watch shot go
+      static int32_t ms_lReselectDudeTime;// Time to go without finding a dude
                                        // before calling SelectDude() to find
                                        // possibly a closer one.
-      static long ms_lMinCommentTime;  // Min time before making a random comment
-      static long ms_lCommentTimeVariance;// Random amount added on to comment timer.
+      static int32_t ms_lMinCommentTime;  // Min time before making a random comment
+      static int32_t ms_lCommentTimeVariance;// Random amount added on to comment timer.
 
    public:
       static int16_t ms_sLogTabUserGlobal;// Global state set and read by logic tables
@@ -221,7 +221,7 @@ class CPerson : public CDoofus
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -260,7 +260,7 @@ class CPerson : public CDoofus
 
       // Function to choose and play the writhing sound effect
       virtual SampleMaster::SoundInstance PlaySoundWrithing(
-         long* plDuration);               // Out:  Duration of sample, if not nullptr.
+         int32_t* plDuration);               // Out:  Duration of sample, if not nullptr.
 
       // Function to choose and play the Shot sound effect
       virtual SampleMaster::SoundInstance PlaySoundShot(void);

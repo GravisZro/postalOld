@@ -35,7 +35,7 @@
 //							and write members of this class.
 //
 //		01/26/97	JMI	Altered static HotCall to accept an RHot* instead of a
-//							ULONG 'as per' new RHot callbacks.
+//							uint32_t 'as per' new RHot callbacks.
 //
 //		01/30/97	JMI	Took Do() out of here and put in scrollbar.cpp.
 //							Fixed rounding error in POS2PIXEL().
@@ -86,9 +86,9 @@
 // Macros.
 //////////////////////////////////////////////////////////////////////////////
 
-// Converts a position value, lPos, to a short pixel position w/i the scroll 
+// Converts a position value, lPos, to a int16_t pixel position w/i the scroll 
 // bar of orientation o.
-#define POS2PIXEL(lPos, o)	((short)((m_oOrientation == o) \
+#define POS2PIXEL(lPos, o)	((int16_t)((m_oOrientation == o) \
 												? ((float)(lPos - m_lMinPos) * m_fPos2PixelRatio + 0.5) \
 												: 0))
 
@@ -99,7 +99,7 @@
 #define VPOS2PIXEL(lPos)	POS2PIXEL(lPos, Vertical)
 
 // Converts a pixel value (relative to Tray) to a long position value.
-#define PIXEL2POS(sPix)		((long)((float)(sPix) / m_fPos2PixelRatio) + m_lMinPos)
+#define PIXEL2POS(sPix)		((int32_t)((float)(sPix) / m_fPos2PixelRatio) + m_lMinPos)
 
 // Converts one of two pixel values, dependent on orientation o, to a position
 // value.
@@ -188,7 +188,7 @@ class RScrollBar : public RGuiItem
 		// Activate or deactivate mouse reaction.
 		virtual					// If you override this, call this base if possible.
 		void SetActive(		// Returns nothing.
-			short sActive)		// TRUE to make active, FALSE otherwise.
+			int16_t sActive)		// TRUE to make active, FALSE otherwise.
 			{ 
 			m_btnThumb.SetActive(sActive);
 			m_btnUp.SetActive(sActive);
@@ -218,7 +218,7 @@ class RScrollBar : public RGuiItem
 		// Set the current position of the thumb in the scroll bar.
 		// This value will be clipped to m_lMin and m_lMax.
 		void SetPos(		// Returns nothing.
-			long lPos)		// New position.
+			int32_t lPos)		// New position.
 			{
 			if (lPos > m_lMaxPos)
 				{
@@ -242,7 +242,7 @@ class RScrollBar : public RGuiItem
 				m_sInSmoothScroll	= FALSE;
 				}
 
-			short	sX, sY, sW, sH;
+			int16_t	sX, sY, sW, sH;
 			GetTray(&sX, &sY, &sW, &sH);
 
 			m_btnThumb.Move(sX + HPOS2PIXEL(m_lCurPos), sY + VPOS2PIXEL(m_lCurPos));
@@ -260,7 +260,7 @@ class RScrollBar : public RGuiItem
 		// This GUI must have the focus for correct operation.
 		// If this GUI does not have the focus, SetPos() is called.
 		void ScrollToPos(		// Returns nothing.
-			long lPos)			// In:  New position.
+			int32_t lPos)			// In:  New position.
 			{
 			// If we don't have the focus . . .
 			if (ms_pguiFocus != this)
@@ -295,8 +295,8 @@ class RScrollBar : public RGuiItem
 		// Sets the range of the scroll bar and sizes & moves the thumb 
 		// appropriately.
 		void SetRange(
-			long lMin, 
-			long lMax);
+			int32_t lMin, 
+			int32_t lMax);
 
 		// Hot call for thumb positioner.
 		void ThumbHotCall(		// Returns nothing.
@@ -357,13 +357,13 @@ class RScrollBar : public RGuiItem
 		////////////////////////////////////////////////////////////////////////
 
 		// Get the current position of the thumb in the scroll bar.
-		long GetPos(void)
+      int32_t GetPos(void)
 			{ return m_lCurPos; }
 
 		// Gets the range of the scroll bar.
 		void GetRange(		// Returns nothing.
-			long* plMin,	// Out: Minimum position unless nullptr.
-			long* plMax)	// Out: Maximum position unless nullptr.
+         int32_t* plMin,	// Out: Minimum position unless nullptr.
+         int32_t* plMax)	// Out: Maximum position unless nullptr.
 			{
 			SET_IF_NOT_NULL(plMin, m_lMinPos);
 			SET_IF_NOT_NULL(plMax, m_lMaxPos);
@@ -371,18 +371,18 @@ class RScrollBar : public RGuiItem
 
 		// Get position/size of tray relative to this item.
 		void GetTray(	// Returns nothing.
-			short* psX,	// Out: x coordinate of tray unless nullptr.
-			short* psY,	// Out: y coordinate of tray unless nullptr.
-			short* psW,	// Out: Width of tray unless nullptr.
-			short* psH);	// Out: Height of tray unless nullptr.
+			int16_t* psX,	// Out: x coordinate of tray unless nullptr.
+			int16_t* psY,	// Out: y coordinate of tray unless nullptr.
+			int16_t* psW,	// Out: Width of tray unless nullptr.
+			int16_t* psH);	// Out: Height of tray unless nullptr.
 
 		// Get the "hot" area (i.e., clickable area) relative to this item.
 		virtual					// If you override this, call this base if possible.
 		void GetHot(			// Returns nothing.
-			short* psX,			// Out: X position unless nullptr.
-			short* psY,			// Out: Y position unless nullptr.
-			short* psW,			// Out: Width unless nullptr.
-			short* psH)			// Out: Height unless nullptr.
+			int16_t* psX,			// Out: X position unless nullptr.
+			int16_t* psY,			// Out: Y position unless nullptr.
+			int16_t* psW,			// Out: Width unless nullptr.
+			int16_t* psH)			// Out: Height unless nullptr.
 			{
 			// Use tray area.
 			GetTray(psX, psY, psW, psH);
@@ -406,55 +406,55 @@ class RScrollBar : public RGuiItem
 			RHot*	phot,			// Ptr to RHot that generated event.
 			RInputEvent* pie)	// In:  Most recent user input event.             
 									// Out: pie->sUsed = TRUE, if used.
-			{ ((RScrollBar*)(phot->m_ulUser))->UpHotCall(pie); }
+         { static_cast<RScrollBar*>((void*)phot->m_ulUser)->UpHotCall(pie); }
 		static void DownHotCall(
 			RHot*	phot,			// Ptr to RHot that generated event.
 			RInputEvent* pie)	// In:  Most recent user input event.             
 									// Out: pie->sUsed = TRUE, if used.
-			{ ((RScrollBar*)(phot->m_ulUser))->DownHotCall(pie); }
+         { static_cast<RScrollBar*>((void*)phot->m_ulUser)->DownHotCall(pie); }
 		static void ThumbHotCall(
 			RHot*	phot,			// Ptr to RHot that generated event.
 			RInputEvent* pie)	// In:  Most recent user input event.             
 									// Out: pie->sUsed = TRUE, if used.
-			{ ((RScrollBar*)(phot->m_ulUser))->ThumbHotCall(pie); }
+         { static_cast<RScrollBar*>((void*)phot->m_ulUser)->ThumbHotCall(pie); }
 		static void DrawUpArrow(	// Returns nothing.
 			RGuiItem* pgui,			// The RGuiItem being composed (this).
 			RImage* pim,				// Image to draw into.  Try to stay within 
 											// prc please.
 			RRect* prc)					// Where to in image.
-			{ ((RScrollBar*)pgui->m_ulUserInstance)->DrawUpArrow(pim, prc); }
+         { static_cast<RScrollBar*>((void*)pgui->m_ulUserInstance)->DrawUpArrow(pim, prc); }
 		static void DrawDownArrow(	// Returns nothing.
 			RGuiItem* pgui,			// The RGuiItem being composed (this).
 			RImage* pim,				// Image to draw into.  Try to stay within 
 											// prc please.
 			RRect* prc)					// Where to in image.
-			{ ((RScrollBar*)pgui->m_ulUserInstance)->DrawDownArrow(pim, prc); }
+         { static_cast<RScrollBar*>((void*)pgui->m_ulUserInstance)->DrawDownArrow(pim, prc); }
 
 		// Save item's children to the specified file.
 		virtual					// Overridden here.
-		short SaveChildren(	// Returns 0 on success.
+		int16_t SaveChildren(	// Returns 0 on success.
 			RFile*	pfile);	// File to save to.
 
 		// Load item's children from the specified file.
 		virtual					// Overridden here.
-		short LoadChildren(	// Returns 0 on success.
+		int16_t LoadChildren(	// Returns 0 on success.
 			RFile*	pfile);	// File to load from.
 
 		// Read item's members from file.
 		virtual				// Overridden here.
-		short ReadMembers(			// Returns 0 on success.
+		int16_t ReadMembers(			// Returns 0 on success.
 			RFile*	pfile,			// File to read from.
-			U32		u32Version);	// File format version to use.
+			uint32_t		u32Version);	// File format version to use.
 
 		// Write item's members to file.
 		virtual				// Overridden here.
-		short WriteMembers(			// Returns 0 on success.
+		int16_t WriteMembers(			// Returns 0 on success.
 			RFile*	pfile);			// File to write to.
 
 		// Set position, usually as requested by user, using the specified
 		// type of user feedback.
 		void UserSetPos(	// Returns nothing.
-			long	lPos)		// In:  New position.
+         int32_t	lPos)		// In:  New position.
 			{
 			switch (m_scrollage)
 				{
@@ -479,12 +479,12 @@ class RScrollBar : public RGuiItem
 		RBtn			m_btnUp;				// Up or left arrow button.
 		RBtn			m_btnDown;			// Down or right arrow button.
 
-		long			m_lButtonIncDec;	// Amount to increment or decrement the
+      int32_t			m_lButtonIncDec;	// Amount to increment or decrement the
 												// position when a button is pressed.
-		long			m_lTrayIncDec;		// Amount to increment or decrement the
+      int32_t			m_lTrayIncDec;		// Amount to increment or decrement the
 												// position when the tray is pressed.
 
-		short			m_sArrowBorderDistance;	// Number of pixels between arrows'
+		int16_t			m_sArrowBorderDistance;	// Number of pixels between arrows'
 														// edges and borders.
 
 		UpdatePosCall	m_upcUser;		// User callback on postion change.
@@ -492,17 +492,17 @@ class RScrollBar : public RGuiItem
 		Scrollage	m_scrollage;		// { RScrollBar::Instant,
 												// RScrollBar::Smooth }
 
-		long			m_lPosPerSecond;	// Number of positions smoothly scrolled
+      int32_t			m_lPosPerSecond;	// Number of positions smoothly scrolled
 												// through in a second.  The rate of
 												// smooth scrollage.
 
-		long			m_lLastSmoothTime;	// Last time smooth scroll was processed.
+      int32_t			m_lLastSmoothTime;	// Last time smooth scroll was processed.
 
-		long			m_lScrollToPos;	// Position to smoothly scroll to.
+      int32_t			m_lScrollToPos;	// Position to smoothly scroll to.
 												// This GUI should have the focus to get
 												// correct operation.
 
-		short			m_sInSmoothScroll;	// TRUE, if we are in a smooth scroll.
+		int16_t			m_sInSmoothScroll;	// TRUE, if we are in a smooth scroll.
 													// FALSE, otherwise.
 
 		// These values may be querried and can be changed directly.
@@ -511,19 +511,19 @@ class RScrollBar : public RGuiItem
 		Orientation	m_oOrientation;	// { RScrollBar::Vertical,
 												// RScrollBar::Horizontal }
 
-		long			m_lMinThumbLength;	// Minimum length for thumb.
+      int32_t			m_lMinThumbLength;	// Minimum length for thumb.
 
-		short			m_sClickOffsetX;	// Position in thumb that was clicked.
-		short			m_sClickOffsetY;	// Position in thumb that was clicked.
+		int16_t			m_sClickOffsetX;	// Position in thumb that was clicked.
+		int16_t			m_sClickOffsetY;	// Position in thumb that was clicked.
 
 	protected:	// Internal typedefs.
 
 	protected:	// Protected member variables.
 
-		long			m_lMinPos;				// Minimum value.
-		long			m_lMaxPos;				// Maximum value.
+      int32_t			m_lMinPos;				// Minimum value.
+      int32_t			m_lMaxPos;				// Maximum value.
 
-		long			m_lCurPos;				// Current value.
+      int32_t			m_lCurPos;				// Current value.
 
 		float			m_fPos2PixelRatio;	// Current ratio of scroll bar 
 													// positions pixels to pixels.

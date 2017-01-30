@@ -168,7 +168,7 @@ int16_t CItem3d::Load(                            // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = 0;
 
@@ -244,7 +244,7 @@ int16_t CItem3d::Load(                            // Returns 0 if successfull, n
          case 1:
             pFile->Read(m_szAnimBaseName);
 
-            U32   u32Temp;
+            uint32_t   u32Temp;
             pFile->Read(&u32Temp);
             m_type   = (ItemType)u32Temp;
 
@@ -303,7 +303,7 @@ int16_t CItem3d::Save(                            // Returns 0 if successfull, n
 
       pFile->Write(m_szAnimBaseName);
 
-      pFile->Write((U32)m_type);
+      pFile->Write((uint32_t)m_type);
 
       pFile->Write(m_u16IdParent);
 
@@ -325,10 +325,10 @@ void CItem3d::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Advance the animation timer.
-      long  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
+      int32_t  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
       m_lAnimTime       += lDifTime;
 
       // Update prev time.
@@ -489,7 +489,7 @@ int16_t CItem3d::EditModify(void)              // Returns 0 if successfull, non-
             RGuiItem*   pguiSel  = plb->GetSel();
             if (pguiSel)
                {
-               m_type   = (ItemType)pguiSel->m_ulUserData;
+               m_type   = (ItemType)(uint8_t)pguiSel->m_ulUserData;
                if (m_type != Custom)
                   {
                   strcpy(m_szAnimBaseName, ms_apszKnownAnimBaseNames[m_type]);
@@ -702,7 +702,7 @@ int16_t CItem3d::Setup(         // Returns 0 on success.
    ItemType type,             // In:  Known item type or Custom.
    char const * pszCustomBaseName /*= nullptr */,  // In:  Required if type == Custom.
                                        // Base name for custom type resources.
-   U16   u16IdParentInstance /*= CIdBank::IdNil*/) // In:  Parent instance ID.
+   uint16_t   u16IdParentInstance /*= CIdBank::IdNil*/) // In:  Parent instance ID.
    {
    int16_t sResult  = 0;
 

@@ -101,7 +101,7 @@ CSettings::CSettings(void)
 
       }
    else
-      TRACE("CSettings::CSettings(): Couldn't create new container!\n";
+      TRACE("CSettings::CSettings(): Couldn't create new container!\n");
    }
 
 
@@ -168,7 +168,7 @@ int16_t CSettings::LoadPrefs(               // Returns 0 if successfull, non-zer
          if (!sResult && prefs.IsError())
             {
             sResult = -1;
-            TRACE("CSettings::LoadPrefs(): Error reading prefs file!\n";
+            TRACE("CSettings::LoadPrefs(): Error reading prefs file!\n");
             }
 
          prefs.Close();
@@ -182,7 +182,7 @@ int16_t CSettings::LoadPrefs(               // Returns 0 if successfull, non-zer
    else
       {
       sResult = -1;
-      TRACE("CSettings::LoadPrefs(): No container!\n";
+      TRACE("CSettings::LoadPrefs(): No container!\n");
       }
 
    return sResult;
@@ -234,7 +234,7 @@ int16_t CSettings::SavePrefs(               // Returns 0 if successfull, non-zer
             if (!sResult && prefs.IsError())
                {
                sResult = -1;
-               TRACE("CSettings::SavePrefs(): Error writing prefs file!\n";
+               TRACE("CSettings::SavePrefs(): Error writing prefs file!\n");
                }
 
             prefs.Close();
@@ -254,7 +254,7 @@ int16_t CSettings::SavePrefs(               // Returns 0 if successfull, non-zer
    else
       {
       sResult = -1;
-      TRACE("CSettings::SavePrefs(): No container!\n";
+      TRACE("CSettings::SavePrefs(): No container!\n");
       }
 
    return sResult;
@@ -293,7 +293,7 @@ int16_t CSettings::LoadGame(                // Returns 0 if successfull, non-zer
          if (!sResult && fileGame.Error())
             {
             sResult = -1;
-            TRACE("CSettings::LoadGame(): Error reading game file!\n";
+            TRACE("CSettings::LoadGame(): Error reading game file!\n");
             }
 
          fileGame.Close();
@@ -307,7 +307,7 @@ int16_t CSettings::LoadGame(                // Returns 0 if successfull, non-zer
    else
       {
       sResult = -1;
-      TRACE("CSettings::LoadGame(): No container!\n";
+      TRACE("CSettings::LoadGame(): No container!\n");
       }
 
    return sResult;
@@ -347,7 +347,7 @@ int16_t CSettings::SaveGame(                // Returns 0 if successfull, non-zer
          if (!sResult && fileGame.Error())
             {
             sResult = -1;
-            TRACE("CSettings::SaveGame(): Error writing game file!\n";
+            TRACE("CSettings::SaveGame(): Error writing game file!\n");
             }
 
          fileGame.Close();
@@ -361,7 +361,7 @@ int16_t CSettings::SaveGame(                // Returns 0 if successfull, non-zer
    else
       {
       sResult = -1;
-      TRACE("CSettings::SaveGame(): No container!\n";
+      TRACE("CSettings::SaveGame(): No container!\n");
       }
 
    return sResult;
@@ -405,7 +405,7 @@ int16_t CSettings::PreDemo(                 // Returns 0 if successfull, non-zer
             if (!sResult && fileMem.Error())
                {
                sResult = -1;
-               TRACE("CSettings::PreDemo(): Error writing to mem file (probably too much data)!\n";
+               TRACE("CSettings::PreDemo(): Error writing to mem file (probably too much data)!\n");
                }
 
             fileMem.Close();
@@ -413,19 +413,19 @@ int16_t CSettings::PreDemo(                 // Returns 0 if successfull, non-zer
          else
             {
             sResult = -1;
-            TRACE("CSettings::PreDemo(): Couldn't open mem file!\n";
+            TRACE("CSettings::PreDemo(): Couldn't open mem file!\n");
             }
          }
       else
          {
          sResult = -1;
-         TRACE("CSettings::PreDemo(): Couldn't allocate memory for mem file!\n";
+         TRACE("CSettings::PreDemo(): Couldn't allocate memory for mem file!\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("CSettings::PreDemo(): No container!\n";
+      TRACE("CSettings::PreDemo(): No container!\n");
       }
 
    return sResult;
@@ -468,7 +468,7 @@ int16_t CSettings::PostDemo(                // Returns 0 if successfull, non-zer
             if (!sResult && fileMem.Error())
                {
                sResult = -1;
-               TRACE("CSettings::PostDemo(): Error reading from mem file!\n";
+               TRACE("CSettings::PostDemo(): Error reading from mem file!\n");
                }
 
             fileMem.Close();
@@ -476,7 +476,7 @@ int16_t CSettings::PostDemo(                // Returns 0 if successfull, non-zer
          else
             {
             sResult = -1;
-            TRACE("CSettings::PostDemo(): Couldn't open mem file!\n";
+            TRACE("CSettings::PostDemo(): Couldn't open mem file!\n");
             }
 
          // Free memory
@@ -486,13 +486,13 @@ int16_t CSettings::PostDemo(                // Returns 0 if successfull, non-zer
       else
          {
          sResult = -1;
-         TRACE("CSettings::PostDemo(): No memory file to read from! (did you forget to call CSettings::PreDemo?)\n";
+         TRACE("CSettings::PostDemo(): No memory file to read from! (did you forget to call CSettings::PreDemo?)\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("CSettings::PostDemo(): No container!\n";
+      TRACE("CSettings::PostDemo(): No container!\n");
       }
 
    return sResult;

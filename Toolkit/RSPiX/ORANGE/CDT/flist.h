@@ -33,12 +33,12 @@
 // nodes, where each node contains a copy of whatever data type was specified.
 //
 // Please note that each node CONTAINS A COPY OF THE SPECIFIED DATA.  If you
-// insert a short, a new node containing a copy of the short is created.  If
+// insert a int16_t, a new node containing a copy of the int16_t is created.  If
 // you insert a pointer, a new node containing a copy of the pointer is created.
 // And MOST IMPORTANTLY, if you insert an object, a new node containing a COPY
 // OF THE OBJECT is created!
 //
-// How is this copy created?  For standard types (short, int, pointers, etc.)
+// How is this copy created?  For standard types (int16_t, int, pointers, etc.)
 // the compiler makes copies the same way it always does -- a simple bitwise
 // copy.  But for objects, the compiler calls the object's copy constructor.
 // If an object doesn't define a copy constructor, the compiler will supply one.
@@ -92,7 +92,7 @@ class RFList
 	protected:
 		Node* m_phead;
 		Node* m_ptail;
-		long m_lCount;
+		int32_t m_lCount;
 		
 	//------------------------------------------------------------------------------
 	// Functions

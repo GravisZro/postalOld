@@ -48,7 +48,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <BLUE/Blue.h>
 #include <GREEN/SndFx/SndFx.h>
@@ -96,12 +96,12 @@ RSndFx::PCMINFO	RSndFx::ms_apcminfo[RSP_SNDFX_MAX_BITSPERSAMPLE + 1] =	// Stores
 		{ 0x40000000, 0x7FFFFFFF	},	// 32 Bit.
 	};
 
-U8*	RSndFx::ms_pu8Fade	= nullptr;	// Unsigned 8 bit output
+uint8_t*	RSndFx::ms_pu8Fade	= nullptr;	// Unsigned 8 bit output
 												// fade table.
-S16*	RSndFx::ms_ps16Fade	= nullptr;	// Signed 16 bit output
+int16_t*	RSndFx::ms_ps16Fade	= nullptr;	// Signed 16 bit output
 												// fade table.
 
-short	RSndFx::ms_sNumFadeSteps	= 0;	// Number of fade steps.
+int16_t	RSndFx::ms_sNumFadeSteps	= 0;	// Number of fade steps.
 
 long	RSndFx::ms_lSamplesPerSec	= 0;	// Samples per second.
 long	RSndFx::ms_lBitsPerSample	= 0;	// Bits per sample.
@@ -252,10 +252,10 @@ void RSndFx::Reset(void)
 // (static).
 //
 //////////////////////////////////////////////////////////////////////////////
-short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
-	short sNumSteps)					// Number of steps to fades; see above.
+int16_t RSndFx::SetFadeAccuracy(	// Returns 0 on success.
+	int16_t sNumSteps)					// Number of steps to fades; see above.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	if (ms_lBitsPerSec != 0)
 		{
@@ -267,19 +267,19 @@ short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
 			{
 			case 8:
 				{
-				ms_pu8Fade	= (U8*)malloc((long)sNumSteps * 256L * sizeof(S16));
+				ms_pu8Fade	= (uint8_t*)malloc((int32_t)sNumSteps * 256L * sizeof(int16_t));
 				if (ms_pu8Fade)
 					{
-					short	sStep;
-					short	sSample;
+					int16_t	sStep;
+					int16_t	sSample;
 					float	fStep				= 1.0F / (float)sNumSteps;
 					float	fCurDecimation	= fStep;
-					U8*	pu8	= ms_pu8Fade;
+					uint8_t*	pu8	= ms_pu8Fade;
 					for (sStep	= 0; sStep < sNumSteps; sStep++)
 						{
 						for (sSample = 0; sSample < 256; sSample++)
 							{
-							*pu8++	= (U8)( (float)(sSample - 0x80) * fCurDecimation) + 0x80;
+							*pu8++	= (uint8_t)( (float)(sSample - 0x80) * fCurDecimation) + 0x80;
 							}
 						
 						fCurDecimation	+= fStep;
@@ -288,7 +288,7 @@ short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
 					// Success.
 					ms_sNumFadeSteps	= sNumSteps;
 
-					static short sSetUpAtExit	= FALSE;	// Remember if we already did this.
+					static int16_t sSetUpAtExit	= FALSE;	// Remember if we already did this.
 					// If we haven't already set up the at exit function . . .
 					if (sSetUpAtExit == FALSE)
 						{
@@ -307,19 +307,19 @@ short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
 
 			case 16:
 				{
-				ms_ps16Fade	= (S16*)malloc((long)sNumSteps * 256L * sizeof(S16));
+				ms_ps16Fade	= (int16_t*)malloc((int32_t)sNumSteps * 256L * sizeof(int16_t));
 				if (ms_ps16Fade)
 					{
-					short	sStep;
-					short	sSample;
+					int16_t	sStep;
+					int16_t	sSample;
 					float	fStep				= 1.0F / (float)sNumSteps;
 					float	fCurDecimation	= fStep;
-					S16*	ps16	= ms_ps16Fade;
+					int16_t*	ps16	= ms_ps16Fade;
 					for (sStep	= 0; sStep < sNumSteps; sStep++)
 						{
 						for (sSample = 0; sSample < 256; sSample++)
 							{
-							*ps16++	= (S16)( (float)((sSample - 128) << 8) * fCurDecimation);
+							*ps16++	= (int16_t)( (float)((sSample - 128) << 8) * fCurDecimation);
 							}
 						
 						fCurDecimation	+= fStep;
@@ -328,7 +328,7 @@ short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
 					// Success.
 					ms_sNumFadeSteps	= sNumSteps;
 
-					static short sSetUpAtExit	= FALSE;	// Remember if we already did this.
+					static int16_t sSetUpAtExit	= FALSE;	// Remember if we already did this.
 					// If we haven't already set up the at exit function . . .
 					if (sSetUpAtExit == FALSE)
 						{
@@ -366,9 +366,9 @@ short RSndFx::SetFadeAccuracy(	// Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
 void RSndFx::SetDataType(	// Returns nothing.
-	long lSamplesPerSec,		// Samples per second.
-	long lBitsPerSample,		// Bits per sample.
-	long lNumChannels)		// Number of channels.
+	int32_t lSamplesPerSec,		// Samples per second.
+	int32_t lBitsPerSample,		// Bits per sample.
+	int32_t lNumChannels)		// Number of channels.
 	{
 	ms_lSamplesPerSec	= lSamplesPerSec;
 	ms_lBitsPerSample	= lBitsPerSample;
@@ -388,10 +388,10 @@ template <
 inline void Decimate(	// Returns nothing.
 	TYPE* psnSrcData,		// Data buffer to decimate.
 	TYPE* psnDstData,		// Decimation destination.
-	long lNumBytes,		// Number of bytes in buffer.
+	int32_t lNumBytes,		// Number of bytes in buffer.
 	TYPE* psnTable)		// Attenuation table.
 	{
-	long	lNumSamples	= lNumBytes / sizeof(TYPE);
+	int32_t	lNumSamples	= lNumBytes / sizeof(TYPE);
 	while (lNumSamples-- > 0)
 		{
 		*psnDstData++	= psnTable[((*psnSrcData++ + 0x0080) >> 8) + 128];
@@ -408,11 +408,11 @@ template <
 inline void UnsignedDecimate(	// Returns nothing.
 	UTYPE* punSrcData,			// Data buffer to decimate.
 	UTYPE* punDstData,			// Decimation destination.
-	long lNumBytes,				// Number of bytes in buffer.
+	int32_t lNumBytes,				// Number of bytes in buffer.
 	UTYPE* punTable)				// Attenuation table.
 	{
 
-	long	lNumSamples	= lNumBytes / sizeof(UTYPE);
+	int32_t	lNumSamples	= lNumBytes / sizeof(UTYPE);
 	while (lNumSamples-- > 0)
 		{
 		*punDstData++	= punTable[*punSrcData++];
@@ -425,9 +425,9 @@ inline void UnsignedDecimate(	// Returns nothing.
 //
 /////////////////////////////////////////////////////////////////////////
 void RSndFx::Do(						// Returns nothing.
-	UCHAR* pucSrcData,				// Data to affect.
-	long lBufSize,						// Amount of data.
-	UCHAR* pucDstData /*= nullptr */)	// Destination for data, defaults 
+	uint8_t* pucSrcData,				// Data to affect.
+	int32_t lBufSize,						// Amount of data.
+	uint8_t* pucDstData /*= nullptr */)	// Destination for data, defaults 
 											// to same as source.
 	{
 	if (ms_lBitsPerSec > 0)
@@ -450,8 +450,8 @@ void RSndFx::Do(						// Returns nothing.
 						case 8:
 							{
 							UnsignedDecimate(							// Returns nothing.           
-										(U8*)pucSrcData,				// Data buffer to fade.
-										(U8*)pucDstData,				// Dest data buffer.
+										(uint8_t*)pucSrcData,				// Data buffer to fade.
+										(uint8_t*)pucDstData,				// Dest data buffer.
 										lBufSize, 						// Number of bytes in buffer. 
 										ms_pu8Fade + (m_lFadeInBytesDurationAffected / m_lFadeInRate) * 256 );	// Attenuation Table.
 							break;
@@ -459,8 +459,8 @@ void RSndFx::Do(						// Returns nothing.
 						case 16:
 							{
 							Decimate(									// Returns nothing.
-										(S16*)pucSrcData,				// Data buffer to fade.
-										(S16*)pucDstData,				// Dest data buffer.
+										(int16_t*)pucSrcData,				// Data buffer to fade.
+										(int16_t*)pucDstData,				// Dest data buffer.
 										lBufSize, 						// Number of bytes in buffer.
 										ms_ps16Fade + (m_lFadeInBytesDurationAffected / m_lFadeInRate) * 256 );	// Attenuation Table.
 							break;
@@ -491,8 +491,8 @@ void RSndFx::Do(						// Returns nothing.
 							case 8:
 								{
 								UnsignedDecimate(							// Returns nothing.           
-											(U8*)pucSrcData,				// Data buffer to fade.
-											(U8*)pucDstData,				// Dest data buffer.
+											(uint8_t*)pucSrcData,				// Data buffer to fade.
+											(uint8_t*)pucDstData,				// Dest data buffer.
 											lBufSize, 						// Number of bytes in buffer. 
 											ms_pu8Fade + (m_lFadeOutBytesDurationRemaining / m_lFadeOutRate) * 256 );	// Attenuation Table.
 								break;
@@ -500,8 +500,8 @@ void RSndFx::Do(						// Returns nothing.
 							case 16:
 								{
 								Decimate(									// Returns nothing.           
-											(S16*)pucSrcData,				// Data buffer to fade.
-											(S16*)pucDstData,				// Dest data buffer.
+											(int16_t*)pucSrcData,				// Data buffer to fade.
+											(int16_t*)pucDstData,				// Dest data buffer.
 											lBufSize, 						// Number of bytes in buffer. 
 											ms_ps16Fade + (m_lFadeOutBytesDurationRemaining / m_lFadeOutRate) * 256 ); // Attenuation table.         
 								break;
@@ -541,10 +541,10 @@ void RSndFx::Do(						// Returns nothing.
 // Set up a fade in.
 //
 /////////////////////////////////////////////////////////////////////////
-short RSndFx::SetUpFadeIn(	// Returns 0 on success.
-	long lDuration)			// Duration until silence in milliseconds.
+int16_t RSndFx::SetUpFadeIn(	// Returns 0 on success.
+	int32_t lDuration)			// Duration until silence in milliseconds.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Must set data type before setting up effect . . .
 	if (ms_lBitsPerSec > 0)
@@ -574,7 +574,7 @@ short RSndFx::SetUpFadeIn(	// Returns 0 on success.
 //
 /////////////////////////////////////////////////////////////////////////
 void RSndFx::ActivateFadeIn(	// Returns nothing.
-	short	sActivate)				// TRUE to activate, FALSE to deactivate.
+	int16_t	sActivate)				// TRUE to activate, FALSE to deactivate.
 	{ 
 	if (sActivate == FALSE)
 		{
@@ -593,10 +593,10 @@ void RSndFx::ActivateFadeIn(	// Returns nothing.
 // Set up a fade out.
 //
 /////////////////////////////////////////////////////////////////////////
-short RSndFx::SetUpFadeOut(	// Returns 0 on success.
-	long lDuration)				// Duration until full volume in milliseconds.
+int16_t RSndFx::SetUpFadeOut(	// Returns 0 on success.
+	int32_t lDuration)				// Duration until full volume in milliseconds.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Must set data type before setting up effect . . .
 	if (ms_lBitsPerSec > 0)
@@ -626,7 +626,7 @@ short RSndFx::SetUpFadeOut(	// Returns 0 on success.
 //
 /////////////////////////////////////////////////////////////////////////
 void RSndFx::ActivateFadeOut(	// Returns nothing.
-	short	sActivate)				// TRUE to activate, FALSE to deactivate.
+	int16_t	sActivate)				// TRUE to activate, FALSE to deactivate.
 	{ 
 	if (sActivate != FALSE)
 		{

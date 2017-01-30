@@ -19,7 +19,7 @@
 // the CAnim of text.  It is currently designed for FSPR1 images,
 // but it could very easily be updated for TC use and any
 // image type.
-#include <string.h>
+#include <cstring>
 
 #include <GREEN/BLiT/BLIT.H>
 #include <GREEN/BLiT/_BlitInt.H>
@@ -52,7 +52,7 @@ RFont::~RFont()
 	EraseAll();
 	}
 //========================================================
-short RFont::Add(char const * pszFileName)
+int16_t RFont::Add(char const * pszFileName)
 	{
 	RFile rfTemp;
 
@@ -68,7 +68,7 @@ short RFont::Add(char const * pszFileName)
 	return 0;
 	}
 
-short RFont::Add(RFile* pcf)
+int16_t RFont::Add(RFile* pcf)
 	{
 
 #ifdef _DEBUG
@@ -91,7 +91,7 @@ short RFont::Add(RFile* pcf)
 		return -1;
 		}
 
-	short sVersion;
+	int16_t sVersion;
 
 	pcf->Read(&sVersion);
 	if (sVersion != 8)
@@ -100,14 +100,14 @@ short RFont::Add(RFile* pcf)
 		return -1;
 		}
 
-	short sW,sH,sN;
+	int16_t sW,sH,sN;
 	pcf->Read(&sH);
 	pcf->Read(&sW);
 	pcf->Read(&sN);
 
 	TRACE("Loading Font, %hd by %hd, %hd scales\n",sW,sH,sN);
 
-	short sDone = FALSE;
+	int16_t sDone = FALSE;
 	while (!sDone)
 		{	
 		pcf->Read(szCommand);
@@ -119,7 +119,7 @@ short RFont::Add(RFile* pcf)
 
 		if (!strcmp(szCommand,"FONTSET"))
 			{
-			short sH,sW;
+			int16_t sH,sW;
 			pcf->Read(&sH);
 			pcf->Read(&sW);
 			TRACE("FontSet: %hd by %hd\n",sW,sH);
@@ -128,13 +128,13 @@ short RFont::Add(RFile* pcf)
 
 		if (!strcmp(szCommand,"LETTER_"))
 			{
-			UCHAR ucASCII;
+			uint8_t ucASCII;
 			RImage* pim = new RImage;
 
 			pcf->Read(&ucASCII);
 			pim->Load(pcf);
-			AddLetter(pim,(short)ucASCII);
-			long lBogus = pcf->Tell();
+			AddLetter(pim,(int16_t)ucASCII);
+			int32_t lBogus = pcf->Tell();
 			}
 		}
 
@@ -144,8 +144,8 @@ short RFont::Add(RFile* pcf)
 // For FSPR1, you don't need the parameters
 // Will return a +1 if overwriting an old letter!
 //
-short RFont::AddLetter(RImage* pimLetter,short sASCII,
-							  short sKernL,short sKernR)
+int16_t RFont::AddLetter(RImage* pimLetter,int16_t sASCII,
+							  int16_t sKernL,int16_t sKernR)
 	{
 
 #ifdef _DEBUG
@@ -229,7 +229,7 @@ short RFont::AddLetter(RImage* pimLetter,short sASCII,
 		}
 
 	// Insert it into the font set:
-	short sRet = 0;
+	int16_t sRet = 0;
 
 	if (pFont->m_ppimCharacters[pInfo->m_u16ASCII])
 		{
@@ -259,7 +259,7 @@ short RFont::AddLetter(RImage* pimLetter,short sASCII,
 	return sRet;
 	}
 
-short RFont::Save(char const * pszFileName)
+int16_t RFont::Save(char const * pszFileName)
 	{
 	RFile rfTemp;
 
@@ -281,7 +281,7 @@ short RFont::Save(char const * pszFileName)
 
 // THIS is the font we are loading!
 //
-short RFont::Load(char const * pszFileName)
+int16_t RFont::Load(char const * pszFileName)
 	{
 	RFile* pfileTemp = new RFile;
 
@@ -307,7 +307,7 @@ short RFont::Load(char const * pszFileName)
 	return -1;
 	}
 
-short RFont::Save(RFile* pcf)
+int16_t RFont::Save(RFile* pcf)
 	{
 
 #ifdef _DEBUG
@@ -320,7 +320,7 @@ short RFont::Save(RFile* pcf)
 
 	// Write the basic header
 	pcf->Write("FONTFILE"); // type
-	short sVersion = 8;
+	int16_t sVersion = 8;
 	pcf->Write(&sVersion);
 	// Write overall font info..
 	pcf->Write(&m_sMaxCellHeight);
@@ -335,12 +335,12 @@ short RFont::Save(RFile* pcf)
 		pcf->Write(&pfs->m_sCellHeight);
 		pcf->Write(&pfs->m_sMaxWidth);
 
-		for (short i=0;i<256;i++)
+		for (int16_t i=0;i<256;i++)
 			{
 			if (pfs->m_ppimCharacters[i])
 				{
 				pcf->Write("LETTER_");
-				pcf->Write((UCHAR*)&i);
+				pcf->Write((uint8_t*)&i);
 				pfs->m_ppimCharacters[i]->Save(pcf);
 				}
 			}
@@ -354,7 +354,7 @@ short RFont::Save(RFile* pcf)
 
 // We are in a RFont, so it should exits...
 //
-short RFont::Load(RFile* pcf)
+int16_t RFont::Load(RFile* pcf)
 	{
 
 #ifdef _DEBUG
@@ -379,7 +379,7 @@ short RFont::Load(RFile* pcf)
 		return -1;
 		}; // type
 
-	short sVersion;
+	int16_t sVersion;
 	pcf->Read(&sVersion);
 
 	if (sVersion != 8)
@@ -397,7 +397,7 @@ short RFont::Load(RFile* pcf)
 	pcf->Read(&m_sNumberOfScales);
 	m_sNumberOfScales = 0; // This will be recreated!
 
-	short sDummy = 0; // we don't need this info!
+	int16_t sDummy = 0; // we don't need this info!
 
 	// Load & Instantiate each font set by adding letters:
 	while (!pcf->IsEOF())
@@ -412,8 +412,8 @@ short RFont::Load(RFile* pcf)
 
 		else if (!strcmp(&string[0],"LETTER_")) // equal
 			{
-			UCHAR c;
-			pcf->Read((UCHAR*)&c);
+			uint8_t c;
+			pcf->Read((uint8_t*)&c);
 			RImage* pimLetter = new RImage;
 			pimLetter->Load(pcf);
 			if (pimLetter == nullptr)
@@ -444,7 +444,7 @@ short RFont::Load(RFile* pcf)
 // It returns null if no cached font was found larger than 
 // the request size.
 //
-RFont::RFontSet* RFont::FindSize(short sCellH,double *pdScale)
+RFont::RFontSet* RFont::FindSize(int16_t sCellH,double *pdScale)
 	{
 	RFontSet* pFont = nullptr;
 	RFontSet* pfntRet = nullptr;
@@ -476,14 +476,14 @@ RFont::RFontSet* RFont::FindSize(short sCellH,double *pdScale)
 // fontset, which would leave a degenerate font.  You supply
 // the fontset to remove.  It returns SUCCESS or FAILURE.
 //
-short	RFont::DeleteSet(RFontSet* pRemove)
+int16_t	RFont::DeleteSet(RFontSet* pRemove)
 	{
 	RFontSet* pFont = m_pFontSets;
 	// Must not degenerate the font:
 	if (m_sNumberOfScales < 2) return FAILURE;
 
 	// Find a match:
-	short sMatch = FALSE;
+	int16_t sMatch = FALSE;
 	RFontSet* pPrevFont = nullptr;
 
 	while (pFont)
@@ -536,7 +536,7 @@ RFont::RFontSet::RFontSet()
 
 RFont::RFontSet::~RFontSet()
 	{
-	short i;
+	int16_t i;
 	for (i=0;i<256;i++) if(m_ppimCharacters[i]) 
 		delete m_ppimCharacters[i];
 	m_sMaxWidth = m_sCellHeight = 0;

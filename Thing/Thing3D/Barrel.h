@@ -69,7 +69,7 @@ class CBarrel : public CThing3d
    // Variables
    //---------------------------------------------------------------------------
    public:
-      U16      m_u16ShooterID;            // Variable for storing the shooter ID
+      uint16_t      m_u16ShooterID;            // Variable for storing the shooter ID
                                           // to pass along in the messages.
 
    protected:
@@ -92,8 +92,8 @@ class CBarrel : public CThing3d
       static int16_t ms_sFileCount;
 
       // "Constant" values that we want to be able to tune using the editor
-      static long ms_lExplosionWait;      // Amount of time to wait before staring fire
-      static long ms_lExplosionDelay;     // Time before explosion triggers another.
+      static int32_t ms_lExplosionWait;      // Amount of time to wait before staring fire
+      static int32_t ms_lExplosionDelay;     // Time before explosion triggers another.
       static int16_t ms_sNumFires;          // Number of fires to create after explosion
 
    //---------------------------------------------------------------------------
@@ -154,7 +154,7 @@ class CBarrel : public CThing3d
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

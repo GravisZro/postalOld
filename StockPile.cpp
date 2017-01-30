@@ -224,8 +224,8 @@ int16_t    CStockPile::ms_sEnableDoubleBarrel  = FALSE; // Enable the double bar
 inline
 void SetText(              // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
-   long        lVal)       // In:  Value to set text to.
+   int32_t        lId,        // In:  ID of GUI to set text.
+   int32_t        lVal)       // In:  Value to set text to.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)
@@ -241,7 +241,7 @@ void SetText(              // Returns nothing.
 inline
 void CheckMultiBtn(        // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
+   int32_t        lId,        // In:  ID of GUI to set text.
    int16_t       sChecked)   // In:  1 to check, 0 to uncheck.
    {
    int16_t sRes  = 0;  // Assume nothing;
@@ -263,7 +263,7 @@ void CheckMultiBtn(        // Returns nothing.
 inline
 int16_t IsMultiBtnChecked(   // Returns multibtn's state.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId)        // In:  ID of GUI to set text.
+   int32_t        lId)        // In:  ID of GUI to set text.
    {
    int16_t sRes  = 0;  // Assume nothing;
 
@@ -461,7 +461,7 @@ int16_t CStockPile::Save(    // Returns 0 on success.
 ///////////////////////////////////////////////////////////////////////////////
 int16_t CStockPile::Load(    // Returns 0 on success.
    RFile*   pfile,         // In:  File to load from.
-   ULONG    ulVersion)     // In:  File version to load.
+   uint32_t    ulVersion)     // In:  File version to load.
    {
    // Zero() out first in case file version doesn't support a value.
    Zero();
@@ -685,7 +685,7 @@ int16_t& CStockPile::GetItem(   // Returns a reference to the indexed item.
          return m_sBackpack;
       default:
          {
-         TRACE("GetItem(): Unknown type passed.\n";
+         TRACE("GetItem(): Unknown type passed.\n");
          ASSERT(0);
 
          // This should never happen.
@@ -741,7 +741,7 @@ int16_t& CStockPile::GetWeapon(    // Returns a reference to the indexed item.
          return m_sDoubleBarrel;
       default:
          {
-         TRACE("GetWeapon(): Unknown type passed.\n";
+         TRACE("GetWeapon(): Unknown type passed.\n");
          ASSERT(0);
 
          // This should never happen.

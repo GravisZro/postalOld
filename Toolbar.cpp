@@ -99,7 +99,7 @@ extern int wideScreenWidth;
 
 extern RFont g_fontBig; // I hope this one is OK....
 
-struct MatchColor { UCHAR r; UCHAR g; UCHAR b; };
+struct MatchColor { uint8_t r; uint8_t g; uint8_t b; };
 
 MatchColor  gmcSmallFont = { 255,255,0 }; // yellow
 MatchColor  gmcLargeFont = { 255,255,0 }; // yellow
@@ -177,7 +177,7 @@ public:
    bool  m_bExists;     // bar or full?
    bool  m_bSelected;   // selected or not?
    bool  m_bTreasure;   // found in a power up
-   long  m_lMilli;      // relative time in milliseconds for timing stuff
+   int32_t  m_lMilli;      // relative time in milliseconds for timing stuff
    State m_eState;      // int16_t cut for applying state
    State m_ePrevState;  // Stored for event triggering
    double   m_dValue;   // if ammo
@@ -206,7 +206,7 @@ public:
    static   int16_t    ms_sAttentionColor;
    static   RImage*  ms_pimCompositeBuffer;
    static   RImage*  ms_pimCompositeBufferScaled;
-   static   long     ms_lLastTime;
+   static   int32_t     ms_lLastTime;
    //----------------------------------------------------------------------
    CToolItem()
       {
@@ -321,7 +321,7 @@ public:
 #if 0 // checking for palette errors:
       rspSetWindowColors();
 
-      U8 r[256],g[256],b[256];   // for palette checking:
+      uint8_t r[256],g[256],b[256];   // for palette checking:
       rspGetPaletteEntries(0,256,r,g,b,1);
       int16_t i;
 
@@ -468,7 +468,7 @@ public:
          if (i != Bullets) // nolonger print the amount of bullets...
             {
             ms_pntTool.print(ms_aAmmo[i].m_rText.sX,ms_aAmmo[i].m_rText.sY,
-               "%3ld",long(ms_aAmmo[i].m_dValue));
+               "%3ld",int32_t(ms_aAmmo[i].m_dValue));
             }
          }
 
@@ -481,8 +481,8 @@ public:
          {
             for (int x=0;x<ms_pimCompositeBufferScaled->m_sWidth;x++)
             {
-               UCHAR* dest = ms_pimCompositeBufferScaled->m_pData + n * ms_pimCompositeBufferScaled->m_lPitch + x;
-               UCHAR* src = ms_pimCompositeBuffer->m_pData + n * ms_pimCompositeBuffer->m_lPitch + (int)((float)x * widthScale);
+               uint8_t* dest = ms_pimCompositeBufferScaled->m_pData + n * ms_pimCompositeBufferScaled->m_lPitch + x;
+               uint8_t* src = ms_pimCompositeBuffer->m_pData + n * ms_pimCompositeBuffer->m_lPitch + (int)((float)x * widthScale);
                *dest = *src;
             }
             //memcpy(ms_pimCompositeBufferScaled->m_pData + n * ms_pimCompositeBufferScaled->m_lPitch,
@@ -751,7 +751,7 @@ int16_t    CToolItem::ms_sAmmoGoneColor  =  255;
 int16_t    CToolItem::ms_sAttentionColor =  255;
 RImage*      CToolItem::ms_pimCompositeBuffer  = nullptr;
 RImage*      CToolItem::ms_pimCompositeBufferScaled  = nullptr;
-long     CToolItem::ms_lLastTime = 0;
+int32_t     CToolItem::ms_lLastTime = 0;
 
 
 // Time to arrange the basic bar relationhips:
@@ -954,7 +954,7 @@ bool  ToolBarRender(CHood* pHood,RImage* pimDst,int16_t sDstX,int16_t sDstY,
 
    if (pDude == nullptr)
       {
-      TRACE("ToolBarRender: Dude doesn't exist!\n";
+      TRACE("ToolBarRender: Dude doesn't exist!\n");
       return false;
       }
 

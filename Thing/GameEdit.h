@@ -63,7 +63,7 @@ class CGameEditThing : public CThing
 
       // Settings //////////////////////////////////////////////////////////////
 
-      U16   m_u16CameraTrackId;  // ID of object for grip to track.
+      uint16_t   m_u16CameraTrackId;  // ID of object for grip to track.
       int16_t m_sViewPosX;         // View position.
       int16_t m_sViewPosY;         // View position.
       RListBox* m_plbNavNetList; // Pointer to Nav Net List Box
@@ -117,7 +117,7 @@ class CGameEditThing : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion)                         // In:  Version of file format to load.
+         uint32_t ulFileVersion)                         // In:  Version of file format to load.
          {
          // Call base class.
          int16_t sResult  = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);

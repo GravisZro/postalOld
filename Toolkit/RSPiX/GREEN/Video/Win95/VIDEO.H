@@ -101,7 +101,7 @@ class CVideo
 		// sMode: 	0 - default operation, lStart/lEnd ignored
 		// 			1 - lStart and lEnd specified as time (milliseconds)
 		//				2 - lStart and lEnd specified as number of frames.
-		short Play(short sMode = 0, long lStart = 0, long lEnd = 0);
+		short Play(short sMode = 0, int32_t lStart = 0, int32_t lEnd = 0);
 
 		// Pause the current video.  This function must be used if you wish to pause the video.  Stop
 		// is not the same as this function.
@@ -134,7 +134,7 @@ class CVideo
 
 	// Data
 	private:
-		ULONG		m_ulDeviceID;
+		uint32_t		m_ulDeviceID;
 		long		m_lhwnd;
 	};
 

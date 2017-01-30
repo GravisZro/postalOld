@@ -58,7 +58,7 @@
 #include <RSPiX.h>
 #include <Realm.h>
 #include <Thing/Fire.h>
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 #include <IdBank.h>
 
 // CFirebomb is hand thrown fire grenade weapon class
@@ -148,7 +148,7 @@ class CFirebomb : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -216,7 +216,7 @@ class CFirefrag : public CWeapon
    protected:
       int16_t m_sPrevHeight;                            // Previous height
       CFire*  m_pFire;                                // Pointer to controlled fire object
-      U16     m_u16FireID;                            // ID for fire.
+      uint16_t     m_u16FireID;                            // ID for fire.
       RImage* m_pImage;                               // Pointer to only image (replace with 3d anim, soon)
       CSprite2 m_sprite;                              // 2D sprite to render this object.
       int16_t    m_sNumExplosions;                      // Total Number of explosions.
@@ -288,7 +288,7 @@ class CFirefrag : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

@@ -289,12 +289,12 @@ double CPerson::ms_dInRangeLow = 190*190;    // Squared distance to be in range 
 double CPerson::ms_dInRangeHigh = 230*230;   // Squared distance to be in range with weapon
 double CPerson::ms_dThrowHorizVel = 200;     // Throw out at this velocity
 double CPerson::ms_dMaxCrawlVel = 2.5;       // Speed at which cop crawls
-long CPerson::ms_lMinCommentTime = 10000;    // Amount of time before making a comment
-long CPerson::ms_lCommentTimeVariance = 35000;// Random amount added on.
-long CPerson::ms_lRandomAvoidTime = 200;     // Time to wander before looking again
-long CPerson::ms_lReseekTime = 1000;         // Do a 'find' again
-long CPerson::ms_lWatchWaitTime = 5000;      // Time to watch shot go
-long CPerson::ms_lReselectDudeTime  = 3000;  // Time to go without finding a dude
+int32_t CPerson::ms_lMinCommentTime = 10000;    // Amount of time before making a comment
+int32_t CPerson::ms_lCommentTimeVariance = 35000;// Random amount added on.
+int32_t CPerson::ms_lRandomAvoidTime = 200;     // Time to wander before looking again
+int32_t CPerson::ms_lReseekTime = 1000;         // Do a 'find' again
+int32_t CPerson::ms_lWatchWaitTime = 5000;      // Time to watch shot go
+int32_t CPerson::ms_lReselectDudeTime  = 3000;  // Time to go without finding a dude
                                              // before calling SelectDude() to find
                                              // possibly a closer one.
 int16_t CPerson::ms_sLogTabUserGlobal = 0;     // Logic table variable for group effects
@@ -304,7 +304,7 @@ int16_t CPerson::ms_sFileCount;
 
 // This is the one CPerson that can log its AI table transitions or
 // CIdBank::IdNil.
-U16   CPerson::ms_u16IdLogAI  = CIdBank::IdNil;
+uint16_t   CPerson::ms_u16IdLogAI  = CIdBank::IdNil;
 
 // The max amount a guy and step up while writhing.
 #define WRITHING_VERTICAL_TOLERANCE    (MaxStepUpThreshold / 2)
@@ -322,7 +322,7 @@ int16_t CPerson::Load(          // Returns 0 if successfull, non-zero otherwise
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
    sResult = CDoofus::Load(pFile, bEditMode, sFileCount, ulFileVersion);
@@ -350,7 +350,7 @@ int16_t CPerson::Load(          // Returns 0 if successfull, non-zero otherwise
          }
       }
 
-      UCHAR uc;
+      uint8_t uc;
 
       // Load data specific to CPerson (if any)
       switch (ulFileVersion)
@@ -457,7 +457,7 @@ int16_t CPerson::Save(          // Returns 0 if successfull, non-zero otherwise
       }
 
    // Save imbecile specific data if any
-   pFile->Write((UCHAR*) &m_ePersonType);
+   pFile->Write((uint8_t*) &m_ePersonType);
    pFile->Write(&m_sShowState);
    m_rstrLogicFile.Save(pFile);
 
@@ -592,7 +592,7 @@ void CPerson::Update(void)
 
    if (!m_sSuspend)
    {
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // See if its time to reevaluate the states
       if (lThisTime > m_lEvalTimer)
@@ -928,7 +928,7 @@ void CPerson::Logic_Writhing(void)
       int16_t sPseudoHeadX   = m_dX + COSQ[sRot] * sRadius;
       int16_t sPseudoHeadY   = m_dZ - SINQ[sRot] * sRadius;
       // Check pseudo-head point.
-      U16   u16Attrib   = 0;  // Safety.
+      uint16_t   u16Attrib   = 0;  // Safety.
       int16_t sHeight     = 0;  // Safety.
       GetFloorAttributes(sPseudoHeadX, sPseudoHeadY, &u16Attrib, &sHeight);
       if ( (u16Attrib & REALM_ATTR_NOT_WALKABLE) || sHeight > m_dY + WRITHING_VERTICAL_TOLERANCE
@@ -1061,7 +1061,7 @@ static void LogicUserBrowse(  // Returns nothing
       if (rspStrnicmp(szLogicFile, szHDPath, strlen(szHDPath) ) == 0)
          {
          // Determine amount of path to ignore.
-         long  lSubPathBegin  = strlen(szHDPath);
+         int32_t  lSubPathBegin  = strlen(szHDPath);
 
          // Update the GUI that shows the filename.
          pguiLogicFileName->SetText("%s", rspPathFromSystem(szLogicFile + lSubPathBegin) );
@@ -1112,7 +1112,7 @@ int16_t CPerson::EditModify(void)
             if (pGuiItem)
             {
                pGuiItem->m_lId = PERSONALITY_ITEM_ID_BASE + i;
-               pGuiItem->m_ulUserData = (ULONG) i;
+               pGuiItem->m_ulUserData = (uint32_t) i;
             }
          }
 
@@ -1185,7 +1185,7 @@ int16_t CPerson::EditModify(void)
          // Set callback for logic browser button.
          pbtnLogicUserBrowse->m_bcUser = LogicUserBrowse;
          // Set instance data to GUI to query/update.
-         pbtnLogicUserBrowse->m_ulUserInstance  = (ULONG)peditLogicFile;
+         pbtnLogicUserBrowse->m_ulUserInstance  = peditLogicFile;
 
          SetGuiToNotify(pGui->GetItemFromId(ID_GUI_EDIT_TEXTURES) );
 
@@ -1203,7 +1203,7 @@ int16_t CPerson::EditModify(void)
                pSelection = pPersonalityList->GetSel();
                if (pSelection)
                {
-                  m_ePersonType = (Personatorium::Index) pSelection->m_ulUserData;
+                  m_ePersonType = (Personatorium::Index) (uint32_t)pSelection->m_ulUserData;
                   if (m_ePersonType != eCurrentType)
                   {
                      // switch to new animation resources.
@@ -1698,7 +1698,7 @@ int16_t CPerson::FreeResources(void)                 // Returns 0 if successfull
 ////////////////////////////////////////////////////////////////////////////////
 
 SampleMaster::SoundInstance CPerson::PlaySoundWrithing(
-         long* plDuration)             // Out:  Duration of sample, if not nullptr.
+         int32_t* plDuration)             // Out:  Duration of sample, if not nullptr.
 {
    m_siPlaying = 0;
    SampleMasterID*   psmid = &g_smidNil;
@@ -1748,8 +1748,8 @@ SampleMaster::SoundInstance CPerson::PlaySoundShot(void)
 {
    m_siPlaying = 0;
    SampleMasterID*   psmid = &g_smidNil;
-   long lThisTime = m_pRealm->m_time.GetGameTime();
-   long  lSampleDuration   = 0;  // Safety.
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t  lSampleDuration   = 0;  // Safety.
 
    if (lThisTime > m_lSampleTimeIsPlaying)
    {

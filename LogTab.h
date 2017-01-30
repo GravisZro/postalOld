@@ -39,7 +39,7 @@
 #ifndef LOGTAB_H
 #define LOGTAB_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <ctype.h>
 #include <RSPiX.h>
 
@@ -654,7 +654,7 @@ int16_t CLogTab<usertype>::Evaluate(
                break;
 
             default:
-               TRACE("CLogTab::Evaluate(): Unknown operand!\n";
+               TRACE("CLogTab::Evaluate(): Unknown operand!\n");
                break;
             }
          }
@@ -800,7 +800,7 @@ void CLogTab<usertype>::DumpToLog(void)
                break;
 
             default:
-               TRACE("CLogTab::Evaluate(): Unknown operand!\n";
+               TRACE("CLogTab::Evaluate(): Unknown operand!\n");
                break;
             }
          if (op != DontCare)
@@ -913,7 +913,7 @@ int16_t CLogTab<usertype>::Load(                  // Returns 0 if successfull, n
       if (bEndOfTable)
          {
          sResult = LOGTAB_ERR_NO_ROWS_AFTER_HEADINGS;
-         TRACE("CLogTab::Load(): Unexpected end of table following initial row of column headings!\n";
+         TRACE("CLogTab::Load(): Unexpected end of table following initial row of column headings!\n");
          rspMsgBox(LOGTAB_MSG, "Unexpected end of table following initial row of column headings.");
          }
       else
@@ -922,7 +922,7 @@ int16_t CLogTab<usertype>::Load(                  // Returns 0 if successfull, n
          if (m_sInVars < 1)
             {
             sResult = LOGTAB_ERR_NO_INPUTS;
-            TRACE("CLogTab::Load(): No inputs were found in initial row of column headings!\n";
+            TRACE("CLogTab::Load(): No inputs were found in initial row of column headings!\n");
             rspMsgBox(LOGTAB_MSG, "No inputs were found in initial row of column headings.");
             }
 
@@ -936,7 +936,7 @@ int16_t CLogTab<usertype>::Load(                  // Returns 0 if successfull, n
          else if (m_sOutVars < 1)
             {
             sResult = LOGTAB_ERR_NO_OUTPUTS;
-            TRACE("CLogTab::Load(): No outputs were found in initial row of column headings!\n";
+            TRACE("CLogTab::Load(): No outputs were found in initial row of column headings!\n");
             rspMsgBox(LOGTAB_MSG, "No outputs were found in initial row of column headings.");
             }
          }
@@ -1055,7 +1055,7 @@ int16_t CLogTab<usertype>::Load(                  // Returns 0 if successfull, n
          if ((sResult == 0) && (m_sRows < 1))
             {
             sResult = LOGTAB_ERR_NO_ROWS_AFTER_HEADINGS;
-            TRACE("CLogTab::Load(): Table has no rows following initial column headings!\n";
+            TRACE("CLogTab::Load(): Table has no rows following initial column headings!\n");
             rspMsgBox(LOGTAB_MSG, "Table has no rows following initial column headings.\n");
             }
          }
@@ -1145,7 +1145,7 @@ int16_t CLogTab<usertype>::ReadEntry(             // Returns 0 if successfull, n
          else
             {
             sResult = LOGTAB_ERR_UNEXPECTED_EOF;
-            TRACE("CLogTab::ReadEntry(): Unexpected end of file!\n";
+            TRACE("CLogTab::ReadEntry(): Unexpected end of file!\n");
             rspMsgBox(LOGTAB_MSG, "Unexpected end of file.");
             }
          break;
@@ -1155,7 +1155,7 @@ int16_t CLogTab<usertype>::ReadEntry(             // Returns 0 if successfull, n
       if (pFile->Error())
          {
          sResult = LOGTAB_ERR_READ_ERROR;
-         TRACE("CLogTab::ReadEntry(): Error reading from file!\n";
+         TRACE("CLogTab::ReadEntry(): Error reading from file!\n");
          rspMsgBox(LOGTAB_MSG, "Error reading from file.");
          break;
          }

@@ -51,9 +51,9 @@
 class CImage;		// forward declaration
 
 // Conversion from extended to standard function typedef.
-////typedef short (*CONVFROMFUNC)(CImage* pImage);
+////typedef int16_t (*CONVFROMFUNC)(CImage* pImage);
 // Conversion to extended from standard function typedef.
-////typedef short (*CONVTOFUNC)(CImage* pImage);
+////typedef int16_t (*CONVTOFUNC)(CImage* pImage);
 
 // To use the dynamic linking, we will provide macros to make it easy
 // for the implementer of a new type conversion to link their function.

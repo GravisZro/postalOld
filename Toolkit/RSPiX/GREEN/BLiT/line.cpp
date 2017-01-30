@@ -16,7 +16,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 // This function should draw 2d and 3d lines, and just keep getting better.
-#include <stdlib.h>
+#include <cstdlib>
 #include <BLUE/System.h>
 
 #include <GREEN/BLiT/BLIT.H>
@@ -28,7 +28,7 @@
 #include <ORANGE/QuickMath/FixedPoint.h>
 #include <ORANGE/QuickMath/Fractions.h>
 
-#ifdef MOBILE //Arm RAND_MAX is a full int, code expecting a short!!
+#ifdef MOBILE //Arm RAND_MAX is a full int, code expecting a int16_t!!
 #define RAND_MAX 0x7fff
 #endif
 
@@ -37,7 +37,7 @@
 // (It sure doesn't clip!)
 // VERY cheezy implementation!  For drawing, should do IC stuff inline with pDst
 //
-void rspLine(UCHAR ucColor,RImage* pimDst,short sX1,short sY1,short sX2,short sY2,const RRect* prClip)
+void rspLine(uint8_t ucColor,RImage* pimDst,int16_t sX1,int16_t sY1,int16_t sX2,int16_t sY2,const RRect* prClip)
 	{
 	/*
 #ifdef _DEBUG
@@ -50,25 +50,25 @@ void rspLine(UCHAR ucColor,RImage* pimDst,short sX1,short sY1,short sX2,short sY
 		*/
 
 	// use the cheap 3D technique with signed fractions:
-	short sDelX = sX2 - sX1; // signed
-	short sDelY = sY2 - sY1; // signed
-	short sDelZ = MAX(ABS(sDelX),ABS(sDelY)); // a slow trick for now...
+	int16_t sDelX = sX2 - sX1; // signed
+	int16_t sDelY = sY2 - sY1; // signed
+	int16_t sDelZ = MAX(ABS(sDelX),ABS(sDelY)); // a slow trick for now...
 	if (sDelZ == 0) // a single point
 		{
 		rspClipPlot(ucColor,pimDst,sX1,sY1,prClip);
 		return;
 		}
 
-	RFracS16 frIncX,frIncY;
+	RFracint16_t frIncX,frIncY;
 	rspfrDiv(frIncX,sDelX,sDelZ); // Magnitude < 1
 	rspfrDiv(frIncY,sDelY,sDelZ); // Magnitude < 1
 
-	RFracS16 frX,frY;
+	RFracint16_t frX,frY;
 
 	frX.mod = sX1; frY.mod = sY1;
 	frX.frac = frY.frac = (sDelZ >> 1); // for pixel rounding
 
-	for (short i=0;i < sDelZ;i++)
+	for (int16_t i=0;i < sDelZ;i++)
 		{
 		rspClipPlot(ucColor,pimDst,frX.mod,frY.mod,prClip);
 		rspfrAdd(frX,frIncX,sDelZ);
@@ -76,11 +76,11 @@ void rspLine(UCHAR ucColor,RImage* pimDst,short sX1,short sY1,short sX2,short sY
 		}
 	}
 
-// returns a short random number between 0 and N-1
+// returns a int16_t random number between 0 and N-1
 //
-short rspRand(short sMax)
+int16_t rspRand(int16_t sMax)
 	{
-	return (short)((rand() * sMax) / RAND_MAX);
+	return (int16_t)((rand() * sMax) / RAND_MAX);
 
 	}
 

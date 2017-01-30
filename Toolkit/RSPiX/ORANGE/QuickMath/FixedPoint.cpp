@@ -19,11 +19,11 @@
 #include "QuickMath.h"
 #include "FixedPoint.h"
 
-RFixedS32 fpSINQ[csNumRotSteps],fpCOSQ[csNumRotSteps];
+RFixedint32_t fpSINQ[csNumRotSteps],fpCOSQ[csNumRotSteps];
 
 void InitTrigFP() // fixed point	
 	{
-	short i;
+	int16_t i;
 	double rad;
 
 	const double cdStepsToRad = 
@@ -46,7 +46,7 @@ RInitNum::RInitNum()
 	// Populate the oneOver array:
 	OneOver[0] = long(2147483647); // error, signed infinity!
 	OneOver[1] = long(65535); // full numbers!
-	for (short i=2;i<NUM_ONEOVER_FP32;i++) OneOver[i] = long(65536)/i;
+	for (int16_t i=2;i<NUM_ONEOVER_FP32;i++) OneOver[i] = long(65536)/i;
 	}
 
 RInitNum dummyRInitNum;

@@ -85,7 +85,7 @@ bool GetNextCollision(  // Returns true if a collision is found, false otherwise
 
       if (i == pthings->end())
          {
-         TRACE("GetNextCollision(): Specified CThing is not in specified list.\n";
+         TRACE("GetNextCollision(): Specified CThing is not in specified list.\n");
          }
       else
          {

@@ -44,7 +44,7 @@
 //
 //							Also, changed all members referenced in RImage to
 //							m_ and all position/dimension members of referenced in
-//							RImage to type short usage.
+//							RImage to type int16_t usage.
 //
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -56,7 +56,7 @@
 // Includes.
 //////////////////////////////////////////////////////////////////////////////
 
-#include <string.h>
+#include <cstring>
 
 #include <BLUE/System.h>
 
@@ -71,14 +71,14 @@
 
 // A list for X's that indicate portions of shape's current row to copy; sorted
 // by the X.
-typedef RSList<short, short> SLIST_SHORTS;
+typedef RSList<int16_t, int16_t> SLIST_SHORTS;
 
 // Contains minimums and maximums for x and y.
 struct EXTENTS {
-	short	sMinX;
-	short	sMinY;
-	short	sMaxX;
-	short	sMaxY;
+	int16_t	sMinX;
+	int16_t	sMinY;
+	int16_t	sMaxX;
+	int16_t	sMaxY;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ struct EXTENTS {
 // ERROR is the result, if a bad situation is fed as an index.
 // There are several impossiblities that are also flagged by ERROR.
 
-static U16	ms_au16EdgeInfo[256]	=
+static uint16_t	ms_au16EdgeInfo[256]	=
 	{
 	ERROR,								// Index:  NEW00 | DIRRIGHT	| PIX0000 is an error b/c we lost the shape.
 	DIRDOWN	| PIX0010,				// Index:  NEW00 | DIRRIGHT	| PIX0001
@@ -427,15 +427,15 @@ static U16	ms_au16EdgeInfo[256]	=
 ///////////////////////////////////////////////////////////////////////////
 template <class COLOR>
 inline
-short suxRect(			// Returns 0 on success, 1 if clipped out entirely.
+int16_t suxRect(			// Returns 0 on success, 1 if clipped out entirely.
 	COLOR clr,			// Color to fill with.
 	RImage* pimDst,	// Destination image.
-	short sX,			// X coordinate for rectangle.
-	short	sY,			// Y coordinate for rectangle.
-	short sW,			// Width for rectangle.
-	short sH)			// Height for rectangle.
+	int16_t sX,			// X coordinate for rectangle.
+	int16_t	sY,			// Y coordinate for rectangle.
+	int16_t sW,			// Width for rectangle.
+	int16_t sH)			// Height for rectangle.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	if (sX < 0)
 		{
@@ -464,7 +464,7 @@ short suxRect(			// Returns 0 on success, 1 if clipped out entirely.
 		long		lPitch	= pimDst->m_lPitch;
 		COLOR*	pclrRow	= (COLOR*)(pimDst->m_pData + sY * lPitch) + sX;
 		COLOR*	pclrBlt;
-		short		sWidth;
+		int16_t		sWidth;
 
 		while (sH-- > 0)
 			{
@@ -476,7 +476,7 @@ short suxRect(			// Returns 0 on success, 1 if clipped out entirely.
 				*pclrBlt++	= clr;
 				}
 
-			pclrRow	=	(COLOR*)((U8*)pclrRow + lPitch);
+			pclrRow	=	(COLOR*)((uint8_t*)pclrRow + lPitch);
 			}
 		}
 	else
@@ -494,29 +494,29 @@ short suxRect(			// Returns 0 on success, 1 if clipped out entirely.
 ///////////////////////////////////////////////////////////////////////////
 template <class COLOR>
 inline
-short EvalPixel(						// Returns TRUE if pixel is not clrDisjoin.
+int16_t EvalPixel(						// Returns TRUE if pixel is not clrDisjoin.
 	COLOR* pclrData,					// Pixel data.
-	short sX,							// X coordinate to check.
-	short sY,							// Y coordinate to check.
-	long lPitch,						// Pitch of pclrData data.
-	short	sMinX,						// Minimum value of x that is valid.
-	short sMinY,						// Minimum value of y that is valid.
-	short sMaxX,						// Maximum value of x that is valid.
-	short sMaxY,						// Maximum value of y that is valid.
+	int16_t sX,							// X coordinate to check.
+	int16_t sY,							// Y coordinate to check.
+	int32_t lPitch,						// Pitch of pclrData data.
+	int16_t	sMinX,						// Minimum value of x that is valid.
+	int16_t sMinY,						// Minimum value of y that is valid.
+	int16_t sMaxX,						// Maximum value of x that is valid.
+	int16_t sMaxY,						// Maximum value of y that is valid.
 	COLOR	clrDisjoin,					// Color that indicates disjoint.
 	RLassoNextEvalCall fnEval)	// Optional function to use to evaluate 
 											// the pixel.
 	{
-	short	sNonDisjoin	= FALSE;
+	int16_t	sNonDisjoin	= FALSE;
 
 	if (sX >= sMinX && sY >= sMinY && sX <= sMaxX && sY <= sMaxY)
 		{
 		// If no callback . . .
 		if (fnEval == nullptr)
 			{
-			// Note that sY * lPitch is added in U8 sized elements and
+			// Note that sY * lPitch is added in uint8_t sized elements and
 			// sX is added in COLOR sized elements.
-			if (*((COLOR*)((U8*)pclrData + (long)sY * lPitch) + sX) != clrDisjoin)
+			if (*((COLOR*)((uint8_t*)pclrData + (int32_t)sY * lPitch) + sX) != clrDisjoin)
 				{
 				sNonDisjoin	= TRUE;
 				}
@@ -535,19 +535,19 @@ short EvalPixel(						// Returns TRUE if pixel is not clrDisjoin.
 // Add sX to list sY's list.
 //
 ///////////////////////////////////////////////////////////////////////////
-inline short Add(					// Returns 0 on success.
+inline int16_t Add(					// Returns 0 on success.
 	SLIST_SHORTS* psls,			// Pointer to array of sorted row lists 
 										// containing and sorted by x coordinate 
-										// shorts.
-	short sX,						// X coordinate to add.
-	short sY,						// Y coordinate of row whose list to add to.
-	short	sStartY,					// Y from which our rows are relative.
+										// int16_ts.
+	int16_t sX,						// X coordinate to add.
+	int16_t sY,						// Y coordinate of row whose list to add to.
+	int16_t	sStartY,					// Y from which our rows are relative.
 	EXTENTS* pextents)			// Mins and maxes to update.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Allocate item . . .
-	short*	psX	= new short;
+	int16_t*	psX	= new int16_t;
 	if (psX)
 		{
 		// Copy.
@@ -578,7 +578,7 @@ inline short Add(					// Returns 0 on success.
 			}
 		else
 			{
-			TRACE("Add(): Unable to insert short into list.\n");
+			TRACE("Add(): Unable to insert int16_t into list.\n");
 			sRes	= -2;
 			}
 
@@ -590,7 +590,7 @@ inline short Add(					// Returns 0 on success.
 		}
 	else
 		{
-		TRACE("Add(): Unable to allocate short for list.\n");
+		TRACE("Add(): Unable to allocate int16_t for list.\n");
 		sRes	= -1;
 		}
 
@@ -628,11 +628,11 @@ inline short Add(					// Returns 0 on success.
 // shape in pimSrc so that the next rspLassoNext will scan right by it.
 //
 ///////////////////////////////////////////////////////////////////////////
-template <class COLOR>		// Can be U8, U16, or U32.
+template <class COLOR>		// Can be uint8_t, uint16_t, or uint32_t.
 #ifdef WIN32	// Mac assumes extern.
 	extern 
 #endif // WIN32
-short rspLassoNext(	// Returns 0 if a polygon found,
+int16_t rspLassoNext(	// Returns 0 if a polygon found,
 									// 1 if no polygon found,
 									// negative if an error occurred (most likely
 									// allocation problems or image bit depth mis-
@@ -642,30 +642,30 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 	RImage*	pimDst,			// In/Out: Destination image.  If too small, polygon 
 									// will be clipped.  If not yet allocated, will be
 									// allocated to the correct minimum size.
-	short	sSrcX,				// In:  X coordinate of sub region to search.
-	short	sSrcY,				// In:  Y coordinate of sub region to search.
-	short	sSrcW,				// In:  Width of sub region to search.
-	short	sSrcH,				// In:  Height of sub region to search.
+	int16_t	sSrcX,				// In:  X coordinate of sub region to search.
+	int16_t	sSrcY,				// In:  Y coordinate of sub region to search.
+	int16_t	sSrcW,				// In:  Width of sub region to search.
+	int16_t	sSrcH,				// In:  Height of sub region to search.
 	COLOR	clrDisjoin,			// In:  Color that separates shapes.  This is the
 									// color that, to this function.
-									// Cast or use U8 for 8 bit, U16 for 16 bit,
-									// or U32 for 32 bit.
+									// Cast or use uint8_t for 8 bit, uint16_t for 16 bit,
+									// or uint32_t for 32 bit.
 	COLOR	clrDstEmpty,		// In:  Color that will be used to initialize 
 									// pimDst, if pimDst is allocated by this function.
 									// Type must be same size as clrDisjoinColor/COLOR.
-	short* psShapeX,			// Out: X coordinate of poly relative to pimSrc 0,0;
+	int16_t* psShapeX,			// Out: X coordinate of poly relative to pimSrc 0,0;
 									// NOT relative to sSrcX.
-	short* psShapeY,			// Out: Y coordinate of poly relative to pimSrc 0,0;
+	int16_t* psShapeY,			// Out: Y coordinate of poly relative to pimSrc 0,0;
 									// NOT relative to sSrcY.
-	short* psShapeW,			// Out: Width of shape output to pimDst.
-	short* psShapeH,			// Out: Height of shape output to pimDst.
+	int16_t* psShapeW,			// Out: Width of shape output to pimDst.
+	int16_t* psShapeH,			// Out: Height of shape output to pimDst.
 	RLassoNextEvalCall	fnEval)	// In:  Specifies function to call to determine
 											// whether a pixel is part of a shape or not.
 											// Values will be clipped before calling this
 											// function.  If this is not nullptr, it is used
 											// instead of clrDisjoin.
 	{
-	short	sRes	= 0;	// Assume none found.
+	int16_t	sRes	= 0;	// Assume none found.
 
 	// If source bit depth is equal to provided bit depth . . .
 	if (pimSrc->m_sDepth == sizeof(COLOR) * 8)
@@ -698,19 +698,19 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 			// Note that this addition takes COLOR's bits per pixel into
 			// account.
 			COLOR*	pclrRowStart	= (COLOR*)pimSrc->m_pData + sSrcX;
-			// Note that the height offset is computed at U8* and THEN it
+			// Note that the height offset is computed at uint8_t* and THEN it
 			// is casted to a COLOR*.
-			pclrRowStart				= (COLOR*)((U8*)pclrRowStart + (long)sSrcY * lPitch);
+			pclrRowStart				= (COLOR*)((uint8_t*)pclrRowStart + (int32_t)sSrcY * lPitch);
 			// Our scanner.
 			COLOR*	pclrSrc			= pclrRowStart;
 
 			// Precalculate max extents.
-			short	sSrcX2	= sSrcX + sSrcW - 1;
-			short	sSrcY2	= sSrcY + sSrcH - 1;
+			int16_t	sSrcX2	= sSrcX + sSrcW - 1;
+			int16_t	sSrcY2	= sSrcY + sSrcH - 1;
 
-			short		sX;
-			short		sY;
-			short		sFoundShape	= FALSE;
+			int16_t		sX;
+			int16_t		sY;
+			int16_t		sFoundShape	= FALSE;
 			// Look for non-separator color.
 			for (sY = 0; sY < sSrcH; sY++)
 				{
@@ -749,7 +749,7 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 
 				// Get next row.  Add pitch at byte depth since it is a count
 				// of bytes.
-				pclrRowStart	= (COLOR*)((U8*)pclrRowStart + lPitch);
+				pclrRowStart	= (COLOR*)((uint8_t*)pclrRowStart + lPitch);
 				}
 
 			// Either we've exhausted the image or we've found a shape.
@@ -764,11 +764,11 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 				///////////////////////////////////////////////////////////////////
 
 				// Compute maximum rows that can be used.
-				short	sMaxRows	= sSrcY2 - sY + 1;
+				int16_t	sMaxRows	= sSrcY2 - sY + 1;
 
 				// Reposition sX, sY and record starting point.
-				short	sStartX	= --sX;
-				short	sStartY	= --sY;
+				int16_t	sStartX	= --sX;
+				int16_t	sStartY	= --sY;
 
 				// Pointer to array of row lists of x coordinates.
 				SLIST_SHORTS*	plistRows	= new SLIST_SHORTS[sMaxRows];
@@ -779,7 +779,7 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 					EXTENTS	extents	= { 0x7FFF, 0x7FFF, 0, 0 };
 
 					// Default to the case we know will be for starting.
-					U16	u16Last	= NEW00 | DIRRIGHT | PIX0001;
+					uint16_t	u16Last	= NEW00 | DIRRIGHT | PIX0001;
 					
 					do
 						{
@@ -789,14 +789,14 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 							case DIRRIGHT:
 								sX++;
 								
-								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, (short)(sX + 1), sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
-											|	((EvalPixel((COLOR*)pimSrc->m_pData, (short)(sX + 1), (short)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
+								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, (int16_t)(sX + 1), sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
+											|	((EvalPixel((COLOR*)pimSrc->m_pData, (int16_t)(sX + 1), (int16_t)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
 								break;
 							case DIRDOWN:
 								sY++;
 								
-								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, sX, (short)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
-											|	((EvalPixel((COLOR*)pimSrc->m_pData, (short)(sX + 1), (short)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
+								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, sX, (int16_t)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
+											|	((EvalPixel((COLOR*)pimSrc->m_pData, (int16_t)(sX + 1), (int16_t)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
 
 								ASSERT(sY - (sStartY + 1) < sMaxRows);
 								ASSERT(sY - (sStartY + 1) >= 0);
@@ -808,7 +808,7 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 								sX--;
 								
 								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, sX, sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
-											|	((EvalPixel((COLOR*)pimSrc->m_pData, sX, (short)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
+											|	((EvalPixel((COLOR*)pimSrc->m_pData, sX, (int16_t)(sY + 1), lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
 								break;
 							case DIRUP:
 								ASSERT(sY - (sStartY + 1) < sMaxRows);
@@ -819,7 +819,7 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 								sY--;
 
 								u16Last	|= ((EvalPixel((COLOR*)pimSrc->m_pData, sX, sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)					!= FALSE)	? NEW10 : NEW00)
-											|	((EvalPixel((COLOR*)pimSrc->m_pData, (short)(sX + 1), sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
+											|	((EvalPixel((COLOR*)pimSrc->m_pData, (int16_t)(sX + 1), sY, lPitch, sSrcX, sSrcY, sSrcX2, sSrcY2, clrDisjoin, fnEval)	!= FALSE)	? NEW01 : NEW00);
 								break;
 							}
 
@@ -865,13 +865,13 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 							// Duplicate shape and contents.
 							//////////////////////////////////////////////////////////
 							// Row counter.
-							short sRow		= 0;
+							int16_t sRow		= 0;
 							// Clip to image height or shape height, whichever is smaller.
-							short	sHeight	= MIN(pimDst->m_sHeight, (short)(extents.sMaxY - extents.sMinY + 1));
+							int16_t	sHeight	= MIN(pimDst->m_sHeight, (int16_t)(extents.sMaxY - extents.sMinY + 1));
 							// Pointer to line start position.
-							short*	psX1;
+							int16_t*	psX1;
 							// Pointer to line end position.
-							short*	psX2;
+							int16_t*	psX2;
 							// Clear destination.
 #if 0		// Only 8 bit currently.
 							rspRect(
@@ -880,7 +880,7 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 #endif
 								clrDstEmpty, 
 								pimDst, 
-								(short)0, (short)0, 
+								(int16_t)0, (int16_t)0, 
 								pimDst->m_sWidth, pimDst->m_sHeight);
 
 							// Loop for all rows.
@@ -910,9 +910,9 @@ short rspLassoNext(	// Returns 0 if a polygon found,
 #endif
 									clrDisjoin, 
 									pimSrc, 
-									*psX1, (short)(extents.sMinY + sRow),
-									(short)(*psX2 - *psX1 + 1), 
-									(short)1);
+									*psX1, (int16_t)(extents.sMinY + sRow),
+									(int16_t)(*psX2 - *psX1 + 1), 
+									(int16_t)1);
 
 									plistRows[sRow].Remove(psX1);
 									plistRows[sRow].Remove(psX2);
@@ -973,12 +973,12 @@ void InstantiateLasso(void);
 void InstantiateLasso(void)
 	{
 	RImage im;
-	// Instantiate U8 version.
-	rspLassoNext(&im, &im, 0, 0, 0, 0, (U8)0, (U8)0, (short*)nullptr, (short*)nullptr, (short*)nullptr, (short*)nullptr, (RLassoNextEvalCall)nullptr);
-	// Instantiate U16 version.
-	rspLassoNext(&im, &im, 0, 0, 0, 0, (U16)0, (U16)0, (short*)nullptr, (short*)nullptr, (short*)nullptr, (short*)nullptr, (RLassoNextEvalCall)nullptr);
-	// Instantiate U32 version.
-	rspLassoNext(&im, &im, 0, 0, 0, 0, (U32)0, (U32)0, (short*)nullptr, (short*)nullptr, (short*)nullptr, (short*)nullptr, (RLassoNextEvalCall)nullptr);
+	// Instantiate uint8_t version.
+	rspLassoNext(&im, &im, 0, 0, 0, 0, (uint8_t)0, (uint8_t)0, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (RLassoNextEvalCall)nullptr);
+	// Instantiate uint16_t version.
+	rspLassoNext(&im, &im, 0, 0, 0, 0, (uint16_t)0, (uint16_t)0, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (RLassoNextEvalCall)nullptr);
+	// Instantiate uint32_t version.
+	rspLassoNext(&im, &im, 0, 0, 0, 0, (uint32_t)0, (uint32_t)0, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (int16_t*)nullptr, (RLassoNextEvalCall)nullptr);
 	}
 
 //////////////////////////////////////////////////////////////////////////////

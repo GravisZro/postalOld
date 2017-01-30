@@ -39,7 +39,7 @@
 #ifndef HEATSEEKER_H
 #define HEATSEEKER_H
 
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 
 // CHeatseeker is a heat seeking missile
 class CHeatseeker : public CWeapon
@@ -63,15 +63,15 @@ class CHeatseeker : public CWeapon
       bool        m_bArmed;            // Initially missile is not armed so it doesn't
                                        // collide with the person who shot it.
       CSprite3    m_sprite;            // 3D sprite to render this thing.
-      long        m_lSmokeTimer;       // Time to wait between emitting smoke
-      U32         m_u32CollideBitsInclude;   // Bits that cause a collision
-      U32         m_u32CollideBitsDontCare;  // Bits that are ignored for collisions
-      U32         m_u32CollideBitsExclude;   // Bits that invalidate a collision
+      int32_t        m_lSmokeTimer;       // Time to wait between emitting smoke
+      uint32_t         m_u32CollideBitsInclude;   // Bits that cause a collision
+      uint32_t         m_u32CollideBitsDontCare;  // Bits that are ignored for collisions
+      uint32_t         m_u32CollideBitsExclude;   // Bits that invalidate a collision
 
 
-      U32         m_u32SeekBitsInclude;      // Bits that cause a collision
-      U32         m_u32SeekBitsDontCare;     // Bits that are ignored for collisions
-      U32         m_u32SeekBitsExclude;      // bits taht invalidate a collision
+      uint32_t         m_u32SeekBitsInclude;      // Bits that cause a collision
+      uint32_t         m_u32SeekBitsDontCare;     // Bits that are ignored for collisions
+      uint32_t         m_u32SeekBitsExclude;      // bits taht invalidate a collision
 
       SampleMaster::SoundInstance m_siThrust; // Looping thrust play instance
 
@@ -84,18 +84,18 @@ class CHeatseeker : public CWeapon
       static double ms_dMaxVelBack;    // Maximum backward velocity
       static double ms_dCloseDistance; // Close enough to hit CDude
       static double ms_dLineCheckRate; // Pixel distance for line checking
-      static long ms_lArmingTime;      // Time before weapons arms.
-      static long ms_lSeekRadius;      // Radius of Heatseeking circle
+      static int32_t ms_lArmingTime;      // Time before weapons arms.
+      static int32_t ms_lSeekRadius;      // Radius of Heatseeking circle
       static int16_t ms_sOffScreenDist;  // Distance off screen before self destructing
       static int16_t ms_sAngularVelocity;// Degrees per second that it can turn
-      static U32 ms_u32CollideIncludeBits;
-      static U32 ms_u32CollideDontcareBits;
-      static U32 ms_u32CollideExcludeBits;
-      static U32 ms_u32SeekIncludeBits;
-      static U32 ms_u32SeekDontcareBits;
-      static U32 ms_u32SeekExcludeBits;
-      static long ms_lSmokeTrailInterval; // Time between smoke releases
-      static long ms_lSmokeTimeToLive;    // Time for smoke to stick around.
+      static uint32_t ms_u32CollideIncludeBits;
+      static uint32_t ms_u32CollideDontcareBits;
+      static uint32_t ms_u32CollideExcludeBits;
+      static uint32_t ms_u32SeekIncludeBits;
+      static uint32_t ms_u32SeekDontcareBits;
+      static uint32_t ms_u32SeekExcludeBits;
+      static int32_t ms_lSmokeTrailInterval; // Time between smoke releases
+      static int32_t ms_lSmokeTimeToLive;    // Time for smoke to stick around.
 
    //---------------------------------------------------------------------------
    // Constructor(s) / destructor
@@ -166,9 +166,9 @@ class CHeatseeker : public CWeapon
       // Used to set the collision bit fields
       virtual
       void SetCollideBits(    // Returns nothing
-         U32 u32BitsInclude,  // Bits to detect in collisions
-         U32 u32BitsDontCare, // Bits that don't matter for collision detection
-         U32 u32BitsExclude)  // Bits that invalidate collision
+         uint32_t u32BitsInclude,  // Bits to detect in collisions
+         uint32_t u32BitsDontCare, // Bits that don't matter for collision detection
+         uint32_t u32BitsExclude)  // Bits that invalidate collision
       {
          m_u32CollideBitsInclude = u32BitsInclude | CSmash::Fire;
          m_u32CollideBitsDontCare = u32BitsDontCare;
@@ -178,9 +178,9 @@ class CHeatseeker : public CWeapon
       // Used to set the detection bit fields
       virtual
       void SetDetectionBits(  // Returns nothing
-         U32 u32BitsInclude,  // Bits to detect in collisions
-         U32 u32BitsDontcare, // Bits that don't matter for collision detection
-         U32 u32BitsExclude)  // Bits that invalidate collision
+         uint32_t u32BitsInclude,  // Bits to detect in collisions
+         uint32_t u32BitsDontcare, // Bits that don't matter for collision detection
+         uint32_t u32BitsExclude)  // Bits that invalidate collision
       {
          m_u32SeekBitsInclude = u32BitsInclude | CSmash::Fire;
          m_u32SeekBitsDontCare = u32BitsDontcare;
@@ -197,7 +197,7 @@ class CHeatseeker : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

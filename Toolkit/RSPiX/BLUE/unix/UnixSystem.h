@@ -32,9 +32,9 @@
 
 #include <SDL2/SDL.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #ifdef WIN32
 // !!! FIXME: use SDL_snprintf() in SDL2.
@@ -69,12 +69,12 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef BASETYPES
 #define BASETYPES
-typedef unsigned long ULONG;
-typedef ULONG *PULONG;
-typedef unsigned short USHORT;
-typedef USHORT *PUSHORT;
-typedef unsigned char UCHAR;
-typedef UCHAR *PUCHAR;
+typedef uint32_t uint32_t;
+typedef uint32_t *Puint32_t;
+typedef uint16_t uint16_t;
+typedef uint16_t *Puint16_t;
+typedef uint8_t uint8_t;
+typedef uint8_t *Puint8_t;
 typedef char *PSZ;
 #endif // !BASETYPES
 
@@ -85,55 +85,29 @@ typedef char *PSZ;
 #ifndef __RSPX_TYPES
 #define __RSPX_TYPES
 
-	// The world's most specific types < S | U > < # >
-	// S == signed, U == unsigned, # == number of bits
-	typedef signed		char		S8;
-	typedef unsigned	char		U8;
-	typedef signed		short		S16;
-	typedef unsigned	short		U16;
-	typedef signed		long		S32;
-	typedef unsigned	long		U32;
-	typedef signed long long S64;
-	typedef unsigned long long U64;
-
 	// 128-bit got a little trickier...
 	#ifdef SYS_ENDIAN_LITTLE
-		struct S128 { U64 lo; S64 hi; };
-		struct U128 { U64 lo; U64 hi; };
+      struct S128 { uint64_t lo; int64_t hi; };
+      struct U128 { uint64_t lo; uint64_t hi; };
 	#else	// defined(SYS_ENDIAN_BIG)
 
-		struct S128 { S64 hi; U64 lo; };
-		struct U128 { U64 hi; U64 lo; };
-	#endif
-
-
-	// Ranges for basic RSPiX types
-	#define	S8_MIN	((S8) 0x80)
-	#define	S8_MAX	((S8) 0x7F)
-	#define	U8_MIN	((U8) 0x0)
-	#define	U8_MAX	((U8) 0xFF)
-	#define	S16_MIN	((S16) 0x8000)
-	#define	S16_MAX	((S16) 0x7FFF)
-	#define	U16_MIN	((U16) 0x0)
-	#define	U16_MAX	((U16) 0xFFFF)
-	#define	S32_MIN	((S32) 0x80000000L)
-	#define	S32_MAX	((S32) 0x7FFFFFFFL)
-	#define	U32_MIN	((U32) 0x0)
-	#define	U32_MAX	((U32) 0xFFFFFFFFUL)
+      struct S128 { int64_t hi; uint64_t lo; };
+      struct U128 { uint64_t hi; uint64_t lo; };
+   #endif
 	
 	// These pixel types take the endian order of the system into account.
-	typedef U8 RPixel;
-	typedef U16 RPixel16;
+   typedef uint8_t RPixel;
+   typedef uint16_t RPixel16;
 	struct RPixel24 {
-		U8	u8Red;
-		U8	u8Green;
-		U8	u8Blue;
+      uint8_t	u8Red;
+      uint8_t	u8Green;
+      uint8_t	u8Blue;
 	};
 	struct RPixel32 {
-		U8	u8Alpha;
-		U8	u8Red;
-		U8	u8Green;
-		U8	u8Blue;
+      uint8_t	u8Alpha;
+      uint8_t	u8Red;
+      uint8_t	u8Green;
+      uint8_t	u8Blue;
 	};
 	inline bool operator==(const RPixel24& lhs, const RPixel24& rhs)
 		{ return ((lhs.u8Blue == rhs.u8Blue) && (lhs.u8Green == rhs.u8Green) && (lhs.u8Red == rhs.u8Red)) ? true : false; }
@@ -242,9 +216,9 @@ inline bool rspObjCmp(const T* p1, const T* p2, size_t count)
 	}
 
 
-inline char *ltoa(long l, char *buf, size_t bufsize)
+inline char *ltoa(int32_t l, char *buf, size_t bufsize)
 {
-    snprintf(buf, bufsize, "%ld", l);
+    snprintf(buf, bufsize, "%d", l);
     return(buf);
 }
 

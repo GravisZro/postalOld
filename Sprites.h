@@ -259,7 +259,7 @@ class CSprite
 
          if (psprCur == nullptr)
             {
-            TRACE("CSprite3::RemoveChild(): No such child sprite.\n";
+            TRACE("CSprite3::RemoveChild(): No such child sprite.\n");
             }
          }
 
@@ -302,7 +302,7 @@ class CSpriteLine2d : public CSprite
    public:
       int16_t    m_sX2End;   // 2D end point for line.
       int16_t    m_sY2End;   // 2D end point for line.
-      U8       m_u8Color;  // Color for line segment.
+      uint8_t       m_u8Color;  // Color for line segment.
 
    CSpriteLine2d()
       {
@@ -317,7 +317,7 @@ class CSpriteCylinder3d : public CSprite
    public:
       int16_t    m_sRadius;  // Radius of cylinder
       int16_t    m_sHeight;  // Height of cylinder.
-      U8       m_u8Color;  // Color for line segment.
+      uint8_t       m_u8Color;  // Color for line segment.
 
    CSpriteCylinder3d()
       {

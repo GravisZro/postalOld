@@ -90,8 +90,8 @@ class CNetClient
             State             m_state;                         // State
             RSocket::Address  m_address;                       // Address
             char              m_acName[Net::MaxPlayerNameSize];// Name
-            unsigned char     m_ucColor;                       // Color number
-            unsigned char     m_ucTeam;                        // Team number
+            uint8_t     m_ucColor;                       // Color number
+            uint8_t     m_ucTeam;                        // Team number
             int16_t             m_sBandwidth;                    // Net::Bandwidth
 
             CNetInput         m_netinput;                      // Sliding window of inputs
@@ -99,13 +99,13 @@ class CNetClient
             bool              m_bInactive;                     // True after last active sequence was used
 //          Net::SEQ          m_seqWhatHeNeeds;                // What input seq he needs from me
 //          Net::SEQ          m_seqWhatINeed;                  // What input seq I need from him
-//          long              m_lNextSendTime;                 // When to next send inputs to him
-            long              m_lLastReceiveTime;              // When we last got data from him *SPA
+//          int32_t              m_lNextSendTime;                 // When to next send inputs to him
+            int32_t              m_lLastReceiveTime;              // When we last got data from him *SPA
 
-//          FQueue<long, NumAvgItems>  m_qPings;               // Queue of ping times for running average
-//          long              m_lRunnigAvgPing;                // Running average
+//          FQueue<int32_t, NumAvgItems>  m_qPings;               // Queue of ping times for running average
+//          int32_t              m_lRunnigAvgPing;                // Running average
 
-            U16               m_idDude;                        // Dude's ID
+            uint16_t               m_idDude;                        // Dude's ID
 
          //------------------------------------------------------------------------------
          // Functions
@@ -181,7 +181,7 @@ class CNetClient
       State                m_state;                   // My state
       NetMsg               m_msgError;                // Error type
       NetMsg::Status       m_status;                  // Status type
-      long                 m_lTimeOut;                // Timer used to detect time-outs
+      int32_t                 m_lTimeOut;                // Timer used to detect time-outs
 
       Net::ID              m_id;                      // My id
       Net::ID              m_idServer;                // Server's client's ID
@@ -197,21 +197,21 @@ class CNetClient
       Net::SEQ             m_seqMaxAhead;             // Max ahead for input versus frame
       Net::SEQ             m_seqInputNotYetSent;      // Input seq that we did NOT send yet
       CNetInput               m_netinput;                // My input buffer
-      long                 m_lFrameTime;              // Current frame time
-      long                 m_lNextLocalInputTime;     // When to get next local input
+      int32_t                 m_lFrameTime;              // Current frame time
+      int32_t                 m_lNextLocalInputTime;     // When to get next local input
       bool                 m_bNextRealmPending;       // Whether next realm is pending
 
       CPeer                m_aPeers[Net::MaxNumIDs];  // Array of peers
       /** SPA **/
-      long                 m_lStartTime;              // The start from which time to calculate the frame delta
-      long                 m_alAvgFrameTimes[8];      // Array to hold the last several average frame times
+      int32_t                 m_lStartTime;              // The start from which time to calculate the frame delta
+      int32_t                 m_alAvgFrameTimes[8];      // Array to hold the last several average frame times
       /** SPA **/
 
       /** 12/16/97 AJC **/
-      U16                     m_u16PackageID;            // Unique number for every package sent
+      uint16_t                     m_u16PackageID;            // Unique number for every package sent
       /** 12/16/97 AJC **/
       bool                 m_bSendNextFrame;    // 12/30/97 *SPA True if we have all the info to render the current frame (m_seqFrame)
-      long                 m_lMaxWaitTime;
+      int32_t                 m_lMaxWaitTime;
       //------------------------------------------------------------------------------
    // Functions
    //------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ class CNetClient
          m_lNextLocalInputTime = 0;
          m_bNextRealmPending = false;
 
-         for (U8 id = 0; id < Net::MaxNumIDs; id++)
+         for (uint8_t id = 0; id < Net::MaxNumIDs; id++)
             m_aPeers[id].Reset();
 
          /** 12/15/97 SPA **/
@@ -316,8 +316,8 @@ class CNetClient
       int16_t StartJoinProcess(                         // Returns 0 if successfull, non-zero otherwise
          RSocket::Address* paddressHost,              // In:  Host's address
          char const * pszName,                                 // In:  Joiner's name
-         unsigned char ucColor,                       // In:  Joiner's color
-         unsigned char ucTeam,                        // In:  Joiner's team
+         uint8_t ucColor,                       // In:  Joiner's color
+         uint8_t ucTeam,                        // In:  Joiner's team
          int16_t sBandwidth);                           // In:  Joiner's Net::Bandwidth
 
 
@@ -423,7 +423,7 @@ class CNetClient
       ////////////////////////////////////////////////////////////////////////////////
       // Get the specified player's color
       ////////////////////////////////////////////////////////////////////////////////
-      unsigned char GetPlayerColor(
+      uint8_t GetPlayerColor(
          Net::ID id)
          {
          ASSERT(id != Net::InvalidID);
@@ -446,7 +446,7 @@ class CNetClient
       ////////////////////////////////////////////////////////////////////////////////
       // Get or set specified player's dude ID (not to be confused with a Net::ID)
       ////////////////////////////////////////////////////////////////////////////////
-      U16 GetPlayerDudeID(
+      uint16_t GetPlayerDudeID(
          Net::ID id)
          {
          ASSERT(id != Net::InvalidID);
@@ -457,7 +457,7 @@ class CNetClient
 
       void SetPlayerDudeID(
          Net::ID id,
-         U16 idDude)
+         uint16_t idDude)
          {
          ASSERT(id != Net::InvalidID);
          ASSERT(id < Net::MaxNumIDs);
@@ -480,7 +480,7 @@ class CNetClient
       // Otherwise, the result is false, and a frame cannot be done.
       ////////////////////////////////////////////////////////////////////////////////
       bool CanDoFrame(                                // Returns true if frame can be done, false otherwise
-         UINPUT aInputs[],                            // Out: Total of Net::MaxNumIDs inputs returned here
+         uint64_t aInputs[],                            // Out: Total of Net::MaxNumIDs inputs returned here
          int16_t* psFrameTime);                         // Out the current frames elapsed time
 
 
@@ -496,7 +496,7 @@ class CNetClient
       // Call this if and only if IsLocalInputNeeded() returns true!
       ////////////////////////////////////////////////////////////////////////////////
       void SetLocalInput(
-         UINPUT input);
+         uint64_t input);
 
 
       ////////////////////////////////////////////////////////////////////////////////

@@ -24,38 +24,38 @@ class CPixel
 	public:
 		CPixel()
 			{ Init(); }
-		CPixel(short sBitsPerPixel)
+		CPixel(int16_t sBitsPerPixel)
 			{ ASSERT(sBitsPerPixel % 8 == 0); m_sSize = sBitsPerPixel / 8; Init(); }
 
 		void Init(void)
-			{ for (short i = 0; i < sizeof(m_au8); i++) m_au8[i] = 0; }
+			{ for (int16_t i = 0; i < sizeof(m_au8); i++) m_au8[i] = 0; }
 
-		U8 GetU8Val(void)
+		uint8_t Getuint8_tVal(void)
 			{ return m_au8[0]; }
-		U16 GetU16Val(void)
-			{ return *((U16*)m_au8); }
-		U32 GetU24Val(void)
-			{ return *((U32*)m_au8); }
-		U32 GetU32Val(void)
-			{ return *((U32*)m_au8); }
+		uint16_t Getuint16_tVal(void)
+			{ return *((uint16_t*)m_au8); }
+		uint32_t GetU24Val(void)
+			{ return *((uint32_t*)m_au8); }
+		uint32_t Getuint32_tVal(void)
+			{ return *((uint32_t*)m_au8); }
 
-		void SetVal(U8 val)
+		void SetVal(uint8_t val)
 			{ memcpy(m_au8, &val, sizeof(val)); }
-		void SetVal(U16 val)
+		void SetVal(uint16_t val)
 			{ memcpy(m_au8, &val, sizeof(val)); }
-		void SetVal24(U32 val)
+		void SetVal24(uint32_t val)
 			{ memcpy(m_au8, &val, 3); }
-		void SetVal(U32 val)
+		void SetVal(uint32_t val)
 			{ memcpy(m_au8, &val, sizeof(val)); }
 
-		void SetVal(UCHAR* puc)
+		void SetVal(uint8_t* puc)
 			{ memcpy(m_au8, puc, m_sSize); }
 
 		int operator <(CPixel &pixel)
-			{ return (GetU32Val() < pixel.GetU32Val()); }
+			{ return (Getuint32_tVal() < pixel.Getuint32_tVal()); }
 
 		int operator >(CPixel &pixel)
-			{ return (GetU32Val() > pixel.GetU32Val()); }
+			{ return (Getuint32_tVal() > pixel.Getuint32_tVal()); }
 		
 		int operator ==(CPixel &pixel)
 			{
@@ -66,8 +66,8 @@ class CPixel
 			}
 
 	public:
-		U8		m_au8[sizeof(U32)];
-		short	m_sSize;
+		uint8_t		m_au8[sizeof(uint32_t)];
+		int16_t	m_sSize;
 	};
 
 #endif	// PIXEL_H

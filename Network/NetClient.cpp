@@ -100,7 +100,7 @@
 
 // This is the maximum size of the peer messages.
 #define PEER_MSG_HEADER_SIZE     (1 + 2 + 2 + 2 + 2)
-#define PEER_MSG_MAX_SIZE       (PEER_MSG_HEADER_SIZE + ((Net::MaxAheadSeq * 2) * (sizeof(UINPUT) + sizeof(U8)))) // *SPA
+#define PEER_MSG_MAX_SIZE       (PEER_MSG_HEADER_SIZE + ((Net::MaxAheadSeq * 2) * (sizeof(uint64_t) + sizeof(uint8_t)))) // *SPA
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,58 +109,58 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 //------------------------------------------------------------------------------
-// Get a U8
+// Get a uint8_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, U8* pval)
+inline void Get(uint8_t* &pget, uint8_t* pval)
    {
    *pval = *pget++;
    }
 
 //------------------------------------------------------------------------------
-// Get an S8
+// Get an int8_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, S8* pval)
+inline void Get(uint8_t* &pget, int8_t* pval)
    {
-   Get(pget, (U8*)pval);
+   Get(pget, (uint8_t*)pval);
    }
 
 //------------------------------------------------------------------------------
-// Get a U16
+// Get a uint16_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, U16* pval)
+inline void Get(uint8_t* &pget, uint16_t* pval)
    {
    #ifdef SYS_ENDIAN_LITTLE
-      U8* ptmp = ((U8*)(pval)) + 1;
+      uint8_t* ptmp = ((uint8_t*)(pval)) + 1;
       *ptmp-- = *pget++;
       *ptmp   = *pget++;
    #else
-      U8* ptmp = (U8*)(pval);
+      uint8_t* ptmp = (uint8_t*)(pval);
       *ptmp++ = *pget++;
       *ptmp   = *pget++;
    #endif
    }
 
 //------------------------------------------------------------------------------
-// Get an S16
+// Get an int16_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, S16* pval)
+inline void Get(uint8_t* &pget, int16_t* pval)
    {
-   Get(pget, (U16*)pval);
+   Get(pget, (uint16_t*)pval);
    }
 
 //------------------------------------------------------------------------------
-// Get a U32
+// Get a uint32_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, U32* pval)
+inline void Get(uint8_t* &pget, uint32_t* pval)
    {
    #ifdef SYS_ENDIAN_LITTLE
-      U8* ptmp = ((U8*)(pval)) + 3;
+      uint8_t* ptmp = ((uint8_t*)(pval)) + 3;
       *ptmp-- = *pget++;
       *ptmp-- = *pget++;
       *ptmp-- = *pget++;
       *ptmp   = *pget++;
    #else
-      U8* ptmp = (U8*)(pval);
+      uint8_t* ptmp = (uint8_t*)(pval);
       *ptmp++ = *pget++;
       *ptmp++ = *pget++;
       *ptmp++ = *pget++;
@@ -169,12 +169,12 @@ inline void Get(U8* &pget, U32* pval)
    }
 
 //------------------------------------------------------------------------------
-// Get a U64
+// Get a uint64_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, U64* pval)
+inline void Get(uint8_t* &pget, uint64_t* pval)
 {
 #ifdef SYS_ENDIAN_LITTLE
-   U8* ptmp = ((U8*)(pval)) + 3;
+   uint8_t* ptmp = ((uint8_t*)(pval)) + 3;
    *ptmp-- = *pget++;
    *ptmp-- = *pget++;
    *ptmp-- = *pget++;
@@ -184,7 +184,7 @@ inline void Get(U8* &pget, U64* pval)
    *ptmp-- = *pget++;
    *ptmp = *pget++;
 #else
-   U8* ptmp = (U8*)(pval);
+   uint8_t* ptmp = (uint8_t*)(pval);
    *ptmp++ = *pget++;
    *ptmp++ = *pget++;
    *ptmp++ = *pget++;
@@ -197,11 +197,11 @@ inline void Get(U8* &pget, U64* pval)
 }
 
 //------------------------------------------------------------------------------
-// Get an S32
+// Get an int32_t
 //------------------------------------------------------------------------------
-inline void Get(U8* &pget, S32* pval)
+inline void Get(uint8_t* &pget, int32_t* pval)
    {
-   Get(pget, (U32*)pval);
+   Get(pget, (uint32_t*)pval);
    }
 
 
@@ -211,58 +211,58 @@ inline void Get(U8* &pget, S32* pval)
 ////////////////////////////////////////////////////////////////////////////////
 
 //------------------------------------------------------------------------------
-// Put a U8
+// Put a uint8_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, U8 val)
+inline void Put(uint8_t* &pput, uint8_t val)
    {
    *pput++ = val;
    }
 
 //------------------------------------------------------------------------------
-// Put an S8
+// Put an int8_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, S8 val)
+inline void Put(uint8_t* &pput, int8_t val)
    {
-   Put(pput, (U8)val);
+   Put(pput, (uint8_t)val);
    }
 
 //------------------------------------------------------------------------------
-// Put a U16
+// Put a uint16_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, U16 val)
+inline void Put(uint8_t* &pput, uint16_t val)
    {
    #ifdef SYS_ENDIAN_LITTLE
-      U8* ptmp = ((U8*)(&val)) + 1;
+      uint8_t* ptmp = ((uint8_t*)(&val)) + 1;
       *pput++ = *ptmp--;
       *pput++ = *ptmp;
    #else
-      U8* ptmp = (U8*)(&val);
+      uint8_t* ptmp = (uint8_t*)(&val);
       *pput++ = *ptmp++;
       *pput++ = *ptmp;
    #endif
    }
 
 //------------------------------------------------------------------------------
-// Put an S16
+// Put an int16_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, S16 val)
+inline void Put(uint8_t* &pput, int16_t val)
    {
-   Put(pput, (U16)val);
+   Put(pput, (uint16_t)val);
    }
 
 //------------------------------------------------------------------------------
-// Put a U32
+// Put a uint32_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, U32 val)
+inline void Put(uint8_t* &pput, uint32_t val)
    {
    #ifdef SYS_ENDIAN_LITTLE
-      U8*ptmp = ((U8*)(&val)) + 3;
+      uint8_t*ptmp = ((uint8_t*)(&val)) + 3;
       *pput++ = *ptmp--;
       *pput++ = *ptmp--;
       *pput++ = *ptmp--;
       *pput++ = *ptmp;
    #else
-      U8*ptmp = (U8*)(&val);
+      uint8_t*ptmp = (uint8_t*)(&val);
       *pput++ = *ptmp++;
       *pput++ = *ptmp++;
       *pput++ = *ptmp++;
@@ -271,12 +271,12 @@ inline void Put(U8* &pput, U32 val)
    }
 
 //------------------------------------------------------------------------------
-// Put a U64
+// Put a uint64_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, U64 val)
+inline void Put(uint8_t* &pput, uint64_t val)
 {
 #ifdef SYS_ENDIAN_LITTLE
-   U8*ptmp = ((U8*)(&val)) + 3;
+   uint8_t*ptmp = ((uint8_t*)(&val)) + 3;
    *pput++ = *ptmp--;
    *pput++ = *ptmp--;
    *pput++ = *ptmp--;
@@ -286,7 +286,7 @@ inline void Put(U8* &pput, U64 val)
    *pput++ = *ptmp--;
    *pput++ = *ptmp;
 #else
-   U8*ptmp = (U8*)(&val);
+   uint8_t*ptmp = (uint8_t*)(&val);
    *pput++ = *ptmp++;
    *pput++ = *ptmp++;
    *pput++ = *ptmp++;
@@ -299,11 +299,11 @@ inline void Put(U8* &pput, U64 val)
 }
 
 //------------------------------------------------------------------------------
-// Put an S32
+// Put an int32_t
 //------------------------------------------------------------------------------
-inline void Put(U8* &pput, S32 val)
+inline void Put(uint8_t* &pput, int32_t val)
    {
-   Put(pput, (U32)val);
+   Put(pput, (uint32_t)val);
    }
 
 
@@ -343,8 +343,8 @@ void CNetClient::Shutdown(void)
 int16_t CNetClient::StartJoinProcess(             // Returns 0 if successfull, non-zero otherwise
    RSocket::Address* paddressHost,              // In:  Host's address
    char const * pszName,                                 // In:  Joiner's name
-   unsigned char ucColor,                       // In:  Joiner's color
-   unsigned char ucTeam,                        // In:  Joiner's team
+   uint8_t ucColor,                       // In:  Joiner's color
+   uint8_t ucTeam,                        // In:  Joiner's team
    int16_t sBandwidth)                            // In:  Joiner's Net::Bandwidth
    {
    // Save server address (containing the base port)
@@ -402,7 +402,7 @@ void CNetClient::Update(void)
                case CNetMsgr::Connecting:
                   if (rspGetMilliseconds() > m_lTimeOut)
                      {
-                     TRACE("CNetClient::Update(): Timed-out trying to connect to server!\n";
+                     TRACE("CNetClient::Update(): Timed-out trying to connect to server!\n");
                      m_msgError.msg.err.error = NetMsg::ConnectTimeoutError;
                      Drop();
                      }
@@ -421,7 +421,7 @@ void CNetClient::Update(void)
                case CNetMsgr::Disconnecting:
                case CNetMsgr::Disconnected:
                default:
-                  TRACE("CNetClient::Update(): Error trying to connect to server!\n";
+                  TRACE("CNetClient::Update(): Error trying to connect to server!\n");
                   m_msgError.msg.err.error = NetMsg::CantConnectError;
                   Drop();
                   break;
@@ -528,7 +528,7 @@ void CNetClient::Update(void)
                      SendMsg(&msg);
                      Drop();
 
-                     TRACE("CNetClient::Update(): Error trying to login to server -- unsupported version number!\n";
+                     TRACE("CNetClient::Update(): Error trying to login to server -- unsupported version number!\n");
                      }
                   break;
 
@@ -540,11 +540,11 @@ void CNetClient::Update(void)
                   m_msgError.msg.err.error   = NetMsg::ClientVersionMismatchError;
                   m_msgError.msg.err.ulParam = 1;
 //                m_msgError.msg.err.error = NetMsg::LoginDeniedError;
-                  TRACE("CNetClient::Update(): Login denied!\n";
+                  TRACE("CNetClient::Update(): Login denied!\n");
                   break;
 
                default:
-                  TRACE("CNetClient::Update(): Unexpected message received while waiting for login response!\n";
+                  TRACE("CNetClient::Update(): Unexpected message received while waiting for login response!\n");
                   break;
                }
             break;
@@ -578,7 +578,7 @@ void CNetClient::Update(void)
                      {
                      Drop();
                      m_msgError.msg.err.error = NetMsg::CantOpenPeerSocketError;
-                     TRACE("CNetClient::Update(): Error opening port!\n";
+                     TRACE("CNetClient::Update(): Error opening port!\n");
                      }
                   }
                   break;
@@ -586,11 +586,11 @@ void CNetClient::Update(void)
                case NetMsg::JOIN_DENY:
                   Drop();
                   m_msgError.msg.err.error = NetMsg::JoinDeniedError;
-                  TRACE("CNetClient::Update(): Join denied!\n";
+                  TRACE("CNetClient::Update(): Join denied!\n");
                   break;
 
                default:
-                  TRACE("CNetClient::Update(): Unexpected message received while waiting for join response!\n";
+                  TRACE("CNetClient::Update(): Unexpected message received while waiting for join response!\n");
                   break;
                }
             break;
@@ -618,7 +618,7 @@ void CNetClient::Update(void)
             break;
 
          default:
-            TRACE("CNetClient::Update(): Unknown state!\n";
+            TRACE("CNetClient::Update(): Unknown state!\n");
             break;
          }
       }
@@ -694,7 +694,7 @@ void CNetClient::GetMsg(
                // If an error occurs, there's no way to recover, so we have to drop.
                // The drop may not fully work if there's a problem communicating with
                // the server, but there's no harm in trying.
-               TRACE("CNetClient::GetMsg(): Error message received from messenger!\n";
+               TRACE("CNetClient::GetMsg(): Error message received from messenger!\n");
                Drop();
 
                // Return this message to caller
@@ -819,8 +819,8 @@ void CNetClient::GetMsg(
                msg.msg.inputData.id       = id;
                msg.msg.inputData.seqStart = pmsg->msg.inputReq.seqStart;
                msg.msg.inputData.sNum     = pmsg->msg.inputReq.sNum;
-               msg.msg.inputData.pInputs  = (UINPUT*)msg.AllocVar((long)pmsg->msg.inputReq.sNum * sizeof(UINPUT));
-               msg.msg.inputData.pFrameTimes = (U8*)msg.AllocVar((long)pmsg->msg.inputReq.sNum * sizeof(U8));
+               msg.msg.inputData.pInputs  = (uint64_t*)msg.AllocVar((int32_t)pmsg->msg.inputReq.sNum * sizeof(uint64_t));
+               msg.msg.inputData.pFrameTimes = (uint8_t*)msg.AllocVar((int32_t)pmsg->msg.inputReq.sNum * sizeof(uint8_t));
 
                // Copy the requested values into the allocated memory
                Net::SEQ seq = msg.msg.inputData.seqStart;
@@ -901,7 +901,7 @@ void CNetClient::GetMsg(
             case NetMsg::START_GAME:
                // Get some items of interest out of the message
                m_idServer = pmsg->msg.startGame.idServer;
-               m_lFrameTime = (long)pmsg->msg.startGame.sFrameTime;
+               m_lFrameTime = (int32_t)pmsg->msg.startGame.sFrameTime;
                m_seqMaxAhead = pmsg->msg.startGame.seqMaxAhead;
                m_seqInputNotYetSent = m_seqMaxAhead + 1; // *SPA
 
@@ -982,7 +982,7 @@ void CNetClient::GetMsg(
                break;
 
             default:
-               TRACE("CNetClient::GetMsg(): Unexpected message received!\n";
+               TRACE("CNetClient::GetMsg(): Unexpected message received!\n");
                break;
             }
          }
@@ -1130,7 +1130,7 @@ void CNetClient::Drop(void)
          break;
 
       default:
-         TRACE("CNetClient::Drop(): Unknown state!\n";
+         TRACE("CNetClient::Drop(): Unknown state!\n");
          break;
       }
 
@@ -1157,7 +1157,7 @@ void CNetClient::ReceiveFromPeers(void)
    // because if there's a ton of incoming data, we could get stuck here forever!
    // This is done as a do/while so that we can more easily debug it (otherwise,
    // when single-stepping, the time expires before we ever get into the loop!)
-   //long lMaxTime = rspGetMilliseconds() + Net::MaxPeerReceiveTime;
+   //int32_t lMaxTime = rspGetMilliseconds() + Net::MaxPeerReceiveTime;
    int16_t sIterations = 0;
    do {
       // Call watchdog to let it know we're still going (we're in a loop!)
@@ -1169,8 +1169,8 @@ void CNetClient::ReceiveFromPeers(void)
       // Get next datagram, If we get a too-large datagram, an error occurs and
       // and the unreceived portion is automatically discarded.  Such a message
       // could come from a foreign app that is using the same port as us.
-      U8 msg[PEER_MSG_MAX_SIZE];
-      long lReceived;
+      uint8_t msg[PEER_MSG_MAX_SIZE];
+      int32_t lReceived;
       int16_t serr = m_socketPeers.ReceiveFrom(msg, sizeof(msg), &lReceived, nullptr);
       if (serr == 0)
          {
@@ -1180,7 +1180,7 @@ void CNetClient::ReceiveFromPeers(void)
 
             // Get the id from the message
             Net::ID id;
-            U8* pget = msg;
+            uint8_t* pget = msg;
             Get(pget, &id);
 
             // Make sure id is valid
@@ -1190,13 +1190,13 @@ void CNetClient::ReceiveFromPeers(void)
                if (m_aPeers[id].m_state == CPeer::Joined)
                   {
                   // Calculate the number of input values the message contains. *SPA add sizeof frame time
-                  long lNumInputs = (lReceived - PEER_MSG_HEADER_SIZE) / (sizeof(UINPUT) + sizeof(U8));
+                  int32_t lNumInputs = (lReceived - PEER_MSG_HEADER_SIZE) / (sizeof(uint64_t) + sizeof(uint8_t));
 
                   // Get the rest of the message
-//                U16 u16SenderPing;
-//                U16 u16ReceiverPing;
-                  U16 u16MsgType; // *SPA
-                  U16 u16PackageID; // *SPA
+//                uint16_t u16SenderPing;
+//                uint16_t u16ReceiverPing;
+                  uint16_t u16MsgType; // *SPA
+                  uint16_t u16PackageID; // *SPA
                   Net::SEQ seqWhatHeNeeds;
                   Net::SEQ seqInputs;
                   Get(pget, &u16PackageID); // *SPA
@@ -1225,8 +1225,8 @@ void CNetClient::ReceiveFromPeers(void)
                   // 12/7/97 AJC
 */
                   // Add input values to peer's input buffer
-                  UINPUT input;
-                  U8 frameTime;
+                  uint64_t input;
+                  uint8_t frameTime;
                   for (int16_t s = 0; s < lNumInputs; s++)
                      {
                      // Add input to peer's buffer
@@ -1257,7 +1257,7 @@ void CNetClient::ReceiveFromPeers(void)
 //                   m_aPeers[id].m_seqWhatHeNeeds = seqWhatHeNeeds;
 #if 0
                   // Add his ping time into the average
-                  m_aPeers[id].m_lHisPingSum += (long)u16SenderPing;
+                  m_aPeers[id].m_lHisPingSum += (int32_t)u16SenderPing;
                   m_aPeers[id].m_sHisNumPings++;
 
                   // Calculate the time our ping took to get back (it won't be valid until
@@ -1268,18 +1268,18 @@ void CNetClient::ReceiveFromPeers(void)
 #endif
                   }
                else
-                  TRACE("CNetClient::ReceiveFromPeers(): Ignoring message from non-joined player!\n";
+                  TRACE("CNetClient::ReceiveFromPeers(): Ignoring message from non-joined player!\n");
                }
             else
-               TRACE("CNetClient::ReceiveFromPeers(): Ignoring message with invalid id!\n";
+               TRACE("CNetClient::ReceiveFromPeers(): Ignoring message with invalid id!\n");
             }
          else
-            TRACE("CNetClient::ReceiveFromPeers(): Ignoring incorrectly sized message!\n";
+            TRACE("CNetClient::ReceiveFromPeers(): Ignoring incorrectly sized message!\n");
          }
       else
          {
          if (serr != RSocket::errWouldBlock)
-            TRACE("CNetClient::ReceiveFromPeers(): Error receiving datagram -- ignored!\n";
+            TRACE("CNetClient::ReceiveFromPeers(): Error receiving datagram -- ignored!\n");
 
          // Break out of the loop (there's no data or we got an error)
          break;
@@ -1347,8 +1347,8 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
                      bool bSeqReq)        // true if this is a request for data
    {
    // Set the header values
-   U8 msg[PEER_MSG_MAX_SIZE];
-   U8* pput = msg;
+   uint8_t msg[PEER_MSG_MAX_SIZE];
+   uint8_t* pput = msg;
 
    // Increment the package number
    m_u16PackageID++;
@@ -1357,15 +1357,15 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
 
    if (!bSeqReq)
       {
-      Put(pput, (U16)0);
-      Put(pput, (U16)0);
+      Put(pput, (uint16_t)0);
+      Put(pput, (uint16_t)0);
       }
    else
       {
       // If bSeqReq then set flag for data request
-      Put(pput, (U16)1);
+      Put(pput, (uint16_t)1);
       // request the data for the current frame (since that must be the one that we can't render)
-      Put(pput, (U16)m_seqFrame);
+      Put(pput, (uint16_t)m_seqFrame);
       }
 
    Put(pput, seqStart);
@@ -1373,8 +1373,8 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
    // Fill in all the inputs between what he needs and the newest I have,
    // up to the maximum amount.  We know we'll get at least 1 because
    // we already determined the one he needs is available (see above).
-   UINPUT input;
-   U8 frameTime; // *SPA
+   uint64_t input;
+   uint8_t frameTime; // *SPA
    int16_t s;
    for (s = seqStart; s < m_seqInputNotYetSent; s++)
       {
@@ -1419,7 +1419,7 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
    // Calculate size of message.  The peer uses the message size to determine
    // how many input values it contains.
    ASSERT((pput - msg) <= PEER_MSG_MAX_SIZE);
-   long lSize = pput - msg;
+   int32_t lSize = pput - msg;
 
    // Make sure maximum message size is <= maximum datagram size
    ASSERT(PEER_MSG_MAX_SIZE <= Net::MaxDatagramSize);
@@ -1428,17 +1428,17 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
    // hopes that the next time we try, it will work.  This may not be a good
    // idea.  Although datagram messages are not guaranteed to arrive, getting
    // a send error probably indicates a real problem that may not go away.
-   long lSent;
+   int32_t lSent;
    int16_t serr = m_socketPeers.SendTo(msg, lSize, &lSent, &m_aPeers[id].m_address);
    if (serr == 0)
       {
       if (lSent != lSize)
-         TRACE("Error sending message to peer -- should have sent %ld bytes but actually sent %ld.\n", (long)lSize, (long)lSent);
+         TRACE("Error sending message to peer -- should have sent %ld bytes but actually sent %ld.\n", (int32_t)lSize, (int32_t)lSent);
       }
    else
       {
       if (serr != RSocket::errWouldBlock)
-         TRACE("Error sending message to peer -- SendTo() failed!\n";
+         TRACE("Error sending message to peer -- SendTo() failed!\n");
       }
    }
 
@@ -1449,11 +1449,11 @@ void CNetClient::SendToPeer(Net::ID id,            // id of peer to send to
 // Otherwise, the result is false, and a frame cannot be done.
 ////////////////////////////////////////////////////////////////////////////////
 bool CNetClient::CanDoFrame(                    // Returns true if frame can be done, false otherwise
-   UINPUT aInputs[],                            // Out: Total of Net::MaxNumIDs inputs returned here
+   uint64_t aInputs[],                            // Out: Total of Net::MaxNumIDs inputs returned here
    int16_t* psFrameTime)                          // Out the current frames elapsed time
    {
    bool bResult = false;
-   long     lFrameTime = 0; // The sum of the frame times of the joined players *SPA
+   int32_t     lFrameTime = 0; // The sum of the frame times of the joined players *SPA
    int16_t    sCount = 0;    // Count of the number of joined players *SPA
 
    // If we playing, we might be able to do this, otherwise, we definitely can't
@@ -1468,7 +1468,7 @@ bool CNetClient::CanDoFrame(                    // Returns true if frame can be 
             {
             // Try to get the input for the frame we're trying to do
             aInputs[id] = m_aPeers[id].m_netinput.Get(m_seqFrame);
-            long temp = m_aPeers[id].m_netinput.GetFrameTime(m_seqFrame); // *SPA
+            int32_t temp = m_aPeers[id].m_netinput.GetFrameTime(m_seqFrame); // *SPA
             lFrameTime += temp; // *SPA
             sCount++;
 
@@ -1498,7 +1498,7 @@ bool CNetClient::CanDoFrame(                    // Returns true if frame can be 
          }
 
       // Check to see if we've not been able to render this frame for a while *SPA
-      long lCurTime = rspGetMilliseconds();
+      int32_t lCurTime = rspGetMilliseconds();
       if (lCurTime > m_lMaxWaitTime)
          {
          for (Net::ID id = 0; id < Net::MaxNumIDs; id++)
@@ -1534,7 +1534,7 @@ bool CNetClient::CanDoFrame(                    // Returns true if frame can be 
          // Calculate frame time of the frame were about to render *SPA
          // This is the average time for the current frame
          m_alAvgFrameTimes[m_seqFrame & 0x7] = lFrameTime / sCount;
-         long lAvgTime = 0;
+         int32_t lAvgTime = 0;
          // This averages the frame times of the last 8 frames
          for (int16_t i = 0; i< 8; i++)
             {
@@ -1546,8 +1546,8 @@ bool CNetClient::CanDoFrame(                    // Returns true if frame can be 
          m_lFrameTime = *psFrameTime;
 
          // Calculate the time since the last time here *SPA
-//       long lCurTime = rspGetMilliseconds();
-         long frameTime = lCurTime - m_lStartTime;
+//       int32_t lCurTime = rspGetMilliseconds();
+         int32_t frameTime = lCurTime - m_lStartTime;
          m_lStartTime = lCurTime;
          // Limit our frame rate to minimum set by .ini (TimePerFrame) *SPA
          if (frameTime > g_GameSettings.m_sNetTimePerFrame)
@@ -1555,7 +1555,7 @@ bool CNetClient::CanDoFrame(                    // Returns true if frame can be 
             frameTime = g_GameSettings.m_sNetTimePerFrame;
             }
          // Put this time into the next frame that we know has not been sent to anybody *SPA
-         m_netinput.PutFrameTime(m_seqInputNotYetSent, (U8)(frameTime & 0x00ff));
+         m_netinput.PutFrameTime(m_seqInputNotYetSent, (uint8_t)(frameTime & 0x00ff));
 
          // This is the only place where we increment the frame seq, so it's the
          // right place to check if we've reached the halt frame (if there is one).
@@ -1619,7 +1619,7 @@ bool CNetClient::IsLocalInputNeeded(void)
    if (m_bPlaying)
       {
       // Check if timer expired
-//    long lCurTime = rspGetMilliseconds();
+//    int32_t lCurTime = rspGetMilliseconds();
 //    if (lCurTime > m_lNextLocalInputTime)
 //       {
          // The input seq is only allowed to get m_seqMaxAhead ahead of the
@@ -1657,9 +1657,9 @@ bool CNetClient::IsLocalInputNeeded(void)
                }
             else if (m_bUseHaltFrame)
                {
-               UINPUT input = m_netinput.Get(m_seqFrame);
+               uint64_t input = m_netinput.Get(m_seqFrame);
                m_aPeers[m_id].m_netinput.Put(m_seqFrame, input);
-               U8 frameTime = m_netinput.GetFrameTime(m_seqFrame);
+               uint8_t frameTime = m_netinput.GetFrameTime(m_seqFrame);
                m_aPeers[m_id].m_netinput.PutFrameTime(m_seqFrame, frameTime);
                }
             }
@@ -1675,7 +1675,7 @@ bool CNetClient::IsLocalInputNeeded(void)
 // Call this if and only if IsLocalInputNeeded() returns true!
 ////////////////////////////////////////////////////////////////////////////////
 void CNetClient::SetLocalInput(
-   UINPUT input)
+   uint64_t input)
    {
    // Add to buffer and increment input seq
    m_netinput.Put(m_seqInput, input);
@@ -1686,7 +1686,7 @@ void CNetClient::SetLocalInput(
       // Set our own peer data for the current frame from the local data *SPA 12/30/97
       input = m_netinput.Get(m_seqFrame);
       m_aPeers[m_id].m_netinput.Put(m_seqFrame, input);
-      U8 frameTime = m_netinput.GetFrameTime(m_seqFrame);
+      uint8_t frameTime = m_netinput.GetFrameTime(m_seqFrame);
       m_aPeers[m_id].m_netinput.PutFrameTime(m_seqFrame, frameTime);
       // Reset the receive timer *SPA
       m_aPeers[m_id].m_lLastReceiveTime = rspGetMilliseconds();
@@ -1745,7 +1745,7 @@ Net::ID CNetClient::CheckForLostPeer(void)
             {
             if (id != m_id)
                {
-               long lElapsedTime = rspGetMilliseconds() - m_aPeers[id].m_lLastReceiveTime;
+               int32_t lElapsedTime = rspGetMilliseconds() - m_aPeers[id].m_lLastReceiveTime;
                if (lElapsedTime > g_GameSettings.m_lPeerDropMaxWaitTime)
                   return id;
                }

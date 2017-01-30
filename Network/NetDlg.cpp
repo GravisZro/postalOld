@@ -282,7 +282,7 @@
 
 #include <RSPiX.h>
 
-#include <CompileOptions.h>
+
 #include <GameSettings.h>
 #include <Game.h>
 #include <Play.h>
@@ -371,10 +371,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // THIS ENTIRE SECTION OF STRINGS SHOULD BE MOVED TO LOCALIZE.CPP!!!
 //////////////////////////////////////////////////////////////////////////////
-
+#if 0
 // Client-specific messages displayed in client dialog's status area
 char const * const  "ClientStat_NameTooLongForChat"_lookup      = "Name too long, can't chat";
-char const * const  "ClientStat_YouWereDropped"_lookup       = "Connection was lost";
+char const * const  "ClientStat_YouWereDropped"_lookup          = "Connection was lost";
 char const * const  "ClientStat_SomeoneDropped_s"_lookup        = "\"%s\" is no longer connected";
 char const * const  "ClientStat_ServerAborted"_lookup           = "Game aborted";
 char const * const  "ClientStat_ServerStarted"_lookup           = "Starting game";
@@ -389,7 +389,7 @@ char const * const  "ClientStat_LoginAccepted_hd"_lookup        = "Logged in (ID
 char const * const  "ClientStat_Startup"_lookup                 = "Trying to connect...";
 char const * const  "ClientStat_Default"_lookup                 = "Ready";
 char const * const  "ClientStat_Error_s"_lookup                 = "Network error (%s) -- aborting";
-char const * const  "ClientStat_Retrying"_lookup             = "Retry...";
+char const * const  "ClientStat_Retrying"_lookup                = "Retry...";
 
 // Server-specific messages displayed in server dialog's status area
 char const * const  "ServerStat_InvalidDropReq_hd"_lookup    = "Ignored invalid drop request (ID = %hd)";
@@ -461,6 +461,7 @@ char const * const   "NetProb_General"_lookup =
 
 // Text to prefix net status messages, if any.
 char const * const  "NetStatusMsgPrefix"_lookup                 = "> ";
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -500,18 +501,18 @@ struct GuiLink {
       Gui
    };
 
-   long  lId;  // ID of GUI to link to.
+   int32_t  lId;  // ID of GUI to link to.
    Type  type;
 #if 1
    union
       {
       void*       pvLink;
-      long*       pl;
-      ULONG*      pul;
+      int32_t*       pl;
+      uint32_t*      pul;
       int16_t*      ps;
       uint16_t*     pus;
       char*       pc;
-      UCHAR*      puc;
+      uint8_t*      puc;
       char*       psz;
       bool*       pb;
       RGuiItem**  ppgui;
@@ -552,17 +553,17 @@ static RListBox*  ms_plbHostBrowse  = nullptr;     // Browse for host listbox.
 
 // Other static vars.
 
-static long       ms_lWatchdogTime = 0;         // Watchdog timer
+static int32_t       ms_lWatchdogTime = 0;         // Watchdog timer
 static bool       ms_bNetBlockingAbort = false; // Net blocking abort flag
 
-static long       ms_lNumConsoleEntries      = 0;        // Track number of chat items.
+static int32_t       ms_lNumConsoleEntries      = 0;        // Track number of chat items.
 
 static bool       ms_bGotSetupMsg = false;
 static int16_t      ms_sSetupRealmNum = 0;
 static char       ms_szSetupRealmFile[Net::MaxRealmNameSize];
-static long       ms_lSetupLastChatComplaint = 0;
+static int32_t       ms_lSetupLastChatComplaint = 0;
 
-static long       ms_lNextOptionsUpdateTime;    // Next time to send an options update.
+static int32_t       ms_lNextOptionsUpdateTime;    // Next time to send an options update.
 
 static RTxt*      ms_ptxtNetProb = nullptr;        // Net problem GUI.
 static bool       m_bNetWatchdogExpired   = false; // Whether net blocking expired
@@ -589,7 +590,7 @@ static GuiLink       ms_aglServerLinkage[]   =
       { GUI_ID_ENABLE_COOP_MODE,    GuiLink::Gui,     &ms_pmbCoopMode,                    },
       { GUI_ID_ENABLE_COOP_MODE,    GuiLink::Bool,    &ms_bCoopMode,                      },
 
-      { static_cast<long>(TERMINATING_GUI_ID), },  // Terminator.
+      { static_cast<int32_t>(TERMINATING_GUI_ID), },  // Terminator.
    };
 
 static GuiLink       ms_aglClientLinkage[]   =
@@ -597,7 +598,7 @@ static GuiLink       ms_aglClientLinkage[]   =
       { GUI_ID_OPTIONS_STATIC,      GuiLink::Gui,     &ms_pguiOptions,                    },
       { GUI_ID_RETRY,               GuiLink::Gui,     &ms_pguiRetry,                      },
 
-      { static_cast<long>(TERMINATING_GUI_ID), },  // Terminator.
+      { static_cast<int32_t>(TERMINATING_GUI_ID), },  // Terminator.
    };
 
 static GuiLink       ms_aglClientServerLinkage[]   =
@@ -609,7 +610,7 @@ static GuiLink       ms_aglClientServerLinkage[]   =
       { GUI_ID_OK,                  GuiLink::Gui,     &ms_pguiOk,                         },
       { GUI_ID_CANCEL,              GuiLink::Gui,     &ms_pguiCancel,                     },
 
-      { static_cast<long>(TERMINATING_GUI_ID), },  // Terminator.
+      { static_cast<int32_t>(TERMINATING_GUI_ID), },  // Terminator.
    };
 
 static GuiLink       ms_aglBrowserLinkage[]  =
@@ -618,7 +619,7 @@ static GuiLink       ms_aglBrowserLinkage[]  =
       { GUI_ID_OK,                  GuiLink::Gui,     &ms_pguiOk,                         },
       { GUI_ID_CANCEL,              GuiLink::Gui,     &ms_pguiCancel,                     },
 
-      { static_cast<long>(TERMINATING_GUI_ID), },  // Terminator.
+      { static_cast<int32_t>(TERMINATING_GUI_ID), },  // Terminator.
    };
 
 
@@ -698,18 +699,18 @@ void UploadLinkInteger(       // Returns nothing.
          if ((Int)-1 < 0)
             {
             // Signed.
-            pgui->SetText("%ld", (long)i);
+            pgui->SetText("%ld", (int32_t)i);
             }
          else
             {
             // Unsigned.
-            pgui->SetText("%lu", (ULONG)i);
+            pgui->SetText("%lu", (uint32_t)i);
             }
 #else
          // Hardwire to signed b/c bool was displaying a warning regarding the
          // above comparison to determine the [un]signed nature of the templated
          // type.
-         pgui->SetText("%ld", (long)i);
+         pgui->SetText("%ld", (int32_t)i);
 #endif
          break;
       }
@@ -1038,7 +1039,7 @@ static int16_t ShowLevels(void)                // Returns 0 on success.
                   }
                else
                   {
-                  TRACE("ShowLevels(): Failed to add string to listbox.\n";
+                  TRACE("ShowLevels(): Failed to add string to listbox.\n");
                   sRes  = -1;
                   }
                }
@@ -1059,7 +1060,7 @@ static int16_t ShowLevels(void)                // Returns 0 on success.
             }
          else
             {
-            TRACE("ShowLevels(): Failed to add string to listbox.\n";
+            TRACE("ShowLevels(): Failed to add string to listbox.\n");
             sRes  = -1;
             }
 
@@ -1289,12 +1290,12 @@ static int16_t SetupDlg(     // Returns 0 on success.
          }
       else
          {
-         TRACE("SetupDlg(): Failed to load .gui file!\n";
+         TRACE("SetupDlg(): Failed to load .gui file!\n");
          }
       }
    else
       {
-      TRACE("SetupDlg(): Failed to allocate RDlg!\n";
+      TRACE("SetupDlg(): Failed to allocate RDlg!\n");
       sRes = -1;
       }
 
@@ -1401,7 +1402,7 @@ static DLG_ACTION UpdateDialog(                 // Returns dialog action
    rspNameBuffers(&g_pimScreenBuf);
 
    // Process GUI through an iteration.
-   long  lPressedId  = ms_pgDoGui.DoModeless(pguiRoot, &ie, g_pimScreenBuf);
+   int32_t  lPressedId  = ms_pgDoGui.DoModeless(pguiRoot, &ie, g_pimScreenBuf);
 
    // If OK chosen or enter pressed . . .
    if (lPressedId == GUI_ID_OK || (ie.type == RInputEvent::Key && (ie.lKey & 0x0000FFFF) == '\r') )
@@ -1498,7 +1499,7 @@ static DLG_ACTION UpdateDialog(                 // Returns dialog action
    if (action == DLG_NOTHING)
       {
       // Temporarily timed based. ***
-      long  lCurTime = rspGetMilliseconds();
+      int32_t  lCurTime = rspGetMilliseconds();
       if (lCurTime > ms_lNextOptionsUpdateTime)
          {
          if (bReset)
@@ -1565,7 +1566,7 @@ static int16_t UpdateListBox(               // Returns 0 on success.
          {
          CNetBrowse::CHost* phost = &(phostslistPersist->GetData(i) );
          // If not yet GUIed . . .
-         if ( !(phost->m_u32User) )
+         if ( (void*)phost->m_u32User == nullptr )
             {
             RGuiItem*   pgui  = plb->AddString(phost->m_acName);
             if (pgui)
@@ -1574,16 +1575,16 @@ static int16_t UpdateListBox(               // Returns 0 on success.
                MakeMoreReadable(pgui);
                pgui->Compose();
                // Point GUI at entry.
-               pgui->m_ulUserData   = (ULONG)phost;
+               pgui->m_ulUserData   = phost;
                // Successfully added entry.
-               phost->m_u32User  = (U32)pgui;
+               phost->m_u32User  = pgui;
                // Note that we updated the dialog and will need to re-adjust
                // fields and recompose.
                bRepaginate = true;
                }
             else
                {
-               TRACE("UpdateListBox():  Failed to add a host to the listbox.\n";
+               TRACE("UpdateListBox():  Failed to add a host to the listbox.\n");
 //             sResult  = -1; // Error?
                }
             }
@@ -1601,14 +1602,14 @@ static int16_t UpdateListBox(               // Returns 0 on success.
       while (phostslistDropped->GetHead())
          {
          // Get pointer to first host in list
-         U32 u32User = phostslistDropped->GetHeadData().m_u32User;
+         RGuiItem* u32User = phostslistDropped->GetHeadData().m_u32User;
 
          // We should have already been using this.
          ASSERT(u32User);
          if (u32User)
             {
             // Remove the corresponding GUI list entry from the listbox.
-            plb->RemoveItem((RGuiItem*)(u32User));
+            plb->RemoveItem(u32User);
             // Note that we updated the dialog and will need to re-adjust
             // fields and recompose.
             bRepaginate = true;
@@ -1638,7 +1639,7 @@ static int16_t UpdateListBox(               // Returns 0 on success.
       }
    else
       {
-      TRACE("UpdateListBox():  No listbox to update.\n";
+      TRACE("UpdateListBox():  No listbox to update.\n");
       sResult  = -1;
       }
 
@@ -1664,7 +1665,7 @@ static void AddConsoleMsg( // Returns nothing.
       vsprintf(szOutput, pszFrmt, varp);
       va_end(varp);
 
-      U32   u32TextColor   = ms_plbNetConsole->m_u32TextColor;
+      uint32_t   u32TextColor   = ms_plbNetConsole->m_u32TextColor;
 
       char szMsg[MAX_STATUS_STR];
       // If it's a chat message . . .
@@ -1937,7 +1938,7 @@ static void OnDroppedMsg(
    RSP_SAFE_GUI_REF_VOID(pguiConnected, Compose());
 
    // Get client's GUI . . .
-   RGuiItem* pguiClient = ms_plbPlayers->GetItemFromId( long(pmsg->msg.dropped.id));
+   RGuiItem* pguiClient = ms_plbPlayers->GetItemFromId( int32_t(pmsg->msg.dropped.id));
    if (pguiClient)
       {
       // Remove the item.
@@ -1946,7 +1947,7 @@ static void OnDroppedMsg(
       }
    else
       {
-      TRACE("RemoveClient(): We didn't even know of this client!!\n";
+      TRACE("RemoveClient(): We didn't even know of this client!!\n");
       }
    }
 
@@ -1965,7 +1966,7 @@ static int16_t OnJoinedMsg(  // Returns 0 on success.
 
    ASSERT(pmsg->msg.nothing.ucType == NetMsg::JOINED);
 
-   UCHAR ucColorIndex   = pmsg->msg.joined.ucColor;
+   uint8_t ucColorIndex   = pmsg->msg.joined.ucColor;
    if (ucColorIndex >= CGameSettings::ms_sNumPlayerColorDescriptions)
       ucColorIndex   = 0;
 
@@ -1985,7 +1986,7 @@ static int16_t OnJoinedMsg(  // Returns 0 on success.
    if (pguiClient)
       {
       // Let's be able to identify this client by its net ID.
-      pguiClient->m_lId = (long)pmsg->msg.joined.id;
+      pguiClient->m_lId = (int32_t)pmsg->msg.joined.id;
 
       // Don't allow the user to select these in client mode . . .
       if (bServer == false)
@@ -2003,7 +2004,7 @@ static int16_t OnJoinedMsg(  // Returns 0 on success.
       }
    else
       {
-      TRACE("OnJoinedMsg(): ms_plbPlayers->AddString() failed.\n";
+      TRACE("OnJoinedMsg(): ms_plbPlayers->AddString() failed.\n");
       sRes = -1;
       }
 
@@ -2024,7 +2025,7 @@ static int16_t OnChangedMsg( // Returns 0 on success.
 
    ASSERT(pmsg->msg.nothing.ucType == NetMsg::CHANGED);
 
-   TRACE("OnChangedMsg(): Changes are not yet refelected in the gui's!\n";
+   TRACE("OnChangedMsg(): Changes are not yet refelected in the gui's!\n");
 
    return sRes;
    }
@@ -2453,7 +2454,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                         bool bServerDone = pserver ? false : true;
                         bool bClientDone = false;
                         bool bUserAbortNow = false;
-                        long lCancelDelay;
+                        int32_t lCancelDelay;
                         DLG_ACTION action;
                         NetMsg msg;
                         while (!(bClientDone && bServerDone && (bAbort || bStart || bRetry)) && !bUserAbortNow)
@@ -2511,7 +2512,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                                              -1,
                                              SPECIFIC_MP_REALM_FILE,
                                           #else
-                                             RSP_SAFE_GUI_REF(pguiSel, m_lId),
+                                             RSP_SAFE_GUI_REF(pguiSel, m_lId.operator int16_t()),
                                              "",
                                           #endif
                                           g_GameSettings.m_sDifficulty,
@@ -2611,7 +2612,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                                     RGuiItem*   pguiPlayerSel  = ms_plbPlayers->GetSel();
                                     if (pguiPlayerSel)
                                        {
-                                       Net::ID id = (UCHAR)pguiPlayerSel->m_lId;
+                                       Net::ID id = (uint8_t)pguiPlayerSel->m_lId;
                                        // Don't be a moron -- don't drop yourself
                                        if (id == pclient->GetID())
                                           {
@@ -2678,7 +2679,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                                  break;
 
                               default:
-                                 TRACE("DoNetGameDialog(): Unknown dialog action!\n";
+                                 TRACE("DoNetGameDialog(): Unknown dialog action!\n");
                                  break;
                               }
 
@@ -2933,7 +2934,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                }
             else
                {
-               TRACE("DoNetGameDialog(): Failed to setup dialog.\n";
+               TRACE("DoNetGameDialog(): Failed to setup dialog.\n");
                }
             }
 
@@ -3082,7 +3083,7 @@ static int16_t BrowseForHost(
                      }
                   else
                      {
-                     TRACE("BrowseForHost():  No host selected.\n";
+                     TRACE("BrowseForHost():  No host selected.\n");
                      sResult  = -1;
                      }
                   break;
@@ -3097,7 +3098,7 @@ static int16_t BrowseForHost(
                   break;
 
                default:
-                  TRACE("BrowseForHost(): Unknown action.\n";
+                  TRACE("BrowseForHost(): Unknown action.\n");
                   sResult  = 1;
                   break;
                }
@@ -3187,7 +3188,7 @@ static int16_t BrowseForSelf(
    if (sResult == 0)
       {
       // Wait for our own broadcast
-      long lTime = rspGetMilliseconds() + Net::BroadcastDropTime;
+      int32_t lTime = rspGetMilliseconds() + Net::BroadcastDropTime;
       while (!bFoundSelf && (rspGetMilliseconds() < lTime))
          {
          UpdateSystem();
@@ -3214,7 +3215,7 @@ static int16_t BrowseForSelf(
       if (!bFoundSelf)
          {
          sResult = -1;
-         TRACE("BrowseForSelf(): Couldn't find myself!\n";
+         TRACE("BrowseForSelf(): Couldn't find myself!\n");
          }
 
       // Stop browsing
@@ -3290,7 +3291,7 @@ static int16_t NetBlockingCallback(void)          // Returns 0 to continue norma
    // check on a key's status.  The important thing would be NOT to clear
    // any key's status so we don't affect the input module (input.cpp) or
    // the play loop (play.cpp:PlayRealm()).
-   static U8*  pau8KeyStatus  = rspGetKeyStatusArray();
+   static uint8_t*  pau8KeyStatus  = rspGetKeyStatusArray();
 
    // Assume we won't abort
    int16_t sAbort = 0;

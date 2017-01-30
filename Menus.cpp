@@ -376,7 +376,7 @@
 #include <Network/Socket.h>
 #include <Organ.h>
 #include <Network/Net.h>
-#include <CompileOptions.h>   // For ALLOW_JOYSTICK macro.
+   // For ALLOW_JOYSTICK macro.
 #include <Update.h>
 
 #ifdef WIN32
@@ -427,10 +427,10 @@
 // try to figure out how many font sizes are used, we want this to be a cached size.
 #define DEFAULT_GUI_FONT_HEIGHT     19
 
-#define HEAD_COLOR                  MAKE_U32_COLOR(160,   0,   0,   0)
-#define HEAD_SHADOW_COLOR           MAKE_U32_COLOR( 64,  16,  16,   0)
-#define ITEM_COLOR                  MAKE_U32_COLOR(160,   0,   0,   0)
-#define ITEM_SHADOW_COLOR           MAKE_U32_COLOR( 64,  16,  16,   0)
+#define HEAD_COLOR                  MAKE_uint32_t_COLOR(160,   0,   0,   0)
+#define HEAD_SHADOW_COLOR           MAKE_uint32_t_COLOR( 64,  16,  16,   0)
+#define ITEM_COLOR                  MAKE_uint32_t_COLOR(160,   0,   0,   0)
+#define ITEM_SHADOW_COLOR           MAKE_uint32_t_COLOR( 64,  16,  16,   0)
 
 // Background color index for where there is no menu graphic.
 #define MENU_BG_COLOR               252
@@ -1675,7 +1675,7 @@ Menu  menuControls =
          { "ControlsMenu_UseMouse"_lookup,                TRUE,       nullptr,             nullptr,       },
          { "ControlsMenu_HorizMouseSensitivity"_lookup,   TRUE,       nullptr,             nullptr,       },
          { "ControlsMenu_VertMouseSensitivity"_lookup,    TRUE,       nullptr,             nullptr,       },
-         { "",                                        FALSE,      nullptr,             nullptr,       },
+         { "",                                            FALSE,      nullptr,             nullptr,       },
          nullptr                    // Terminates list.
       },
    };
@@ -2140,7 +2140,7 @@ Menu  menuFeatures =
    // Menu items.
       {  // pszText,                            sEnabled,   pmenu,               pgui
          { "PerformanceMenu_Transparency"_lookup,   TRUE,       nullptr,             nullptr,       },
-         { "PerformanceMenu_"_lookup3dLighting,     TRUE,       nullptr,             nullptr,       },
+         { "PerformanceMenu_3dLighting"_lookup,     TRUE,       nullptr,             nullptr,       },
          { "PerformanceMenu_Particles"_lookup,      TRUE,       nullptr,             nullptr,       },
          { "PerformanceMenu_DynamicVolume"_lookup,  TRUE,       nullptr,             nullptr,       },
          { "PerformanceMenu_AmbientSounds"_lookup,  TRUE,       nullptr,             nullptr,       },
@@ -3332,7 +3332,7 @@ static int16_t JoinMultiInit(   // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("JoinMultiInit(): ms_presmgr->Get() failed.\n";
+         TRACE("JoinMultiInit(): ms_presmgr->Get() failed.\n");
          sRes  = 1;
          }
       }
@@ -3403,7 +3403,7 @@ static int16_t HostMultiInit(   // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("HostMultiInit(): ms_presmgr->Get() failed.\n";
+         TRACE("HostMultiInit(): ms_presmgr->Get() failed.\n");
          sRes  = 1;
          }
       }
@@ -3523,7 +3523,7 @@ static int16_t OptionsInit(     // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("ControlsInit(): rspGetResource() failed.\n";
+         TRACE("ControlsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
       }
@@ -3615,7 +3615,7 @@ static int16_t PlayOptionsInit( // Returns 0 on success, non-zero to cancel menu
             // This is weird but it allows artie to finer tune the scroll thumb size.
             // We use the ID of the parent as the divisor for the scrollbar value.
             // Set the initial position.
-            ms_psbDifficulty->SetPos(g_GameSettings.m_sDifficulty * pgui->m_lId);
+            ms_psbDifficulty->SetPos(g_GameSettings.m_sDifficulty * (int16_t)pgui->m_lId);
             }
 
          // Let menu know about it.
@@ -3623,7 +3623,7 @@ static int16_t PlayOptionsInit( // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("PlayOptionsInit(): rspGetResource() failed.\n";
+         TRACE("PlayOptionsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
       }
@@ -3680,15 +3680,15 @@ static int16_t VideoOptionsInit(   // Returns 0 on success, non-zero to cancel m
          ms_psbGamma->m_upcUser  = GammaScrollUpdate;
 
          // Get range.
-         long  lMin, lMax;
+         int32_t  lMin, lMax;
          ms_psbGamma->GetRange(&lMin, &lMax);
 
          // Determine range of values.
-         long  lRange   = lMax - lMin;
+         int32_t  lRange   = lMax - lMin;
 
          // Set the initial position.  Gamma value indicator will get set via callback.
          // Convert to gamma value by ratio.
-         long  lVal  = long(float(lRange) / GAMMA_RANGE * (GetGammaLevel() - MIN_GAMMA_VAL) + 0.5) + lMin;
+         int32_t  lVal  = int32_t(float(lRange) / GAMMA_RANGE * (GetGammaLevel() - MIN_GAMMA_VAL) + 0.5) + lMin;
          ms_psbGamma->SetPos(lVal);
 
          // Let menu know about it.
@@ -3696,7 +3696,7 @@ static int16_t VideoOptionsInit(   // Returns 0 on success, non-zero to cancel m
          }
       else
          {
-         TRACE("VideoOptionsInit(): rspGetResource() failed.\n";
+         TRACE("VideoOptionsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
       }
@@ -3802,7 +3802,7 @@ static int16_t VolumesInit(     // Returns 0 on success, non-zero to cancel menu
 
             // Let the callback know which item this is.
             psb->m_ulUserData = i;
-            long  lMin, lMax, lRange;
+            int32_t  lMin, lMax, lRange;
             psb->GetRange(&lMin, &lMax);
             lRange   = lMax - lMin;
             // Set the initial position.
@@ -3832,7 +3832,7 @@ static int16_t VolumesInit(     // Returns 0 on success, non-zero to cancel menu
             }
          else
             {
-            TRACE("VolumesInit():  Failed to get resource.\n";
+            TRACE("VolumesInit():  Failed to get resource.\n");
             sRes  = 1;
             }
          }
@@ -3891,7 +3891,7 @@ static bool VolumesChoice(    // Returns true to accept, false to deny choice.
             {
             if (pmenuCurrent->ami[i].pgui)
                {
-               long  lMin, lMax, lRange;
+               int32_t  lMin, lMax, lRange;
                ( (RScrollBar*)(pmenuCurrent->ami[i].pgui) )->GetRange(&lMin, &lMax);
                lRange   = lMax - lMin;
 
@@ -3961,7 +3961,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("ControlsInit(): rspGetResource() failed.\n";
+         TRACE("ControlsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
 #else
@@ -3980,7 +3980,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("ControlsInit(): rspGetResource() failed.\n";
+         TRACE("ControlsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
 
@@ -3992,7 +3992,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          // Set the callback.
          ms_psbMouseSensitivityX->m_upcUser        = MouseSensitivityScrollUpdate;
          // Set the value to change.
-         ms_psbMouseSensitivityX->m_ulUserInstance = (ULONG)&g_InputSettings.m_dMouseSensitivityX;
+         ms_psbMouseSensitivityX->m_ulUserInstance = &g_InputSettings.m_dMouseSensitivityX;
 
 
          // Set the initial position.  ms_psbGammaVal will get set via callback.
@@ -4004,7 +4004,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("ControlsInit(): rspGetResource() failed.\n";
+         TRACE("ControlsInit(): rspGetResource() failed.\n");
          sRes  = 2;
          }
 
@@ -4016,7 +4016,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          // Set the callback.
          ms_psbMouseSensitivityY->m_upcUser        = MouseSensitivityScrollUpdate;
          // Set the value to change.
-         ms_psbMouseSensitivityY->m_ulUserInstance = (ULONG)&g_InputSettings.m_dMouseSensitivityY;
+         ms_psbMouseSensitivityY->m_ulUserInstance = &g_InputSettings.m_dMouseSensitivityY;
 
 
          // Set the initial position.  ms_psbGammaVal will get set via callback.
@@ -4028,7 +4028,7 @@ static int16_t ControlsInit(    // Returns 0 on success, non-zero to cancel menu
          }
       else
          {
-         TRACE("ControlsInit(): rspGetResource() failed.\n";
+         TRACE("ControlsInit(): rspGetResource() failed.\n");
          sRes  = 3;
          }
       }
@@ -4161,12 +4161,12 @@ int16_t SetUpRotationScrollBar(    // Returns 0 on success.
             psb->m_upcUser          = RotationScrollUpdateDouble;
             break;
          default:
-            TRACE("SetUpRotationScrollBar(): Unsupported value size.\n";
+            TRACE("SetUpRotationScrollBar(): Unsupported value size.\n");
             break;
          }
 
       // Set the value to change.
-      psb->m_ulUserInstance   = (ULONG)pvtRotationVal;
+      psb->m_ulUserInstance   = pvtRotationVal;
 
 
       // Set the initial position.  psb will get set via callback.
@@ -4286,7 +4286,7 @@ static int16_t MultiOptionsInit(   // Returns 0 on success, non-zero to cancel m
          }
       else
          {
-         TRACE("MultiOptionsInit(): rspGetResource() failed.\n";
+         TRACE("MultiOptionsInit(): rspGetResource() failed.\n");
          sRes  = 1;
          }
 
@@ -4309,7 +4309,7 @@ static int16_t MultiOptionsInit(   // Returns 0 on success, non-zero to cancel m
          }
       else
          {
-         TRACE("MultiOptionsInit(): rspGetResource() failed.\n";
+         TRACE("MultiOptionsInit(): rspGetResource() failed.\n");
          sRes  = 2;
          }
 
@@ -4324,7 +4324,7 @@ static int16_t MultiOptionsInit(   // Returns 0 on success, non-zero to cancel m
          }
       else
          {
-          TRACE("MultiOptionsIni(): rspGetResource() failed.\n";
+          TRACE("MultiOptionsIni(): rspGetResource() failed.\n");
           sRes = 4;
          }
 
@@ -4342,7 +4342,7 @@ static int16_t MultiOptionsInit(   // Returns 0 on success, non-zero to cancel m
          }
       else
          {
-         TRACE("MultiOptionsInit(): rspGetResource() failed.\n";
+         TRACE("MultiOptionsInit(): rspGetResource() failed.\n");
          sRes  = 5;
          }
       }
@@ -4667,7 +4667,7 @@ static int16_t FeaturesInit(    // Returns 0 on success, non-zero to cancel menu
             }
          else
             {
-            TRACE("FeaturesInit(): rspGetResource() failed.\n";
+            TRACE("FeaturesInit(): rspGetResource() failed.\n");
             sRes  = 1;
             }
          }
@@ -4760,14 +4760,14 @@ static void GammaScrollUpdate(   // Returns nothing.
    ASSERT(psb);
 
    // Get range.
-   long  lMin, lMax;
+   int32_t  lMin, lMax;
    psb->GetRange(&lMin, &lMax);
 
    // Determine range of values.
-   long  lRange   = lMax - lMin;
+   int32_t  lRange   = lMax - lMin;
 
    // Set via scroll position.
-   long  lVal  = psb->GetPos();
+   int32_t  lVal  = psb->GetPos();
 
    // Convert to gamma value by ratio.
    int16_t sVal  = int16_t(GAMMA_RANGE / float(lRange) * (lVal - lMin) + 0.5) + MIN_GAMMA_VAL;
@@ -4832,8 +4832,8 @@ static void VolumesScrollUpdate( // Returns nothing.
    {
    ASSERT(psb);
 
-   SampleMaster::SoundCategory   sc    = (SampleMaster::SoundCategory)psb->m_ulUserData;
-   long                          lMin, lMax, lRange;
+   SampleMaster::SoundCategory   sc    = (SampleMaster::SoundCategory)(uint32_t)psb->m_ulUserData;
+   int32_t                          lMin, lMax, lRange;
    psb->GetRange(&lMin, &lMax);
    lRange   = lMax - lMin;
 
@@ -5053,7 +5053,7 @@ int16_t PickFile(const char *title, void (*enumer)(Menu *), char *buf, size_t bu
    int16_t sResult = StartMenu(&g_menuPickFile, &g_resmgrShell, g_pimScreenBuf);
     if (sResult != 0)
     {
-        TRACE("StartMenu failed! Can't pick file!\n";
+        TRACE("StartMenu failed! Can't pick file!\n");
         return -1;
     }
 

@@ -21,12 +21,12 @@
 
 double SINQ[csNumRotSteps],COSQ[csNumRotSteps];
 float fSINQ[csNumRotSteps],fCOSQ[csNumRotSteps];
-short ATANQ[60];
-short	SQRTQ[MAX_FAST_SQRT];
+int16_t ATANQ[60];
+int16_t	SQRTQ[MAX_FAST_SQRT];
 
-short rspATan(short sDeltaY,short sDeltaX)
+int16_t rspATan(int16_t sDeltaY,int16_t sDeltaX)
 	{
-	short sDelX,sDelY,sDeg; // absolute versions
+	int16_t sDelX,sDelY,sDeg; // absolute versions
 
 	if (sDeltaX < 0) sDelX = -sDeltaX;
 	else sDelX = sDeltaX;
@@ -53,9 +53,9 @@ short rspATan(short sDeltaY,short sDeltaX)
 	return sDeg;
 	}
 
-short rspATan(double dVal)
+int16_t rspATan(double dVal)
 	{
-	short sDeg; // absolute versions
+	int16_t sDeg; // absolute versions
 	double dAbsVal;
 
 	if (dVal < 0) dAbsVal = -dVal;
@@ -77,7 +77,7 @@ short rspATan(double dVal)
 
 void InitTrig()
 	{
-	short i;
+	int16_t i;
 	double rad;
 
 	const double cdStepsToRad = 
@@ -95,14 +95,14 @@ void InitTrig()
 	// Set up Arctan 45 degrees:
 	for (i=0;i<58;i++)
 		{
-		ATANQ[i] = short(0.5 + atan( rspDegToRad * i ) *
+		ATANQ[i] = int16_t(0.5 + atan( rspDegToRad * i ) *
 												rspRadToDeg);
 		}
 
-	long l;
+	int32_t l;
 	for (l=0; l < MAX_FAST_SQRT; l++)
 		{
-		SQRTQ[l] = short(sqrt(double(l)));
+		SQRTQ[l] = int16_t(sqrt(double(l)));
 		}
 
 	TRACE("QTRIG initialized!\n"); 	

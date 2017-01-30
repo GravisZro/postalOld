@@ -39,7 +39,7 @@
 
 // Usefull test code to make sure it will really compile.  If templated stuff
 // isn't actually instantiated, the compiler will miss many (or all) errors.
-RChannel<short> test;
+RChannel<int16_t> test;
 RChannel<long> test2(RChannel_ArrayOfPtrs);
 
 

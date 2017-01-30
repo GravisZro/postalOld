@@ -64,7 +64,7 @@
 
 #include <RSPiX.h>
 #include <Realm.h>
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 #include <Bulletfest.h>
 
 
@@ -76,7 +76,7 @@ class CMine : public CWeapon
    //---------------------------------------------------------------------------
    public:
 
-   typedef unsigned char MineType;
+   typedef uint8_t MineType;
 
    enum {
       ProximityMine = 3,
@@ -100,7 +100,7 @@ class CMine : public CWeapon
       CBulletFest m_bulletfest;              // Used for bouncing betty
       double      m_dVertVel;                // Vertical velocity
       double      m_dVertDeltaVel;           // Change in vertical velocity
-      long        m_lFuseTime;               // Time before timed mine goes off
+      int32_t        m_lFuseTime;               // Time before timed mine goes off
       SampleMaster::SoundInstance m_siMineBeep;// Arming beep sound that loops
       // Tracks file counter so we know when to load/save "common" data
       static int16_t ms_sFileCount;
@@ -110,9 +110,9 @@ class CMine : public CWeapon
       static int16_t ms_sProximityRadius;      // Distance at which mine goes off
       static int16_t ms_sBettyRadius;          // Distance at which mine goes off
       static int16_t ms_sBettyRange;           // Affected area for Bouncing Betty
-      static long ms_lFuseTime;              // Timed mine explodes after this time
-      static long ms_lArmingTime;            // Proximity mines arm after this time
-      static long ms_lExplosionDelay;        // Delay before explosion triggers mine
+      static int32_t ms_lFuseTime;              // Timed mine explodes after this time
+      static int32_t ms_lArmingTime;            // Proximity mines arm after this time
+      static int32_t ms_lExplosionDelay;        // Delay before explosion triggers mine
       static double ms_dInitialBounceVelocity;//Bouncing Betty popup velocity
 
 
@@ -282,7 +282,7 @@ class CMine : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -302,7 +302,7 @@ class CMine : public CWeapon
          int16_t sX,                                    // In: New x coord
          int16_t sY,                                    // In: New y coord
          int16_t sZ,                                    // In: New z coord
-         long lFuseTime);                             // In: Time in ms for fuse
+         int32_t lFuseTime);                             // In: Time in ms for fuse
 
       // Override base class Setup().
       virtual           // Overridden here.

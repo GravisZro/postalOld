@@ -52,7 +52,7 @@
 #ifndef NAPALM_H
 #define NAPALM_H
 
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 
 // CNapalm is a canister of napalm weapon class
 class CNapalm : public CWeapon
@@ -81,7 +81,7 @@ class CNapalm : public CWeapon
 
       // "Constant" values that we want to be able to tune using the editor
       static double ms_dAccDrag;          // Acceleration due to drag (always towards 0)
-      static long   ms_lGrenadeFuseTime;  // Time from throw to blow
+      static int32_t   ms_lGrenadeFuseTime;  // Time from throw to blow
       static double ms_dThrowVertVel;     // Throw up at this velocity
       static double ms_dThrowHorizVel;    // Throw out at this velocity
       static double ms_dMinFireInterval;  // Lay fire down every this amount of distance
@@ -151,7 +151,7 @@ class CNapalm : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

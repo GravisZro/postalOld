@@ -159,7 +159,7 @@ class CStockPile
       // Load stockpile from the specified file.
       int16_t Load(                // Returns 0 on success.
          RFile*   pfile,         // In:  File to load from.
-         ULONG    ulVersion);    // In:  File version to load.
+         uint32_t    ulVersion);    // In:  File version to load.
 
       // Add another stockpile to this one.
       void Add(                           // Returns nothing.

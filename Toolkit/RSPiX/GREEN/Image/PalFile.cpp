@@ -34,7 +34,7 @@
 //
 // NOTES TO THOSE ADDING NEW FILE VERSIONS:
 //	Please follow these steps when adding a new version Load or Save:
-//	o	Define a new static short RPalFile::LoadVersion#(RPal*, RFile*) 
+//	o	Define a new static int16_t RPalFile::LoadVersion#(RPal*, RFile*) 
 //	where # is the number of the new version.
 //
 // o	Call your new LoadVersion#(...) in the switch statement in 
@@ -88,15 +88,15 @@
 // Loads an RPal with no file version into ppal from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPalFile::LoadNoVersion(	// Returns SUCCESS on success or FAILURE on
+int16_t RPalFile::LoadNoVersion(	// Returns SUCCESS on success or FAILURE on
 											// failure.
 	RPal*		ppal,						// Pal to load into.
 	RFile*	pfile)					// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
-	// No RFile support for RPal::Type, so we used a U32.
-	U32	u32Temp	= 0;
+	// No RFile support for RPal::Type, so we used a uint32_t.
+	uint32_t	u32Temp	= 0;
 	pfile->Read(&u32Temp);
 	ppal->m_type	= (RPal::Type)u32Temp;
 	pfile->Read(&ppal->m_ulSize);
@@ -128,12 +128,12 @@ short RPalFile::LoadNoVersion(	// Returns SUCCESS on success or FAILURE on
 // Loads an RPal with file version 1 into ppal from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPalFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
+int16_t RPalFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
 										// failure.
 	RPal*		/*ppal*/,			// Pal to load into.
 	RFile*	/*pfile*/)			// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	TRACE("LoadVersion1(): No current support for version 1 RPal.\n");
 	sRes	= FAILURE;
@@ -146,12 +146,12 @@ short RPalFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
 // Loads an RPal with file version 2 into ppal from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPalFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
+int16_t RPalFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 										// failure.
 	RPal*		/*ppal*/,			// Pal to load into.
 	RFile*	/*pfile*/)			// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	TRACE("LoadVersion2(): No current support for version 2 RPal.\n");
 	sRes	= FAILURE;
@@ -164,15 +164,15 @@ short RPalFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 // Loads an RPal with file version 3 into ppal from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPalFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
+int16_t RPalFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
 										// failure.
 	RPal*		ppal,					// Pal to load into.
 	RFile*	pfile)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
-	// No RFile support for RPal::Type, so we used a U32.
-	U32	u32Temp	= 0;
+	// No RFile support for RPal::Type, so we used a uint32_t.
+	uint32_t	u32Temp	= 0;
 	pfile->Read(&u32Temp);
 	ppal->m_type	= (RPal::Type)u32Temp;
 	pfile->Read(&ppal->m_ulSize);
@@ -180,7 +180,7 @@ short RPalFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
 	pfile->Read(&ppal->m_sNumEntries);
 	pfile->Read(&ppal->m_sPalEntrySize);
 
-	USHORT	usFlag	= 2;
+	uint16_t	usFlag	= 2;
 	pfile->Read(&usFlag);
 	if (usFlag == 1)
 		{
@@ -213,19 +213,19 @@ short RPalFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
 // Maps a particular file load onto the appropriate function, if available.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RPalFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
+int16_t RPalFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 	RPal*		ppal,					// Pal to load into.
 	RFile*	pfile)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	// Get finger print . . .
-	ULONG	ulFinger;
+	uint32_t	ulFinger;
 	if (pfile->Read(&ulFinger) == 1)
 		{
 		if (ulFinger == PAL_COOKIE)
 			{
-			ULONG	ulVersion;
+			uint32_t	ulVersion;
 			if (pfile->Read(&ulVersion) == 1)
 				{
 				switch (ulVersion)

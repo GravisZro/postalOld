@@ -65,7 +65,8 @@ class CDispenser : public CThing
    // Types, enums, etc.
    //---------------------------------------------------------------------------
    public:
-      enum LogicType {
+      enum LogicType : uint32_t
+      {
          Timed,            // Must be 0.
          Exists,
          DistanceToDude,
@@ -97,7 +98,7 @@ class CDispenser : public CThing
       ClassIDType m_idDispenseeType;               // Type of object to dispense.
       RFile       m_fileDispensee;                 // Mem file representing
                                                    // dispensee.
-      ULONG       m_ulFileVersion;                 // File version of data stored
+      uint32_t       m_ulFileVersion;                 // File version of data stored
                                                    // in m_fileDispensee.
 
       int16_t       m_sX;                            // Location of this object,
@@ -107,16 +108,16 @@ class CDispenser : public CThing
                                                    // dispensee.
 
       LogicType   m_logictype;                     // Logic used for dispensing.
-      long        m_alLogicParms[NumParms];        // Generic parameters for logic.
+      int32_t        m_alLogicParms[NumParms];        // Generic parameters for logic.
 
       int16_t       m_sMaxDispensees;                // Maximum number of dispensees.
       int16_t       m_sNumDispensees;                // Number of dispensees already
                                                    // dispensed.
 
-      U16         m_u16IdDispensee;                // ID of the last dispensee
+      uint16_t         m_u16IdDispensee;                // ID of the last dispensee
                                                    // we created.
 
-      long        m_lNextUpdate;                   // Time of next update.
+      int32_t        m_lNextUpdate;                   // Time of next update.
 
       bool        m_bEditMode;                     // true, if in edit mode, false
                                                    // otherwise.
@@ -199,7 +200,7 @@ class CDispenser : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -305,7 +306,7 @@ class CDispenser : public CThing
 
       // Get the closest dude.
       int16_t GetClosestDudeDistance( // Returns 0 on success.  Fails, if no dudes.
-         long* plClosestDistance);  // Out:  Distance to closest dude.
+         int32_t* plClosestDistance);  // Out:  Distance to closest dude.
 
       // Destroy an instantiated dispensee.
       void DestroyDispensee(  // Returns nothing.

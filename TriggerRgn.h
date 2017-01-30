@@ -93,7 +93,7 @@ struct TriggerRgn
    int16_t    sX;
    int16_t    sY;
    RImage*  pimRgn;
-   U16      u16InstanceId;
+   uint16_t      u16InstanceId;
 
    ///////////////////////////////////////////////////////////////////////////
    // Constructor.
@@ -147,7 +147,7 @@ struct TriggerRgn
          }
       else
          {
-         TRACE("Create(): Failed to allocate new RImage.\n";
+         TRACE("Create(): Failed to allocate new RImage.\n");
          sRes  = -1;
          }
 
@@ -182,7 +182,7 @@ struct TriggerRgn
                   (
                   250,  // u32ForeColor,           // Make it this color
                   TRUE, // sTransparent = TRUE,    // 1 or 2 color?
-                  0     // u32BackColor = (U32)0   // matters only if sTransparent = FALSE
+                  0     // u32BackColor = (uint32_t)0   // matters only if sTransparent = FALSE
                   );
 
                if (pimRgn->Convert(RImage::BMP8) != RImage::BMP8)
@@ -234,21 +234,21 @@ struct TriggerRgn
                   }
                else
                   {
-                  TRACE("Load(): RImage::Load() failed.\n";
+                  TRACE("Load(): RImage::Load() failed.\n");
                   delete pimRgn;
                   pimRgn   = nullptr;
                   }
                }
             else
                {
-               TRACE("Load(): Failed to allocate new RImage.\n";
+               TRACE("Load(): Failed to allocate new RImage.\n");
                sRes  = -2;
                }
             }
          }
       else
          {
-         TRACE("Load(): Failed to read existence flag.\n";
+         TRACE("Load(): Failed to read existence flag.\n");
          sRes  = -1;
          }
 
@@ -282,13 +282,13 @@ struct TriggerRgn
                }
             else
                {
-               TRACE("Save(): RImage::Save() failed.\n";
+               TRACE("Save(): RImage::Save() failed.\n");
                }
             }
          }
       else
          {
-         TRACE("Save(): Failed to write existence flag.\n";
+         TRACE("Save(): Failed to write existence flag.\n");
          sRes  = -1;
          }
 

@@ -95,8 +95,8 @@ class CDemon : public CThing
    // Variables
    //---------------------------------------------------------------------------
    public:
-      long m_lIdleTime;                   // Time without saying something
-      long m_lKillTimer;                  // Bonus kill timer
+      int32_t m_lIdleTime;                   // Time without saying something
+      int32_t m_lKillTimer;                  // Bonus kill timer
       int16_t m_sRecentKills;               // Number of recent kills
       int16_t m_sCommentCount;              // Number of comments that could have
                                           // been made, but were withheld.
@@ -115,8 +115,8 @@ class CDemon : public CThing
 
    protected:
 
-      static long ms_lMinIdleTime;        // Min time before playing next sample
-      static long ms_lBonusKillTime;      // Kill an amount within this time and get a bonus comment
+      static int32_t ms_lMinIdleTime;        // Min time before playing next sample
+      static int32_t ms_lBonusKillTime;      // Kill an amount within this time and get a bonus comment
       // Sound banks of explosion comments indexed by m_sSoundBank.
       static SampleMasterID* ms_apsmidExplosion[NumSoundBanks][NumExplosionComments];
       // Sound banks of burn comments indexed by m_sSoundBank.
@@ -191,7 +191,7 @@ class CDemon : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

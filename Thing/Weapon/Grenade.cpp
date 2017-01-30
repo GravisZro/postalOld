@@ -194,10 +194,10 @@ double CGrenade::ms_dThrowVertVel = 30;            // Throw up at this velocity
 double CGrenade::ms_dThrowHorizVel = 200;          // Throw out at this velocity
 double CGrenade::ms_dMinBounceVel = 40.0;          // Will bounce up if more than this
 double CGrenade::ms_dBounceTransferFract = -0.2;   // Amount of bounce velocity transferred.
-long CGrenade::ms_lRandomAvoidTime = 200;          // Time to wander before looking again
-long CGrenade::ms_lReseekTime = 1000;              // Do a 'find' again
-long CGrenade::ms_lGrenadeFuseTime = 1500;         // Time from throw to blow
-long CGrenade::ms_lSmokeInterval    = 100;         // Time between smokes.
+int32_t CGrenade::ms_lRandomAvoidTime = 200;          // Time to wander before looking again
+int32_t CGrenade::ms_lReseekTime = 1000;              // Do a 'find' again
+int32_t CGrenade::ms_lGrenadeFuseTime = 1500;         // Time from throw to blow
+int32_t CGrenade::ms_lSmokeInterval    = 100;         // Time between smokes.
 
 char const * CGrenade::ms_apszResNames[CGrenade::NumStyles] = // Res names indexed Style.
    {
@@ -229,7 +229,7 @@ int16_t CGrenade::Load(            // Returns 0 if successfull, non-zero otherwi
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
    {
    int16_t sResult = 0;
 
@@ -326,7 +326,7 @@ void CGrenade::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       ProcessMessages();
       if (m_eState == State_Deleted)
@@ -575,7 +575,7 @@ void CGrenade::Update(void)
 void CGrenade::Render(void)
    {
    // Animate.
-   long  lCurTime       = m_pRealm->m_time.GetGameTime();
+   int32_t  lCurTime       = m_pRealm->m_time.GetGameTime();
 
    m_sprite.m_pmesh     = (RMesh*)     m_anim.m_pmeshes->GetAtTime(     lCurTime % m_anim.m_pmeshes->TotalTime());
    m_sprite.m_psop      = (RSop*)      m_anim.m_psops->GetAtTime(       lCurTime % m_anim.m_psops->TotalTime());
@@ -769,7 +769,7 @@ void CGrenade::Smoke(void)
    {
    if (m_style == Dynamite)
       {
-      long  lCurTime = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime = m_pRealm->m_time.GetGameTime();
 
       // If the timer has expired . . .
       if (lCurTime > m_lNextSmokeTime)

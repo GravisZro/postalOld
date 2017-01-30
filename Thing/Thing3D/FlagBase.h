@@ -49,11 +49,11 @@ class CFlagbase : public CThing3d
    //---------------------------------------------------------------------------
    public:
       CAnim3D*    m_panimCurBase;               // current animation for the base
-      U16         m_u16FlagID;                  // ID to match flag and base
+      uint16_t         m_u16FlagID;                  // ID to match flag and base
 
    protected:
       CAnim3D     m_animFlagWave;               // animation for the flag waving
-      U16         m_u16Color;                   // Color of base
+      uint16_t         m_u16Color;                   // Color of base
 
 
       // Tracks file counter so we know when to load/save "common" data
@@ -119,7 +119,7 @@ class CFlagbase : public CThing3d
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

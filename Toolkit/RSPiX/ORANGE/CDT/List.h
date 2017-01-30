@@ -46,7 +46,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This module provides dynamic linked list services for pointers to types.
-// Use RBList<T> (listbase.h) for non-pointer types such as longs or shorts.
+// Use RBList<T> (listbase.h) for non-pointer types such as longs or int16_ts.
 //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -141,11 +141,11 @@ template <class T> class RList : public RBList<T*>
 			return (RBList<T*>::GetCurrent(&pld) == 0) ? pld : nullptr; 
 			}
 
-		short IsEmpty(void)		// Returns TRUE if empty, FALSE otherwise.
+		int16_t IsEmpty(void)		// Returns TRUE if empty, FALSE otherwise.
 			{ return RBList<T*>::IsEmpty(); }
 
 		// Constructor to merely pass on arguments.
-		RList(short sInitialize	= TRUE) :
+		RList(int16_t sInitialize	= TRUE) :
 			RBList<T*>(sInitialize)
 			{
 			}

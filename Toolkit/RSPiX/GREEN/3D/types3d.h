@@ -58,8 +58,8 @@ class RTexture
 	// Variables
 	//------------------------------------------------------------------------------
 	public:
-		short m_sNum;												// Number of colors in array(s)
-		UCHAR* m_pIndices;										// Array of indices
+		int16_t m_sNum;												// Number of colors in array(s)
+		uint8_t* m_pIndices;										// Array of indices
 		RPixel32* m_pColors;										// Array of colors
 
 	//------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ class RTexture
 			}
 
 		// Alternate constructor
-		RTexture(short sNum)
+		RTexture(int16_t sNum)
 			{
 			Init();
 			Alloc(sNum);
@@ -152,7 +152,7 @@ class RTexture
 			}
 
 		// Allocate specified number of indices and colors
-		void Alloc(short sNum);
+		void Alloc(int16_t sNum);
 
 		// Allocate same number of indices as current number of colors
 		void AllocIndices(void);
@@ -170,31 +170,31 @@ class RTexture
 		void FreeColors(void);
 
 		// Load from file
-		short	Load(RFile* fp);
+		int16_t	Load(RFile* fp);
 
 		// Save to file
-		short	Save(RFile* fp);
+		int16_t	Save(RFile* fp);
 
 		// Map colors onto the specified palette.  For each color, the best
 		// matching color is found in the  palette, and the associated palette
 		// index is written to the array of indices.  If the array of indices
 		// doesn't exist, it will be created.
 		void Remap(
-			short sStartIndex,
-			short sNumIndex,
-			UCHAR* pr,
-			UCHAR* pg,
-			UCHAR* pb,
-			long linc);
+			int16_t sStartIndex,
+			int16_t sNumIndex,
+			uint8_t* pr,
+			uint8_t* pg,
+			uint8_t* pb,
+			int32_t linc);
 
 		// Unmap colors from the specified palette and put them into the colors
 		// array.  If the array of colors doesn't exist, it will be created.
 		void 
 		Unmap(
-			UCHAR* pr,
-			UCHAR* pg,
-			UCHAR* pb,
-			long lInc)
+			uint8_t* pr,
+			uint8_t* pg,
+			uint8_t* pb,
+			int32_t lInc)
 			;
 
 		// Muddy or brighten or darken.  Applies the specified brightness value
@@ -202,7 +202,7 @@ class RTexture
 		void
 		Adjust(
 			float fAdjustment,	// In:  Adjustment factor (1.0 == same, < 1 == dimmer, > 1 == brighter).
-			long lInc)				// In:  Number of colors to skip.
+			int32_t lInc)				// In:  Number of colors to skip.
 			;
 
 	private:
@@ -226,8 +226,8 @@ class RMesh
 	// Variables
 	//------------------------------------------------------------------------------
 	public:
-		short m_sNum;												// Number of triangles in array (3 elements per triangle!)
-		U16* m_pArray;												// Array of indices (3 per triangle!)
+		int16_t m_sNum;												// Number of triangles in array (3 elements per triangle!)
+		uint16_t* m_pArray;												// Array of indices (3 per triangle!)
 
 	//------------------------------------------------------------------------------
 	// Functions
@@ -247,7 +247,7 @@ class RMesh
 			}
 
 		// Alternate constructor
-		RMesh(short sNum)
+		RMesh(int16_t sNum)
 			{
 			Init();
 			Alloc(sNum);
@@ -300,16 +300,16 @@ class RMesh
 			}
 
 		// Allocate specified number of triangles
-		void Alloc(short sNum);
+		void Alloc(int16_t sNum);
 
 		// Free triangles
 		void Free(void);
 
 		// Load from file
-		short	Load(RFile* fp);
+		int16_t	Load(RFile* fp);
 		
 		// Save to file
-		short	Save(RFile* fp);
+		int16_t	Save(RFile* fp);
 
 	protected:
 		// Init
@@ -330,7 +330,7 @@ class RSop
 	// Variables
 	//------------------------------------------------------------------------------
 	public:
-		long m_lNum;												// Number of points in array (only 65536 currently accessible)
+		int32_t m_lNum;												// Number of points in array (only 65536 currently accessible)
 		RP3d*	m_pArray;											// Array of points
 
 	//------------------------------------------------------------------------------
@@ -351,7 +351,7 @@ class RSop
 			}
 
 		// Alternate constructor
-		RSop(long lNum)
+		RSop(int32_t lNum)
 			{
 			Init();
 			Alloc(lNum);
@@ -404,16 +404,16 @@ class RSop
 			}
 
 		// Allocate specified number of points
-		void Alloc(long lNum);
+		void Alloc(int32_t lNum);
 		
 		// Free points
 		void Free(void);
 
 		// Load from file
-		short	Load(RFile* fp);
+		int16_t	Load(RFile* fp);
 		
 		// Save to file
-		short	Save(RFile* fp);
+		int16_t	Save(RFile* fp);
 
 	protected:
 		// Init

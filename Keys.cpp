@@ -22,7 +22,7 @@
 //    03/31/97 JMI   Started.
 //
 //    07/06/97 JMI   Changed pu8ScanKey parm in KeyDescriptionToValue
-//                   call from a U8 to a int16_t.
+//                   call from a uint8_t to a int16_t.
 //                   Also, changed g_apszButtonDescriptions to
 //                   g_apszMouseButtonDescriptions.
 //
@@ -53,7 +53,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // C Includes.
 ////////////////////////////////////////////////////////////////////////////////
-#include <string.h>
+#include <cstring>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Postal Includes.
@@ -267,11 +267,11 @@ extern char const * g_apszJoyButtonDescriptions[16]   =
 extern int16_t KeyDescriptionToValue( // Returns 0 on success.  Returns non-zero, if
                                     // key not found.
    char const *      pszKeyDescriptor,       // In:  Description of key.
-   U32*  psScanKey)              // Out: Key value.
+   uint32_t*  psScanKey)              // Out: Key value.
    {
    int16_t sRes  = 1;  // Assume failure.
 
-   U8 u8KeyIndex;
+   uint8_t u8KeyIndex;
    for (u8KeyIndex = 0; u8KeyIndex < NUM_ELEMENTS(g_apszKeyDescriptions); u8KeyIndex++)
       {
       if (rspStricmp(pszKeyDescriptor, g_apszKeyDescriptions[u8KeyIndex]) == 0)
@@ -294,7 +294,7 @@ extern int16_t MouseButtonDescriptionToMask(   // Returns 0 on success.  Returns
                                              // non-zero, if description not
                                              // found.
    char const *      pszButtonDescriptor,             // In:  Description of button.
-   U32*  psButtonMask)                    // Out: Button mask.
+   uint32_t*  psButtonMask)                    // Out: Button mask.
    {
    int16_t sRes  = 1;  // Assume failure.
 
@@ -320,7 +320,7 @@ extern int16_t MouseButtonDescriptionToMask(   // Returns 0 on success.  Returns
 extern int16_t JoyButtonDescriptionToMask(  // Returns 0 on success.  Returns
                                           // non-zero, if description not found.
    char const *      pszButtonDescriptor,          // In:  Description of button.
-   U32*  psButtonMask)                 // Out: Button mask.
+   uint32_t*  psButtonMask)                 // Out: Button mask.
    {
    int16_t sRes  = 1;  // Assume failure.
 

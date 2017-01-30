@@ -63,7 +63,7 @@ class CChunk : public CThing
       };
 
       struct TypeInfo {
-         U8    u8ColorIndex;
+         uint8_t    u8ColorIndex;
          int16_t sLen;
       };
 
@@ -79,7 +79,7 @@ class CChunk : public CThing
       double m_dVel;
       double m_dVertVel;
 
-      long  m_lPrevTime;
+      int32_t  m_lPrevTime;
 
       int16_t m_sSuspend;                      // Suspend flag
 
@@ -93,7 +93,7 @@ class CChunk : public CThing
       // Note that this is never reseeded b/c this is just an 'effect'
       // that does not and SHOULD not affect game play as it can be
       // turned off.
-      static long       ms_lGetRandomSeed;   // Seed for GetRand[om]().
+      static int32_t       ms_lGetRandomSeed;   // Seed for GetRand[om]().
 
       // Chunk info for each type.
       static TypeInfo   ms_atiChunks[NumTypes];
@@ -195,7 +195,7 @@ class CChunk : public CThing
 
       // Get a random number that is in no way related to the game's main
       // GetRand().
-      static long GetChunkRand(void)
+      static int32_t GetChunkRand(void)
          {
          return (((ms_lGetRandomSeed = ms_lGetRandomSeed * 214013L + 2531011L) >> 16) & 0x7fff);
          }

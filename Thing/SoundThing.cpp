@@ -136,7 +136,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 int16_t CSoundThing::ms_sFileCount       = 0;  // File count.
-long  CSoundThing::ms_lGetRandomSeed   = 0;  // Seed for get random.
+int32_t  CSoundThing::ms_lGetRandomSeed   = 0;  // Seed for get random.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load object (should call base class version!)
@@ -145,7 +145,7 @@ int16_t CSoundThing::Load(                        // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
    if (sResult == 0)
@@ -216,7 +216,7 @@ int16_t CSoundThing::Load(                        // Returns 0 if successfull, n
          case 3:
          case 2:
          case 1:
-            long  lBool;
+            int32_t  lBool;
             pFile->Read(&lBool);
             m_bInitiallyEnabled  = lBool ? true : false;
             pFile->Read(&lBool);
@@ -264,8 +264,8 @@ int16_t CSoundThing::Save(                              // Returns 0 if successf
       pFile->Write(m_dY);
       pFile->Write(m_dZ);
       pFile->Write(m_lVolumeHalfLife);
-      pFile->Write((long)m_bInitiallyEnabled);
-      pFile->Write((long)m_bInitiallyRepeats);
+      pFile->Write((int32_t)m_bInitiallyEnabled);
+      pFile->Write((int32_t)m_bInitiallyRepeats);
       pFile->Write(m_lMinTime, 2);
       pFile->Write(m_lRndTime, 2);
       pFile->Write(m_szResName);
@@ -332,7 +332,7 @@ void CSoundThing::Update(void)
    if (!m_sSuspend)
       {
       // Get current time
-      long lCurTime = m_pRealm->m_time.GetGameTime();
+      int32_t lCurTime = m_pRealm->m_time.GetGameTime();
 
       // If enabled and (non-ambient or ambients allowed) . . .
       if (m_bEnabled == true && (m_sAmbient == FALSE || g_GameSettings.m_sPlayAmbientSounds) )
@@ -340,9 +340,9 @@ void CSoundThing::Update(void)
          // If current time hits next starting time (or if we're in the init state)
          if ((lCurTime >= m_lNextStartTime) || (m_sWhichTime < 0))
             {
-            long  lSampleDuration   = 0;
-            long  lLoopStartTime;
-            long  lLoopEndTime   = m_lLoopBackFrom;
+            int32_t  lSampleDuration   = 0;
+            int32_t  lLoopStartTime;
+            int32_t  lLoopEndTime   = m_lLoopBackFrom;
             if (m_sUseLooping)
                {
                lLoopStartTime = m_lLoopBackTo;
@@ -443,9 +443,9 @@ void CSoundThing::Update(void)
 
 
             // Pick random time between 0 and specified random time
-            long  lRnd = (long)(((float)GetRand() / (float)RAND_MAX) * (float)m_lRndTime[m_sWhichTime]);
+            int32_t  lRnd = (int32_t)(((float)GetRand() / (float)RAND_MAX) * (float)m_lRndTime[m_sWhichTime]);
             // Make sure this at least the length of the sample.
-            long  lWaitDuration  = MAX(long(m_lMinTime[m_sWhichTime] + lRnd), lSampleDuration);
+            int32_t  lWaitDuration  = MAX(int32_t(m_lMinTime[m_sWhichTime] + lRnd), lSampleDuration);
             // Calculate next starting time
             m_lNextStartTime = m_lLastStartTime + lWaitDuration;
             }
@@ -524,8 +524,8 @@ int16_t CSoundThing::EditNew(                           // Returns 0 if successf
 ////////////////////////////////////////////////////////////////////////////////
 inline void SetGuiItemVal( // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  GUI Root.
-   long        lId,        // In:  ID of item whose text we'll change.
-   long        lVal)       // In:  New value.
+   int32_t        lId,        // In:  ID of item whose text we'll change.
+   int32_t        lVal)       // In:  New value.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)
@@ -981,7 +981,7 @@ void CSoundThing::ProcessMessages(void)
 // Don't call this from outside of CSoundThing.  It should affect only
 // CSoundThing stuff.
 ////////////////////////////////////////////////////////////////////////////////
-long CSoundThing::GetRandom(void)
+int32_t CSoundThing::GetRandom(void)
    {
    return (((ms_lGetRandomSeed = ms_lGetRandomSeed * 214013L + 2531011L) >> 16) & 0x7fff);
    }
@@ -990,7 +990,7 @@ long CSoundThing::GetRandom(void)
 // Relay the volume to add to this CSoundThing's collective volume.
 ////////////////////////////////////////////////////////////////////////////////
 void CSoundThing::RelayVolume(   // Returns nothing.
-   long lVolume)                 // In:  Volume to relay.
+   int32_t lVolume)                 // In:  Volume to relay.
    {
    m_lCollectiveVolume  += lVolume;
    }

@@ -41,7 +41,7 @@
 #ifndef SND_H
 #define SND_H
 
-#include <stdio.h> // For FILE*
+#include <cstdio> // For FILE*
 
 #include <BLUE/System.h>
 
@@ -101,7 +101,7 @@ class RSnd
 			}
 
 		// Query paused status of current play or stream.
-		short IsPaused(void)
+		int16_t IsPaused(void)
 			{
 			return m_mix.IsChannelPaused();
 			}
@@ -114,12 +114,12 @@ class RSnd
 		// Load a sound file a lReadBufSize byte piece at a time and play 
 		// lPlayBufSize byte pieces at a time.
 		// Returns 0 on success.
-		short Stream(						// Returns 0 on success.
+		int16_t Stream(						// Returns 0 on success.
 			char const * pszSampleName,			// In:  Name of sample file.
-			long lPlayBufSize,			// In:  Size of play buffer in bytes.
-			long lReadBufSize,			// In:  Size of file read buffer in bytes.
-			UCHAR	ucMainVolume = 255,	// In:  Primary Volume (0 - 255)
-			UCHAR ucVolume2 = 255);		// In:  Secondary Volume (0 - 255)
+			int32_t lPlayBufSize,			// In:  Size of play buffer in bytes.
+			int32_t lReadBufSize,			// In:  Size of file read buffer in bytes.
+			uint8_t	ucMainVolume = 255,	// In:  Primary Volume (0 - 255)
+			uint8_t ucVolume2 = 255);		// In:  Secondary Volume (0 - 255)
 
 			// Plays RSample supplied via ptr with buffer size of lPlayBufSize
 		// (this is the size of the chunks sent to RMix).
@@ -132,20 +132,20 @@ class RSnd
 		// In a looping scenario, 1..2 of the sample is played, then 2..3
 		// is repeated until m_sLoop is FALSE, at which time, once 3 is reached, 
 		// 3..4 is played.
-		short Play(							// Returns 0 on success.
+		int16_t Play(							// Returns 0 on success.
 			RSample* psample,				// In:  Sample to play.
-			long lPlayBufSize,			// In:  Size of play buffer in bytes.
-			UCHAR	ucMainVolume = 255,	// In:  Primary Volume (0 - 255)
-			UCHAR ucVolume2 = 255,		// In:  Secondary Volume (0 - 255)
-			long lLoopStartTime = -1,	// In:  Where to loop back to in milliseconds.
+			int32_t lPlayBufSize,			// In:  Size of play buffer in bytes.
+			uint8_t	ucMainVolume = 255,	// In:  Primary Volume (0 - 255)
+			uint8_t ucVolume2 = 255,		// In:  Secondary Volume (0 - 255)
+			int32_t lLoopStartTime = -1,	// In:  Where to loop back to in milliseconds.
 												//	-1 indicates no looping (unless m_sLoop is
 												// explicitly set).
-			long lLoopEndTime = 0);		// In:  Where to loop back from in milliseconds.
+			int32_t lLoopEndTime = 0);		// In:  Where to loop back from in milliseconds.
 												// In:  If less than 1, the end + lLoopEndTime is used.
 
 		// Aborts current play or stream.
 		// Returns 0 on success.
-		short Abort(void);
+		int16_t Abort(void);
 
 		// Pause current play or stream.
 		void Pause(void)
@@ -176,42 +176,42 @@ class RSnd
 		// Returns pointer to next buffer to play or nullptr to end.
 		void* StreamCall(	RMix::Msg msg, 
 								void* pData, 
-								ULONG* pulNewBufSize,
-								ULONG	 ulUser,
-								UCHAR* pucVolume = nullptr,
-								UCHAR* pucVol2 = nullptr);
+								uint32_t* pulNewBufSize,
+								uint32_t	 ulUser,
+								uint8_t* pucVolume = nullptr,
+								uint8_t* pucVol2 = nullptr);
 								
 
 		// Callback from blue regarding playing buffer(s).
 		// Returns pointer to next buffer to play or nullptr to end.
 		static void* StreamCallStatic(RMix::Msg msg, 
 												 void* pData,
-												 ULONG* pulNewBufSize,
-												 ULONG ulUser,
-												 UCHAR* pucVolume = nullptr,
-												 UCHAR* pucVol2 = nullptr);
+												 uint32_t* pulNewBufSize,
+												 uint32_t ulUser,
+												 uint8_t* pucVolume = nullptr,
+												 uint8_t* pucVol2 = nullptr);
 
 										// Called from PlayCallStatic.
 		// Returns pointer to next buffer to play or nullptr to end.
 		void* PlayCall(RMix::Msg msg, 
 							void* pData,
-							ULONG* pulNewBufSize,
-							UCHAR*		pucVolume = nullptr,
-							UCHAR*		pucVol2 = nullptr);
+							uint32_t* pulNewBufSize,
+							uint8_t*		pucVolume = nullptr,
+							uint8_t*		pucVol2 = nullptr);
 
 		// Callback from blue regarding playing buffer(s).
 		// Sends back current volume information to RMix
 		// Returns pointer to next buffer to play or nullptr to end
 		static void* PlayCallStatic(RMix::Msg msg, 
 											 void* pData,
-											 ULONG* pulNewBufSize,
-											 ULONG ulUser,
-											 UCHAR* pucVolume = nullptr,
-											 UCHAR* pucVol2 = nullptr);
+											 uint32_t* pulNewBufSize,
+											 uint32_t ulUser,
+											 uint8_t* pucVolume = nullptr,
+											 uint8_t* pucVol2 = nullptr);
 
 	////////////////////////// Member vars ////////////////////////////////////
 	public:
-		short			m_sLoop;				// If TRUE, Play() will loop until FALSE.
+		int16_t			m_sLoop;				// If TRUE, Play() will loop until FALSE.
 		long			m_lLoopStartPos;	// Where to loop back to in bytes.
 												// Play() only.
 		long			m_lLoopEndPos;		// Where to loop back from in bytes.
@@ -220,10 +220,10 @@ class RSnd
 		DoneCall		m_dcUser;		// User callback when done playing/streaming
 											// a sample.
 
-		ULONG			m_ulUser;		// User value -- set as you please.
+		uint32_t			m_ulUser;		// User value -- set as you please.
 
-		short			m_sChannelVolume;// 0-255 = Primary (local) Volume
-		short			m_sTypeVolume;	// 0-255	= Secondary (category) Volume
+		int16_t			m_sChannelVolume;// 0-255 = Primary (local) Volume
+		int16_t			m_sTypeVolume;	// 0-255	= Secondary (category) Volume
 				
 	protected:
 		long			m_lBufSize;		// Buffer unit to stream in.
@@ -231,10 +231,10 @@ class RSnd
 											// this RSnd's state.
 		RMix			m_mix;			// For playing/mixing sound data.
 		PSAMPLE		m_psample;		// Sample to be streamed.
-		short			m_sOwnSample;	// TRUE if RSnd allocated m_psample, FALSE
+		int16_t			m_sOwnSample;	// TRUE if RSnd allocated m_psample, FALSE
 											// otherwise.
-		ULONG			m_ulRemaining;	// Amount left of sample data to be played.
-		ULONG			m_ulSampleSize;// Overall sample size.
+		uint32_t			m_ulRemaining;	// Amount left of sample data to be played.
+		uint32_t			m_ulSampleSize;// Overall sample size.
 
 		/////////////////////// Static members /////////////////////////////////
 	

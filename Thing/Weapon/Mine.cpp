@@ -152,9 +152,9 @@
 int16_t CMine::ms_sProximityRadius = 10;
 int16_t CMine::ms_sBettyRadius = 60;
 int16_t CMine::ms_sBettyRange = 1000;
-long CMine::ms_lFuseTime = 6000;
-long CMine::ms_lArmingTime = 5000;
-long CMine::ms_lExplosionDelay = 150;
+int32_t CMine::ms_lFuseTime = 6000;
+int32_t CMine::ms_lArmingTime = 5000;
+int32_t CMine::ms_lExplosionDelay = 150;
 double CMine::ms_dInitialBounceVelocity = 80.0;
 
 // Let this auto-init to 0
@@ -169,7 +169,7 @@ int16_t CMine::Load(            // Returns 0 if successfull, non-zero otherwise
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
 
@@ -290,7 +290,7 @@ int16_t CMine::Init(void)
 
    m_eState = State_Idle;
 
-   long lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
    if (m_lFuseTime == 0)
       m_lFuseTime = ms_lFuseTime;
@@ -412,7 +412,7 @@ void CMine::Update(void)
    if (!m_sSuspend)
    {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       ProcessMessages();
       if (m_eState == State_Deleted)
@@ -688,7 +688,7 @@ int16_t CMine::Setup(                          // Returns 0 if successful, non-z
    int16_t sX,                                 // In:  X coord placement
    int16_t sY,                                 // In:  Y coord placement
    int16_t sZ,                                 // In:  Z coord placement
-   long lFuseTime)                           // In:  ms before mine goes off (timed mine only)
+   int32_t lFuseTime)                           // In:  ms before mine goes off (timed mine only)
 {
    m_lFuseTime = lFuseTime;
    return Setup(sX, sY, sZ);
@@ -774,8 +774,8 @@ int16_t CMine::FreeResources(void)                // Returns 0 if successfull, n
 inline
 void SetText(              // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
-   long        lVal)       // In:  Value to set text to.
+   int32_t        lId,        // In:  ID of GUI to set text.
+   int32_t        lVal)       // In:  Value to set text to.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)

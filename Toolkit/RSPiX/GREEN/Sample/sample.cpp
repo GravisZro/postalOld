@@ -45,7 +45,7 @@
 //							before loading.
 //
 //		02/05/97	JMI	Had to cast Reads and Writes that used void* overload
-//							in RFile to use U8* since void* is now protected
+//							in RFile to use uint8_t* since void* is now protected
 //							(see file.h for more details).
 //
 //		03/25/97	JMI	Changed a Seek(0, SEEK_SET) to a relative seek.
@@ -62,9 +62,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 #include <BLUE/System.h>
 
@@ -112,8 +112,8 @@ RSample::RSample(void)
 // (public)
 //
 //////////////////////////////////////////////////////////////////////////////
-RSample::RSample(	void *pData, long lBufSize, long lSamplesPerSec, 
-						short sBitsPerSample, short sNumChannels)
+RSample::RSample(	void *pData, int32_t lBufSize, int32_t lSamplesPerSec, 
+						int16_t sBitsPerSample, int16_t sNumChannels)
 	{
 	// Intialize instantiables.
 	Init();
@@ -196,10 +196,10 @@ void RSample::Reset(void)
 ///////////////////////////////////////////////////////////////////////////////
 static long IffReadUntil(char const * pcForm, FILE* fsIn)
 	{
-	long lRes = 0;
+	int32_t lRes = 0;
 
 	// Search for pcForm.
-	short sMatch = 0;
+	int16_t sMatch = 0;
 	int	c;
 	
 	while (lRes == 0)
@@ -245,12 +245,12 @@ static long IffReadUntil(char const * pcForm, FILE* fsIn)
 ///////////////////////////////////////////////////////////////////////////////
 long RSample::ReadWaveHeader(void)
 	{
-	long	lRes = 0L; // Assume success.
+	int32_t	lRes = 0L; // Assume success.
 
 	// Skip RIFF garbage
 	if (m_iff.Find(".WAVE.fmt ") == 0)
 		{
-		USHORT usFormatTag;
+		uint16_t usFormatTag;
 		// Read PCMWAVEFORMAT header.
 		if (m_iff.Read(&usFormatTag) == 1L)
 			{
@@ -260,10 +260,10 @@ long RSample::ReadWaveHeader(void)
 				{
 				if (m_iff.Read(&m_lSamplesPerSec) == 1L)
 					{
-					long lAvgBytesPerSec;
+					int32_t lAvgBytesPerSec;
 					if (m_iff.Read(&lAvgBytesPerSec) == 1L)
 						{
-						short sBlockAlign;
+						int16_t sBlockAlign;
 						if (m_iff.Read(&sBlockAlign) == 1L)
 							{
 							if (m_iff.Read(&m_sBitsPerSample) == 1L)
@@ -274,19 +274,19 @@ long RSample::ReadWaveHeader(void)
 								if (usFormatTag == WAVE_FORMAT_ADPCM)
 									{
 									// Read rest of 'fmt ' chunk.
-									USHORT usExtendedSize;
+									uint16_t usExtendedSize;
 									if (m_iff.Read(&usExtendedSize) == 1L)
 										{
 										// Read number of samples per block.
-										USHORT usSamplesPerBlock;
+										uint16_t usSamplesPerBlock;
 										if (m_iff.Read(&usSamplesPerBlock) == 1L)
 											{
 											// Read number of coefficients.
-											USHORT usNumCoefs;
+											uint16_t usNumCoefs;
 											if (m_iff.Read(&usNumCoefs) == 1L)
 												{
 												// Read coefficients.
-												for (USHORT usIndex = 0; usIndex < usNumCoefs; usIndex++)
+												for (uint16_t usIndex = 0; usIndex < usNumCoefs; usIndex++)
 													{
 
 													}
@@ -374,17 +374,17 @@ long RSample::ReadWaveHeader(void)
 ///////////////////////////////////////////////////////////////////////////////
 //
 //	Determines the file type of the supplied file stream, if possible, and 
-// returns a short value indicating that file type.
+// returns a int16_t value indicating that file type.
 //
 ///////////////////////////////////////////////////////////////////////////////
-static short GetFileType(RIff* piff)
+static int16_t GetFileType(RIff* piff)
 	{
-	short sRes = SAMPLE_TYPE_UNKNOWN; // Assume unknown.
+	int16_t sRes = SAMPLE_TYPE_UNKNOWN; // Assume unknown.
 
 	// Read some info to determine file type.
 	static char acHeader[128];
-	long	lBeginPos	= piff->Tell();
-	long	lNumRead		= piff->Read(acHeader, sizeof(acHeader));
+	int32_t	lBeginPos	= piff->Tell();
+	int32_t	lNumRead		= piff->Read(acHeader, sizeof(acHeader));
 	// Seek back to beginning.
 	if (piff->Seek(lBeginPos, SEEK_SET) == 0)
 		{
@@ -426,9 +426,9 @@ static short GetFileType(RIff* piff)
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-long RSample::Open(char const * pszSampleName, long lReadBufSize)
+long RSample::Open(char const * pszSampleName, int32_t lReadBufSize)
 	{
-	long	lRes = 0L;
+	int32_t	lRes = 0L;
 
 	// Reset variables and free data if any.
 	Reset();
@@ -506,9 +506,9 @@ long RSample::Open(char const * pszSampleName, long lReadBufSize)
 // Returns amount read on success, negative on failure.
 //
 ///////////////////////////////////////////////////////////////////////////////
-long RSample::Read(long lAmount)
+long RSample::Read(int32_t lAmount)
 	{
-	long	lRes	= 0L;
+	int32_t	lRes	= 0L;
 
 	ASSERT(m_iff.IsOpen() != FALSE);
 
@@ -541,9 +541,9 @@ long RSample::Read(long lAmount)
 		// Otherwise, we read the data as words so the system's endian nature
 		// wil be taken into account.
 		if (m_sBitsPerSample < 16)
-			lRes = m_iff.Read((U8*)m_pData, lAmount);
+			lRes = m_iff.Read((uint8_t*)m_pData, lAmount);
 		else
-			lRes = m_iff.Read((U16*)m_pData, lAmount / 2) * 2;
+			lRes = m_iff.Read((uint16_t*)m_pData, lAmount / 2) * 2;
 		// If data read . . .
 		if (lRes > 0L)
 			{
@@ -574,9 +574,9 @@ long RSample::Read(long lAmount)
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Close(void)
+int16_t RSample::Close(void)
 	{
-	short sRes = 0;
+	int16_t sRes = 0;
 
 	ASSERT(m_iff.IsOpen() != FALSE);
 
@@ -604,9 +604,9 @@ short RSample::Close(void)
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Load(char const * pszSampleName)
+int16_t RSample::Load(char const * pszSampleName)
 	{
-	short sRes = 0;
+	int16_t sRes = 0;
 	
 	// Attempt to open sample file.
 	m_lBufSize = Open(pszSampleName, DEFAULT_READBUFSIZE);
@@ -642,10 +642,10 @@ short RSample::Load(char const * pszSampleName)
 // size.
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Load(	// Returns 0 on success.
+int16_t RSample::Load(	// Returns 0 on success.
 	RFile*	pfile)	// Open RFile.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Reset variables and free data if any.
 	Reset();
@@ -719,10 +719,10 @@ short RSample::Load(	// Returns 0 on success.
 // Saves entire sample to file specified in RIFF WAVE format.
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Save(		// Returns 0 on success.
+int16_t RSample::Save(		// Returns 0 on success.
 	char const * pszFileName)	// Filename for sample file.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Open file for write . . .
 	RFile file;
@@ -745,10 +745,10 @@ short RSample::Save(		// Returns 0 on success.
 // Saves entire sample to file specified in RIFF WAVE format.
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Save(		// Returns 0 on success.
+int16_t RSample::Save(		// Returns 0 on success.
 	RFile* pfile)			// Open RFile for sample.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Attempt to synchronize . . .
 	RIff	iff;
@@ -762,13 +762,13 @@ short RSample::Save(		// Returns 0 on success.
 				{
 				// Fill in the chunk.
 				// Write PCMWAVEFORMAT header.
-				iff.Write((U16)WAVE_FORMAT_PCM);
+				iff.Write((uint16_t)WAVE_FORMAT_PCM);
 				iff.Write(m_sNumChannels);
 				iff.Write(m_lSamplesPerSec);
 				// Average bytes per second.
-				iff.Write((m_lSamplesPerSec * (long)m_sBitsPerSample * (long)m_sNumChannels) / 8L);
+				iff.Write((m_lSamplesPerSec * (int32_t)m_sBitsPerSample * (int32_t)m_sNumChannels) / 8L);
 				// Block align.
-				iff.Write((short)(m_sBitsPerSample * m_sNumChannels / 8) );
+				iff.Write((int16_t)(m_sBitsPerSample * m_sNumChannels / 8) );
 				iff.Write(m_sBitsPerSample);
 
 				// End 'fmt ' chunk.
@@ -778,7 +778,7 @@ short RSample::Save(		// Returns 0 on success.
 				if (iff.CreateChunk(RIff::RiffStr2FCC("data") ) == 0)
 					{
 					// Write data da whole thing ... kerbang!
-					if (iff.Write((U8*)m_pData, m_lBufSize) == m_lBufSize)
+					if (iff.Write((uint8_t*)m_pData, m_lBufSize) == m_lBufSize)
 						{
 						// Success.
 						}
@@ -828,9 +828,9 @@ short RSample::Save(		// Returns 0 on success.
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Lock(void)
+int16_t RSample::Lock(void)
 	{
-	short sRes = 0; // Assume success.
+	int16_t sRes = 0; // Assume success.
 
 	// If not being read . . .
 	if (m_iff.IsOpen() == FALSE || m_sRefCnt == 0)
@@ -854,7 +854,7 @@ short RSample::Lock(void)
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-short RSample::Unlock(void)
+int16_t RSample::Unlock(void)
 	{
 	ASSERT(m_sRefCnt > 0);
 
@@ -868,25 +868,25 @@ short RSample::Unlock(void)
 // Returns 0 on success.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RSample::Convert8to16(void)
+int16_t RSample::Convert8to16(void)
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	ASSERT(m_sBitsPerSample	== 8);
 	ASSERT(m_sRefCnt			== 0);
 	ASSERT(m_pData				!= nullptr);
 
 	// Allocate space for new data.
-	S16*	ps16Dst	= (S16*)malloc(m_lBufSize);
+	int16_t*	ps16Dst	= (int16_t*)malloc(m_lBufSize);
 
 	// If successful . . .
 	if (ps16Dst)
 		{
-		U8* pu8Src	= (U8*)m_pData;
+		uint8_t* pu8Src	= (uint8_t*)m_pData;
 
-		for (long l = 0L; l < m_lBufSize; l++)
+		for (int32_t l = 0L; l < m_lBufSize; l++)
 			{
-			ps16Dst[l]	= (S16)((pu8Src[l] << 8) ^ 0x8000);
+			ps16Dst[l]	= (int16_t)((pu8Src[l] << 8) ^ 0x8000);
 			}
 
 		// Discard old data.

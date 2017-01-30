@@ -270,11 +270,11 @@ static int16_t SetupVideo(               // Returns 0 on success.
                   "CriticalErrorTitle"_lookup,
                   "VideoChangeDepthError"_lookup,
                   acVideoMode);
-               TRACE("SetupVideo(): Error returned by rspSetVideoMode() -- most likely due to attempted change in depth!\n";
+               TRACE("SetupVideo(): Error returned by rspSetVideoMode() -- most likely due to attempted change in depth!\n");
                }
             else
                {
-               TRACE("SetupVideo(): Error returned by rspSetVideoMode()!\n";
+               TRACE("SetupVideo(): Error returned by rspSetVideoMode()!\n");
                rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK,
                   "CriticalErrorTitle"_lookup,
                   "VideoModeError"_lookup,
@@ -370,7 +370,7 @@ static int16_t SetupVideo(               // Returns 0 on success.
 static char* CreateChunk(  // Returns the memory ptr that will hold the chunk
                            // in place.  Needs to be freed with free() when done
                            // with the chunk.
-   long lChunkSize)        // In:  Size of chunk to create.
+   int32_t lChunkSize)        // In:  Size of chunk to create.
    {
    char* pcOrig      = (char*)malloc(lChunkSize);
    char* pcReAlloc   = (char*)realloc(pcOrig, 1024);
@@ -388,20 +388,20 @@ static char* CreateChunk(  // Returns the memory ptr that will hold the chunk
 
 static void assert_types_are_sane(void)
 {
-    ASSERT(sizeof (S8) == 1);
-    ASSERT(sizeof (U8) == 1);
-    ASSERT(sizeof (S16) == 2);
-    ASSERT(sizeof (U16) == 2);
-    ASSERT(sizeof (S32) == 4);
-    ASSERT(sizeof (U32) == 4);
-    ASSERT(sizeof (S64) == 8);
-    ASSERT(sizeof (U64) == 8);
+    ASSERT(sizeof (int8_t) == 1);
+    ASSERT(sizeof (uint8_t) == 1);
+    ASSERT(sizeof (int16_t) == 2);
+    ASSERT(sizeof (uint16_t) == 2);
+    ASSERT(sizeof (int32_t) == 4);
+    ASSERT(sizeof (uint32_t) == 4);
+    ASSERT(sizeof (int64_t) == 8);
+    ASSERT(sizeof (uint64_t) == 8);
 
-    U32 val = 0x02000001;
+    uint32_t val = 0x02000001;
 #if SYS_ENDIAN_BIG
-    ASSERT(*((U8*) &val) == 0x02);
+    ASSERT(*((uint8_t*) &val) == 0x02);
 #else
-    ASSERT(*((U8*) &val) == 0x01);
+    ASSERT(*((uint8_t*) &val) == 0x01);
 #endif
 }
 
@@ -415,7 +415,7 @@ static void assert_types_are_sane(void)
 int _argc = 0;
 char **_argv = nullptr;
 
-long playthroughMS = 0;
+int32_t playthroughMS = 0;
 
 #if WITH_STEAMWORKS
 bool WaitingForInitialSteamStats = true;
@@ -534,7 +534,7 @@ static bool touchFile(const char *fname, const int64 stamp)
         return false;
 
     ULARGE_INTEGER val;
-    val.QuadPart = (ULONGLONG) stamp;
+    val.QuadPart = (uint32_tLONG) stamp;
     val.QuadPart += 11644473600LL;  // epoch difference. Ignoring leap seconds, oh well.
     val.QuadPart *= 10000000LL;  // convert to nanoseconds.
     FILETIME ft;
@@ -863,7 +863,7 @@ rspSetProfileOutput("profile.out");
                while (bRetry)
                   {
                   // Keep trying until it works or time runs out, whichever comes first
-                  long  lTime = rspGetMilliseconds();
+                  int32_t  lTime = rspGetMilliseconds();
                   bool  bDone = false;
                   do {
                      // Try to set mode
@@ -916,7 +916,7 @@ rspSetProfileOutput("profile.out");
                      }
                   else
                      {
-                     TRACE("main(): Audio didn't work, using msgbox to find out what to do...\n";
+                     TRACE("main(): Audio didn't work, using msgbox to find out what to do...\n");
                      char buf[100];
                      sprintf(buf, "%.3f kHz, %hd Bit, %s",
                         (float)sAudioSamplesPerSec/(float)1000,
@@ -1026,22 +1026,22 @@ rspProfileOff();
          else
             {
             // Can't init blue
-            TRACE("main(): Error returned by rspInitBlue()!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("BadBlueInit"));
+            TRACE("main(): Error returned by rspInitBlue()!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadBlueInit"_lookup);
             }
          }
       else
          {
          // Error reading preference file
-         TRACE("main(): Error reading prefs file!\n";
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("PrefReadError"));
+         TRACE("main(): Error reading prefs file!\n");
+         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefReadError"_lookup);
          }
       }
    else
       {
       // Can't open preference file
       TRACE("main(): Couldn't open prefs file: %s !\n", "PrefFileName"_lookup);
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("PrefOpenError"));
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefOpenError"_lookup);
       }
 
     return 0;

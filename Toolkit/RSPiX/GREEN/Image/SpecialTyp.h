@@ -80,23 +80,23 @@
 class	RSpecialFSPR1
 	{
 public:
-	UCHAR*	m_pCode;	// actual FSPR1 data
-	S32	m_lSize;		// actual size of FSPR1 data
-	U16	m_u16ASCII;	// allow extended character sets
-	S16	m_s16KernL;	// move left position
-	U16	m_u16Width;	// physical width of image, SHOULD = lWidth!
-	S16	m_s16KernR; // offset from right side
+	uint8_t*	m_pCode;	// actual FSPR1 data
+	int32_t	m_lSize;		// actual size of FSPR1 data
+	uint16_t	m_u16ASCII;	// allow extended character sets
+	int16_t	m_s16KernL;	// move left position
+	uint16_t	m_u16Width;	// physical width of image, SHOULD = lWidth!
+	int16_t	m_s16KernR; // offset from right side
 	RImage::Type	m_OldType;// previous type
-	S16*	m_psKernList;// Used in printing only
+	int16_t*	m_psKernList;// Used in printing only
 	// When you implement m_psKernList, please augment the destructor!
 
 	RSpecialFSPR1()
 		{
 		m_pCode = nullptr;
 		m_psKernList = nullptr;
-		m_s16KernL = m_s16KernR = (S16)0;
-		m_u16ASCII = m_u16Width = (U16)0;
-		m_lSize = (S32)0;
+		m_s16KernL = m_s16KernR = (int16_t)0;
+		m_u16ASCII = m_u16Width = (uint16_t)0;
+		m_lSize = (int32_t)0;
 		}
 
 	~RSpecialFSPR1()
@@ -118,11 +118,11 @@ public:
 //
 extern void SetConvertToFSPR1
 	(	
-	U32	u32TransparentColor = 0, // Make transparent
-	S16	sX = -1,	// Convert only from this...
-	S16	sY = -1,	// rectangle.  Default values ...
-	S16	sW = -1,	// move to edges of image.
-	S16	sH = -1,	// Use (-1) to use image edge
+	uint32_t	u32TransparentColor = 0, // Make transparent
+	int16_t	sX = -1,	// Convert only from this...
+	int16_t	sY = -1,	// rectangle.  Default values ...
+	int16_t	sW = -1,	// move to edges of image.
+	int16_t	sH = -1,	// Use (-1) to use image edge
 	// If you make a copy, the original RImage will NOT be
 	// altered!  **pimCopy will 
 	RImage**	ppimCopy = nullptr // To make a copy
@@ -130,9 +130,9 @@ extern void SetConvertToFSPR1
 
 extern	void SetConvertFromFSPR1
 	(
-	U32	u32ForeColor,				// Make it this color
-	S16	sTransparent = TRUE,		// 1 or 2 color?
-	U32	u32BackColor = (U32)0	// matters only if sTransparent = FALSE
+	uint32_t	u32ForeColor,				// Make it this color
+	int16_t	sTransparent = TRUE,		// 1 or 2 color?
+	uint32_t	u32BackColor = (uint32_t)0	// matters only if sTransparent = FALSE
 	);
 
 //*************************************************
@@ -153,16 +153,16 @@ extern	void SetConvertFromFSPR1
 class	RSpecialFSPR8
 	{
 public:
-	USHORT	m_usCompType;	// = FSPR8 image type
-	ULONG		m_lBufSize;		// Size of the opaque pixel data
-	ULONG		m_lCodeSize;	// Size of the control block (compression codes)
-	USHORT	m_usSourceType;// uncompressed Image pre-compressed type
+	uint16_t	m_usCompType;	// = FSPR8 image type
+	uint32_t		m_lBufSize;		// Size of the opaque pixel data
+	uint32_t		m_lCodeSize;	// Size of the control block (compression codes)
+	uint16_t	m_usSourceType;// uncompressed Image pre-compressed type
 
-	UCHAR*	m_pCompBuf;		// Compressed picture data, 128bit-aligned
-	UCHAR*	m_pCompMem;		// For alignment
-	UCHAR*	m_pCodeBuf;		// 32-aligned compression codes
-	UCHAR**	m_pBufArry;		// 32-aligned, arry of ptrs to m_pCompBuf scanlines
-	UCHAR**	m_pCodeArry;	// 32-aligned, arry of ptrs into m_pCodeBuf scanlines
+	uint8_t*	m_pCompBuf;		// Compressed picture data, 128bit-aligned
+	uint8_t*	m_pCompMem;		// For alignment
+	uint8_t*	m_pCodeBuf;		// 32-aligned compression codes
+	uint8_t**	m_pBufArry;		// 32-aligned, arry of ptrs to m_pCompBuf scanlines
+	uint8_t**	m_pCodeArry;	// 32-aligned, arry of ptrs into m_pCodeBuf scanlines
 
 	RSpecialFSPR8()
 		{

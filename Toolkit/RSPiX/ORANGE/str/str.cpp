@@ -65,7 +65,7 @@
 // Module specific (static) variables / Instantiate class statics.
 //////////////////////////////////////////////////////////////////////////////
 
-static short ms_asUpper2Lower[256]	=
+static int16_t ms_asUpper2Lower[256]	=
 	{
 	0,
 	1,
@@ -335,7 +335,7 @@ static short ms_asUpper2Lower[256]	=
 
 //////////////////////////////////////////////////////////////////////////////
 // Perform a lowercase comparison of strings.
-// If the strings are equal up to the end of the shorter string, that
+// If the strings are equal up to the end of the int16_ter string, that
 // string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
@@ -344,13 +344,13 @@ static short ms_asUpper2Lower[256]	=
 // way if the comparison is lowercase ("abcde" > "abcd^") and the other way 
 // ("ABCDE" < "ABCD^") if it is uppercase."
 //////////////////////////////////////////////////////////////////////////////
-extern short rspStricmp(	// Returns 0 if equivalent.
+extern int16_t rspStricmp(	// Returns 0 if equivalent.
 									// Returns < 0 if pszStr1 less than pszStr2.
 									// Returns > 0 if pszStr1 greater than pszStr2.
 	char const* pszStr1,		// In:  First string to compare.
 	char const* pszStr2)		// In:  Second string to compare.
 	{
-	short	sRes	= 0;	// Assume equivalent.
+	int16_t	sRes	= 0;	// Assume equivalent.
 
 	while (*pszStr1 != '\0' && *pszStr2 != '\0' && sRes == 0)
 		{
@@ -377,8 +377,8 @@ extern short rspStricmp(	// Returns 0 if equivalent.
 
 //////////////////////////////////////////////////////////////////////////////
 // Perform a lowercase comparison of strings up to n characters.
-// If the shorter string ends before n characters and the strings are 
-// equal up to the end of the shorter string, that string is lesser.
+// If the int16_ter string ends before n characters and the strings are 
+// equal up to the end of the int16_ter string, that string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
 // table ('[', '\', ']', '^', '_', and '`') compare differently, depending on
@@ -386,7 +386,7 @@ extern short rspStricmp(	// Returns 0 if equivalent.
 // way if the comparison is lowercase ("abcde" > "abcd^") and the other way 
 // ("ABCDE" < "ABCD^") if it is uppercase."
 //////////////////////////////////////////////////////////////////////////////
-extern short rspStrnicmp(	// Returns 0 if equivalent.
+extern int16_t rspStrnicmp(	// Returns 0 if equivalent.
 									// Returns < 0 if pszStr1 less than pszStr2.
 									// Returns > 0 if pszStr1 greater than pszStr2.
 	char const* pszStr1,		// In:  First string to compare.
@@ -395,7 +395,7 @@ extern short rspStrnicmp(	// Returns 0 if equivalent.
 	{
 	ASSERT(count >= 0);
 
-	short	sRes	= 0;	// Assume equivalent.
+	int16_t	sRes	= 0;	// Assume equivalent.
 
 	while (*pszStr1 != '\0' && *pszStr2 != '\0' && sRes == 0 && count--)
 		{

@@ -61,9 +61,9 @@ RTransform
 	void TransformInto(RP3d &XF, RP3d& p) XF = this x p
 	void Trans(REAL x,REAL y,REAL z)
 	void Scale(REAL a,REAL b, REAL c)
-	void Rz(short sDeg) // CCW!
-	void Rx(short sDeg) // CCW!
-	void Ry(short sDeg) // CCW!
+	void Rz(int16_t sDeg) // CCW!
+	void Rx(int16_t sDeg) // CCW!
+	void Ry(int16_t sDeg) // CCW!
 	void MakeScreenXF(
 		REAL x1,REAL y1,REAL w1,REAL h1,
 		REAL x2,REAL y2,REAL w2,REAL h2)
@@ -91,10 +91,10 @@ typedef union
 		REAL w;
 		};
 
-	short Load(RFile* pfile)
+	int16_t Load(RFile* pfile)
 		{ return pfile->Read(v, 4) != 4; }
 
-	short Save(RFile* pfile)
+	int16_t Save(RFile* pfile)
 		{ return pfile->Write(v, 4) != 4; }
 
 	} RP3d; // This is a 3d point.
@@ -191,11 +191,11 @@ inline void rspScale(RP3d& a,REAL s)
 
 
 // And some useful constants for manipulation:
-const short ROW[4] = {0,4,8,12};
-const short ROW0 = 0;
-const short ROW1 = 4;
-const short ROW2 = 8;
-const short ROW3 = 12;
+const int16_t ROW[4] = {0,4,8,12};
+const int16_t ROW0 = 0;
+const int16_t ROW1 = 4;
+const int16_t ROW2 = 8;
+const int16_t ROW3 = 12;
 
 const REAL Identity[16] = {1.0,0.0,0.0,0.0, 
 									0.0,1.0,0.0,0.0,
@@ -213,13 +213,13 @@ public:
 	REAL T[16]; // This is compatible with the aggregate transform
 	RTransform() // init to an identity transform
 		{ 
-		for (short i=0;i<16;i++) 
+		for (int16_t i=0;i<16;i++) 
 			T[i]=Identity[i];
 		}
 
 	RTransform(REAL* M) // init to a copy of another transform
 		{ 
-		for (short i=0;i<16;i++) 
+		for (int16_t i=0;i<16;i++) 
 			T[i]=M[i];
 		}
 
@@ -234,13 +234,13 @@ public:
 
 	void Make1() // identity matrix
 		{
-		for (short i=0;i<16;i++) 
+		for (int16_t i=0;i<16;i++) 
 			T[i]=Identity[i];
 		}
 
 	void Make0() // null matrix
 		{
-		for (short i=0;i<15;i++) 
+		for (int16_t i=0;i<15;i++) 
 			T[i]=(REAL)0;
 		T[15] = (REAL)1;
 		}
@@ -254,7 +254,7 @@ public:
 		//REAL* MLine = M;
 		//REAL* TCol = T;
 		//REAL tot;
-		short r,c;
+		int16_t r,c;
 		// Unroll this puppy!
 		// Much optimizing needed!
 		for (r = 0;r<3;r++) // 3/4 XFORM!
@@ -272,7 +272,7 @@ public:
 	// = A * B
 	void Mul(REAL* A,REAL* B) // 4x4 transforms:
 		{
-		short r,c;
+		int16_t r,c;
 		// Unroll this puppy!
 		// Much optimizing needed!
 		for (r = 0;r<3;r++) // 3/4 XFORM!
@@ -292,7 +292,7 @@ public:
 		{
 		RP3d temp = {0.0F,0.0F,0.0F,1.0F}; // asume 3 row form!
 		REAL *pT = T,*pV;
-		short i,j;
+		int16_t i,j;
 
 		for (j=0;j<3;j++) // asume 3 row form!
 			for (i=0,pV = p.v;i<4;i++)
@@ -311,7 +311,7 @@ public:
 		vDst.v[3] = REAL(1.);
 
 		REAL *pT = T,*pV;
-		short i,j;
+		int16_t i,j;
 
 		for (j=0;j<3;j++) // asume 3 row form!
 			for (i=0,pV = vSrc.v;i<4;i++)
@@ -330,7 +330,7 @@ public:
 
 	void Scale(REAL a,REAL b, REAL c)
 		{
-		for (short i=0;i<4;i++)
+		for (int16_t i=0;i<4;i++)
 			{
 			T[ ROW0 + i] *= a;	
 			T[ ROW1 + i] *= b;	
@@ -338,13 +338,13 @@ public:
 			}
 		}
 
-	void Rz(short sDeg) // CCW!
+	void Rz(int16_t sDeg) // CCW!
 		{
 		REAL S = rspfSin(sDeg);
 		REAL C = rspfCos(sDeg);
 		REAL NewVal; // two vertical numbers depend on each other
 
-		for (short i=0;i<4;i++)
+		for (int16_t i=0;i<4;i++)
 			{
 			NewVal = T[ ROW0 + i] * C - T[ ROW1 + i] * S;
 			T[ ROW1 + i] = T[ ROW0 + i] * S + T[ ROW1 + i] * C;
@@ -352,13 +352,13 @@ public:
 			}
 		}
 
-	void Rx(short sDeg) // CCW!
+	void Rx(int16_t sDeg) // CCW!
 		{
 		REAL S = rspfSin(sDeg);
 		REAL C = rspfCos(sDeg);
 		REAL NewVal; // two vertical numbers depend on each other
 
-		for (short i=0;i<4;i++)
+		for (int16_t i=0;i<4;i++)
 			{
 			NewVal = T[ ROW1 + i] * C - T[ ROW2 + i] * S;
 			T[ ROW2 + i] = T[ ROW1 + i] * S + T[ ROW2 + i] * C;
@@ -366,13 +366,13 @@ public:
 			}
 		}
 
-	void Ry(short sDeg) // CCW!
+	void Ry(int16_t sDeg) // CCW!
 		{
 		REAL S = rspfSin(sDeg);
 		REAL C = rspfCos(sDeg);
 		REAL NewVal; // two vertical numbers depend on each other
 
-		for (short i=0;i<4;i++)
+		for (int16_t i=0;i<4;i++)
 			{
 			NewVal = T[ ROW0 + i] * C + T[ ROW2 + i] * S;
 			T[ ROW2 + i] =-T[ ROW0 + i] * S + T[ ROW2 + i] * C;
@@ -445,7 +445,7 @@ public:
 
 	// Loads instance data for this Transform from the specified
 	// file.
-	short Load(				// Returns 0 on success.
+	int16_t Load(				// Returns 0 on success.
 		RFile*	pfile)	// In:  Ptr to file to load from.  Must be open with
 								// read access.
 		{
@@ -458,7 +458,7 @@ public:
 
 	// Saves instance data for this Transform to the specified
 	// file.
-	short Save(				// Returns 0 on success.
+	int16_t Save(				// Returns 0 on success.
 		RFile*	pfile)	// In:  Ptr to file to save to.  Must be open with
 								// write access.
 		{

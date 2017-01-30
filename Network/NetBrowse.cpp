@@ -93,11 +93,11 @@ int16_t CNetBrowse::Startup(                   // Returns 0 if sucessfull, non-z
 
          }
       else
-         TRACE("CNetBrowse::StartBrowse(): Error putting socket into broadcast mode!\n";
+         TRACE("CNetBrowse::StartBrowse(): Error putting socket into broadcast mode!\n");
 
       }
    else
-      TRACE("CNetBrowse::StartBrowse(): Couldn't open broadcast socket!\n";
+      TRACE("CNetBrowse::StartBrowse(): Couldn't open broadcast socket!\n");
 
    return sResult;
    }
@@ -127,11 +127,11 @@ void CNetBrowse::Update(
    Hosts* phostsRemoved)                        // I/O:  List of hosts that were removed
    {
    // Check if it's time to broadcast
-   long lTime = rspGetMilliseconds();
+   int32_t lTime = rspGetMilliseconds();
    if ((lTime - m_lLastBroadcast) > Net::BroadcastInterval)
       {
       // Create message
-      U8 buf1[4];
+      uint8_t buf1[4];
       buf1[0] = Net::BroadcastMagic0;
       buf1[1] = Net::BroadcastMagic1;
       buf1[2] = Net::BroadcastMagic2;
@@ -142,17 +142,17 @@ void CNetBrowse::Update(
       RSocket::CreateBroadcastAddress(m_usBasePort + Net::AntennaPortOffset, &address);
 
       // Broadcast the message
-      long lBytesSent;
+      int32_t lBytesSent;
       int16_t serr = m_socketBrowse.SendTo(buf1, sizeof(buf1), &lBytesSent, &address);
       if (serr == 0)
          {
          if (lBytesSent != sizeof(buf1))
-            TRACE("CNetBrowse::Update(): Error sending broadcast (wrong size)!\n";
+            TRACE("CNetBrowse::Update(): Error sending broadcast (wrong size)!\n");
          }
       else
          {
          if (serr != RSocket::errWouldBlock)
-            TRACE("CNetBrowse::Update(): Error sending broadcast!\n";
+            TRACE("CNetBrowse::Update(): Error sending broadcast!\n");
          }
 
       // If there was no error, reset the timer.  If there was an error, we want to
@@ -170,8 +170,8 @@ void CNetBrowse::Update(
    // using the same port as us.  If we do get a message, the address of the sender
    // will be recorded -- this gives us the host's address!
    CHost host;
-   long lReceived;
-   U8 buf[sizeof(host.m_acName) + 4 + 4];
+   int32_t lReceived;
+   uint8_t buf[sizeof(host.m_acName) + 4 + 4];
    int16_t serr = m_socketBrowse.ReceiveFrom(buf, sizeof(buf), &lReceived, &host.m_address);
    if (serr == 0)
       {
@@ -189,10 +189,10 @@ void CNetBrowse::Update(
          // is the same, that entity will get the same value that it sent.  All
          // other entities will see this as a meaningless value, which is fine.
          host.m_lMagic =
-            ((long)buf[4] & 0x000000ff) +
-            (((long)buf[5] <<  8) & 0x0000ff00) +
-            (((long)buf[6] << 16) & 0x00ff0000) +
-            (((long)buf[7] << 24) & 0xff000000);
+            ((int32_t)buf[4] & 0x000000ff) +
+            (((int32_t)buf[5] <<  8) & 0x0000ff00) +
+            (((int32_t)buf[6] << 16) & 0x00ff0000) +
+            (((int32_t)buf[7] << 24) & 0xff000000);
 
          // Copy the name
          strncpy(host.m_acName, (char const *)&buf[8], sizeof(host.m_acName));
@@ -229,12 +229,12 @@ void CNetBrowse::Update(
             }
          }
       else
-         TRACE("CNetBrowse::Update(): Validation failed -- another app may be sending crap to our port!\n";
+         TRACE("CNetBrowse::Update(): Validation failed -- another app may be sending crap to our port!\n");
       }
    else
       {
       if (serr != RSocket::errWouldBlock)
-         TRACE("CNetBrowse::Update(): Error receiving broadcast!\n";
+         TRACE("CNetBrowse::Update(): Error receiving broadcast!\n");
       }
 
    // Check for hosts that haven't been heard from in too long a time,
@@ -267,7 +267,7 @@ int16_t CNetBrowse::LookupHost(                // Returns 0 if successfull, non-
    // Try to get requested address
    int16_t sResult = RSocket::GetAddress(pszName, usPort, paddress);
    if (sResult != 0)
-      TRACE("CNetBrowse::LookupHost(): Error getting host address!\n";
+      TRACE("CNetBrowse::LookupHost(): Error getting host address!\n");
    return sResult;
    }
 

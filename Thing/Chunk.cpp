@@ -83,7 +83,7 @@
 // Note that this is never reseeded b/c this is just an 'effect'
 // that does not and SHOULD not affect game play as it can be
 // turned off.
-long     CChunk::ms_lGetRandomSeed  = 0;  // Seed for GetRand[om]().
+int32_t     CChunk::ms_lGetRandomSeed  = 0;  // Seed for GetRand[om]().
 
 // Chunk info for each type.
 CChunk::TypeInfo  CChunk::ms_atiChunks[CChunk::NumTypes] =
@@ -116,7 +116,7 @@ void CChunk::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CChunk::Update(void)
    {
-   long  lCurTime    = m_pRealm->m_time.GetGameTime();
+   int32_t  lCurTime    = m_pRealm->m_time.GetGameTime();
 
    double   dSeconds = (lCurTime - m_lPrevTime) / 1000.0;
    m_lPrevTime       = lCurTime;
@@ -149,7 +149,7 @@ void CChunk::Update(void)
                && sY2d < pim->m_sHeight)
                {
                // Pixel.  8bpp only!
-               U8*   pu8Dst   = pim->m_pData + sX2d + sY2d * pim->m_lPitch;
+               uint8_t*   pu8Dst   = pim->m_pData + sX2d + sY2d * pim->m_lPitch;
 
                *pu8Dst  = rspBlendColor(                 // Alpha color/index.
                   ALPHA_LEVEL,                           // Alpha level.
@@ -165,7 +165,7 @@ void CChunk::Update(void)
          case Shell:
 #if 0 // Looks bad.
             rspPlot(
-               (U8)251,
+               (uint8_t)251,
                m_pRealm->m_phood->m_pimBackground,
                sX2d,
                sY2d);

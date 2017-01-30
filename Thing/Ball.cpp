@@ -84,7 +84,7 @@
 #define BALL_CPP
 
 #include <RSPiX.h>
-#include <string.h>
+#include <cstring>
 
 #include "Ball.h"
 #include <Thing/Hood.h>
@@ -139,7 +139,7 @@ int16_t CBall::Load(                              // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = 0;
 
@@ -295,7 +295,7 @@ void CBall::Update(void)
    {
    if (!m_sSuspend)
       {
-      long  lCurTime          = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime          = m_pRealm->m_time.GetGameTime();
       double dDeltaSeconds    = (lCurTime - m_lPrevTime) / 1000.0;
 
       // Adjust vertical velocity and calculate new position.
@@ -384,7 +384,7 @@ void CBall::Render(void)
    m_trans.Ry(rspMod360(m_dDX));
    m_trans.Rz(rspMod360(m_dDZ));
 
-   long lTime  = m_pRealm->m_time.GetGameTime();
+   int32_t lTime  = m_pRealm->m_time.GetGameTime();
 
    m_sprite.m_pmesh     = (RMesh*)m_anim.m_pmeshes->GetAtTime(lTime);
    m_sprite.m_psop      = (RSop*)m_anim.m_psops->GetAtTime(lTime);

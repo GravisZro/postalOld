@@ -314,7 +314,7 @@ class SampleMaster
    {
    public:
       // Used as a unique idea for running sound sample manipulation -> includes channel number
-      typedef  U64   SoundInstance; // 0 indicates error condition.
+      typedef  uint64_t   SoundInstance; // 0 indicates error condition.
 
       //////////////////////////////////////////////////////////////
       // Use these tags to specify a sound volume category
@@ -329,7 +329,8 @@ class SampleMaster
       // DESCRIPTION IN ms_apszSoundCategories (SAMPLEMASTER.CPP).
       // ALSO, add a volume adjustor in ms_asQualityCategoryAdjustors
       // or it will default to 0.
-      enum SoundCategory {
+      enum SoundCategory : uint32_t
+      {
          Unspecified = 0,  // Unaffected, generic sound
          BackgroundMusic,  // Actual solid playing music
          Weapon,           // Gunfire, Missile noise, flame thrower
@@ -1499,11 +1500,11 @@ void PlaySample(                                // Returns nothing.
    SampleMaster::SoundCategory eType,           // In:  Sound Volume Category for user adjustment
    int16_t sInitialVolume = 255,                  // In:  Initial Sound Volume (0 - 255)
    SampleMaster::SoundInstance*  psi = nullptr, // Out: Handle for adjusting sound volume
-   long* plSampleDuration = nullptr,            // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime = -1,                    // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration = nullptr,            // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime = -1,                    // In:  Where to loop back to in milliseconds.
                                                 // -1 indicates no looping (unless m_sLoop is
                                                 // explicitly set).
-   long lLoopEndTime = 0,                       // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime = 0,                       // In:  Where to loop back from in milliseconds.
                                                 // In:  If less than 1, the end + lLoopEndTime is used.
    bool bPurgeSample = false);                  // In:  Call ReleaseAndPurge rather than Release after playing
 
@@ -1514,11 +1515,11 @@ void PlaySample(                                // Returns nothing.
 void PlaySample(                          // Returns nothing.
                                           // Does not fail.
    SampleMasterID id,                     // In:  Identifier of sample you want played.
-   long* plSampleDuration = nullptr,      // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime = -1,              // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration = nullptr,      // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime = -1,              // In:  Where to loop back to in milliseconds.
                                           // -1 indicates no looping (unless m_sLoop is
                                           // explicitly set).
-   long lLoopEndTime = 0,                 // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime = 0,                 // In:  Where to loop back from in milliseconds.
                                           // In:  If less than 1, the end + lLoopEndTime is used.
    bool bPurgeSample = false);            // In:  Call ReleaseAndPurge rather than Release after playing
 
@@ -1532,11 +1533,11 @@ void PlaySampleThenPurge(                 // Returns nothing.
    SampleMaster::SoundCategory   eType = SampleMaster::Unspecified,  // In:  Sound Volume Category for user adjustment
    int16_t sInitialVolume = 255,            // In:  Initial Sound Volume (0 - 255)
 
-   long* plSampleDuration = nullptr,      // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime = -1,              // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration = nullptr,      // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime = -1,              // In:  Where to loop back to in milliseconds.
                                           // -1 indicates no looping (unless m_sLoop is
                                           // explicitly set).
-   long lLoopEndTime = 0);                // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime = 0);                // In:  Where to loop back from in milliseconds.
                                           // If les than 1, the end + lLoopEndTime is used.
 #endif
 

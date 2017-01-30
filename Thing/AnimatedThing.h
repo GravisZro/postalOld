@@ -76,10 +76,10 @@ class CAnimThing : public CThing
       int16_t m_sLoop;                      // Loops, if true.
       char  m_szResName[RSP_MAX_PATH];    // Resource name.
 
-      long  m_lAnimTime;                  // Cummulative animation time.
-      long  m_lAnimPrevTime;              // Last animation time.
+      int32_t  m_lAnimTime;                  // Cummulative animation time.
+      int32_t  m_lAnimPrevTime;              // Last animation time.
 
-      U16         m_u16IdSendMsg;         // ID of CThing to send msg to when done.
+      uint16_t         m_u16IdSendMsg;         // ID of CThing to send msg to when done.
       GameMessage m_msg;                  // Message to send to m_pthingSendMsg.
 
    protected:
@@ -142,7 +142,7 @@ class CAnimThing : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

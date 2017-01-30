@@ -157,7 +157,7 @@ short CVideo::Create(void)
 	// Let's create the avi video window if one has not already been created.
 	if (m_lhwnd == 0)
 		{
-		m_lhwnd = (long)MCIWndCreate(gsi.hWnd, 
+		m_lhwnd = (int32_t)MCIWndCreate(gsi.hWnd, 
 											  gsi.hInstance,
 											  (DWORD)(WS_CHILD |
 //											  			 WS_EX_TOPMOST |
@@ -179,7 +179,7 @@ short CVideo::Create(void)
 //			m_lhwndProc = GetWindowLong((HWND)m_lhwnd, GWL_WNDPROC);
 
 			// Now, let's set the window's proc to our's.
-//			if (SetWindowLong((HWND)m_lhwnd, GWL_WNDPROC, (long)&(this->OurMCIWndProc)) == 0)
+//			if (SetWindowLong((HWND)m_lhwnd, GWL_WNDPROC, (int32_t)&(this->OurMCIWndProc)) == 0)
 //				{
 //				TRACE("Failed to subclass the MCI window's proc to our's.");
 //				}
@@ -395,9 +395,9 @@ short CVideo::Close(void)
 // History:			05/17/95, PPL,	Started coding.
 //						05/18/95, PPL, Rewrote using MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Play(short sMode, long lStart, long lEnd)
+short CVideo::Play(short sMode, int32_t lStart, int32_t lEnd)
 	{
-	long lResult;
+	int32_t lResult;
 
 	if (m_lhwnd)
 		{
@@ -502,7 +502,7 @@ short CVideo::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 short CVideo::Stop(void)
 	{
-	long lResult;
+	int32_t lResult;
 
 	lResult = MCIWndStop((HWND)m_lhwnd);
 	if (lResult != 0)
@@ -577,7 +577,7 @@ long CVideo::GetPosition(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 short CVideo::IsOpened(void)
 	{
-	long lResult;
+	int32_t lResult;
 
 	lResult = MCIWndGetMode((HWND)m_lhwnd, ms_szBuf, 80);
 
@@ -705,7 +705,7 @@ void CVideo::Init(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 long CVideo::TraceMCIError(char* szFunctionName)
 	{
-	long lResult;
+	int32_t lResult;
 
 	lResult = MCIWndGetError((HWND)m_lhwnd, ms_szBuf, 80);
 

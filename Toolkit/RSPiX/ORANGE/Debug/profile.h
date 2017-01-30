@@ -222,7 +222,7 @@ rspProfileOff();
 //  (a) - Currently, the RSPiX profiler makes heavy use of 64-bit integer math 
 //  because it uses a special blue function, rpsGetAppMicroseconds, which returns 
 //  the full 64-bit amount of microseconds elapsed.  To do this, it uses the 
-//  non-standard S64 data type.  This needs to be changed on porting.
+//  non-standard int64_t data type.  This needs to be changed on porting.
 //
 //  (b) - This program relies on FALSE being zero.
 //
@@ -233,8 +233,8 @@ rspProfileOff();
 #ifndef _PROFILE_H
 #define _PROFILE_H
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <BLUE/Blue.h>
 //------------------------------------
@@ -246,9 +246,9 @@ rspProfileOff();
 typedef	enum {Inactive,Timing,DoneTiming,InError}	ProfileState;
 
 #ifdef __GNUC__
-#define BIGS64(x) S64(x##ll)
+#define BIGint64_t(x) int64_t(x##ll)
 #else
-#define BIGS64(x) S64(x)
+#define BIGint64_t(x) int64_t(x)
 #endif
 
 class	RProfileNode
@@ -259,7 +259,7 @@ public:
 		{
 		m_szFieldName[0] = 0; 
 		m_lNumCalls = m_lTotTime = m_lLastTime = m_lMaxTime = m_lWhenMin = m_lWhenMax = 0; 
-		m_lMinTime = BIGS64(999999999999);
+		m_lMinTime = BIGint64_t(999999999999);
 		m_eState = Inactive;
 		m_sInError = FALSE;
 		}
@@ -271,21 +271,21 @@ public:
 	~RProfileNode(){};
 	//----------------------------
 	char m_szFieldName[PF_MAX_LEN];
-	S64	m_lNumCalls;
-	S64	m_lTotTime;
-	S64  m_lLastTime;
+	int64_t	m_lNumCalls;
+	int64_t	m_lTotTime;
+	int64_t  m_lLastTime;
 
-	S64	m_lMinTime;
-	S64  m_lWhenMin; // relative to begin
-	S64	m_lMaxTime;
-	S64	m_lWhenMax; // relative to begin
+	int64_t	m_lMinTime;
+	int64_t  m_lWhenMin; // relative to begin
+	int64_t	m_lMaxTime;
+	int64_t	m_lWhenMax; // relative to begin
 
 	ProfileState m_eState;	// parenthesis verification!
 
 #define PF_START_ERR	1
 #define PF_END_ERR	2
 
-	short	m_sInError;	// parenthesis mismatch!
+	int16_t	m_sInError;	// parenthesis mismatch!
 	};
 
 class	RProfile
@@ -335,14 +335,14 @@ public:
 
 		// Deactivate all ranges (shouldn't really be needed!)
 		/*
-		for (short i=0; i < m_sNumTracked;i++)
+		for (int16_t i=0; i < m_sNumTracked;i++)
 			{
 			if (m_aList[i].m_eState != InError) m_aList[i].m_eState = Inactive;
 			}
 			*/
 		}
 
-	//S64	DetermineTimeError();
+	//int64_t	DetermineTimeError();
 
 	void Report(); // tell it all!
 	//----------------------------
@@ -360,27 +360,27 @@ public:
 	RProfile(); // in cpp file
 
 	//----------------------------
-	S64	m_lCount;		// to determine my own overhead!
-	S64	m_lTotTime;		// Total overhead used by profiling!
+	int64_t	m_lCount;		// to determine my own overhead!
+	int64_t	m_lTotTime;		// Total overhead used by profiling!
 
-	S64	m_lInitTime;		// start of program
-	S64	m_lDeceasedTime;	// end of program
+	int64_t	m_lInitTime;		// start of program
+	int64_t	m_lDeceasedTime;	// end of program
 
-	S64	m_lBeginTime;	// when user kicks off profiling
-	S64  m_lFirstTime;	// first time a profile range is entered in active mode
+	int64_t	m_lBeginTime;	// when user kicks off profiling
+	int64_t  m_lFirstTime;	// first time a profile range is entered in active mode
 
 	//===== Let's try to max out a theme here:
-	S64	m_lFastTimeIn;
-	S64	m_lFastTimeOut;
+	int64_t	m_lFastTimeIn;
+	int64_t	m_lFastTimeOut;
 	//----------------------------
 	
-	short	m_sLastUnaccounted;// Used for one frame lag timing of unknown overhead...
-	short m_sNumTracked;		// how many in count?
-	short m_sCommandError;	// mismatched parenthesis
-	short m_sMaxDepth;		// Used for third order error estimation
-	short	m_sCurDepth;		// Used for third order error estimation
-	short	m_sActive;			// suspend / resume profiling...
-	short	m_sInternalError;	// Usually memory limits...
+	int16_t	m_sLastUnaccounted;// Used for one frame lag timing of unknown overhead...
+	int16_t m_sNumTracked;		// how many in count?
+	int16_t m_sCommandError;	// mismatched parenthesis
+	int16_t m_sMaxDepth;		// Used for third order error estimation
+	int16_t	m_sCurDepth;		// Used for third order error estimation
+	int16_t	m_sActive;			// suspend / resume profiling...
+	int16_t	m_sInternalError;	// Usually memory limits...
 
 	char	m_szOutputFile[256];
 	RProfileNode m_aList[PF_MAX_FIELDS];

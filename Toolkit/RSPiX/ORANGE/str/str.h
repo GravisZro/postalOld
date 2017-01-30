@@ -49,7 +49,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // Perform a lowercase comparison of strings.
-// If the strings are equal up to the end of the shorter string, that
+// If the strings are equal up to the end of the int16_ter string, that
 // string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
@@ -57,22 +57,22 @@
 // their case. For example, the two strings "ABCDE" and "ABCD^" compare one 
 // way if the comparison is lowercase ("abcde" > "abcd^") and the other way 
 // ("ABCDE" < "ABCD^") if it is uppercase."
-extern short rspStricmp(	// Returns 0 if equivalent.
+extern int16_t rspStricmp(	// Returns 0 if equivalent.
 									// Returns < 0 if pszStr1 less than pszStr2.
 									// Returns > 0 if pszStr1 greater than pszStr2.
 	const char* pszStr1,		// In:  First string to compare.
 	const char* pszStr2);	// In:  Second string to compare.
 
 // Perform a lowercase comparison of strings up to n characters.
-// If the shorter string ends before n characters and the strings are 
-// equal up to the end of the shorter string, that string is lesser.
+// If the int16_ter string ends before n characters and the strings are 
+// equal up to the end of the int16_ter string, that string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
 // table ('[', '\', ']', '^', '_', and '`') compare differently, depending on
 // their case. For example, the two strings "ABCDE" and "ABCD^" compare one 
 // way if the comparison is lowercase ("abcde" > "abcd^") and the other way 
 // ("ABCDE" < "ABCD^") if it is uppercase."
-extern short rspStrnicmp(	// Returns 0 if equivalent.
+extern int16_t rspStrnicmp(	// Returns 0 if equivalent.
 									// Returns < 0 if pszStr1 less than pszStr2.
 									// Returns > 0 if pszStr1 greater than pszStr2.
 	const char* pszStr1,		// In:  First string to compare.

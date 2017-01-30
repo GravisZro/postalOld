@@ -58,7 +58,7 @@ void MTaskManager(void);
 // this module should be added.  Tasks should
 // never return and need to call MTaskWait
 // periodically.
-short MTaskAddFunc(void* pFunction, char* pszFuncName, short sStackSize = 1024);
+int16_t MTaskAddFunc(void* pFunction, char* pszFuncName, int16_t sStackSize = 1024);
 
 #define MTaskAddwSize(fnTask, sStackSz)	MTaskAddFunc(fnTask, #fnTask, sStackSz)
 #define MTaskAdd(fnTask)						MTaskAddFunc(fnTask, #fnTask);

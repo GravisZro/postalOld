@@ -31,9 +31,9 @@
 #ifndef RSTRING_H
 #define RSTRING_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <stdarg.h>
 
 #include <BLUE/System.h>
@@ -60,8 +60,8 @@ class RString
 	//---------------------------------------------------------------------------
 	protected:
 		char* m_pBuf;				// Pointer to buffer memory, or ms_pszEmpty if none exists
-		long m_lBufSize;			// Size of buffer (0 means there is no buffer!)
-		long m_lStrLen;			// Length of string (up to but not including the terminating null)
+		int32_t m_lBufSize;			// Size of buffer (0 means there is no buffer!)
+		int32_t m_lStrLen;			// Length of string (up to but not including the terminating null)
 
 		// Static pointer that is initialized to point at an empty string.  When
 		// there is no buffer, a string's buffer pointer is set equal to this
@@ -74,7 +74,7 @@ class RString
 	//---------------------------------------------------------------------------
 	protected:
 		// Common constructor code
-		void Construct(long lMinimumSize)
+		void Construct(int32_t lMinimumSize)
 			{
 			m_pBuf = ms_pszEmpty;
 			m_lBufSize = 0;
@@ -120,7 +120,7 @@ class RString
 		// or equal to the specified size, then this will have no effect.  Otherwise,
 		// the buffer is grown to the specified size.  The string is unaffected.
 		////////////////////////////////////////////////////////////////////////////////
-		void Grow(long lMinimumSize);
+		void Grow(int32_t lMinimumSize);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Shrink the buffer to the specified size.  If the buffer is already less than
@@ -132,7 +132,7 @@ class RString
 		// new terminating null is written.  Note that a size of 1 will result in an
 		// empty string since there will only be room for the terminating null.
 		////////////////////////////////////////////////////////////////////////////////
-		void Shrink(long lMaximumSize);
+		void Shrink(int32_t lMaximumSize);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Compact the buffer to the minimum size required to hold the current string.
@@ -168,7 +168,7 @@ class RString
 		// Get the character at the specified position in the string.  If the position
 		// is negative or beyond the end of the string, the returned value will be 0.
 		////////////////////////////////////////////////////////////////////////////////
-		char GetAt(long lPos) const
+		char GetAt(int32_t lPos) const
 			{
 			if ((lPos >= 0) && (lPos < m_lStrLen)) // implies m_lStrLen > 0
 				return m_pBuf[lPos];
@@ -178,16 +178,16 @@ class RString
 		////////////////////////////////////////////////////////////////////////////////
 		// Array operator, works the same as GetAt(), but using array notation.
 		////////////////////////////////////////////////////////////////////////////////
-		char operator [](long lPos) const
+		char operator [](int32_t lPos) const
 			{ return GetAt(lPos); }
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Set the specified character at the specified position in the string.  If the
-		// specified character is 0 (null) then the string's length is shortened (the
+		// specified character is 0 (null) then the string's length is int16_tened (the
 		// new length will be equal to the specified position).  If the position is
 		// negative or beyind the end of the string, this function does nothing.
 		////////////////////////////////////////////////////////////////////////////////
-		void SetAt(long lPos, char c)
+		void SetAt(int32_t lPos, char c)
 			{
 			if ((lPos >= 0) && (lPos < m_lStrLen)) // implies m_lStrLen > 0
 				{
@@ -218,7 +218,7 @@ class RString
 		////////////////////////////////////////////////////////////////////////////////
 		void Update(void)
 			{
-			long lLen = strlen(m_pBuf);
+			int32_t lLen = strlen(m_pBuf);
 			if (lLen < m_lBufSize)
 				m_lStrLen = lLen;
 			else
@@ -253,21 +253,21 @@ class RString
 		// Returns number of characters written, or -1 if an error occurred (this is
 		// basically the value returned by vsprintf.)
 		////////////////////////////////////////////////////////////////////////////////
-		long Format(long lMinSize, char* format, ...);
+		long Format(int32_t lMinSize, char* format, ...);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Create a new RString based on this string's first 'lLen' characters.  If
 		// lLen is negative, the returned string will be empty.  Otherwise, the returned
 		// string's length will be lLen or this string's length, whichever is less.
 		////////////////////////////////////////////////////////////////////////////////
-		RString Left(long lLen) const;
+		RString Left(int32_t lLen) const;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Create a new RString based on this string's last 'lLen' characters.  If lLen
 		// is negative, the returned string will be empty.  Otherwise, the returned
 		// string's length will be lLen or this string's length, whichever is less.
 		////////////////////////////////////////////////////////////////////////////////
-		RString Right(long lLen) const;
+		RString Right(int32_t lLen) const;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Create a new RString based on a portion of this string, starting at lPos and
@@ -276,7 +276,7 @@ class RString
 		// specified lLen will be clipped if necessary to avoid going past the end
 		// of this string.
 		////////////////////////////////////////////////////////////////////////////////
-		RString Mid(long lPos, long lLen) const;
+		RString Mid(int32_t lPos, int32_t lLen) const;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Create a new RString based on the specified range of characters from this
@@ -284,7 +284,7 @@ class RString
 		// The positions are clipped if they are past the end of this string.  lPos1
 		// must be less than or equal to lPos2.
 		////////////////////////////////////////////////////////////////////////////////
-		RString Range(long lPos1, long lPos2) const;
+		RString Range(int32_t lPos1, int32_t lPos2) const;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Insert any of the supported types into the string at the specified position.
@@ -301,15 +301,15 @@ class RString
 		// is too bad, because so many other things, like += and =, could have simply
 		// called Insert()!  It would be little less efficient, but much less code to
 		// maintain.
-		void Insert(long lPos, const RString& str);
-		void Insert(long lPos, const char* psz);
-		void Insert(long lPos, char c);
+		void Insert(int32_t lPos, const RString& str);
+		void Insert(int32_t lPos, const char* psz);
+		void Insert(int32_t lPos, char c);
 
 		// These would be very cool variations, not very difficult to write, I just
 		// didn't have the time to spend right now.
 		#if 0
-		void Insert(long lPos, const RString& str, long lLen);
-		void Insert(long lPos, const RString& str, long lPos, long lLen);
+		void Insert(int32_t lPos, const RString& str, int32_t lLen);
+		void Insert(int32_t lPos, const RString& str, int32_t lPos, int32_t lLen);
 		#endif
 
 		// I took these out because their usage was very clumsy.  The problem is that
@@ -319,17 +319,17 @@ class RString
 		// most cases you'd end up with the number followed by a bunch of spaces, which
 		// is, to reiterate, very clumsy.
 		#if 0
-		void Insert(long lPos, short s);
-		void Insert(long lPos, unsigned short us);
-		void Insert(long lPos, long l);
-		void Insert(long lPos, unsigned long ul);
+		void Insert(int32_t lPos, int16_t s);
+		void Insert(int32_t lPos, uint16_t us);
+		void Insert(int32_t lPos, int32_t l);
+		void Insert(int32_t lPos, uint32_t ul);
 		#endif
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Delete the specified number of characters starting at the specified position.
 		// If the position or length are negative, the string is left unmodified.
 		////////////////////////////////////////////////////////////////////////////////
-		void Delete(long lPos, long lLen);
+		void Delete(int32_t lPos, int32_t lLen);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Convert string to upper case
@@ -345,13 +345,13 @@ class RString
 		// Load a previously saved string from the specified RFile.  Calls Clear() if
 		// an error occurs while loading.  Returns 0 if successfull, non-zero otherwise.
 		////////////////////////////////////////////////////////////////////////////////
-		short Load(RFile* pFile);
+		int16_t Load(RFile* pFile);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Save this string to the specified RFile.  This RString is not modified by the
 		// save, even if an error occurs.  Returns 0 if successfull, non-zero otherwise.
 		////////////////////////////////////////////////////////////////////////////////
-		short Save(RFile* pFile) const;
+		int16_t Save(RFile* pFile) const;
 
 	//---------------------------------------------------------------------------
 	// operator =
@@ -379,7 +379,7 @@ class RString
 			ASSERT(rhs);
 			if (rhs)
 				{
-				long lLen = strlen(rhs);
+				int32_t lLen = strlen(rhs);
 				Grow(lLen + 1); // size is always > 0, so this will always return with a valid buffer
 				memcpy(m_pBuf, rhs, lLen + 1);
 				m_lStrLen = lLen;
@@ -400,18 +400,18 @@ class RString
 			}
 
 		// Assign string representation of specified number
-		const RString& operator=(short rhs)
+		const RString& operator=(int16_t rhs)
 			{
 			Grow(MaxShortLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen = sprintf(m_pBuf, "%hd", (short)rhs);
+			m_lStrLen = sprintf(m_pBuf, "%hd", (int16_t)rhs);
 			return *this;
 			}
 
 		// Assign string representation of specified number
-		const RString& operator=(unsigned short rhs)
+		const RString& operator=(uint16_t rhs)
 			{
 			Grow(MaxUShortLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen = sprintf(m_pBuf, "%hu", (unsigned short)rhs);
+			m_lStrLen = sprintf(m_pBuf, "%hu", (uint16_t)rhs);
 			return *this;
 			}
 
@@ -419,15 +419,15 @@ class RString
 		const RString& operator=(long rhs)
 			{
 			Grow(MaxLongLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen = sprintf(m_pBuf, "%ld", (long)rhs);
+         m_lStrLen = sprintf(m_pBuf, "%d", (int32_t)rhs);
 			return *this;
 			}
 
 		// Assign string representation of specified number
-		const RString& operator=(unsigned long rhs)
+		const RString& operator=(uint32_t rhs)
 			{
 			Grow(MaxULongLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen = sprintf(m_pBuf, "%lu", (unsigned long)rhs);
+         m_lStrLen = sprintf(m_pBuf, "%u", (uint32_t)rhs);
 			return *this;
 			}
 
@@ -444,20 +444,20 @@ class RString
 			}
 
 		// Create empty string with minimum buffer size (see Grow())
-		RString(long lMinimumSize)
+		RString(int32_t lMinimumSize)
 			{
 			Construct(lMinimumSize);
 			}
 
 		// Create string based on existing string, optionally with minimum buffer size (see Grow())
-		RString(const RString& rhs, long lMinimumSize = 0)
+		RString(const RString& rhs, int32_t lMinimumSize = 0)
 			{
 			Construct(lMinimumSize);
 			operator=(rhs);
 			}
 
 		// Create string based on C-style string, optionally with minimum buffer size (see Grow())
-		RString(const char* rhs, long lMinimumSize = 0)
+		RString(const char* rhs, int32_t lMinimumSize = 0)
 			{
 			Construct(lMinimumSize);
 			operator=(rhs);
@@ -491,18 +491,18 @@ class RString
 			}
 
 		// Append string representation of specified number
-		const RString& operator+=(short rhs)
+		const RString& operator+=(int16_t rhs)
 			{
 			Grow(m_lStrLen + MaxShortLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%hd", (short)rhs);
+			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%hd", (int16_t)rhs);
 			return *this;
 			}
 
 		// Append string representation of specified number
-		const RString& operator+=(unsigned short rhs)
+		const RString& operator+=(uint16_t rhs)
 			{
 			Grow(m_lStrLen + MaxUShortLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%hu", (unsigned short)rhs);
+			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%hu", (uint16_t)rhs);
 			return *this;
 			}
 
@@ -510,15 +510,15 @@ class RString
 		const RString& operator+=(long rhs)
 			{
 			Grow(m_lStrLen + MaxLongLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%ld", (long)rhs);
+         m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%d", (int32_t)rhs);
 			return *this;
 			}
 
 		// Append string representation of specified number
-		const RString& operator+=(unsigned long rhs)
+		const RString& operator+=(uint32_t rhs)
 			{
 			Grow(m_lStrLen + MaxULongLen + 1); // size is always > 0, so this will always return with a valid buffer
-			m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%lu", (unsigned long)rhs);
+         m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%u", (uint32_t)rhs);
 			return *this;
 			}
 
@@ -549,14 +549,14 @@ class RString
 			return str;
 			}
 
-		RString operator+(short rhs) const
+		RString operator+(int16_t rhs) const
 			{
 			RString str = *this;
 			str += rhs;
 			return str;
 			}
 
-		RString operator+(unsigned short rhs) const
+		RString operator+(uint16_t rhs) const
 			{
 			RString str = *this;
 			str += rhs;
@@ -570,7 +570,7 @@ class RString
 			return str;
 			}
 
-		RString operator+(unsigned long rhs) const
+		RString operator+(uint32_t rhs) const
 			{
 			RString str = *this;
 			str += rhs;

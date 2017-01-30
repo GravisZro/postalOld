@@ -32,7 +32,7 @@
 //							percentage of target (100%) reporting, error reporting,
 //							and error recovery.
 //
-//		07/07/97 MJR	Switched to S64 instead of __int64.
+//		07/07/97 MJR	Switched to int64_t instead of __int64.
 //							Changed printf() stuff to use %g instead of %lg.
 //
 //		07/08/97 JRD	Removed destructor reporting when define is off.
@@ -42,14 +42,14 @@
 // It currently uses Microseconds....
 //////////////////////////////////////////////////////////////////////////////
 
-#include <stdio.h>
+#include <cstdio>
 #include "profile.h"
 #include <ORANGE/str/str.h>
 
 #if WIN32
-	S64 i64GetTimeSpeed=7;	// how long does the time command take?
+	int64_t i64GetTimeSpeed=7;	// how long does the time command take?
 #else
-	S64 i64GetTimeSpeed=8;	// Mike's guess on the mac
+	int64_t i64GetTimeSpeed=8;	// Mike's guess on the mac
 #endif
 
 
@@ -64,12 +64,12 @@ RProfile	rspProfileInstance;
 //////////////////////////////////////////////////////////////////////////////
 void	RProfile::StartProfile(char const *  pszFieldName)
 	{
-	short sKey;
+	int16_t sKey;
 
 	//*****************************************************************************
 	//************************************ TIME NOT BILLED CORRECTLY : START ******
 	//*****************************************************************************
-	S64 i64EntryTime = rspGetAppMicroseconds() - i64GetTimeSpeed; // Track Overhead
+	int64_t i64EntryTime = rspGetAppMicroseconds() - i64GetTimeSpeed; // Track Overhead
 	//*****************************************************************************
 	//************************************ TIME NOT BILLED CORRECTLY : .END. ******
 	//*****************************************************************************
@@ -82,9 +82,9 @@ void	RProfile::StartProfile(char const *  pszFieldName)
 	//------------------------------------------------------
 	// See if this name currently exists:
 	//------------------------------------------------------
-	short sMatch = FALSE;
+	int16_t sMatch = FALSE;
 	// Do the same length regardless (for consistency)
-	short i;
+	int16_t i;
 	for (i=0; i < m_sNumTracked /*PF_MAX_FIELDS*/;i++)
 		{
 		if (!rspStricmp(pszFieldName,m_aList[i].m_szFieldName))
@@ -177,11 +177,11 @@ void	RProfile::StartProfile(char const *  pszFieldName)
 //
 void	RProfile::EndProfile(char const *  pszFieldName)
 	{
-	short sKey;
+	int16_t sKey;
 	//*****************************************************************************
 	//************************************ TIME NOT BILLED CORRECTLY : START ******
 	//*****************************************************************************
-	S64 i64EntryTime = rspGetAppMicroseconds() - i64GetTimeSpeed; // Track Overhead
+	int64_t i64EntryTime = rspGetAppMicroseconds() - i64GetTimeSpeed; // Track Overhead
 	//*****************************************************************************
 	//************************************ TIME NOT BILLED CORRECTLY : .END. ******
 	//*****************************************************************************
@@ -195,9 +195,9 @@ void	RProfile::EndProfile(char const *  pszFieldName)
 	// See if this name currently exists:
 	//------------------------------------------------------
 
-	short sMatch = FALSE;
+	int16_t sMatch = FALSE;
 	// Do the same length regardless (for consistency)
-	short i;
+	int16_t i;
 	for (i=0; i < m_sNumTracked /*PF_MAX_FIELDS*/;i++)
 		{
 		if (!rspStricmp(pszFieldName,m_aList[i].m_szFieldName))
@@ -245,7 +245,7 @@ void	RProfile::EndProfile(char const *  pszFieldName)
 	// Allow poosibility of hitting this first:
 	if (m_aList[sKey].m_eState == Timing) // you're in progress
 		{
-		S64 i64Diff = i64EntryTime - m_aList[sKey].m_lLastTime;
+		int64_t i64Diff = i64EntryTime - m_aList[sKey].m_lLastTime;
 		m_aList[sKey].m_lTotTime += i64Diff;
 		m_aList[sKey].m_lNumCalls++;	// A successful time
 		m_sCurDepth--; // You have risen up one level!
@@ -293,7 +293,7 @@ void	RProfile::EndProfile(char const *  pszFieldName)
 	//*****************************************************************************
 	}
 
-short	gsReportNumber = 0;
+int16_t	gsReportNumber = 0;
 //===============================================
 void RProfile::Report()
 	{
@@ -327,7 +327,7 @@ void RProfile::Report()
 
 		if (m_lCount) // safety
 		fprintf(fp,"Profiler overhead: Tot(ms) = %g, # of calls = %ld, Avg(ms) = %g\n\n",
-			double(m_lTotTime)/1000.0,long(m_lCount),double(m_lTotTime)/double(m_lCount * S64(1000)));
+			double(m_lTotTime)/1000.0,long(m_lCount),double(m_lTotTime)/double(m_lCount * int64_t(1000)));
 		
 		fprintf(fp,"Number of profile ranges was %hd.\n",m_sNumTracked);
 
@@ -343,7 +343,7 @@ void RProfile::Report()
 				{
 				fprintf(fp,"Internal memory exceeded - the profiler was designed to only\n"
 					"handle %hd timing sets.  Please increase the number or get rid of old ones.\n\n",
-					short(PF_MAX_FIELDS));
+					int16_t(PF_MAX_FIELDS));
 
 				return;
 				}
@@ -352,7 +352,7 @@ void RProfile::Report()
 				"same name.  Nor can you have 'unbalanced parenthesis'.\n\n"
 				"Here was the first command in error:\n");
 
-			for (short i=0; i < m_sNumTracked;i++)
+			for (int16_t i=0; i < m_sNumTracked;i++)
 				{
 				if (m_aList[i].m_sInError)
 					{
@@ -374,7 +374,7 @@ void RProfile::Report()
 		// See if there is a relative request:
 		double dRel = 0.0;
 
-		short i;
+		int16_t i;
 		for (i=0; i < m_sNumTracked;i++)
 			{
 			if (!strncmp(m_aList[i].m_szFieldName,"100%",4))
@@ -394,7 +394,7 @@ void RProfile::Report()
 				fprintf(fp,"				# of passes = %ld, Tot(ms) = %g, Avg(ms) = %g",
 					long(m_aList[i].m_lNumCalls),
 					double(m_aList[i].m_lTotTime)/1000.0,
-					double(m_aList[i].m_lTotTime)/double(m_aList[i].m_lNumCalls * S64(1000)));
+					double(m_aList[i].m_lTotTime)/double(m_aList[i].m_lNumCalls * int64_t(1000)));
 
 				if (dRel)
 					{

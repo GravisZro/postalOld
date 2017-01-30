@@ -142,7 +142,7 @@ int16_t CFlag::Load(            // Returns 0 if successfull, non-zero otherwise
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
    // Call the base load function to get ID, position, etc.
@@ -354,8 +354,8 @@ int16_t CFlag::Shutdown(void)                     // Returns 0 if successfull, n
 void CFlag::Update(void)
 {
    int16_t sHeight = m_sPrevHeight;
-   long lThisTime;
-   long lTimeDifference;
+   int32_t lThisTime;
+   int32_t lTimeDifference;
    CSmash* pSmashed = nullptr;
 
    if (!m_sSuspend)
@@ -633,7 +633,7 @@ void CFlag::EditHotSpot(         // Returns nothiing.
 int16_t CFlag::EditModify(void)
 {
    int16_t sResult = 0;
-   U16 u16OrigColor = m_u16FlagColor;
+   uint16_t u16OrigColor = m_u16FlagColor;
 
    RGuiItem* pGuiItem = nullptr;
    RGuiItem* pguiRoot = RGuiItem::LoadInstantiate(FullPathVD("res/editor/flag.gui"));
@@ -643,8 +643,8 @@ int16_t CFlag::EditModify(void)
       REdit* peditSeconds = (REdit*) pguiRoot->GetItemFromId(GUI_SECONDS_EDIT_ID);
       REdit* peditFlagID  = (REdit*) pguiRoot->GetItemFromId(GUI_FLAGID_EDIT_ID);
       REdit* peditColor   = (REdit*) pguiRoot->GetItemFromId(GUI_COLOR_EDIT_ID);
-      long lMinutes;
-      long lSeconds;
+      int32_t lMinutes;
+      int32_t lSeconds;
 
       if (peditMinutes != nullptr && peditSeconds != nullptr && peditFlagID != nullptr && peditColor)
       {
@@ -672,7 +672,7 @@ int16_t CFlag::EditModify(void)
             lSeconds = peditSeconds->GetVal() % 60;
             m_lTimeBonus = (lMinutes * 60000) + (lSeconds * 1000);
             m_u16FlagID = peditFlagID->GetVal();
-            m_u16FlagColor = MIN((long) (EndOfColors-1), peditColor->GetVal());
+            m_u16FlagColor = MIN((int32_t) (EndOfColors-1), peditColor->GetVal());
          }
       }
    }

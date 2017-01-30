@@ -76,7 +76,7 @@ class RProcessGui
 	// Typedefs, enums, etc.
 	///////////////////////////////////////////////////////////////////////////
 	public:
-		typedef long (*UpdateFunc)(	// Returns a non-zero ID to abort or zero
+      typedef int32_t (*UpdateFunc)(	// Returns a non-zero ID to abort or zero
 												// to continue.
 			RInputEvent*	pie);			// Out: Next input event to process.
 
@@ -105,7 +105,7 @@ class RProcessGui
 		// Prepare to handle a GUI.
 		// This must be called to setup components before DoModeless() is called.
 		// (DoModal() does this automatically).
-		short Prepare(							// Returns 0 on success.
+		int16_t Prepare(							// Returns 0 on success.
 			RGuiItem* pgui,					// In:  GUI to be processed.
 			RGuiItem* pguiOk = nullptr,		// In:  If not nullptr, specifies GUI 
 													// activated by ENTER key.
@@ -200,7 +200,7 @@ class RProcessGui
 		UpdateFunc	m_fnUpdate;		// Callback to do updates, if not using
 											// default handling.
 
-		short			m_sFlags;		// See Flags.
+		int16_t			m_sFlags;		// See Flags.
 
 	///////////////////////////////////////////////////////////////////////////
 	// Static data.

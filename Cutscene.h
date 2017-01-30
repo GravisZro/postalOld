@@ -70,12 +70,12 @@ int16_t MartiniDo(  RImage*  pimBackground,    // actually, this is the ONLY gra
                   int16_t sStartX,             // logical start position of image
                   int16_t sStartY,             // NOTE: it will be clipped so won't actually hit this point!
                   RMultiAlpha*   pAlpha,     // only need 50% - see cut scenes
-                  long  lMilliLen,           // how long to do the effect
+                  int32_t lMilliLen,           // how long to do the effect
                   int16_t sRadius = 24,        // Your tuning pleasure
-                  long  lSpinTime = 3600,    // in milliseconds
-                  long  lSwayTime = 4000,    // in milliseconds
+                  int32_t lSpinTime = 3600,    // in milliseconds
+                  int32_t lSwayTime = 4000,    // in milliseconds
                   RRect*  prCenter = nullptr,// if not nullptr, use this portion of the image only!
-                  long  lFadeTime = 0,       // fade to black, in milliseconds. (INCL in total time!)
+                  int32_t lFadeTime = 0,       // fade to black, in milliseconds. (INCL in total time!)
                   SampleMaster::SoundInstance siFade=0// to make sound fade out
                );
 
@@ -109,10 +109,10 @@ extern void CutSceneStart(
 //
 ////////////////////////////////////////////////////////////////////////////
 extern int16_t CutSceneConfig(
-   long lTimeSpin,
-   int16_t sMinX,int16_t sMaxX,long lTimeX,
-   int16_t sMinY,int16_t sMaxY,long lTimeY,
-   double dMinA,double dMaxA,long lTimeA,
+   int32_t lTimeSpin,
+   int16_t sMinX,int16_t sMaxX,int32_t lTimeX,
+   int16_t sMinY,int16_t sMaxY,int32_t lTimeY,
+   double dMinA,double dMaxA,int32_t lTimeA,
    int16_t sX,int16_t sY,int16_t sW,int16_t sH);
 
 

@@ -140,7 +140,7 @@ class RChanCore
 	// Variables
 	//------------------------------------------------------------------------------
 	protected:
-		short m_sLoopFlags;										// Looping flags
+		int16_t m_sLoopFlags;										// Looping flags
 
 
 	//------------------------------------------------------------------------------
@@ -187,9 +187,9 @@ class RChanCore
 		// *** Derived classes MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		virtual short Load(										// Returns 0 if successfull, non-zero otherwise
+		virtual int16_t Load(										// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile,											// In:  RFile to load from
-			short sFileVersion)									// In:  Channel file version number
+			int16_t sFileVersion)									// In:  Channel file version number
 			{
 			// Original version (#0) didn't store loop flags, but all others do.
 			if (sFileVersion > 0)
@@ -213,7 +213,7 @@ class RChanCore
 		// *** Derived classes MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		virtual short Save(										// Returns 0 if successfull, non-zero otherwise
+		virtual int16_t Save(										// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to save to
 			{
 			// Write data
@@ -233,7 +233,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual void CreateItems(
-			long lNumItems)										// In:  Number of items
+			int32_t lNumItems)										// In:  Number of items
 			= 0;														// Abstract function!
 
 
@@ -287,7 +287,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual bool IsRealItem(								// Returns true if "real", false otherwise
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			= 0;														// Abstract function!
 
 
@@ -304,7 +304,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual datat* GetItem(									// Returns value at specified time
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			= 0;														// Abstract function!
 
 
@@ -321,7 +321,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual void SetItem(
-			long lNum,												// In:  Item number
+			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			= 0;														// Abstract function!
 
@@ -340,7 +340,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual datat* GetAtTime(								// Returns value at specified time
-			long lTime)												// In:  Channel time
+			int32_t lTime)												// In:  Channel time
 			= 0;														// Abstract function!
 
 
@@ -359,7 +359,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual void SetTotalTime(
-			long lTotalTime)										// In:  Total time
+			int32_t lTotalTime)										// In:  Total time
 			= 0;														// Abstract function!
 
 
@@ -384,7 +384,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		virtual void SetResolution(
-			long lResolution)										// In:  New resolution
+			int32_t lResolution)										// In:  New resolution
 			= 0;														// Abstract function!
 
 
@@ -393,7 +393,7 @@ class RChanCore
 		// Get looping behaviour
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Looping(void)										// Returns looping flags
+		int16_t Looping(void)										// Returns looping flags
 			{
 			return m_sLoopFlags;
 			}
@@ -406,7 +406,7 @@ class RChanCore
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetLooping(
-			short sLoopFlags)
+			int16_t sLoopFlags)
 			{
 			m_sLoopFlags = sLoopFlags;
 			}
@@ -508,9 +508,9 @@ class RChanCoreNothing : public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Load(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Load(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile,											// In:  RFile to load from
-			short sFileVersion)									// In:  Channel file version number
+			int16_t sFileVersion)									// In:  Channel file version number
 			{
 			// Reset to get rid of any existing data
 			Reset();
@@ -526,7 +526,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Save(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Save(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to save to
 			{
 			// Call base class implimentation
@@ -544,7 +544,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void CreateItems(
-			long lNumItems)										// In:  Number of items
+			int32_t lNumItems)										// In:  Number of items
 			{
 			}
 
@@ -605,7 +605,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		bool IsRealItem(											// Returns true if "real", false otherwise
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			return false;
 			}
@@ -624,7 +624,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetItem(											// Returns value at specified time
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			return 0;
 			}
@@ -643,7 +643,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetItem(
-			long lNum,												// In:  Item number
+			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			{
 			}
@@ -665,7 +665,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetAtTime(											// Returns pointer to value
-			long lTime)												// In:  Channel time
+			int32_t lTime)												// In:  Channel time
 			{
 			return 0;
 			}
@@ -688,7 +688,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetTotalTime(
-			long lTotalTime)										// In:  Total time
+			int32_t lTotalTime)										// In:  Total time
 			{
 			}
 
@@ -716,7 +716,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetResolution(
-			long lResolution)										// In:  New resolution
+			int32_t lResolution)										// In:  New resolution
 			{
 			}
 	};
@@ -740,9 +740,9 @@ class RChanCoreArray : public RChanCore<datat>
 	// Variables
 	//------------------------------------------------------------------------------
 	protected:
-		long m_lTotalTime;										// Total time
-		long m_lInterval;											// Time interval (ex: at 20 fps this would be 50)
-		long m_lNumItems;											// Number of data items
+		int32_t m_lTotalTime;										// Total time
+		int32_t m_lInterval;											// Time interval (ex: at 20 fps this would be 50)
+		int32_t m_lNumItems;											// Number of data items
 		datat* m_pArray;											// Pointer to array of elements
 
 
@@ -797,11 +797,11 @@ class RChanCoreArray : public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Load(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Load(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile,											// In:  RFile to load from
-			short sFileVersion)									// In:  Channel file version number
+			int16_t sFileVersion)									// In:  Channel file version number
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 			
 			// Reset to get rid of any existing data
 			Reset();
@@ -821,7 +821,7 @@ class RChanCoreArray : public RChanCore<datat>
 					ASSERT(m_pArray != 0);
 
 					// Let each item load itself
-					for (long l = 0; (l < m_lNumItems) && (sResult == 0); l++)
+					for (int32_t l = 0; (l < m_lNumItems) && (sResult == 0); l++)
 						sResult = rspAnyLoad(&(m_pArray[l]), pFile);
 					}
 				else
@@ -841,10 +841,10 @@ class RChanCoreArray : public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Save(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Save(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to save to
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 
 			// Call base class implimentation
 			sResult = RChanCore<datat>::Save(pFile);
@@ -856,7 +856,7 @@ class RChanCoreArray : public RChanCore<datat>
 				pFile->Write(&m_lNumItems);
 
 				// Let each item save itself
-				for (long l = 0; (l < m_lNumItems) && (sResult == 0); l++)
+				for (int32_t l = 0; (l < m_lNumItems) && (sResult == 0); l++)
 					sResult = rspAnySave(&(m_pArray[l]), pFile);
 				}
 
@@ -874,7 +874,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void CreateItems(
-			long lNumItems)										// In:  Number of items
+			int32_t lNumItems)										// In:  Number of items
 			{
 			Alloc(lNumItems);
 			}
@@ -936,7 +936,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		bool IsRealItem(											// Returns true if "real", false otherwise
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			// Every item is real
 			return true;
@@ -956,7 +956,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetItem(											// Returns value at specified time
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			ASSERT(lNum < m_lNumItems);
 			return m_pArray + lNum;
@@ -976,7 +976,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetItem(
-			long lNum,												// In:  Item number
+			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			{
 			ASSERT(lNum < m_lNumItems);
@@ -1000,7 +1000,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetAtTime(											// Returns pointer to value
-			long lTime)												// In:  Channel time
+			int32_t lTime)												// In:  Channel time
 			{
 			if (lTime >= m_lTotalTime)
 				{
@@ -1037,7 +1037,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetTotalTime(
-			long lTotalTime)										// In:  Total time
+			int32_t lTotalTime)										// In:  Total time
 			{
 			m_lTotalTime = lTotalTime;
 			}
@@ -1066,7 +1066,7 @@ class RChanCoreArray : public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetResolution(
-			long lResolution)										// In:  New resolution
+			int32_t lResolution)										// In:  New resolution
 			{
 			m_lInterval = lResolution;
 			}
@@ -1078,7 +1078,7 @@ class RChanCoreArray : public RChanCore<datat>
 		// Allocate array
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		void Alloc(long lNum)
+		void Alloc(int32_t lNum)
 			{
 			Free();
 			m_pArray = new datat[lNum];
@@ -1140,16 +1140,16 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 	// Variables
 	//------------------------------------------------------------------------------
 	protected:
-		long m_lTotalTime;										// Total time
-		long m_lInterval;											// Time interval (ex: at 20 fps this would be 50)
-		long m_lNumItems;											// Logical number of data items
-		long m_lRealNumItems;									// Actual number of data items, which may be less
+		int32_t m_lTotalTime;										// Total time
+		int32_t m_lInterval;											// Time interval (ex: at 20 fps this would be 50)
+		int32_t m_lNumItems;											// Logical number of data items
+		int32_t m_lRealNumItems;									// Actual number of data items, which may be less
 																		// than m_lNumItems if items were compressed.
 		datat** m_pArrayOfPtrs;									// Pointer to array of pointers to data items.
 																		// This extra level of indirection makes it easy
 																		// to compress data items by allowing more than
 																		// one pointer to refer to the same data item.
-		U8* m_pArrayOfFlags;										// Pointer to array of flags.  If flag is 0, it
+		uint8_t* m_pArrayOfFlags;										// Pointer to array of flags.  If flag is 0, it
 																		// means it's pointing at it's own data item.  If
 																		// flag is 1, it means it's pointing at another
 																		// item that matched the original item -- in other
@@ -1211,11 +1211,11 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Load(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Load(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile,											// In:  RFile to load from
-			short sFileVersion)									// In:  Channel file version number
+			int16_t sFileVersion)									// In:  Channel file version number
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 			
 			// Reset to get rid of any existing data
 			Reset();
@@ -1235,7 +1235,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 					ASSERT(m_pArrayOfPtrs);
 
 					// Create array of flags
-					m_pArrayOfFlags = new U8[m_lNumItems];
+					m_pArrayOfFlags = new uint8_t[m_lNumItems];
 					ASSERT(m_pArrayOfFlags);
 
 					// The file contains a value corresponding to each of our pointers.
@@ -1246,9 +1246,9 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 					// pointer that index specifies.  This way, multiple pointers can
 					// refer to the same data item, which is how this data is compressed.
 					m_lRealNumItems = 0;
-					for (long l = 0; (l < m_lNumItems) && (sResult == 0); l++)
+					for (int32_t l = 0; (l < m_lNumItems) && (sResult == 0); l++)
 						{
-						long lValue;
+						int32_t lValue;
 						if (pFile->Read(&lValue) == 1)
 							{
 							if (lValue == -1)
@@ -1296,10 +1296,10 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// *** MUST call base class implimentation ***
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Save(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Save(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to save to
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 
 			// Call base class implimentation
 			sResult = RChanCore<datat>::Save(pFile);
@@ -1318,12 +1318,12 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 				// the data item we're pointing at, and we write that index.  Of course,
 				// in that case, we don't write the data item itself since it was already
 				// saved ealier.
-				for (long l = 0; (l < m_lNumItems) && (sResult == 0); l++)
+				for (int32_t l = 0; (l < m_lNumItems) && (sResult == 0); l++)
 					{
 					if (m_pArrayOfFlags[l] == 0)
 						{
 						// Write -1 followed by data item
-						pFile->Write((long)-1);
+						pFile->Write((int32_t)-1);
 						sResult = pFile->Error();
 						if (sResult == 0)
 							sResult = rspAnySave(m_pArrayOfPtrs[l], pFile);
@@ -1366,7 +1366,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void CreateItems(
-			long lNumItems)										// In:  Number of items
+			int32_t lNumItems)										// In:  Number of items
 			{
 			Alloc(lNumItems);
 			}
@@ -1482,7 +1482,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		bool IsRealItem(											// Returns true if "real", false otherwise
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			// If flag is 0 then item is real
 			if (m_pArrayOfFlags[lNum] == 0)
@@ -1505,7 +1505,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetItem(											// Returns value at specified time
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			ASSERT(lNum < m_lNumItems);
 			return m_pArrayOfPtrs[lNum];
@@ -1525,7 +1525,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetItem(
-			long lNum,												// In:  Item number
+			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			{
 			ASSERT(lNum < m_lNumItems);
@@ -1549,7 +1549,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetAtTime(											// Returns pointer to value
-			long lTime)												// In:  Channel time
+			int32_t lTime)												// In:  Channel time
 			{
 			if (lTime >= m_lTotalTime)
 				{
@@ -1586,7 +1586,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetTotalTime(
-			long lTotalTime)										// In:  Total time
+			int32_t lTotalTime)										// In:  Total time
 			{
 			m_lTotalTime = lTotalTime;
 			}
@@ -1615,7 +1615,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetResolution(
-			long lResolution)										// In:  New resolution
+			int32_t lResolution)										// In:  New resolution
 			{
 			m_lInterval = lResolution;
 			}
@@ -1627,7 +1627,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// Allocate array
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		void Alloc(long lNum)
+		void Alloc(int32_t lNum)
 			{
 			Free();
 
@@ -1639,11 +1639,11 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 			ASSERT(m_pArrayOfPtrs);
 
 			// Create array of flags
-			m_pArrayOfFlags = new U8[m_lNumItems];
+			m_pArrayOfFlags = new uint8_t[m_lNumItems];
 			ASSERT(m_pArrayOfFlags);
 
 			// Create actual data items and mark each item as uncompressed
-			for(long l = 0; l < m_lNumItems; l++)
+			for(int32_t l = 0; l < m_lNumItems; l++)
 				{
 				m_pArrayOfPtrs[l] = new datat;
 				ASSERT(m_pArrayOfPtrs[l]);
@@ -1664,7 +1664,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 			// don't actually delete it (the pointer that owns the data will delete it).
 			if (m_pArrayOfPtrs)
 				{
-				for(long l = 0; l < m_lNumItems; l++)
+				for(int32_t l = 0; l < m_lNumItems; l++)
 					{
 					if (m_pArrayOfFlags[l] == 0)
 						delete m_pArrayOfPtrs[l];
@@ -1701,7 +1701,7 @@ class RChannel
 	// Variables
 	//------------------------------------------------------------------------------
 	protected:
-		short m_sFileVersion;									// File version number
+		int16_t m_sFileVersion;									// File version number
 		RChannel_Types m_type;									// Channel type
 		RString m_strName;										// Channel name
 		RChanCore<datat>* m_pcore;								// Core channel object
@@ -1835,15 +1835,15 @@ class RChannel
 		// Load channel from current position of already-open file
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Load(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Load(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to load from
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 
 			// Reset to get rid of any existing data
 			Reset();
 
-			U32 u32ID;
+			uint32_t u32ID;
 			if (pFile->Read(&u32ID) == 1)
 				{
 				// The original versions of RChannel did NOT use an ID or version number.
@@ -1867,7 +1867,7 @@ class RChannel
 							delete m_pcore;
 
 							// Get the channel type
-							short type;
+							int16_t type;
 							pFile->Read(&type);
 							m_type = (RChannel_Types)type;
 
@@ -1937,17 +1937,17 @@ class RChannel
 		// Save channel to current position of already-open file
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Save(													// Returns 0 if successfull, non-zero otherwise
+		int16_t Save(													// Returns 0 if successfull, non-zero otherwise
 			RFile* pFile)											// In:  RFile to save to
 			{
-			short sResult = 0;
+			int16_t sResult = 0;
 
 			// Write header (ID and version)
-			pFile->Write((U32)RChannel_FileID);
-			pFile->Write((short)RChannel_FileVersion);
+			pFile->Write((uint32_t)RChannel_FileID);
+			pFile->Write((int16_t)RChannel_FileVersion);
 
 			// Write RChannel type
-			pFile->Write((short)m_type);
+			pFile->Write((int16_t)m_type);
 
 			sResult = pFile->Error();
 			if (sResult == 0)
@@ -1975,7 +1975,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void CreateItems(
-			long lNumItems)										// In:  Number of items
+			int32_t lNumItems)										// In:  Number of items
 			{
 			m_pcore->CreateItems(lNumItems);
 			}
@@ -2037,7 +2037,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		bool IsRealItem(											// Returns true if "real", false otherwise
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			return m_pcore->IsRealItem(lNum);
 			}
@@ -2056,7 +2056,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetItem(											// Returns value at specified time
-			long lNum)												// In:  Item number
+			int32_t lNum)												// In:  Item number
 			{
 			return m_pcore->GetItem(lNum);
 			}
@@ -2075,7 +2075,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetItem(
-			long lNum,												// In:  Item number
+			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			{
 			m_pcore->SetItem(lNum, pdata);
@@ -2096,7 +2096,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		datat* GetAtTime(											// Returns value at specified time
-			long lTime)												// In:  Channel time
+			int32_t lTime)												// In:  Channel time
 			{
 			return m_pcore->GetAtTime(lTime);
 			}
@@ -2119,7 +2119,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetTotalTime(
-			long lTotalTime)										// In:  Total time
+			int32_t lTotalTime)										// In:  Total time
 			{
 			m_pcore->SetTotalTime(lTotalTime);
 			}
@@ -2148,7 +2148,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetResolution(
-			long lResolution)										// In:  New resolution
+			int32_t lResolution)										// In:  New resolution
 			{
 			m_pcore->SetResolution(lResolution);
 			}
@@ -2159,7 +2159,7 @@ class RChannel
 		// Get looping behaviour
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		short Looping(void)										// Returns looping flags
+		int16_t Looping(void)										// Returns looping flags
 			{
 			return m_pcore->Looping();
 			}
@@ -2172,7 +2172,7 @@ class RChannel
 		//
 		////////////////////////////////////////////////////////////////////////////////
 		void SetLooping(
-			short sLoopFlags)										// In:  New loop flags
+			int16_t sLoopFlags)										// In:  New loop flags
 			{
 			m_pcore->SetLooping(sLoopFlags);
 			}
@@ -2202,7 +2202,7 @@ class RChannel
 					break;
 				}
 
-			TRACE("RChannel::ConstructCore(): Unsupported type (%ld), using RChanCoreNothing<datat> instead!\n", (long)type);
+			TRACE("RChannel::ConstructCore(): Unsupported type (%ld), using RChanCoreNothing<datat> instead!\n", (int32_t)type);
 			return new RChanCoreNothing<datat>;
 			}
 	};

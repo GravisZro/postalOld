@@ -381,7 +381,7 @@ CThing::CThing(
    {
    // Make sure CThing static's have been initialized by C++ runtime
    if (ms_sDetectStaticInits != 1)
-      TRACE("CThing::CThing(): Can't create global/static objects based on CThing!\n";
+      TRACE("CThing::CThing(): Can't create global/static objects based on CThing!\n");
 
    // Save class id so we have it quickly avaiable in destructor
    m_id = id;
@@ -446,7 +446,7 @@ void CThing::SetGuiToNotify(  // Returns nothing.
 //
 ////////////////////////////////////////////////////////////////////////////////
 // static                     // Static for use as a callback.
-long CThing::SysUpdate(       // Returns a non-zero ID to abort or zero
+int32_t CThing::SysUpdate(       // Returns a non-zero ID to abort or zero
                               // to continue.
    RInputEvent*   pie)        // Out: Next input event to process.
    {
@@ -469,7 +469,7 @@ long CThing::SysUpdate(       // Returns a non-zero ID to abort or zero
 // (static).
 //
 ////////////////////////////////////////////////////////////////////////////////
-long CThing::DoGui(        // Returns ID of item that terminated looping.
+int32_t CThing::DoGui(        // Returns ID of item that terminated looping.
                            // Returns 0 if rspGetQuitStatus() is nonzero.
                            // Returns negative on error.
    RGuiItem*   pguiRoot)   // Root of GUI items to process through user.
@@ -494,7 +494,7 @@ int16_t CThing::Load(                             // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  File version being loaded.
+   uint32_t ulFileVersion)                         // In:  File version being loaded.
    {
    // Switch on the file version.
    switch (ulFileVersion)
@@ -532,12 +532,12 @@ int16_t CThing::Load(                             // Returns 0 if successfull, n
 //
 ////////////////////////////////////////////////////////////////////////////////
 void CThing::SetInstanceID(   // Returns nothing.
-   U16   u16Id)               // New id for this instance.
+   uint16_t   u16Id)               // New id for this instance.
    {
    // Safety.
    if (m_u16InstanceId != CIdBank::IdNil)
       {
-//    TRACE("SetInstanceID(): This thing already had an ID!\n";
+//    TRACE("SetInstanceID(): This thing already had an ID!\n");
       // Release existing ID.
       m_pRealm->m_idbank.Release(m_u16InstanceId);
       }
@@ -551,7 +551,7 @@ void CThing::SetInstanceID(   // Returns nothing.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-int16_t CThing::SendThingMessage(pGameMessage pMessage, int16_t sPriority, U16 u16ID)
+int16_t CThing::SendThingMessage(pGameMessage pMessage, int16_t sPriority, uint16_t u16ID)
    {
    int16_t sResult = SUCCESS;
    CThing* pThing = nullptr;

@@ -100,9 +100,9 @@ const double   CDeathWad::ms_dThrustDelta             = 9.0;
 // Go off screen this far before blowing up
 const int16_t    CDeathWad::ms_sOffScreenDist           = 200;
 // Time for smoke to stick around.
-const long     CDeathWad::ms_lSmokeTimeToLive         = 500;
+const int32_t     CDeathWad::ms_lSmokeTimeToLive         = 500;
 // Time for fireball to stick around.
-const long     CDeathWad::ms_lFireBallTimeToLive      = 500;
+const int32_t     CDeathWad::ms_lFireBallTimeToLive      = 500;
 // Amount to stagger final explosions.
 const int16_t    CDeathWad::ms_sFinalExplosionStagger   = 5;
 // Radius of collision area (whether sphere or cylinder).
@@ -147,7 +147,7 @@ int16_t CDeathWad::Load(                             // Returns 0 if successfull
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    int16_t sResult = CWeapon::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -230,7 +230,7 @@ void CDeathWad::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Calculate elapsed time in seconds
       double dSeconds = (double)(lThisTime - m_lPrevTime) / 1000.0;
@@ -450,7 +450,7 @@ void CDeathWad::Update(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CDeathWad::Render(void)
 {
-   long lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
    m_sprite.m_pmesh = (RMesh*) m_anim.m_pmeshes->GetAtTime(lThisTime);
    m_sprite.m_psop = (RSop*) m_anim.m_psops->GetAtTime(lThisTime);

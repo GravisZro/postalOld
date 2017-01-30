@@ -31,7 +31,7 @@
 //	
 //*****************************************************************************
 					
-#include <stdio.h>
+#include <cstdio>
 #include <windows.h>
 #include <fstream.h>
 #include <assert.h>
@@ -109,14 +109,14 @@ CUniverse::~CUniverse()
 
 #if 0
 
-short CUniverse::SetSection(
-			short sWorld,			// World to load
-			short sStage,			// Stage to load
-			short sSection)		// Section to load
+int16_t CUniverse::SetSection(
+			int16_t sWorld,			// World to load
+			int16_t sStage,			// Stage to load
+			int16_t sSection)		// Section to load
 {
  	FILE* fp;
-	short	sNumEntries;
-	long	lOffset;
+	int16_t	sNumEntries;
+	int32_t	lOffset;
 
 	// open the game information file
 	if (!(fp = fopen(m_strFileGame, "rb")))
@@ -129,7 +129,7 @@ short CUniverse::SetSection(
 //		da worldn
 //-----------------------------------------------------------------------------
 	// Get number of worlds and check validity of user's selection
-	fread(&sNumEntries, sizeof(short), 1, fp);	
+	fread(&sNumEntries, sizeof(int16_t), 1, fp);	
 	if (sNumEntries > sWorld || sWorld < 0)
 		return UNIVERSE_INVALID_WORLD;
 
@@ -150,7 +150,7 @@ short CUniverse::SetSection(
 //		da stagen
 //------------------------------------------------------------------------------
 	// Get number of stages in this world and check validity of user's selection
-	fread(&sNumEntries, sizeof(short), 1, fp);
+	fread(&sNumEntries, sizeof(int16_t), 1, fp);
 	if (sNumEntries > sStage || sStage < 0)
 		return UNIVERSE_INVALID_STAGE;
 
@@ -170,7 +170,7 @@ short CUniverse::SetSection(
 //		da stage0sectionn
 //------------------------------------------------------------------------------
 	// Get number of sections in stage and check validity of user's selection
-	fread(&sNumEntries, sizeof(short), 1, fp);
+	fread(&sNumEntries, sizeof(int16_t), 1, fp);
 	if (sNumEntries > sSection || sSection < 0)
 		return UNIVERSE_INVALID_SECTION;
 
@@ -218,10 +218,10 @@ short CUniverse::SetSection(
 //
 //*****************************************************************************
 
-short CUniverse::SetSection(
-	short sWorld,					// World to load
-	short sStage,					// Stage to load
-	short sSection)				// Section to load
+int16_t CUniverse::SetSection(
+	int16_t sWorld,					// World to load
+	int16_t sStage,					// Stage to load
+	int16_t sSection)				// Section to load
 {
 
  	fstream fsGameInfo("zoo.gme", ios::in, filebuf::sh_read);
@@ -261,7 +261,7 @@ short CUniverse::SetSection(
 	fsGameInfo.eatwhite();
 	fsGameInfo.getline(m_strFileEvent, UNIVERSE_MAXLINE);
 
-	short sReturnValue;
+	int16_t sReturnValue;
 
 	if (sReturnValue = LoadAnimData())
 		return sReturnValue;
@@ -300,7 +300,7 @@ short CUniverse::SetSection(
 //
 //*****************************************************************************
 
-short CUniverse::LoadAnimData()
+int16_t CUniverse::LoadAnimData()
 {
 	char 	strPathName[UNIVERSE_MAX_PATHNAME];
 	CRiff AnimFile;
@@ -331,8 +331,8 @@ short CUniverse::LoadAnimData()
 
 	AnimFile.DescendChunk();
 
-	long lAnim;
-	short sFrame;
+	int32_t lAnim;
+	int16_t sFrame;
 
 	for (lAnim = 0; lAnim < pAnimSet->lNumAnims; lAnim++)
 	{
@@ -342,7 +342,7 @@ short CUniverse::LoadAnimData()
 
 		for (sFrame = 0; sFrame < pAnimSet->apAnims[lAnim]->sNumFrames; sFrame++)
 		{
-		 	ImageFile.SetCurrentChunk((long) pAnimSet->apAnims[lAnim]->aFrames[sFrame].pImage);
+		 	ImageFile.SetCurrentChunk((int32_t) pAnimSet->apAnims[lAnim]->aFrames[sFrame].pImage);
 			ImageFile.ReadHeader(pChunkHeader);
 			pAnimSet->apAnims[lAnim]->aFrames[sFrame].pImage = 
 				(IMAGE*) malloc(pChunkHeader->dwSize);
@@ -368,7 +368,7 @@ short CUniverse::LoadAnimData()
 
 #if 0
 
-short CUniverse::LoadAnimData()
+int16_t CUniverse::LoadAnimData()
 {
 	char 	strPathName[UNIVERSE_MAX_PATHNAME];
 	CRiff AnimFile;
@@ -405,8 +405,8 @@ short CUniverse::LoadAnimData()
 
 	AnimFile.DescendChunk();
 
-	long lAnim;
-	short sFrames;
+	int32_t lAnim;
+	int16_t sFrames;
 
 	for (lAnim = 0; lAnim < pAnimSet->lNumAnims; lAnim++)
 	{
@@ -470,7 +470,7 @@ short CUniverse::LoadAnimData()
 void CUniverse::SetAnimOffsets(
 	ANIM* pAnimation)							// Pointer to ANIM structure
 {
-	short s;
+	int16_t s;
 
 	for (s = 0; s < pAnimation->sNumFrames; s++)
 	{
@@ -503,7 +503,7 @@ void CUniverse::SetAnimOffsets(
 void CUniverse::SetZonesetOffsets(
 	ZONESET*	pZoneset)						// Pointer to ZONESET structure
 {
- 	short s;
+ 	int16_t s;
 
 	for (s = 0; s < MAX_ZONETYPES; s++)
 	{
@@ -542,7 +542,7 @@ void CUniverse::SetZonesetOffsets(
 //
 //*****************************************************************************
 
-short CUniverse::LoadBackgroundData()
+int16_t CUniverse::LoadBackgroundData()
 {
 	return 0;
 }
@@ -573,19 +573,19 @@ short CUniverse::LoadBackgroundData()
 //
 //*****************************************************************************
 
-short CUniverse::LoadAttributeData()
+int16_t CUniverse::LoadAttributeData()
 {
 	FILE* fpAttrData;
 
 	fpAttrData = fopen(m_strFileAttr, "rb");
 
 
-	short sLength;
+	int16_t sLength;
 
 //	ifstream ifsAttrData(m_strFileAttrib, ios::in, filebuf::sh_read);
 
-	fread(&m_sMapWidth, sizeof(short), 1, fpAttrData);	//get width
-  	fread(&sLength, sizeof(short), 1, fpAttrData);		//get height
+	fread(&m_sMapWidth, sizeof(int16_t), 1, fpAttrData);	//get width
+  	fread(&sLength, sizeof(int16_t), 1, fpAttrData);		//get height
 	sLength *= m_sMapWidth;										//data = width*height
 //	ifsAttrData >> sLength;
 	m_pAttrMap = new WORD[sLength];
@@ -597,7 +597,7 @@ short CUniverse::LoadAttributeData()
 	fread(m_pAttrCont, sizeof(WORD), sLength, fpAttrData);
 
 //	ifsAttrData >> sLength;
-//	m_pAttrCont = new short[sLength];
+//	m_pAttrCont = new int16_t[sLength];
 //	ifsAttrData.read();
 
 	return 0;
@@ -629,7 +629,7 @@ short CUniverse::LoadAttributeData()
 //
 //*****************************************************************************
 
-short CUniverse::LoadEventData()
+int16_t CUniverse::LoadEventData()
 {
 	return 0;
 }

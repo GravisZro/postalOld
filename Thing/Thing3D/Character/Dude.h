@@ -358,8 +358,8 @@
 
 #include <Realm.h>
 #include <Game.h>
-#include <Weapon.h>
-#include <Character.h>
+#include <Thing/Weapon.h>
+#include <Thing/Thing3D/Character.h>
 #include <Crawler.h>
 #include <Input.h>
 #include <Thing/Thing3D/Item3D/PowerUp.h>
@@ -543,11 +543,11 @@ class CDude : public CCharacter
                                                 // yet been triggered.
 
 
-      long        m_lNextBulletTime;            // Next time a bullet can be fired.
-      long        m_lLastShotTime;              // Last time the dude was shot.
-      long        m_lLastYellTime;              // Last time the dude yelled in pain
+      int32_t        m_lNextBulletTime;            // Next time a bullet can be fired.
+      int32_t        m_lLastShotTime;              // Last time the dude was shot.
+      int32_t        m_lLastYellTime;              // Last time the dude yelled in pain
                                                 // from being shot or something.
-      long        m_lNextIdleTime;              // Idle animation timer.
+      int32_t        m_lNextIdleTime;              // Idle animation timer.
 
       WeaponType  m_weapontypeCur;              // Dude's current weapon type.
       WeaponType  m_weaponShooting;             // The weapon type the dude is currently
@@ -556,17 +556,17 @@ class CDude : public CCharacter
       CCrawler    m_crawler;                    // The device that allows us to slide
                                                 // along edges and stuff.
 
-      U16         m_u16IdChild;                 // ID of generic child item.
+      uint16_t         m_u16IdChild;                 // ID of generic child item.
                                                 // Used by State_PickUp currently.
 
       CSprite2    m_TargetSprite;               // Targeting sprite to show what he is aiming
                                                 // at.
 
-      U16         m_u16KillerId;                // Instance ID of our killer.
+      uint16_t         m_u16KillerId;                // Instance ID of our killer.
 
-      U8          m_u8LastEvent;                // Last anim event.
+      uint8_t          m_u8LastEvent;                // Last anim event.
 
-      U16         m_idVictim;                   // Instance ID of victim to be executed or
+      uint16_t         m_idVictim;                   // Instance ID of victim to be executed or
                                                 // used as human shield.
 
       bool        m_bDead;                      // true, if dead; false otherwise.
@@ -604,9 +604,9 @@ class CDude : public CCharacter
       static CStockPile ms_stockpileDefault;
 
       // Dude's default weapon collision bits ie. what its weapons can hit
-      static U32  ms_u32CollideBitsInclude;  // Bits that determine a collision
-      static U32  ms_u32CollideBitsDontcare; // Bits that are ignored for collision
-      static U32  ms_u32CollideBitsExclude;  // Bits that invalidate collision
+      static uint32_t  ms_u32CollideBitsInclude;  // Bits that determine a collision
+      static uint32_t  ms_u32CollideBitsDontcare; // Bits that are ignored for collision
+      static uint32_t  ms_u32CollideBitsExclude;  // Bits that invalidate collision
 
    //---------------------------------------------------------------------------
    // Constructor(s) / destructor
@@ -648,7 +648,7 @@ class CDude : public CCharacter
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  File version being loaded.
+         uint32_t ulFileVersion);                        // In:  File version being loaded.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -847,7 +847,7 @@ class CDude : public CCharacter
       // Receive damage.
       void Damage(                  // Returns nothing.
          int16_t sHitPoints,          // Hit points of damage to do.
-         U16   u16ShooterId);       // In:  Thing responsible for damage.
+         uint16_t   u16ShooterId);       // In:  Thing responsible for damage.
 
       // Start the brain splat anim on its way.
       void StartBrainSplat(void);   // Returns nothing.
@@ -860,7 +860,7 @@ class CDude : public CCharacter
 
       // Applies accelerations, velocities, reacts to terrain obstructions, etc.
       void ProcessForces(           // Returns nothing.
-         long     lCurTime,         // In:  Current game time.
+         int32_t     lCurTime,         // In:  Current game time.
          double   dMaxForeVel,      // Out: Maximum forward velocity.
          double   dMaxBackVel,      // Out: Maximum backward velocity.
          int16_t    sStrafeAngle);    // Out: Strafe angle.

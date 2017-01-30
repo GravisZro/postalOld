@@ -322,12 +322,12 @@ class CThing3d : public CThing
                                        // Y axis.
       double m_dExtRotVelZ;            // Rate of rotation in degrees per second around
                                        // Z axis.
-      long   m_lTimer;                 // General purpose timer for states
-      long   m_lPrevTime;              // Previous update time
+      int32_t   m_lTimer;                 // General purpose timer for states
+      int32_t   m_lPrevTime;              // Previous update time
       int16_t  m_sPrevHeight;            // Previous height
       int16_t  m_sSuspend;               // Suspend flag
 
-      U16   m_u16IdFire;               // ID of fire to carry around when you are burning.
+      uint16_t   m_u16IdFire;               // ID of fire to carry around when you are burning.
 
       CSprite3 m_sprite;               // 3D Sprite used to render the 3D Thing.
       CSprite2 m_spriteShadow;         // 2D shadow sprite to be shown on the ground
@@ -336,8 +336,8 @@ class CThing3d : public CThing
 
       // Animation specific variables.
       CAnim3D* m_panimCur;             // Pointer to current animation.
-      long     m_lAnimTime;            // Time from start of animation.
-      long     m_lAnimPrevUpdateTime;  // Last time m_lAnimTime was updated.
+      int32_t     m_lAnimTime;            // Time from start of animation.
+      int32_t     m_lAnimPrevUpdateTime;  // Last time m_lAnimTime was updated.
                                        // Used to determine the delta time to add
                                        // to m_lAnimTime.
       RTransform  m_trans;             // Transform to apply on Render.
@@ -348,7 +348,7 @@ class CThing3d : public CThing
 
       bool  m_bAboveTerrain;           // true, if in the air, false if on terrain.
 
-      U16   m_u16IdParent;             // Instance ID of parent.
+      uint16_t   m_u16IdParent;             // Instance ID of parent.
 
       CStockPile  m_stockpile;         // Stockpile of ammo and health.
 
@@ -453,7 +453,7 @@ class CThing3d : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -668,14 +668,14 @@ class CThing3d : public CThing
       void GetFloorAttributes(   // Returns nothing
          int16_t  sX,              // In:  X coord.
          int16_t  sZ,              // In:  Z coord.
-         U16*   pu16Attrib,      // Out: Combined attributes, if not nullptr
+         uint16_t*   pu16Attrib,      // Out: Combined attributes, if not nullptr
          int16_t* psHeight);       // Out: Max height, if not nullptr
 
       // Get Effect attributes (effects attributes like light, camera, oil, blood)
       void GetEffectAttributes(  // Returns nothing
          int16_t  sX,              // In:  X coord.
          int16_t  sZ,              // In:  Z coord.
-         U16*   pu16Attrib,      // Out: Combined attributes, if not nullptr
+         uint16_t*   pu16Attrib,      // Out: Combined attributes, if not nullptr
          int16_t* psLightBits);    // Out: Tally of light bits set, if not nullptr.
 
       // Get the layer based on the attribute points array.
@@ -688,7 +688,7 @@ class CThing3d : public CThing
       virtual        // Override to implement additional functionality.
                      // Call base class to get default functionality.
       CThing3d* DetachChild(        // Returns ptr to the child or nullptr, if none.
-         U16*     pu16InstanceId,   // In:  Instance ID of child to detach.
+         uint16_t*     pu16InstanceId,   // In:  Instance ID of child to detach.
                                     // Out: CIdBank::IdNil.
          RTransform* ptrans);       // In:  Transform for positioning child.
 
@@ -744,11 +744,11 @@ class CThing3d : public CThing
                                                       // Negative indicates to use the distance to the
                                                       // ear to determine the volume.
          SampleMaster::SoundInstance*  psi = nullptr, // Out: Handle for adjusting sound volume
-         long* plSampleDuration = nullptr,            // Out: Sample duration in ms, if not nullptr.
-         long lLoopStartTime = -1,                    // In:  Where to loop back to in milliseconds.
+         int32_t* plSampleDuration = nullptr,            // Out: Sample duration in ms, if not nullptr.
+         int32_t lLoopStartTime = -1,                    // In:  Where to loop back to in milliseconds.
                                                       // -1 indicates no looping (unless m_sLoop is
                                                       // explicitly set).
-         long lLoopEndTime = 0,                       // In:  Where to loop back from in milliseconds.
+         int32_t lLoopEndTime = 0,                       // In:  Where to loop back from in milliseconds.
                                                       // In:  If less than 1, the end + lLoopEndTime is used.
          bool bPurgeSample = false);                  // In:  Call ReleaseAndPurge rather than Release after playing
 

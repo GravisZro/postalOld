@@ -71,9 +71,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
 #include <float.h>
 #include <assert.h>
@@ -159,7 +159,7 @@ RPrefs::~RPrefs()
 // create an empty file.
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
 	const char* pszFile)						// In:  Name of preference file
 	{
 	// Attempt to open in read/write mode
@@ -179,7 +179,7 @@ short RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
 extern const char *FindCorrectFile(const char *pszName, const char *mode);
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
 	const char* pszFile,						// In:  Name of preference file
 	const char* pszMode)						// In:  Mode (same as fopen())
 	{
@@ -232,7 +232,7 @@ short RPrefs::Open(					// Returns 0 if successfull, non-zero otherwise
 // If an I/O error occurs, the function returns a negative value.
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::Read()		// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::Read()		// Returns 0 if successfull, non-zero otherwise
 	{
 	if (!m_sErrorStatus)
 		{
@@ -280,7 +280,7 @@ short RPrefs::Read()		// Returns 0 if successfull, non-zero otherwise
 							}
 
 						// Remove newline (if any) from end of line
-						short len = strlen(pszFixedLine);
+						int16_t len = strlen(pszFixedLine);
 						if (pszFixedLine[len - 1] == '\n')
 							pszFixedLine[len - 1] = '\0';
 
@@ -344,7 +344,7 @@ short RPrefs::Read()		// Returns 0 if successfull, non-zero otherwise
 // Write current preference file
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::Write()
+int16_t RPrefs::Write()
 	{
 	if (!m_sErrorStatus)
 		{
@@ -373,9 +373,9 @@ short RPrefs::Write()
 					strcpy(acTmpFileName, m_pszFileName);
 					char* pTmp = strrchr(acTmpFileName, RSP_SYSTEM_PATH_SEPARATOR);
 					pTmp = (pTmp) ? pTmp + 1 : acTmpFileName;
-					for (long lCount = 0; !bGotTmp && (lCount < 9999999L); lCount++)
+               for (int32_t lCount = 0; !bGotTmp && (lCount < 9999999L); lCount++)
 						{
-						sprintf(pTmp, "t%0.7ld.tmp", (long)lCount);
+                  sprintf(pTmp, "t%0.7ld.tmp", (int32_t)lCount);
 						FILE* fpTmp = fopen(FindCorrectFile(acTmpFileName, "r"), "r");
 						if (fpTmp)
 							fclose(fpTmp);
@@ -489,7 +489,7 @@ short RPrefs::Write()
 // Close current preference file
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::Close()
+int16_t RPrefs::Close()
 	{
 	if (m_pFile)
 		{
@@ -515,7 +515,7 @@ short RPrefs::Close()
 // Delete the specified entry in the specified section
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::DeleteVariable(			// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::DeleteVariable(			// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable)		// In:  Variable name
 	{
@@ -554,7 +554,7 @@ short RPrefs::DeleteVariable(			// Returns 0 if successfull, non-zero otherwise
 // Delete the specified section
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::DeleteSection(		// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::DeleteSection(		// Returns 0 if successfull, non-zero otherwise
 		const char* pszSection)		// In:  Section name (without brackets)
 	{
 	ASSERT(pszSection);
@@ -606,7 +606,7 @@ short RPrefs::DeleteSection(		// Returns 0 if successfull, non-zero otherwise
 // If an I/O error occurs, the function returns a non-zero negative value.
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	const char* pszValue)			// In:  Value
@@ -664,10 +664,10 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S8 s8Value)							// In:  Value
+	int8_t s8Value)							// In:  Value
 	{
 	char	pszValue[8];
 
@@ -680,10 +680,10 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U8 u8Value)							// In:  Value
+	uint8_t u8Value)							// In:  Value
 	{
 	char	pszValue[8];
 
@@ -696,10 +696,10 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S16 s16Value)						// In:  Value
+	int16_t s16Value)						// In:  Value
 	{
 	char	pszValue[8];
 
@@ -712,10 +712,10 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U16 u16Value)						// In:  Value
+	uint16_t u16Value)						// In:  Value
 	{
 	char	pszValue[8];
 
@@ -728,39 +728,39 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S32 s32Value)						// In:  Value
+	int32_t s32Value)						// In:  Value
 	{
 	char	pszValue[16];
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
-	sprintf(pszValue, "%ld", (long) s32Value);
+   sprintf(pszValue, "%ld", (int32_t) s32Value);
 	SetVal(pszSection, pszVariable, pszValue);
 
 	return m_sErrorStatus;
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U32 u32Value)						// In:  Value
+	uint32_t u32Value)						// In:  Value
 	{
 	char	pszValue[16];
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
-	sprintf(pszValue, "%lu", (unsigned long) u32Value);
+   sprintf(pszValue, "%lu", (uint32_t) u32Value);
 	SetVal(pszSection, pszVariable, pszValue);
 
 	return m_sErrorStatus;
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	float fValue)						// In:  Value
@@ -776,7 +776,7 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	double dValue)						// In:  Value
@@ -794,7 +794,7 @@ short RPrefs::SetVal(				// Returns 0 if successfull, non-zero otherwise
 ////////////////////////////////////////////////////////////////////////////////
 // Get iterator to a section
 ////////////////////////////////////////////////////////////////////////////////
-short	RPrefs::GetIteratorToSection(		// Returns 0 if successfull, non-zero otherwise
+int16_t	RPrefs::GetIteratorToSection(		// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,					// In:  Section name (without brackets)
 	RPrefsLineList::Pointer* pi)			// Out: iterator to line in list
 	{
@@ -813,7 +813,7 @@ short	RPrefs::GetIteratorToSection(		// Returns 0 if successfull, non-zero other
 			char	pszSectionName[RPrefs::MaxStrLen];
 
 			// Find section
-			short sFoundSection = 0;
+			int16_t sFoundSection = 0;
 			for (*pi = m_pllLines.GetHead(); *pi != 0; *pi = m_pllLines.GetNext(*pi))
 				{
 				// Only looking for sections
@@ -847,7 +847,7 @@ short	RPrefs::GetIteratorToSection(		// Returns 0 if successfull, non-zero other
 ////////////////////////////////////////////////////////////////////////////////
 // Get iterator to a variable 
 ////////////////////////////////////////////////////////////////////////////////
-short	RPrefs::GetIteratorToVariable(	// Returns 0 if successfull, non-zero otherwise
+int16_t	RPrefs::GetIteratorToVariable(	// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,					// In:  Section name (without brackets)
 	const char* pszVariable,				// In:  Variable name
 	RPrefsLineList::Pointer* pi)			// Out: iterator to line in list
@@ -872,7 +872,7 @@ short	RPrefs::GetIteratorToVariable(	// Returns 0 if successfull, non-zero other
 			if (m_sErrorStatus == 0)
 				{
 				// Search for variable (note that we start on the line after the section name)
-				short sFoundVariable = 0;
+				int16_t sFoundVariable = 0;
 				for (*pi = m_pllLines.GetNext(*pi); *pi != 0; *pi = m_pllLines.GetNext(*pi))
 					{
 					// Stop if we reach the next section
@@ -923,7 +923,7 @@ short	RPrefs::GetIteratorToVariable(	// Returns 0 if successfull, non-zero other
 // zero, positive value to indicate an error.
 //
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	const char* pszDefault,			// In:  Default value
@@ -969,14 +969,14 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S8 s8Default,						// In:  Default value
-	S8* s8Value)						// Out: Value returned here
+	int8_t s8Default,						// In:  Default value
+	int8_t* s8Value)						// Out: Value returned here
 	{
 	char	pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
-	long	lRes;
+	int32_t	lRes;
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
@@ -988,8 +988,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 		{
 		lRes = strtol(pszValue, &pszEndPtr, 10);
 		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && 
-				lRes >= S8_MIN && lRes <= S8_MAX)
-			*s8Value = (S8) lRes;
+				lRes >= INT8_MIN && lRes <= INT8_MAX)
+			*s8Value = (int8_t) lRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1001,14 +1001,14 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U8 u8Default,						// In:  Default value
-	U8* u8Value)						// Out: Value returned here
+	uint8_t u8Default,						// In:  Default value
+	uint8_t* u8Value)						// Out: Value returned here
 	{
 	char	pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
-	long	lRes;
+	int32_t	lRes;
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
@@ -1019,8 +1019,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	if (m_sErrorStatus == 0)
 		{
 		lRes = strtol(pszValue, &pszEndPtr, 10);
-		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && lRes >= U8_MIN && lRes <= U8_MAX)
-			*u8Value = (U8) lRes;
+		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && lRes >= UINT8_MIN && lRes <= UINT8_MAX)
+			*u8Value = (uint8_t) lRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1031,14 +1031,14 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S16 s16Default,					// In:  Default value
-	S16* s16Value)						// Out: Value returned here
+	int16_t s16Default,					// In:  Default value
+	int16_t* s16Value)						// Out: Value returned here
 	{
 	char				pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
-	long	lRes;
+	int32_t	lRes;
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
@@ -1049,8 +1049,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	if (m_sErrorStatus == 0)
 		{
 		lRes = strtol(pszValue, &pszEndPtr, 10);
-		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && lRes >= S16_MIN && lRes <= S16_MAX)
-			*s16Value = (S16) lRes;
+		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && lRes >= INT16_MIN && lRes <= INT16_MAX)
+			*s16Value = (int16_t) lRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1061,14 +1061,14 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U16 u16Default,					// In:  Default value
-	U16* u16Value)						// Out: Value returned here
+	uint16_t u16Default,					// In:  Default value
+	uint16_t* u16Value)						// Out: Value returned here
 	{
 	char	pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
-	long	lRes;
+	int32_t	lRes;
 
 	ASSERT(pszSection);
 	ASSERT(pszVariable);
@@ -1080,8 +1080,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 		{
 		lRes = strtol(pszValue, &pszEndPtr, 10);
 		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) 
-				&& lRes >= U16_MIN && lRes <= U16_MAX)
-			*u16Value = (U16) lRes;
+				&& lRes >= UINT16_MIN && lRes <= UINT16_MAX)
+			*u16Value = (uint16_t) lRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1092,11 +1092,11 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	S32 s32Default,					// In:  Default value
-	S32* s32Value)						// Out: Value returned here
+	int32_t s32Default,					// In:  Default value
+	int32_t* s32Value)						// Out: Value returned here
 	{
 	char		pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
 	double	dRes;
@@ -1111,8 +1111,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 		{
 		dRes = strtod(pszValue, &pszEndPtr);
 		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) && 
-				dRes >= S32_MIN && dRes <= S32_MAX)
-			*s32Value = (S32) dRes;
+				dRes >= INT32_MIN && dRes <= INT32_MAX)
+			*s32Value = (int32_t) dRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1123,11 +1123,11 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
-	U32 u32Default,					// In:  Default value
-	U32* u32Value)						// Out: Value returned here
+	uint32_t u32Default,					// In:  Default value
+	uint32_t* u32Value)						// Out: Value returned here
 	{
 	char		pszValue[RPrefs::MaxStrLen], pszDefault[RPrefs::MaxStrLen], *pszEndPtr;
 	double	dRes;
@@ -1142,8 +1142,8 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 		{
 		dRes = strtod(pszValue, &pszEndPtr);
 		if (((*pszEndPtr == '\0') || isspace(*pszEndPtr)) 
-				&& dRes >= U32_MIN && dRes <= U32_MAX)
-			*u32Value = (U32) dRes;
+				&& dRes >= UINT32_MIN && dRes <= UINT32_MAX)
+			*u32Value = (uint32_t) dRes;
 		else
 			{
 			m_sErrorStatus = 1;
@@ -1154,7 +1154,7 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	float fDefault,					// In:  Default value
@@ -1184,7 +1184,7 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
+int16_t RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 	const char* pszSection,			// In:  Section name (without brackets)
 	const char* pszVariable,		// In:  Variable name
 	double dDefault,					// In:  Default value
@@ -1215,7 +1215,7 @@ short RPrefs::GetVal(							// Returns 0 if successfull, non-zero otherwise
 
 ////////////////////////////////////////////////////////////////////////////////
 
-short RPrefs::Print()
+int16_t RPrefs::Print()
 	{
 	if (Read() == 0)
 		{

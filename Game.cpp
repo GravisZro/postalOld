@@ -121,7 +121,7 @@
 //
 //    06/04/97 JMI   Added MUST_BE_ON_CD, EDITOR_DISABLED, and CHECK_FOR_COOKIE
 //                   conditional compilation macros and added a check for a
-//                   specific U32 in the COOKIE file.
+//                   specific uint32_t in the COOKIE file.
 //
 //    06/12/97 MJR   Reworked the callbacks so that the game-specific code now
 //                   resides in this module rather than the menu module.
@@ -549,7 +549,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#define DWORD U32
+#define DWORD uint32_t
 
 #include <RSPiX.h>
 
@@ -583,7 +583,7 @@
 #include <Encrypt.h>
 #include <Credits.h>
 
-#include <CompileOptions.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros/types/etc.
@@ -700,8 +700,10 @@ enum ACTION {
 // Global game settings
 CGameSettings g_GameSettings;
 
+#ifdef CHECK_EXPIRATION_DATE
 // Cookie flag
-long g_lCookieMonster;
+int32_t g_lCookieMonster;
+#endif
 
 // Global screen buffer
 RImage* g_pimScreenBuf;
@@ -728,12 +730,14 @@ RResMgr  g_resmgrShell;
 // Resource manager for non-SAK resources.
 RResMgr  g_resmgrRes;
 
+#ifdef CHECK_EXPIRATION_DATE
 // Time and Date values
-long g_lRegTime;
-long g_lRegValue;
-long g_lExpTime;
-long g_lExpValue;
-long g_lReleaseTime;
+int32_t g_lRegTime;
+int32_t g_lRegValue;
+int32_t g_lExpTime;
+int32_t g_lExpValue;
+int32_t g_lReleaseTime;
+#endif
 
 // Stockpile used to transfer loaded/saved data to/from the CDude's stockpile
 CStockPile g_stockpile;
@@ -745,12 +749,12 @@ int16_t    g_sRealmNumToSave;
 bool     g_bLastLevelDemo = false;
 
 // The secret cookie value used to determine if the humongous file exists
-static U32  ms_u32Cookie = COOKIE_VALUE;
+static uint32_t  ms_u32Cookie = COOKIE_VALUE;
 
 // These variables are generally controlled via the menu system
 static ACTION m_action;
-static long m_lDemoBaseTime;
-static long m_lDemoTimeOut;
+static int32_t m_lDemoBaseTime;
+static int32_t m_lDemoTimeOut;
 static char m_szRealmFile[RSP_MAX_PATH+1];
 static char m_szDemoFile[RSP_MAX_PATH+1];
 static int16_t m_sRealmNum;
@@ -760,11 +764,11 @@ static bool m_bJustOneRealm;
 static int16_t ms_sForegroundCursorShowLevel   = INVALID_CURSOR_SHOW_LEVEL;
 
 // Used by random number stuff
-static long m_lRandom = 1;
+static int32_t m_lRandom = 1;
 static RFile* m_pfileRandom = 0;
 
 // Used by if-logging schtuff.
-static long ms_lSynchLogSeq   = 0;
+static int32_t ms_lSynchLogSeq   = 0;
 
 static RFile   ms_fileSynchLog;
 
@@ -854,7 +858,7 @@ int Stat_KilledCivilians = 0;
 int Stat_TotalKilled = 0;
 int Stat_LevelsPlayed = 0;
 
-ULONG Flag_Achievements = 0;
+uint32_t Flag_Achievements = 0;
 
 #if 1 //PLATFORM_UNIX
 #include <sys/stat.h>
@@ -970,20 +974,20 @@ extern void TheGame(void)
 
 #ifdef CHECK_EXPIRATION_DATE
    g_lExpTime = EXPIRATION_DATE;
-#else
-   g_lExpTime = SAFE_DATE;
-#endif
    g_lReleaseTime = RELEASE_DATE;
+#endif
 
 // To make it more confusing for someone debugging through the code,
 // the flag for the cookie check will be this large number SAFE_DATE.
 // Once the game determines elsewhere that the cookie is correct, it will
 // in some way modify the flag so that it is not SAFE_DATE, then later
 // the check will be for anything other than SAFE_DATE
-#ifdef CHECK_FOR_COOKIE
-   g_lCookieMonster = SAFE_DATE;
-#else
-   g_lCookieMonster = SAFE_DATE - RELEASE_DATE;
+#ifdef CHECK_EXPIRATION_DATE
+  #ifdef CHECK_FOR_COOKIE
+     g_lCookieMonster = SAFE_DATE;
+  #else
+     g_lCookieMonster = SAFE_DATE - RELEASE_DATE;
+  #endif
 #endif
 
    g_bTransferStockpile = false;
@@ -1010,7 +1014,7 @@ extern void TheGame(void)
    if (sResult == 0)
       {
 #ifdef PROMPT_FOR_ORIGINAL_CD
-      rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("PromptForOriginalCD"));
+      rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "AppName"_lookup, "PromptForOriginalCD"_lookup);
 #endif
 
 #ifdef REQUIRE_POSTAL_CD
@@ -1038,8 +1042,8 @@ extern void TheGame(void)
 
          if (sCorrectCD != 0)
             {
-            TRACE("Game():  Wrong CD in the drive - this is not the original PostalCD\n";
-            if (rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_RETRYCANCEL, "CriticalErrorTitle"_lookup, CLocale::Get("WrongCD"), "Wrong CD") == 3)
+            TRACE("Game():  Wrong CD in the drive - this is not the original PostalCD\n");
+            if (rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_RETRYCANCEL, "CriticalErrorTitle"_lookup, "WrongCD"_lookup, "Wrong CD") == 3)
                sCorrectCD = -2;
             else
                sCorrectCD = -3;
@@ -1059,8 +1063,8 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on HD path specified in prefs!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "HD");
+            TRACE("Game(): Can't find assets based on HD path specified in prefs!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "HD");
             }
          }
       if (sResult == 0)
@@ -1070,8 +1074,8 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on VD path specified in prefs!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "VD");
+            TRACE("Game(): Can't find assets based on VD path specified in prefs!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "VD");
             }
          }
       if (sResult == 0)
@@ -1081,8 +1085,8 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on Sound path specified in prefs!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "Sound");
+            TRACE("Game(): Can't find assets based on Sound path specified in prefs!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Sound");
             }
          }
       if (sResult == 0)
@@ -1092,8 +1096,8 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on Game path specified in prefs!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "Game");
+            TRACE("Game(): Can't find assets based on Game path specified in prefs!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Game");
             }
          }
       if (sResult == 0)
@@ -1103,8 +1107,8 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on Hoods path specified in prefs!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "Hoods");
+            TRACE("Game(): Can't find assets based on Hoods path specified in prefs!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Hoods");
             }
          }
 
@@ -1119,7 +1123,7 @@ extern void TheGame(void)
 #if defined(CHECK_FOR_COOKIE)
             if (file.Seek(COOKIE_FILE_POSITION, SEEK_SET) == 0)
                {
-               U32   u32Cookie   = 0;
+               uint32_t   u32Cookie   = 0;
                if (file.Read(&u32Cookie) == 1)
                   {
                   if (u32Cookie == ms_u32Cookie)
@@ -1132,19 +1136,19 @@ extern void TheGame(void)
                   else
                      {
                      //sResult   = -4;
-                     TRACE("Game(): Cookie value is incorrect.\n";
+                     TRACE("Game(): Cookie value is incorrect.\n");
                      }
                   }
                else
                   {
                   //sResult   = -3;
-                  TRACE("Game(): Failed to read cookie.\n";
+                  TRACE("Game(): Failed to read cookie.\n");
                   }
                }
             else
                {
                //sResult   = -2;
-               TRACE("Game(): Cookie file is incorrect size!\n";
+               TRACE("Game(): Cookie file is incorrect size!\n");
                }
 #endif // defined(CHECK_FOR_COOKIE)
 
@@ -1153,13 +1157,13 @@ extern void TheGame(void)
          else
             {
             sResult = -1;
-            TRACE("Game(): Can't find assets based on CD path specified in prefs!\n";
+            TRACE("Game(): Can't find assets based on CD path specified in prefs!\n");
             }
 
          // If any problems . . .
          if (sResult != 0)
             {
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("CantFindAssets"), "CD");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "CD");
             }
          }
 
@@ -1183,8 +1187,8 @@ extern void TheGame(void)
                #ifndef _DEBUG
                   sResult = -1;
                #endif
-               TRACE("Game(): CD path is not a CDROM!\n";
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("NotOnCDROM"));
+               TRACE("Game(): CD path is not a CDROM!\n");
+               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "NotOnCDROM"_lookup);
                }
             }
 #endif
@@ -1241,7 +1245,7 @@ extern void TheGame(void)
                   }
                else
                   {
-                  rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("GeneralError"));
+                  rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "GeneralError"_lookup);
                   }
 
                // Unload assets loaded earlier
@@ -1250,13 +1254,13 @@ extern void TheGame(void)
                }
             else
                {
-               TRACE("Game(): Error returned by StartTitle()!\n";
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("TitleError"));
+               TRACE("Game(): Error returned by StartTitle()!\n");
+               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "TitleError"_lookup);
                }
             }
          else
             {
-            TRACE("Game(): Error returned by OpenSaks().\n";
+            TRACE("Game(): Error returned by OpenSaks().\n");
             }
 
 #if 0
@@ -1274,7 +1278,7 @@ extern void TheGame(void)
          // scenario where a shitty sound driver causes us to think a sound is always
          // playing.
          // Wait for all samples to finish.
-         long  lTimeOutTime   = rspGetMilliseconds() + TIME_OUT_FOR_ABORT_SOUNDS;
+         int32_t lTimeOutTime   = rspGetMilliseconds() + TIME_OUT_FOR_ABORT_SOUNDS;
          // Wait for them to stop.
          while (IsSamplePlaying() == true && rspGetMilliseconds() < lTimeOutTime)
             {
@@ -1291,20 +1295,20 @@ extern void TheGame(void)
       sResult = CSettings::SavePrefs("PrefFileName"_lookup);
       if (sResult > 0)
          {
-         TRACE("Game(): Read-only prefs file!\n";
-//       rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("PrefReadOnly"));
+         TRACE("Game(): Read-only prefs file!\n");
+//       rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefReadOnly"_lookup);
          }
       else if (sResult < 0)
          {
-         TRACE("Game(): Error writing prefs file!\n";
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("PrefWriteError"));
+         TRACE("Game(): Error writing prefs file!\n");
+         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefWriteError"_lookup);
          }
 
       }
    else
       {
-      TRACE("Game(): Error returned by ReadGamePrefs()!\n";
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, CLocale::Get("PrefReadError"));
+      TRACE("Game(): Error returned by ReadGamePrefs()!\n");
+      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefReadError"_lookup);
       }
 
    // Remove the callbacks
@@ -1332,7 +1336,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
       #define NEXT_LINE "\n\n"
    #else
       char acTime[100];
-      unsigned long lTime = g_lExpTime + (((365 * 70UL) + 17) * 24 * 60 * 60); // time_fudge 1900->1970
+      uint32_t lTime = g_lExpTime + (((365 * 70UL) + 17) * 24 * 60 * 60); // time_fudge 1900->1970
       strcpy(acTime, ctime(&lTime));
       char* pCR = strchr(acTime, '\n');
       if (pCR)
@@ -1458,7 +1462,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
             }
          else
             {
-            TRACE("GameLoop(): Error returned by StartMenu()!\n";
+            TRACE("GameLoop(): Error returned by StartMenu()!\n");
             rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "Cannot initialize menu system, most likely due to a memory or drive error.\n");
             break;
             }
@@ -1621,7 +1625,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                   }
                else
                   {
-                  TRACE("GameCore(): Couldn't init protocol!\n";
+                  TRACE("GameCore(): Couldn't init protocol!\n");
                   rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "The selected network protocol has failed to initialize.  Please contact your system administrator or network vendor.\n");
                   }
                }
@@ -1703,7 +1707,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                   }
                else
                   {
-                  TRACE("GameCore(): Couldn't init protocol!\n";
+                  TRACE("GameCore(): Couldn't init protocol!\n");
                   rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "The selected network protocol has failed to initialize.  Please contact your system administrator or network vendor.\n");
                   }
                }
@@ -1879,26 +1883,26 @@ static int16_t GameCore(void)      // Returns 0 on success.
                               }
                            else
                               {
-                              TRACE("GameCore(): Couldn't load demo data!\n";
-                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileReadError_s"), m_szDemoFile);
+                              TRACE("GameCore(): Couldn't load demo data!\n");
+                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
                               }
                            }
                         else
                            {
-                           TRACE("GameCore(): Couldn't load realm name!\n";
-                           rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileReadError_s"), m_szDemoFile);
+                           TRACE("GameCore(): Couldn't load realm name!\n");
+                           rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
                            }
                         fileDemo.Close();
                         }
                      else
                         {
                         TRACE("GameCore(): Couldn't open demo file: '%s'\n", m_szDemoFile);
-                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileOpenError_s"), m_szDemoFile);
+                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, m_szDemoFile);
                         }
                      }
                   else
                      {
-                     TRACE("GameCore(): No demo filename.\n";
+                     TRACE("GameCore(): No demo filename.\n");
                      }
 
                   // Reset demo file name for next time.
@@ -2012,8 +2016,8 @@ static int16_t GameCore(void)      // Returns 0 on success.
                            // Save input data to file
                            if (InputDemoSave(&fileDemo) != 0)
                               {
-                              TRACE("GameCore(): Couldn't save demo data!\n";
-                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileWriteError_s"), szDemoFile);
+                              TRACE("GameCore(): Couldn't save demo data!\n");
+                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileWriteError_s"_lookup, szDemoFile);
                               }
                            }
                         fileDemo.Close();
@@ -2021,7 +2025,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                      else
                         {
                         TRACE("GameCore(): Couldn't open demo file: '%s'\n", szDemoFile);
-                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileOpenError_s"), szDemoFile);
+                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, szDemoFile);
                         }
                      }
 
@@ -2143,7 +2147,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
             // Oooops
             //------------------------------------------------------------------------------
             default:
-               TRACE("GameCore(): Unrecognized action: %ld!\n", (long)m_action);
+               TRACE("GameCore(): Unrecognized action: %ld!\n", (int32_t)m_action);
                break;
             }
 
@@ -2239,7 +2243,7 @@ static int16_t GetRealmToRecord(   // Returns 0 on success, negative on error, 1
       else
          {
          sResult = -1;
-         TRACE("GetRealmToRecord(): File name too long to return in specified buffer!\n";
+         TRACE("GetRealmToRecord(): File name too long to return in specified buffer!\n");
          }
 
       }
@@ -2264,8 +2268,8 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
    {
    int16_t sResult;
 
-   char  szBasePath[RSP_MAX_PATH];
-   long  lBasePathLen   = strlen(pszFullPath);
+   char    szBasePath[RSP_MAX_PATH];
+   int32_t lBasePathLen   = strlen(pszFullPath);
    if (lBasePathLen < sizeof(szBasePath) )
       {
       strcpy(szBasePath, pszFullPath);
@@ -2287,7 +2291,7 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
             else
                {
                sResult = -1;
-               TRACE("SubPathOpenBox(): Path would've exceed max length with separator tacked on!\n";
+               TRACE("SubPathOpenBox(): Path would've exceed max length with separator tacked on!\n");
                }
             }
       #else
@@ -2303,7 +2307,7 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
       if (sResult == 0)
          {
          // Attempt to remove path from the specified name
-         long  lFullPathLen   = strlen(szBasePath);
+         int32_t lFullPathLen   = strlen(szBasePath);
          if (rspStrnicmp(szChosenFileName, szBasePath, lFullPathLen) == 0)
             {
             // Copy sub path to destination.
@@ -2322,7 +2326,7 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
    else
       {
       sResult  = -2;
-      TRACE("SubPathOpenBox(): pszFullPath string too long.\n";
+      TRACE("SubPathOpenBox(): pszFullPath string too long.\n");
       }
 
    return sResult;
@@ -2359,7 +2363,7 @@ static int16_t GetDemoFile(
       else
          {
          sResult = -1;
-         TRACE("GetDemoFile(): File name too long to return in specified buffer!\n";
+         TRACE("GetDemoFile(): File name too long to return in specified buffer!\n");
          }
       }
 
@@ -2369,9 +2373,16 @@ static int16_t GetDemoFile(
 ////////////////////////////////////////////////////////////////////////////////
 // Macro to get the sound SAK and (for the event there is no SAK) dir path.
 ////////////////////////////////////////////////////////////////////////////////
+
+#if LOCALE == JAPAN
+   #define AUDIO_SAK_SEPARATOR_CHAR    'j'
+#else
+   #define AUDIO_SAK_SEPARATOR_CHAR    '_'
+#endif
+
 inline void GetSoundPaths(    // Returns nothing.
-   long  lSamplesPerSec,      // In:  The sample rate in samples per second.
-   long  lBitsPerSample,      // In:  The number of bits per sample.
+   int32_t lSamplesPerSec,      // In:  The sample rate in samples per second.
+   int32_t lBitsPerSample,      // In:  The number of bits per sample.
    char * pszSakPath,            // Out: The subpath and name of the sound SAK.
                               // Should be able to store at least RSP_MAX_PATH
                               // characters here.
@@ -2438,10 +2449,10 @@ static int16_t OpenSaks(void)
 
    // Get the current audio mode, if any.
    int16_t sInSoundMode;
-   long  lSamplesPerSec;
-   long  lDevBitsPerSample;
-   long  lSrcBitsPerSample;
-   long  lMixBitsPerSample;
+   int32_t lSamplesPerSec;
+   int32_t lDevBitsPerSample;
+   int32_t lSrcBitsPerSample;
+   int32_t lMixBitsPerSample;
    if (RMix::GetMode(            // Returns 0 on success;
                                  // nonzero if no mode.
          &lSamplesPerSec,        // Sample rate in samples per second
@@ -2504,7 +2515,7 @@ static int16_t OpenSaks(void)
       lSamplesPerSec = 44100;
    else
       {
-      TRACE("OpenSaks(): Unsupported sample rate: %ld!\n", (long)lSamplesPerSec);
+      TRACE("OpenSaks(): Unsupported sample rate: %ld!\n", (int32_t)lSamplesPerSec);
       ASSERT(0);
       }
 
@@ -2551,8 +2562,8 @@ static int16_t OpenSaks(void)
          // them all to make sure.
          struct
             {
-            long  lSamplesPerSec;
-            long  lBitsPerSample;
+            int32_t lSamplesPerSec;
+            int32_t lBitsPerSample;
             }  amodes[] =
                {
                   // Put the smaller ones first b/c they use less memory.
@@ -2661,14 +2672,14 @@ static int16_t LoadAssets(void)
       }
 
    int16_t i;
-   long lTotalTime = 0;
+   int32_t lTotalTime = 0;
    for (i = 0; i < TitleGetNumTitles(); i++)
       lTotalTime += g_GameSettings.m_alTitleDurations[i];
 
    // Fake lots of loading with a simple timing loop
-   long  lTime;
-   long  lLastTime   = rspGetMilliseconds();
-   long  lEndTime    = lLastTime + lTotalTime;
+   int32_t lTime;
+   int32_t lLastTime   = rspGetMilliseconds();
+   int32_t lEndTime    = lLastTime + lTotalTime;
    do
       {
       lTime    = rspGetMilliseconds();
@@ -3178,7 +3189,7 @@ extern int16_t Game_SavePlayersGame(
 {
    RFile rf;
    int16_t sResult = rf.Open(pszSaveName, "wb", RFile::LittleEndian);
-   ULONG ulFileVersion = CRealm::FileVersion;
+   uint32_t ulFileVersion = CRealm::FileVersion;
 
    if (sResult == SUCCESS)
    {
@@ -3213,7 +3224,7 @@ extern int16_t Game_LoadPlayersGame(
 {
    RFile rf;
    int16_t sResult = rf.Open(pszSaveName, "rb", RFile::LittleEndian);
-   ULONG ulFileVersion;
+   uint32_t ulFileVersion;
 
    if (sResult == SUCCESS)
    {
@@ -3347,21 +3358,21 @@ void GameEndingSequence(void)
                }
             else
                {
-               TRACE("GameCore(): Couldn't load demo data!\n";
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileReadError_s"), m_szDemoFile);
+               TRACE("GameCore(): Couldn't load demo data!\n");
+               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
                }
             }
          else
             {
-            TRACE("GameCore(): Couldn't load realm name!\n";
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileReadError_s"), m_szDemoFile);
+            TRACE("GameCore(): Couldn't load realm name!\n");
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
             }
          fileDemo.Close();
          }
       else
          {
          TRACE("GameCore(): Couldn't open demo file: '%s'\n", m_szDemoFile);
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, CLocale::Get("FileOpenError_s"), m_szDemoFile);
+         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, m_szDemoFile);
          }
       // Reset demo file name for next time.
       m_szDemoFile[0] = 0;
@@ -3492,9 +3503,9 @@ static void CloseSynchLogs(void) // Returns nothing.
 extern int SynchLog( // Result of expr.
    double   expr,    // In:  Expression to evaluate.
    char const *      pszFile, // In:  Calling file.
-   long     lLine,   // In:  Calling line.
+   int32_t  lLine,   // In:  Calling line.
    char const *      pszExpr, // In:  Original C++ source expression.
-   U32      u32User) // In:  A user value that is intended to be consistent.
+   uint32_t      u32User) // In:  A user value that is intended to be consistent.
    {
    #if defined(_DEBUG) || defined(TRACENASSERT)
       if (ms_fileSynchLog.IsOpen() )
@@ -3515,10 +3526,10 @@ extern int SynchLog( // Result of expr.
             {
             char     szFileIn[RSP_MAX_PATH];
             char     szExprIn[1024];
-            long     lLineIn;
-            long     lSeqIn;
+            int32_t  lLineIn;
+            int32_t  lSeqIn;
             double   exprIn;
-            U32      u32UserIn;
+            uint32_t      u32UserIn;
 
             if (fscanf(
                ms_fileSynchLog.m_fs,
@@ -3569,7 +3580,7 @@ extern int SynchLog( // Result of expr.
                }
             else
                {
-               TRACE("Synch(): Error reading log file.\n";
+               TRACE("Synch(): Error reading log file.\n");
                }
             }
          }
@@ -3600,7 +3611,7 @@ static void GameGetRegistry(void)
    char szName[256];
    int16_t sEncryptedKeyLength = 36;
 
-   unsigned char szKey[40];
+   uint8_t szKey[40];
 
    // This is the encoded path name of the registry key where the value is stored
    szKey[0] = 0x07;
@@ -3647,11 +3658,11 @@ static void GameGetRegistry(void)
    DWORD dwType;
    DWORD dwNameSize = 255;
    HKEY hkResult;
-   long lError;
+   int32_t lError;
    int16_t sEncryptedValueLength = 9;
 
 
-   unsigned char szIn[10];
+   uint8_t szIn[10];
 
    // This is the encoded name of the registry value itendifier
    szIn[0] = 0x07;
@@ -3797,9 +3808,6 @@ static void GameGetRegistry(void)
 #endif // WIN32
    if (g_lRegTime < RELEASE_DATE)
       g_lRegTime = EXPIRATION_DATE;
-
-#else // CHECK_EXPIRATION_DATE
-   g_lRegTime = 0;
 #endif // CHECK_EXPIRATION_DATE
 }
 
@@ -3815,7 +3823,7 @@ static void GameSetRegistry(void)
    DWORD dwTimeLength;
    char szName[256];
    int16_t sEncryptedKeyLength = 36;
-   unsigned char szKey[40];
+   uint8_t szKey[40];
 
    szKey[0] = 0x00;
    szKey[1] = 0x3e;
@@ -3862,10 +3870,10 @@ static void GameSetRegistry(void)
    DWORD dwSize = 255;
    DWORD dwNameSize = 255;
    HKEY hkResult;
-   long lError;
+   int32_t lError;
    int16_t sEncryptedValueLength = 9;
 
-   unsigned char szIn[10];
+   uint8_t szIn[10];
 
    szIn[0] = 0x07;
    szIn[1] = 0x29;
@@ -3956,7 +3964,7 @@ static void GameSetRegistry(void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 extern void SeedRand(
-   long lSeed)
+   int32_t lSeed)
    {
    m_lRandom = lSeed;
    }
@@ -3968,10 +3976,10 @@ extern void SeedRand(
 //
 ////////////////////////////////////////////////////////////////////////////////
 #if defined(_DEBUG) || defined(TRACENASSERT)
-   extern long GetRandomDebug(char const* FILE_MACRO, long LINE_MACRO)
+   extern int32_t GetRandomDebug(char const* FILE_MACRO, int32_t LINE_MACRO)
       {
       // Get next random number
-      long lNewVal = (((m_lRandom = m_lRandom * 214013L + 2531011L) >> 16) & 0x7fff);
+      int32_t lNewVal = (((m_lRandom = m_lRandom * 214013L + 2531011L) >> 16) & 0x7fff);
 
       if (m_pfileRandom)
          {
@@ -3989,8 +3997,8 @@ extern void SeedRand(
             }
          else
             {
-            long lSavedVal;
-            long lSavedLine;
+            int32_t lSavedVal;
+            int32_t lSavedLine;
             char szSavedFile[1024];
             fscanf(
                m_pfileRandom->m_fs,
@@ -4011,11 +4019,11 @@ extern void SeedRand(
                   "   Was %s(%ld) which got %ld\n\n"
                   "   Now %s(%ld) which got %ld",
                   szSavedFile,
-                  (long)lSavedLine,
-                  (long)lSavedVal,
+                  (int32_t)lSavedLine,
+                  (int32_t)lSavedVal,
                   GetFileNameFromPath(FILE_MACRO),
                   LINE_MACRO,
-                  (long)lNewVal);
+                  (int32_t)lNewVal);
 
                // Make this easy to debug
                ASSERT(0);
@@ -4025,7 +4033,7 @@ extern void SeedRand(
       return lNewVal;
       }
 #else
-   extern long GetRandom(void)
+   extern int32_t GetRandom(void)
       {
       // Get next random number
       return (((m_lRandom = m_lRandom * 214013L + 2531011L) >> 16) & 0x7fff);
@@ -4063,7 +4071,7 @@ extern int rand(void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 extern void PalTranOn(
-   long lTime /* = -1 */)                       // In:  How long transition should take (or -1 for default)
+   int32_t lTime /* = -1 */)                       // In:  How long transition should take (or -1 for default)
    {
    if (lTime == -1)
       lTime = NORMAL_PAL_TRAN_TIME;
@@ -4122,9 +4130,9 @@ extern void SetGammaLevel( // Returns nothing.
 
    return; // don't set gamma for now
 
-   U8 au8RedMap[256];
-   U8 au8GreenMap[256];
-   U8 au8BlueMap[256];
+   uint8_t au8RedMap[256];
+   uint8_t au8GreenMap[256];
+   uint8_t au8BlueMap[256];
 
    int16_t i;
    int16_t sClipVal;
@@ -4133,9 +4141,9 @@ extern void SetGammaLevel( // Returns nothing.
          i++)
       {
       sClipVal = MAX((int16_t)0, MIN(int16_t(pow((double)i / 100.0, GAMMA_EXPONENT) * sBase), (int16_t)255));
-      au8RedMap[i]   = (U8)sClipVal;
-      au8GreenMap[i] = (U8)sClipVal;
-      au8BlueMap[i]  = (U8)sClipVal;
+      au8RedMap[i]   = (uint8_t)sClipVal;
+      au8GreenMap[i] = (uint8_t)sClipVal;
+      au8BlueMap[i]  = (uint8_t)sClipVal;
       }
 
    // Update map.
@@ -4145,7 +4153,7 @@ extern void SetGammaLevel( // Returns nothing.
       au8RedMap,
       au8GreenMap,
       au8BlueMap,
-      sizeof(U8));
+      sizeof(uint8_t));
 
    // Update hardware through new map.
    rspUpdatePalette();
@@ -4165,9 +4173,9 @@ extern   void  SetBrightnessContrast(
                   double dContrast     // -1.0 = low contrast, 0.0 = normal, 1.0 = high
                   )
    {
-   U8 au8RedMap[256];
-   U8 au8GreenMap[256];
-   U8 au8BlueMap[256];
+   uint8_t au8RedMap[256];
+   uint8_t au8GreenMap[256];
+   uint8_t au8BlueMap[256];
 
    // I will scale the ranges to within reasonable limits:
    ASSERT( (dBrightness >= -1.0) || (dBrightness <= 1.0));
@@ -4187,9 +4195,9 @@ extern   void  SetBrightnessContrast(
       if (sLev < 0) sLev = 0;
       if (sLev > 255) sLev = 255;
 
-      au8RedMap[i]   = (U8)sLev;
-      au8GreenMap[i] = (U8)sLev;
-      au8BlueMap[i]  = (U8)sLev;
+      au8RedMap[i]   = (uint8_t)sLev;
+      au8GreenMap[i] = (uint8_t)sLev;
+      au8BlueMap[i]  = (uint8_t)sLev;
       }
 
    // Update map.
@@ -4199,7 +4207,7 @@ extern   void  SetBrightnessContrast(
       au8RedMap,
       au8GreenMap,
       au8BlueMap,
-      sizeof(U8));
+      sizeof(uint8_t));
 
    // Update hardware through new map.
    rspUpdatePalette();
@@ -4551,7 +4559,7 @@ int16_t CorrectifyBasePath(                       // Returns 0 if successfull, n
                   else
                      {
                      sResult = -1;
-                     TRACE("CorrectifyBasePath(): Path would've exceed max length with separator tacked on!\n";
+                     TRACE("CorrectifyBasePath(): Path would've exceed max length with separator tacked on!\n");
                      }
                   }
             #else
@@ -4564,7 +4572,7 @@ int16_t CorrectifyBasePath(                       // Returns 0 if successfull, n
       else
          {
          sResult = -1;
-         TRACE("CorrectifyBasePath(): Specified path is already longer than the specified maximum length!\n";
+         TRACE("CorrectifyBasePath(): Specified path is already longer than the specified maximum length!\n");
          }
       }
 
@@ -4579,7 +4587,7 @@ int16_t CorrectifyBasePath(                       // Returns 0 if successfull, n
 ////////////////////////////////////////////////////////////////////////////////
 static void BackgroundCall(void)
    {
-   // TRACE("Background\n";
+   // TRACE("Background\n");
 
    // Return CPU to OS.
    rspSetDoSystemMode(RSP_DOSYSTEM_SLEEP);
@@ -4601,7 +4609,7 @@ static void BackgroundCall(void)
 ////////////////////////////////////////////////////////////////////////////////
 static void ForegroundCall(void)
    {
-   // TRACE("Foreground\n";
+   // TRACE("Foreground\n");
 
    #if defined(_DEBUG)
       // Wake CPU.

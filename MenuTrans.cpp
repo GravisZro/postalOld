@@ -104,10 +104,10 @@
 
 // Simple struct for working with palettes
 struct rgb {
-   unsigned char r;
-   unsigned char g;
-   unsigned char b;
-   unsigned char x;
+   uint8_t r;
+   uint8_t g;
+   uint8_t b;
+   uint8_t x;
 };
 
 
@@ -118,14 +118,14 @@ struct rgb {
 static rgb* m_pOrig;
 static rgb* m_pWork;
 static rgb* m_pSaveStep4;
-static unsigned char* m_pUnmapStep4;
-static unsigned char* m_pUnmapStep5;
+static uint8_t* m_pUnmapStep4;
+static uint8_t* m_pUnmapStep5;
 static RImage* m_pim;
 
 static int16_t m_sStep;
 static bool m_bFinishASAP;
-static long m_lTotalTime;
-static long m_lBaseTime;
+static int32_t m_lTotalTime;
+static int32_t m_lBaseTime;
 
 static double m_dReduce = 1.0;
 
@@ -135,14 +135,14 @@ static double m_dReduce = 1.0;
 ////////////////////////////////////////////////////////////////////////////////
 
 static void Remap(
-   unsigned char* aucMap);
+   uint8_t* aucMap);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Call this to start the menu transition effect
 ////////////////////////////////////////////////////////////////////////////////
 extern void StartMenuTrans(
-   long lTotalTime)                             // In:  Effect time (in ms) must be >= 0
+   int32_t lTotalTime)                             // In:  Effect time (in ms) must be >= 0
    {
    // Default to step 0 (nothing) in case something goes wrong
    m_sStep = 0;
@@ -162,8 +162,8 @@ extern void StartMenuTrans(
    m_pOrig = new rgb[256];
    m_pWork = new rgb[256];
    m_pSaveStep4 = new rgb[256];
-   m_pUnmapStep4 = new unsigned char[256];
-   m_pUnmapStep5 = new unsigned char[256];
+   m_pUnmapStep4 = new uint8_t[256];
+   m_pUnmapStep5 = new uint8_t[256];
    m_pim = new RImage;
    if (m_pOrig && m_pWork && m_pSaveStep4 && m_pUnmapStep4 && m_pUnmapStep5 && m_pim)
       {
@@ -177,10 +177,10 @@ extern void StartMenuTrans(
 
          }
       else
-         TRACE("StartMenuTrans(): Error returned by RImage::CreateImage()!\n";
+         TRACE("StartMenuTrans(): Error returned by RImage::CreateImage()!\n");
       }
    else
-      TRACE("StartMenuTrans(): Couldn't allocate memory!\n";
+      TRACE("StartMenuTrans(): Couldn't allocate memory!\n");
    }
 
 
@@ -217,8 +217,8 @@ extern bool DoPreMenuTrans(void)
       // Calculate goal for each color's red component.  We use the otherwise
       // unused member of the struct to store the goal.
       for (int16_t i = EFFECT_BEG; i <= EFFECT_END; i++)
-//       m_pOrig[i].x = (unsigned char)((double)(255 - m_pOrig[i].r) * m_dReduce) & SHADE_MASK;
-         m_pOrig[i].x = (unsigned char)((double)(m_pOrig[i].r) * m_dReduce) & SHADE_MASK;
+//       m_pOrig[i].x = (uint8_t)((double)(255 - m_pOrig[i].r) * m_dReduce) & SHADE_MASK;
+         m_pOrig[i].x = (uint8_t)((double)(m_pOrig[i].r) * m_dReduce) & SHADE_MASK;
 
       // Get base time for next step
       m_lBaseTime = rspGetMilliseconds();
@@ -253,9 +253,9 @@ extern bool DoPreMenuTrans(void)
       for (int16_t i = EFFECT_BEG; i <= EFFECT_END; i++)
          {
          double dRedDiff = m_pOrig[i].r - m_pOrig[i].x;
-         m_pWork[i].r = m_pOrig[i].x + (unsigned char)(dRedDiff * (1.0 - dPercent));
-         m_pWork[i].g = (unsigned char)((double)m_pOrig[i].g * (1.0 - dPercent));
-         m_pWork[i].b = (unsigned char)((double)m_pOrig[i].b * (1.0 - dPercent));
+         m_pWork[i].r = m_pOrig[i].x + (uint8_t)(dRedDiff * (1.0 - dPercent));
+         m_pWork[i].g = (uint8_t)((double)m_pOrig[i].g * (1.0 - dPercent));
+         m_pWork[i].b = (uint8_t)((double)m_pOrig[i].b * (1.0 - dPercent));
          }
 
       // Set new palette
@@ -279,7 +279,7 @@ extern bool DoPreMenuTrans(void)
    else if (m_sStep == 3)
       {
       // Start mapping table out as an "identity map" (pixels map to themselves)
-      unsigned char aucMap[256];
+      uint8_t aucMap[256];
       for (int16_t m = 0; m < 256; m++)
          aucMap[m] = m;
 
@@ -317,7 +317,7 @@ extern bool DoPreMenuTrans(void)
    else if (m_sStep == 4)
       {
       // Start mapping table out as an "identity map" (pixels map to themselves)
-      unsigned char aucMap[256];
+      uint8_t aucMap[256];
       for (int16_t m = 0; m < 256; m++)
          {
          aucMap[m] = m;
@@ -380,7 +380,7 @@ extern bool DoPreMenuTrans(void)
       rspUpdatePalette();
 
       // Start mapping table out as an "identity map" (pixels map to themselves)
-      unsigned char aucMap[256];
+      uint8_t aucMap[256];
       for (int16_t m = 0; m < 256; m++)
          {
          aucMap[m] = m;
@@ -479,8 +479,8 @@ extern bool DoPostMenuTrans(void)
       for (int16_t i = EFFECT_BEG; i <= EFFECT_END; i++)
          {
          m_pWork[i].r = m_pOrig[i].x;
-         m_pWork[i].g = (unsigned char)0;
-         m_pWork[i].b = (unsigned char)0;
+         m_pWork[i].g = (uint8_t)0;
+         m_pWork[i].b = (uint8_t)0;
          }
       rspSetPaletteEntries(EFFECT_BEG, EFFECT_LEN, &(m_pWork[EFFECT_BEG].r), &(m_pWork[EFFECT_BEG].g), &(m_pWork[EFFECT_BEG].b), sizeof(rgb));
       rspUpdatePalette();
@@ -526,9 +526,9 @@ extern bool DoPostMenuTrans(void)
       for (int16_t i = EFFECT_BEG; i <= EFFECT_END; i++)
          {
          double dRedDiff = m_pOrig[i].r - m_pOrig[i].x;
-         m_pWork[i].r = m_pOrig[i].x + (unsigned char)(dRedDiff * dPercent);
-         m_pWork[i].g = (unsigned char)((double)m_pOrig[i].g * dPercent);
-         m_pWork[i].b = (unsigned char)((double)m_pOrig[i].b * dPercent);
+         m_pWork[i].r = m_pOrig[i].x + (uint8_t)(dRedDiff * dPercent);
+         m_pWork[i].g = (uint8_t)((double)m_pOrig[i].g * dPercent);
+         m_pWork[i].b = (uint8_t)((double)m_pOrig[i].b * dPercent);
          }
 
       // Set new palette
@@ -583,7 +583,7 @@ extern void EndMenuTrans(
 // Remap the pixels using the specified map
 ////////////////////////////////////////////////////////////////////////////////
 static void Remap(
-   unsigned char* aucMap)
+   uint8_t* aucMap)
    {
    // Jon brought up a potential problem with calling rspLockBuffer(), which
    // is BLiT's version of this.  In debug mode, it apparently doesn't do
@@ -592,8 +592,8 @@ static void Remap(
    // here, the end result would be no locking.  This is only a problem in
    // debug mode.  We'll have to check into a better solution, but for now
    // I'm just calling the "real" buffer lock.
-   U8* pu8VideoBuf;
-   long  lPitch;
+   uint8_t* pu8VideoBuf;
+   int32_t  lPitch;
 // Note that we only need to do this in the case that the buffer is not already
 // locked.  Since we keep it locked while the game is running now, we don't need
 // it (note also regarding the lock comment above that currently rspLockBuffer()
@@ -612,14 +612,14 @@ static void Remap(
       int16_t sHeight = g_pimScreenBuf->m_sHeight;
       int16_t sWidth = g_pimScreenBuf->m_sWidth;
       int16_t sWidth2;
-      long lNextRow = lPitch - (long)sWidth;
-      unsigned char* pBuf = pu8VideoBuf;
+      int32_t lNextRow = lPitch - (int32_t)sWidth;
+      uint8_t* pBuf = pu8VideoBuf;
       if ((sHeight > 0) && (sWidth > 0))
          {
          do {
             sWidth2 = sWidth;
             do {
-               *pBuf = *(aucMap + (long)*pBuf); // may be faster than aucMap[*pBuf]
+               *pBuf = *(aucMap + (int32_t)*pBuf); // may be faster than aucMap[*pBuf]
                pBuf++;
                } while (--sWidth2);
             pBuf += lNextRow;

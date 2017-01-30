@@ -197,7 +197,7 @@ int16_t RSocket::Open(                            // Returns 0 on success, non-z
          else
             {
             sResult = -1;
-            TRACE("RSocket::Open(): Error constructing protocol!\n";
+            TRACE("RSocket::Open(): Error constructing protocol!\n");
             }
 
          // If there was a problem, get rid of the protocol
@@ -210,13 +210,13 @@ int16_t RSocket::Open(                            // Returns 0 on success, non-z
       else
          {
          sResult = -1;
-         TRACE("RSocket::Open(): Already open!\n";
+         TRACE("RSocket::Open(): Already open!\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("RSocket::Open(): Didn't call RSocket::Startup()!\n";
+      TRACE("RSocket::Open(): Didn't call RSocket::Startup()!\n");
       }
 
    return sResult;
@@ -282,19 +282,19 @@ int16_t RSocket::Accept(                          // Return 0 if successfull, no
          else
             {
             sResult = -1;
-            TRACE("RSocket::Accept(): Couldn't construct client protocol!\n";
+            TRACE("RSocket::Accept(): Couldn't construct client protocol!\n");
             }
          }
       else
          {
             sResult = -1;
-            TRACE("RSocket::Accept(): Client socket already has a protocol!\n";
+            TRACE("RSocket::Accept(): Client socket already has a protocol!\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("RSocket::Accept(): Not open!\n";
+      TRACE("RSocket::Accept(): Not open!\n");
       }
 
    return sResult;
@@ -315,7 +315,7 @@ int16_t RSocket::Broadcast(void)                  // Returns 0 if successfull, n
    else
       {
       sResult = -1;
-      TRACE("RSocket::Broadcast(): Not open!\n";
+      TRACE("RSocket::Broadcast(): Not open!\n");
       }
 
    return sResult;
@@ -334,7 +334,7 @@ int16_t RSocket::Listen(int16_t sMaxQueued)
    else
       {
       sResult = -1;
-      TRACE("RSocket::Listen(): Not open!\n";
+      TRACE("RSocket::Listen(): Not open!\n");
       }
 
    return sResult;
@@ -354,7 +354,7 @@ int16_t RSocket::Connect(
    else
       {
       sResult = -1;
-      TRACE("RSocket::Connect(): Not open!\n";
+      TRACE("RSocket::Connect(): Not open!\n");
       }
 
    return sResult;
@@ -366,8 +366,8 @@ int16_t RSocket::Connect(
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::Send(                            // Return 0 on success, non-zero otherwise
    void* pBuf,                                  // In:  Pointer to data buffer
-   long lNumBytes,                              // In:  Number of bytes to send
-   long* plActualBytes)                         // Out: Actual number of bytes sent
+   int32_t lNumBytes,                              // In:  Number of bytes to send
+   int32_t* plActualBytes)                         // Out: Actual number of bytes sent
    {
    int16_t sResult = FAILURE;
 
@@ -376,7 +376,7 @@ int16_t RSocket::Send(                            // Return 0 on success, non-ze
    else
       {
       sResult = -1;
-      TRACE("RSocket::Send(): Not open!\n";
+      TRACE("RSocket::Send(): Not open!\n");
       }
 
    return sResult;
@@ -389,8 +389,8 @@ int16_t RSocket::Send(                            // Return 0 on success, non-ze
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::SendTo(                          // Return 0 on success, non-zero otherwise
    void* pBuf,                                  // In:  Pointer to data buffer
-   long lNumBytes,                              // In:  Number of bytes to send
-   long* plActualBytes,                         // Out: Actual number of bytes sent
+   int32_t lNumBytes,                              // In:  Number of bytes to send
+   int32_t* plActualBytes,                         // Out: Actual number of bytes sent
    RSocket::Address* paddress)                  //In:  Address to send to
    {
    int16_t sResult = FAILURE;
@@ -400,7 +400,7 @@ int16_t RSocket::SendTo(                          // Return 0 on success, non-ze
    else
       {
       sResult = -1;
-      TRACE("RSocket::SendTo(): Not open!\n";
+      TRACE("RSocket::SendTo(): Not open!\n");
       }
 
    return sResult;
@@ -428,8 +428,8 @@ int16_t RSocket::SendTo(                          // Return 0 on success, non-ze
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::Receive(                         // Returns 0 on success, non-zero otherwise
    void* pBuf,                                  // In:  Pointer to data buffer
-   long lMaxBytes,                              // In:  Maximum bytes that can fit in buffer
-   long* plActualBytes)                         // Out: Actual number of bytes received
+   int32_t lMaxBytes,                              // In:  Maximum bytes that can fit in buffer
+   int32_t* plActualBytes)                         // Out: Actual number of bytes received
    {
    int16_t sResult = FAILURE;
 
@@ -438,7 +438,7 @@ int16_t RSocket::Receive(                         // Returns 0 on success, non-z
    else
       {
       sResult = -1;
-      TRACE("RSocket::Receive(): Not open!\n";
+      TRACE("RSocket::Receive(): Not open!\n");
       }
 
    return sResult;
@@ -450,8 +450,8 @@ int16_t RSocket::Receive(                         // Returns 0 on success, non-z
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::ReceiveFrom(                     // Returns 0 on success, non-zero otherwise
    void* pBuf,                                  // In:  Pointer to data buffer
-   long lMaxBytes,                              // In:  Maxiumm bytes that fit in buffer
-   long* plActualBytes,                         // Out: Actual number of bytes received into buffer
+   int32_t lMaxBytes,                              // In:  Maxiumm bytes that fit in buffer
+   int32_t* plActualBytes,                         // Out: Actual number of bytes received into buffer
    RSocket::Address* paddress)                  // Out: Source address returned here
    {
    int16_t sResult = FAILURE;
@@ -461,7 +461,7 @@ int16_t RSocket::ReceiveFrom(                     // Returns 0 on success, non-z
    else
       {
       sResult = -1;
-      TRACE("RSocket::ReceiveFrom(): Not open!\n";
+      TRACE("RSocket::ReceiveFrom(): Not open!\n");
       }
 
    return sResult;
@@ -474,9 +474,9 @@ int16_t RSocket::ReceiveFrom(                     // Returns 0 on success, non-z
 // streams, this returns the total amount of data that can be read with a
 // single receive which is normally equal to the total amount of queued data.
 ////////////////////////////////////////////////////////////////////////////////
-long RSocket::CheckReceivableBytes(void)
+int32_t RSocket::CheckReceivableBytes(void)
    {
-   long lResult = 0;
+   int32_t lResult = 0;
 
    if (m_pProtocol)
       lResult = m_pProtocol->CheckReceivableBytes();
@@ -575,12 +575,12 @@ int16_t RSocket::Startup(                // Returns 0 if successfull, non-zero o
             {
             case RSocket::TCPIP:
                ASSERT(sizeof(RProtocolBSDIP::AddressIP) == sizeof(RSocket::Address));
-               sResult = RProtocolBSDIP::Startup();
+               //sResult = RProtocolBSDIP::Startup();
                break;
 
             default:
                sResult = -1;
-               TRACE("RSocket::Startup(): Unknown procol!\n";
+               TRACE("RSocket::Startup(): Unknown procol!\n");
                break;
             }
          }
@@ -607,11 +607,11 @@ void RSocket::Shutdown(void)
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         RProtocolBSDIP::Shutdown();
+         //RProtocolBSDIP::Shutdown();
          break;
 
       default:
-         TRACE("RSocket::Shutdown(): Unknown protocol!\n";
+         TRACE("RSocket::Shutdown(): Unknown protocol!\n");
          break;
       }
    ms_bDidStartup = false;
@@ -630,19 +630,19 @@ void RSocket::Shutdown(void)
 ////////////////////////////////////////////////////////////////////////////////
 // static
 int16_t RSocket::GetMaxDatagramSize(              // Returns 0 on success, non-zero otherwise
-   long* plSize)                                // Out: Maximum datagram size (in bytes)
+   int32_t* plSize)                                // Out: Maximum datagram size (in bytes)
    {
    int16_t sResult = FAILURE;
 
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         sResult = RProtocolBSDIP::GetMaxDatagramSize(plSize);
+         //sResult = RProtocolBSDIP::GetMaxDatagramSize(plSize);
          break;
 
       default:
          sResult = -1;
-         TRACE("RSocket::GetMaxDatagramSize(): Unknown protocol!\n";
+         TRACE("RSocket::GetMaxDatagramSize(): Unknown protocol!\n");
          break;
       }
 
@@ -660,19 +660,19 @@ int16_t RSocket::GetMaxDatagramSize(              // Returns 0 on success, non-z
 ////////////////////////////////////////////////////////////////////////////////
 // static
 int16_t RSocket::GetMaxSockets(                   // Returns 0 on success, non-zero otherwise
-   long* plNum)                                 // Out: Maximum number of sockets
+   int32_t* plNum)                                 // Out: Maximum number of sockets
    {
    int16_t sResult = FAILURE;
 
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         sResult = RProtocolBSDIP::GetMaxSockets(plNum);
+         //sResult = RProtocolBSDIP::GetMaxSockets(plNum);
          break;
 
       default:
          sResult = -1;
-         TRACE("RSocket::GetMaxSockets(): Unknown protocol!\n";
+         TRACE("RSocket::GetMaxSockets(): Unknown protocol!\n");
          break;
       }
 
@@ -706,7 +706,7 @@ int16_t RSocket::GetAddress(                      // Returns 0 on success, non-z
       strcpy(azName, pszName);
 
       // Convert trailing whitespace to 0's
-      long index;
+      int32_t index;
       for (index = strlen(azName) - 1; index >= 0; index--)
          {
          if (isspace(azName[index]))
@@ -717,13 +717,13 @@ int16_t RSocket::GetAddress(                      // Returns 0 on success, non-z
       if (index < 0)
          {
          sResult = -1;
-         TRACE("RSocket::GetAddress(): String is empty (after removing leading & trailing space)\n";
+         TRACE("RSocket::GetAddress(): String is empty (after removing leading & trailing space)\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("RSocket::GetAddress(): Specified string is too long!\n";
+      TRACE("RSocket::GetAddress(): Specified string is too long!\n");
       }
 
    // Make sure we don't accidently use this pointer -- must use azName instead!
@@ -735,12 +735,12 @@ int16_t RSocket::GetAddress(                      // Returns 0 on success, non-z
       switch (ms_prototype)
          {
          case RSocket::TCPIP:
-            sResult = RProtocolBSDIP::GetAddress(azName, usPort, paddress);
+            //sResult = RProtocolBSDIP::GetAddress(azName, usPort, paddress);
             break;
 
          default:
             sResult = -1;
-            TRACE("RSocket::GetAddress(): Unknown protocol!\n";
+            TRACE("RSocket::GetAddress(): Unknown protocol!\n");
             break;
          }
       }
@@ -760,11 +760,11 @@ void RSocket::CreateBroadcastAddress(
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         RProtocolBSDIP::CreateBroadcastAddress(usPort, paddress);
+         //RProtocolBSDIP::CreateBroadcastAddress(usPort, paddress);
          break;
 
       default:
-         TRACE("RSocket::GetAddress(): Unknown protocol!\n";
+         TRACE("RSocket::GetAddress(): Unknown protocol!\n");
          break;
       }
    }
@@ -785,11 +785,11 @@ uint16_t RSocket::GetAddressPort(         // Returns the port number
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         usPort = RProtocolBSDIP::GetAddressPort(paddress);
+         //usPort = RProtocolBSDIP::GetAddressPort(paddress);
          break;
 
       default:
-         TRACE("RSocket::GetAddressPort(): Unknown protocol!\n";
+         TRACE("RSocket::GetAddressPort(): Unknown protocol!\n");
          break;
       }
 
@@ -811,11 +811,11 @@ void RSocket::SetAddressPort(
    switch (ms_prototype)
       {
       case RSocket::TCPIP:
-         RProtocolBSDIP::SetAddressPort(usPort, paddress);
+         //RProtocolBSDIP::SetAddressPort(usPort, paddress);
          break;
 
       default:
-         TRACE("RSocket::SetAddressPort(): Unknown protocol!\n";
+         TRACE("RSocket::SetAddressPort(): Unknown protocol!\n");
          break;
       }
    }
@@ -835,11 +835,11 @@ RSocket::RProtocol* RSocket::ConstructProtocol( // Returns pointer to prototype 
    switch (prototype)
       {
       case RSocket::TCPIP:
-         pprotocol = new RProtocolBSDIP;
+         //pprotocol = new RProtocolBSDIP;
          break;
 
       default:
-         TRACE("RSocket::ConstructProtocol(): Unknown protocol!\n";
+         TRACE("RSocket::ConstructProtocol(): Unknown protocol!\n");
          break;
       }
 

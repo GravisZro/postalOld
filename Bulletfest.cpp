@@ -184,7 +184,7 @@
 // Module specific (static) variables / Instantiate class statics.
 //////////////////////////////////////////////////////////////////////////////
 
-U8 CBulletFest::ms_u8TracerIndex = 0;  // The color index to use for tracers.
+uint8_t CBulletFest::ms_u8TracerIndex = 0;  // The color index to use for tracers.
                                        // This value is gotten only once per
                                        // execution of this program; therefore,
                                        // it is gotten from the group of colors
@@ -912,7 +912,7 @@ bool CBulletFest::Fire(       // Returns true if a hit, false otherwise.
          }
       else
          {
-         TRACE("Fire(): Unable to allocate CSpriteLine2d.\n";
+         TRACE("Fire(): Unable to allocate CSpriteLine2d.\n");
          }
       }
 

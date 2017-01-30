@@ -77,14 +77,14 @@ class CExplode : public CThing
       double   m_dX;
       double   m_dY;
       double   m_dZ;
-      U16      m_u16ShooterID;
-      U16      m_u16ExceptID;                         // ID of object to except from explosion.
+      uint16_t      m_u16ShooterID;
+      uint16_t      m_u16ExceptID;                         // ID of object to except from explosion.
 
 
    protected:
-      long m_lTimer;                                  // General purpose timer
+      int32_t m_lTimer;                                  // General purpose timer
 
-      long m_lPrevTime;                               // Previous update time
+      int32_t m_lPrevTime;                               // Previous update time
 
       CSprite2    m_sprite;                           // Sprite
       ChannelAA*  m_pAnimChannel;                     // Alpha Explosion animation stored as a channel
@@ -159,7 +159,7 @@ class CExplode : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -188,7 +188,7 @@ class CExplode : public CThing
          int16_t sX,                                    // In: New x coord
          int16_t sY,                                    // In: New y coord
          int16_t sZ,                                    // In: New z coord
-         U16   u16ShooterID,                          // In: Who is responsible for this explosion
+         uint16_t   u16ShooterID,                          // In: Who is responsible for this explosion
          int16_t sAnim = 0);                            // In: Which explosion to use, standard = 0,
                                                       //     grenade = 1 etc.
 

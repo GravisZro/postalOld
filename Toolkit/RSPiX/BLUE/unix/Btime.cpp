@@ -29,9 +29,9 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <BLUE/Blue.h>
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
-static Uint32 MicrosecondsBase = 0;
+static uint32_t MicrosecondsBase = 0;
 
 //////////////////////////////////////////////////////////////////////////////
 // Functions.
@@ -54,9 +54,9 @@ extern void Time_Init(void)
 // Returns the time in a long.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern long rspGetMilliseconds(void)
+extern int32_t rspGetMilliseconds(void)
 	{
-        return (long) (SDL_GetTicks());
+        return (int32_t) (SDL_GetTicks());
 	}
 
 //////////////////////////////////////////////////////////////////////////////
@@ -68,14 +68,14 @@ extern long rspGetMilliseconds(void)
 // Returns the time in a long.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern long rspGetMicroseconds(	// Returns microseconds between now and
+extern int32_t rspGetMicroseconds(	// Returns microseconds between now and
 											// last
-	short sReset /*= FALSE*/)		// Set to TRUE to reset timer.  If you never
+	int16_t sReset /*= FALSE*/)		// Set to TRUE to reset timer.  If you never
 											// reset the timer, it will wrap within
 											// just over 35 minutes.
 	{
-    Uint32 microsecs = SDL_GetTicks();
-    long lTime = (long) (microsecs - MicrosecondsBase);
+    uint32_t microsecs = SDL_GetTicks();
+    int32_t lTime = (int32_t) (microsecs - MicrosecondsBase);
 
 		// If reset requested . . .
 	if (sReset != FALSE)
@@ -96,9 +96,9 @@ extern long rspGetMicroseconds(	// Returns microseconds between now and
 // Returns the time in an __int64.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern S64 rspGetAppMicroseconds()
+extern int64_t rspGetAppMicroseconds()
 	{
-        return ((S64) SDL_GetTicks()) * 1000;
+        return ((int64_t) SDL_GetTicks()) * 1000;
 	}
 
 //////////////////////////////////////////////////////////////////////////////

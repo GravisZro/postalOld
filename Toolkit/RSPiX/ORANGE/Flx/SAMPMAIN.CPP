@@ -76,7 +76,7 @@ void main(void)
 			cout << "Processing frames:\n";
 							
 			// Read each frame and write it out
-			for (short sFrame = 1; sFrame <= filehdrRead.sNumFrames; sFrame++)
+			for (int16_t sFrame = 1; sFrame <= filehdrRead.sNumFrames; sFrame++)
 				{
 				cout << sFrame << "\n";
 				
@@ -117,7 +117,7 @@ void main(void)
 			cout << "Processing frames:\n";
 							
 			// Read each frame and write it out
-			for (short sFrame = 1; sFrame <= filehdrRead.sNumFrames; sFrame++)
+			for (int16_t sFrame = 1; sFrame <= filehdrRead.sNumFrames; sFrame++)
 				{
 				cout << sFrame << "\n";
 				
@@ -182,18 +182,18 @@ void DumpHeader(FLX_FILE_HDR* pfilehdr)
 // Old code to display image and palette - takes about 10 minutes per frame!!!!
 ///////////////////////////////////////////////////////////////////////////////
 #if 0
-				for (short c = 10; c < 246; c++)
+				for (int16_t c = 10; c < 246; c++)
 					{
-					long rgb = ((long)((long)(prgbColors[c].bR) >> (long)2) & 0x000000ffL) |
-					           ((long)((long)(prgbColors[c].bG) << (long)6) & 0x0000ff00L) |
-					           ((long)((long)(prgbColors[c].bB) << (long)14) & 0x00ff0000L);
+					long rgb = ((int32_t)((int32_t)(prgbColors[c].bR) >> (int32_t)2) & 0x000000ffL) |
+					           ((int32_t)((int32_t)(prgbColors[c].bG) << (int32_t)6) & 0x0000ff00L) |
+					           ((int32_t)((int32_t)(prgbColors[c].bB) << (int32_t)14) & 0x00ff0000L);
 					_remappalette(c, rgb);
 					}
-				for (short y = 0; y < filehdrRead.sHeight; y++)
+				for (int16_t y = 0; y < filehdrRead.sHeight; y++)
 					{
-					for (short x = 0; x < filehdrRead.sWidth; x++)
+					for (int16_t x = 0; x < filehdrRead.sWidth; x++)
 						{
-						_setcolor((short)(pbPixels[y][x]));
+						_setcolor((int16_t)(pbPixels[y][x]));
 						_setpixel(x, y);
 						}
 					}

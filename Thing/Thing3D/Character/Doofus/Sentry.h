@@ -63,11 +63,11 @@ class CSentry : public CDoofus
       CAnim3D     m_animBaseDie;                // animation for the base of the gun
 
       CBulletFest m_bullets;                    // Generic bullet interface.
-      long        m_lLastBulletTime;            // Last time a bullet was fired.
+      int32_t        m_lLastBulletTime;            // Last time a bullet was fired.
       int16_t       m_sNumRounds;                 // Number of rounds remaining in the gun
       int16_t       m_sRoundsPerShot;             // How many bullets does it fire at once
-      long        m_lSqDistRange;               // Range in pixels squared.
-      long        m_lShootDelay;                // Time to wait between shots
+      int32_t        m_lSqDistRange;               // Range in pixels squared.
+      int32_t        m_lShootDelay;                // Time to wait between shots
       double      m_dAngularVelocity;           // Amount it can turn in degrees/second
 
       // Tracks file counter so we know when to load/save "common" data
@@ -80,19 +80,19 @@ class CSentry : public CDoofus
       static double ms_dInRangeHigh;      // within weapon range
       static double ms_dGravity;          // Gravity for falling
       static double ms_dBlowupVelocity;   // Initial blast velocity
-      static long ms_lRandomAvoidTime;    // Time to wander before looking again
-      static long ms_lReseekTime;         // Time to wait before doing the next 'find'
-      static long ms_lWatchWaitTime;      // Watch your shot go
-      static long ms_lPatrolTime;         // Wait this long before shooting
-      static long ms_lDeathTimeout;       // Wait around after dying
-      static long ms_lBurningRunTime;     // Run this time before turning
+      static int32_t ms_lRandomAvoidTime;    // Time to wander before looking again
+      static int32_t ms_lReseekTime;         // Time to wait before doing the next 'find'
+      static int32_t ms_lWatchWaitTime;      // Watch your shot go
+      static int32_t ms_lPatrolTime;         // Wait this long before shooting
+      static int32_t ms_lDeathTimeout;       // Wait around after dying
+      static int32_t ms_lBurningRunTime;     // Run this time before turning
       static int16_t ms_sHitLimit;          // Number of starting hit points
       static int16_t ms_sBurntBrightness;   // Brightness level when burnt
-      static long ms_lMaxShootTime;       // Maximum in ms of continuous shooting.
-      static long ms_lReselectDudeTime;   // Time before looking for a closer dude.
-      static U32 ms_u32WeaponIncludeBits; // Weapons shot from sentry can hit this
-      static U32 ms_u32WeaponDontcareBits;// Weapons shot from sentry ignore these bits
-      static U32 ms_u32WeaponExcludeBits; // Weapons shot from sentry do not hit this
+      static int32_t ms_lMaxShootTime;       // Maximum in ms of continuous shooting.
+      static int32_t ms_lReselectDudeTime;   // Time before looking for a closer dude.
+      static uint32_t ms_u32WeaponIncludeBits; // Weapons shot from sentry can hit this
+      static uint32_t ms_u32WeaponDontcareBits;// Weapons shot from sentry ignore these bits
+      static uint32_t ms_u32WeaponExcludeBits; // Weapons shot from sentry do not hit this
 
    //---------------------------------------------------------------------------
    // Constructor(s) / destructor
@@ -156,7 +156,7 @@ class CSentry : public CDoofus
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

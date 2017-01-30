@@ -198,7 +198,7 @@ int16_t CFirebomb::Load(           // Returns 0 if successfull, non-zero otherwi
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
 
@@ -282,7 +282,7 @@ void CFirebomb::Update(void)
    if (!m_sSuspend)
    {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Calculate elapsed time in seconds
       double dSeconds = (double)(lThisTime - m_lPrevTime) / 1000.0;
@@ -419,7 +419,7 @@ void CFirebomb::Render(void)
 {
    // Animate
 
-   long lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
    m_sprite.m_pmesh = (RMesh*) m_anim.m_pmeshes->GetAtTime(lThisTime);
    m_sprite.m_psop = (RSop*) m_anim.m_psops->GetAtTime(lThisTime);
@@ -620,7 +620,7 @@ int16_t CFirefrag::Load(           // Returns 0 if successfull, non-zero otherwi
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
 
@@ -707,7 +707,7 @@ void CFirefrag::Update(void)
    if (!m_sSuspend)
    {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Calculate elapsed time in seconds
       double dSeconds = (double)(lThisTime - m_lPrevTime) / 1000.0;

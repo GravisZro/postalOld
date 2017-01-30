@@ -74,9 +74,9 @@ template <class T> class RStack
 	public:	// Methods.
 		// Push an item onto the stack.
 		// Returns 0 on success.
-		short Push(STACKDATA sd)
+		int16_t Push(STACKDATA sd)
 			{
-			short	sRes	= m_list.InsertHead(sd);
+			int16_t	sRes	= m_list.InsertHead(sd);
 			if (sRes == 0)
 				{
 				m_sNumItems++;
@@ -86,9 +86,9 @@ template <class T> class RStack
 
 		// Pop an item off the stack.
 		// Returns item on success; nullptr otherwise.
-		short Pop(PSTACKDATA psd)
+		int16_t Pop(PSTACKDATA psd)
 			{
-			short	sRes	= m_list.GetHead(psd);
+			int16_t	sRes	= m_list.GetHead(psd);
 			if (sRes == 0)
 				{
 				m_sNumItems--;
@@ -101,11 +101,11 @@ template <class T> class RStack
 
 	public:	// Querries.
 		// Returns the number of items currently in stack.
-		short GetNumItems(void)
+		int16_t GetNumItems(void)
 			{ return m_sNumItems; }
 
 		// Returns the top item.
-		short GetTop(PSTACKDATA psd)
+		int16_t GetTop(PSTACKDATA psd)
 			{
 			return m_list.GetHead(psd);
 			}
@@ -120,7 +120,7 @@ template <class T> class RStack
 
 	protected:	// Protected member variables.
 		RBList <T>	m_list;	// The dynamic stack.  Head is top.
-		short			m_sNumItems;	// Number of items in stack.
+		int16_t			m_sNumItems;	// Number of items in stack.
 	};
 
 

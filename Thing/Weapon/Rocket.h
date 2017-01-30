@@ -54,7 +54,7 @@
 #ifndef ROCKET_H
 #define ROCKET_H
 
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 
 // CRocket is an unguided missile weapon class
 class CRocket : public CWeapon
@@ -69,9 +69,9 @@ class CRocket : public CWeapon
    //---------------------------------------------------------------------------
    public:
       // Collision bits
-      U32 m_u32CollideIncludeBits;
-      U32 m_u32CollideDontcareBits;
-      U32 m_u32CollideExcludeBits;
+      uint32_t m_u32CollideIncludeBits;
+      uint32_t m_u32CollideDontcareBits;
+      uint32_t m_u32CollideExcludeBits;
 
    protected:
       CAnim3D     m_anim;              // 3D animation
@@ -80,7 +80,7 @@ class CRocket : public CWeapon
       bool        m_bArmed;            // Initially missile is not armed so it doesn't
                                        // collide with the person who shot it.
       CSprite3    m_sprite;            // 3D sprite to render this thing.
-      long        m_lSmokeTimer;       // Time between emitting smoke puffs
+      int32_t        m_lSmokeTimer;       // Time between emitting smoke puffs
 
       SampleMaster::SoundInstance   m_siThrust; // Looping thrust play instance.
 
@@ -92,10 +92,10 @@ class CRocket : public CWeapon
       static double ms_dMaxVelFore;    // Maximum forward velocity
       static double ms_dMaxVelBack;    // Maximum backward velocity
       static double ms_dCloseDistance; // Close enough to hit CDude
-      static long ms_lArmingTime;      // Time before weapons arms.
+      static int32_t ms_lArmingTime;      // Time before weapons arms.
       static int16_t ms_sOffScreenDist;  // Distance off screen before self destructing
-      static long ms_lSmokeTrailInterval;// Time between creating puffs of smoke
-      static long ms_lSmokeTimeToLive;   // Time for smoke to stick around.
+      static int32_t ms_lSmokeTrailInterval;// Time between creating puffs of smoke
+      static int32_t ms_lSmokeTimeToLive;   // Time for smoke to stick around.
 
    //---------------------------------------------------------------------------
    // Constructor(s) / destructor
@@ -166,9 +166,9 @@ class CRocket : public CWeapon
 
       virtual
       void SetCollideBits(             // Returns nothing
-         U32 u32CollideBitsInclude,    // Bits considered in collision
-         U32 u32CollideBitsDontCare,   // Bits ignored for collisions
-         U32 u32CollideBitsExclude)    // Bits that invalidate a collision
+         uint32_t u32CollideBitsInclude,    // Bits considered in collision
+         uint32_t u32CollideBitsDontCare,   // Bits ignored for collisions
+         uint32_t u32CollideBitsExclude)    // Bits that invalidate a collision
       {
          m_u32CollideIncludeBits = u32CollideBitsInclude;
          m_u32CollideDontcareBits = u32CollideBitsDontCare;
@@ -185,7 +185,7 @@ class CRocket : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

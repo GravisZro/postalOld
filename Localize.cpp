@@ -186,8 +186,8 @@
 
 //#include <RSPiX.h>
 #include "Localize.h"
-#include <CompileOptions.h>
-//#include <Realm.h>
+//
+#include <Realm.h>
 
 // STL
 #include <string>
@@ -276,12 +276,9 @@ static inline uint32_t crc32_runtime(const char* str, std::size_t idx) noexcept
 
 
 // Message used in a few places
-#define PREFS_FILE "Postal.ini"
 #define CD_DRIVE_CHANGE_MESSAGE     "If you added (or removed) a drive to your system after the game was installed, try putting the CD in another drive (if you have more than one) or re-install the game."
 
 #define ADVANCED_USERS_CHANGE_PATH  "For advanced users: Instead of re-installing you can edit the '" PREFS_FILE"' file and change the '%s' entry in the [%s] section to the correct drive letter."
-
-#define APP_NAME "Postal"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables/data
@@ -578,10 +575,10 @@ std::unordered_map<uint32_t, const char*> g_text =
 ////////////////////////////////////////////////////////////////////////////////
 
 // NOTICE: These aren't currently available in any language other than english!
-#if ENGLISH_LOCALE
-     { "EditorDisabled"       ,  "The editor is not available in this demo version." },
-     { "MultiplayerDisabled"     ,  "Multiplayer is not available in this demo version." },
-     { "Buy"                     ,  "You can order the full version of the game from"
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN)
+     { "EditorDisabled"_hash       ,  "The editor is not available in this demo version." },
+     { "MultiplayerDisabled"_hash     ,  "Multiplayer is not available in this demo version." },
+     { "Buy"_hash                     ,  "You can order the full version of the game from"
                                                 "\n\n"
                                                 "         www.gopostal.com"
                                                 "\n\n"
@@ -595,414 +592,414 @@ std::unordered_map<uint32_t, const char*> g_text =
 ////////////////////////////////// Menus ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#if ENGLISH_LOCALE ////////////////////////////////////////////////////////////
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) ////////////////////////////////////////////////////////////
 
-     { "MainMenu_Title"                      , MAIN_MENU_TITLE },
-     { "MainMenu_Start"                      , "START" },
-     { "MainMenu_Options"                    , "OPTIONS" },
-     { "MainMenu_Editor"                     , "EDITOR" },
-     { "MainMenu_Buy"                        , "ORDER INFO" },
-     { "MainMenu_Exit"                       , "EXIT" },
+     { "MainMenu_Title"_hash                      , MAIN_MENU_TITLE },
+     { "MainMenu_Start"_hash                      , "START" },
+     { "MainMenu_Options"_hash                    , "OPTIONS" },
+     { "MainMenu_Editor"_hash                     , "EDITOR" },
+     { "MainMenu_Buy"_hash                        , "ORDER INFO" },
+     { "MainMenu_Exit"_hash                       , "EXIT" },
 
-     { "VerifyExitMenu_Title"                , "REALLY EXIT?" },
-     { "VerifyExitMenu_Yes"                  , "YES" },
-     { "VerifyExitMenu_No"                   , "NO" },
+     { "VerifyExitMenu_Title"_hash                , "REALLY EXIT?" },
+     { "VerifyExitMenu_Yes"_hash                  , "YES" },
+     { "VerifyExitMenu_No"_hash                   , "NO" },
 
-     { "VerifyQuitMenu_Title"                , "REALLY QUIT?" },
-     { "VerifyQuitMenu_Yes"                  , "YES" },
-     { "VerifyQuitMenu_No"                   , "NO" },
+     { "VerifyQuitMenu_Title"_hash                , "REALLY QUIT?" },
+     { "VerifyQuitMenu_Yes"_hash                  , "YES" },
+     { "VerifyQuitMenu_No"_hash                   , "NO" },
 
-     { "GameMenu_Title"                      , "GAME" },
-     { "GameMenu_Continue"                   , "CONTINUE" },
-     { "GameMenu_Save"                       , "SAVE" },
-     { "GameMenu_Options"                    , "OPTIONS" },
-     { "GameMenu_Quit"                       , "QUIT" },
+     { "GameMenu_Title"_hash                      , "GAME" },
+     { "GameMenu_Continue"_hash                   , "CONTINUE" },
+     { "GameMenu_Save"_hash                       , "SAVE" },
+     { "GameMenu_Options"_hash                    , "OPTIONS" },
+     { "GameMenu_Quit"_hash                       , "QUIT" },
 
-     { "EditorMenu_Title"                    , "EDITOR" },
-     { "EditorMenu_Continue"                 , "CONTINUE" },
-     { "EditorMenu_Options"                  , "OPTIONS" },
-     { "EditorMenu_Quit"                     , "QUIT" },
+     { "EditorMenu_Title"_hash                    , "EDITOR" },
+     { "EditorMenu_Continue"_hash                 , "CONTINUE" },
+     { "EditorMenu_Options"_hash                  , "OPTIONS" },
+     { "EditorMenu_Quit"_hash                     , "QUIT" },
 
-     { "OptionsMenu_Title"                   , "OPTIONS" },
-     { "OptionsMenu_Video"                   , "VIDEO" },
-     { "OptionsMenu_Audio"                   , "AUDIO" },
-     { "OptionsMenu_Controls"                , "CONTROLS" },
-     { "OptionsMenu_Multiplayer"             , "MULTIPLAYER" },
-     { "OptionsMenu_Performance"             , "PERFORMANCE" },
-     { "OptionsMenu_Difficulty"              , "DIFFICULTY" },
-     { "OptionsMenu_Crosshair"               , "CROSSHAIR" },
+     { "OptionsMenu_Title"_hash                   , "OPTIONS" },
+     { "OptionsMenu_Video"_hash                   , "VIDEO" },
+     { "OptionsMenu_Audio"_hash                   , "AUDIO" },
+     { "OptionsMenu_Controls"_hash                , "CONTROLS" },
+     { "OptionsMenu_Multiplayer"_hash             , "MULTIPLAYER" },
+     { "OptionsMenu_Performance"_hash             , "PERFORMANCE" },
+     { "OptionsMenu_Difficulty"_hash              , "DIFFICULTY" },
+     { "OptionsMenu_Crosshair"_hash               , "CROSSHAIR" },
 
-     { "DifficultyMenu_Title"                , "DIFFICULTY" },
-     { "DifficultyMenu_SetDifficulty"        , "SET" },
+     { "DifficultyMenu_Title"_hash                , "DIFFICULTY" },
+     { "DifficultyMenu_SetDifficulty"_hash        , "SET" },
 
-     { "OrganMenu_Title"                     , "SOUND TEST" },
-     { "OrganMenu_SpecialKeysHeading"        , "SPECIAL KEYS" },
-     { "OrganMenu_NumericKeysFunction"       , "  0 thru 9 - PLAY A SOUND" },
-     { "OrganMenu_AlphaKeysFunction"         , "  A thru Z - PLAY A SOUND" },
-     { "OrganMenu_TabKeyFunction"            , "  TAB - NEXT SET OF SOUNDS" },
-     { "OrganMenu_Exit"                      , "EXIT" },
+     { "OrganMenu_Title"_hash                     , "SOUND TEST" },
+     { "OrganMenu_SpecialKeysHeading"_hash        , "SPECIAL KEYS" },
+     { "OrganMenu_NumericKeysFunction"_hash       , "  0 thru 9 - PLAY A SOUND" },
+     { "OrganMenu_AlphaKeysFunction"_hash         , "  A thru Z - PLAY A SOUND" },
+     { "OrganMenu_TabKeyFunction"_hash            , "  TAB - NEXT SET OF SOUNDS" },
+     { "OrganMenu_Exit"_hash                      , "EXIT" },
 
-     { "AudioMenu_Title"                     , "AUDIO" },
-     { "AudioMenu_Mixer"                     , "MIXER" },
-     { "AudioMenu_SoundTest"                 , "SOUND TEST" },
+     { "AudioMenu_Title"_hash                     , "AUDIO" },
+     { "AudioMenu_Mixer"_hash                     , "MIXER" },
+     { "AudioMenu_SoundTest"_hash                 , "SOUND TEST" },
 
-     { "VideoMenu_Title"                     , "VIDEO" },
-     { "VideoMenu_Gamma"                     , "GAMMA" },
+     { "VideoMenu_Title"_hash                     , "VIDEO" },
+     { "VideoMenu_Gamma"_hash                     , "GAMMA" },
 
-     { "ControlsMenu_Title"                  , "CONTROLS" },
-     { "ControlsMenu_KeyboardSetup"          , "KEYBOARD SETUP" },
-     { "ControlsMenu_MouseSetup"             , "MOUSE SETUP" },
-     { "ControlsMenu_TurningSpeeds"          , "TURNING SPEEDS" },
-     { "ControlsMenu_UseMouse"               , "USE MOUSE" },
-     { "ControlsMenu_HorizMouseSensitivity"  , "HORIZ MOUSE SENS." },
-     { "ControlsMenu_VertMouseSensitivity"   , "VERT MOUSE SENS." },
-     { "ControlsMenu_JoystickSetup"          , "X CONTROLLER SETUP" },
-     { "ControlsMenu_UseJoystick"            , "USE X CONTROLLER" }, // was not in original localizable text.
+     { "ControlsMenu_Title"_hash                  , "CONTROLS" },
+     { "ControlsMenu_KeyboardSetup"_hash          , "KEYBOARD SETUP" },
+     { "ControlsMenu_MouseSetup"_hash             , "MOUSE SETUP" },
+     { "ControlsMenu_TurningSpeeds"_hash          , "TURNING SPEEDS" },
+     { "ControlsMenu_UseMouse"_hash               , "USE MOUSE" },
+     { "ControlsMenu_HorizMouseSensitivity"_hash  , "HORIZ MOUSE SENS." },
+     { "ControlsMenu_VertMouseSensitivity"_hash   , "VERT MOUSE SENS." },
+     { "ControlsMenu_JoystickSetup"_hash          , "X CONTROLLER SETUP" },
+     { "ControlsMenu_UseJoystick"_hash            , "USE X CONTROLLER" }, // was not in original localizable text.
 
-     { "KeyboardSetupMenu_Title"             , "KEYBOARD SETUP" },
+     { "KeyboardSetupMenu_Title"_hash             , "KEYBOARD SETUP" },
 
-     { "MouseSetupMenu_Title"                , "MOUSE SETUP" },
+     { "MouseSetupMenu_Title"_hash                , "MOUSE SETUP" },
 
-     { "JoystickSetupMenu_Title"             , "X CONTROLLER SETUP" },
+     { "JoystickSetupMenu_Title"_hash             , "X CONTROLLER SETUP" },
 
-     { "PerformanceMenu_Title"               , "PERFORMANCE" },
-     { "PerformanceMenu_Transparency"        , "TRANSPARENCY" },
-     { "PerformanceMenu_")3dLighting[]       , "3D LIGHTING" },
-     { "PerformanceMenu_Particles"           , "PARTICLES" },
-     { "PerformanceMenu_DynamicVolume"       , "DYNAMIC VOLUME" },
-     { "PerformanceMenu_AmbientSounds"       , "AMBIENT SOUNDS" },
+     { "PerformanceMenu_Title"_hash               , "PERFORMANCE" },
+     { "PerformanceMenu_Transparency"_hash        , "TRANSPARENCY" },
+     { "PerformanceMenu_3dLighting"_hash          , "3D LIGHTING" },
+     { "PerformanceMenu_Particles"_hash           , "PARTICLES" },
+     { "PerformanceMenu_DynamicVolume"_hash       , "DYNAMIC VOLUME" },
+     { "PerformanceMenu_AmbientSounds"_hash       , "AMBIENT SOUNDS" },
 
-     { "RotationSetupMenu_Title"             , "TURNING SPEEDS " },
-     { "RotationSetupMenu_RunningSlow"       , "RUNNING (SLOW)" },
-     { "RotationSetupMenu_RunningFast"       , "RUNNING (FAST)" },
-     { "RotationSetupMenu_StandingSlow"      , "STANDING (SLOW)" },
-     { "RotationSetupMenu_StandingFast"      , "STANDING (FAST)" },
-     { "RotationSetupMenu_TapDegrees"        , "TAP DEGREES" },
-     { "RotationSetupMenu_RestoreDefaults"   , "RESTORE DEFAULTS" },
+     { "RotationSetupMenu_Title"_hash             , "TURNING SPEEDS " },
+     { "RotationSetupMenu_RunningSlow"_hash       , "RUNNING (SLOW)" },
+     { "RotationSetupMenu_RunningFast"_hash       , "RUNNING (FAST)" },
+     { "RotationSetupMenu_StandingSlow"_hash      , "STANDING (SLOW)" },
+     { "RotationSetupMenu_StandingFast"_hash      , "STANDING (FAST)" },
+     { "RotationSetupMenu_TapDegrees"_hash        , "TAP DEGREES" },
+     { "RotationSetupMenu_RestoreDefaults"_hash   , "RESTORE DEFAULTS" },
      { "RotationSetupMenu_RestoreDefaultsOld"_hash, "RESTORE OLD DEFAULTS" },
 
-     { "VolumesMenu_Title"                   , "AUDIO MIXER" },
+     { "VolumesMenu_Title"_hash                   , "AUDIO MIXER" },
 
-     { "StartGameMenu_Title"                 , "START GAME" },
-     { "StartGameMenu_SinglePlayer"          , "SINGLE PLAYER" },
-     { "StartGameMenu_Multiplayer"           , "MULTIPLAYER" },
-     { "StartGameMenu_Demo"                  , "DEMO" },
+     { "StartGameMenu_Title"_hash                 , "START GAME" },
+     { "StartGameMenu_SinglePlayer"_hash          , "SINGLE PLAYER" },
+     { "StartGameMenu_Multiplayer"_hash           , "MULTIPLAYER" },
+     { "StartGameMenu_Demo"_hash                  , "DEMO" },
 
-     { "StartSinglePlayerMenu_Title"         , "SINGLE PLAYER" },
+     { "StartSinglePlayerMenu_Title"_hash         , "SINGLE PLAYER" },
 #if defined(START_MENU_ADDON_ITEM)
    #if TARGET == JAPAN_ADD_ON
-        { "StartSinglePlayerMenu_New"        , "GO POSTAL IN THE USA" },
-        { "StartSinglePlayerMenu_AddOn"      , "GO POSTAL IN JAPAN" },
+        { "StartSinglePlayerMenu_New"_hash        , "GO POSTAL IN THE USA" },
+        { "StartSinglePlayerMenu_AddOn"_hash      , "GO POSTAL IN JAPAN" },
    #elif TARGET == POSTAL_PLUS
-        { "StartSinglePlayerMenu_New"        , "NEW GAME (ALL LEVELS)" },
-        { "StartSinglePlayerMenu_AddOn"      , "SPECIAL DELIVERY LEVELS" },
+        { "StartSinglePlayerMenu_New"_hash        , "NEW GAME (ALL LEVELS)" },
+        { "StartSinglePlayerMenu_AddOn"_hash      , "SPECIAL DELIVERY LEVELS" },
    #elif TARGET == POSTAL_2015
-        { "StartSinglePlayerMenu_New"        , "NEW GAME" },
-        { "StartSinglePlayerMenu_AddOn"      , "SPECIAL DELIVERY" },
+        { "StartSinglePlayerMenu_New"_hash        , "NEW GAME" },
+        { "StartSinglePlayerMenu_AddOn"_hash      , "SPECIAL DELIVERY" },
    #else
       #error Strings must be customized for current TARGET
    #endif
 #else
    #if TARGET == SUPER_POSTAL
-        { "StartSinglePlayerMenu_New"        , "GO POSTAL ALL OVER" },
+        { "StartSinglePlayerMenu_New"_hash        , "GO POSTAL ALL OVER" },
    #elif (TARGET == POSTAL_PLUS || TARGET == POSTAL_2015)
-        { "StartSinglePlayerMenu_New"        , "NEW GAME" },
+        { "StartSinglePlayerMenu_New"_hash        , "NEW GAME" },
    #else
-      #error Strings must be customized for current TARGET
+//      #error Strings must be customized for current TARGET
    #endif
 #endif
-     { "StartSinglePlayerMenu_LoadLevel"     , "LOAD LEVEL" },
-     { "StartSinglePlayerMenu_LoadGame"      , "LOAD GAME" },
-     { "StartSinglePlayerMenu_Challenge"     , "GAUNTLET CHALLENGE" },
+     { "StartSinglePlayerMenu_LoadLevel"_hash     , "LOAD LEVEL" },
+     { "StartSinglePlayerMenu_LoadGame"_hash      , "LOAD GAME" },
+     { "StartSinglePlayerMenu_Challenge"_hash     , "GAUNTLET CHALLENGE" },
 
-     { "StartChallengeMenu_Title"            , "CHALLENGE" },
-     { "StartChallengeMenu_Gauntlet"         , "THE GAUNTLET" },
-     { "StartChallengeMenu_Timed"            , "TIMED" },
-     { "StartChallengeMenu_Goal"             , "GOAL" },
-     { "StartChallengeMenu_Flag"             , "FLAG" },
-     { "StartChallengeMenu_CheckPoint"       , "CHECKPOINT" },
+     { "StartChallengeMenu_Title"_hash            , "CHALLENGE" },
+     { "StartChallengeMenu_Gauntlet"_hash         , "THE GAUNTLET" },
+     { "StartChallengeMenu_Timed"_hash            , "TIMED" },
+     { "StartChallengeMenu_Goal"_hash             , "GOAL" },
+     { "StartChallengeMenu_Flag"_hash             , "FLAG" },
+     { "StartChallengeMenu_CheckPoint"_hash       , "CHECKPOINT" },
 
-     { "StartMultiplayerMenu_Title"          , "MULTIPLAYER" },
-     { "StartMultiplayerMenu_Join"           , "JOIN GAME" },
-     { "StartMultiplayerMenu_Host"           , "HOST GAME" },
-     { "StartMultiplayerMenu_Options"        , "OPTIONS" },
+     { "StartMultiplayerMenu_Title"_hash          , "MULTIPLAYER" },
+     { "StartMultiplayerMenu_Join"_hash           , "JOIN GAME" },
+     { "StartMultiplayerMenu_Host"_hash           , "HOST GAME" },
+     { "StartMultiplayerMenu_Options"_hash        , "OPTIONS" },
 
 
-     { "JoinGameMenu_Title"                  , "JOIN GAME" },
-     { "JoinGameMenu_Browse"                 , "BROWSE (LAN only)" },
-     { "JoinGameMenu_ConnectTo"              , "CONNECT TO" },
+     { "JoinGameMenu_Title"_hash                  , "JOIN GAME" },
+     { "JoinGameMenu_Browse"_hash                 , "BROWSE (LAN only)" },
+     { "JoinGameMenu_ConnectTo"_hash              , "CONNECT TO" },
 
-     { "HostGameMenu_Title"                  , "HOST GAME" },
-     { "HostGameMenu_Start"                  , "START" },
+     { "HostGameMenu_Title"_hash                  , "HOST GAME" },
+     { "HostGameMenu_Start"_hash                  , "START" },
 
-     { "StartDemoMenu_Title"                 , "DEMO" },
-     { "StartDemoMenu_Browse"                , "BROWSE" },
-     { "StartDemoMenu_Play"                  , "PLAY" },
-     { "StartDemoMenu_Record"                , "RECORD" },
+     { "StartDemoMenu_Title"_hash                 , "DEMO" },
+     { "StartDemoMenu_Browse"_hash                , "BROWSE" },
+     { "StartDemoMenu_Play"_hash                  , "PLAY" },
+     { "StartDemoMenu_Record"_hash                , "RECORD" },
 
-     { "MultiplayerSetupMenu_Title"          , "MULTIPLAYER" },
-     { "MultiplayerSetupMenu_Name"           , "NAME" },
-     { "MultiplayerSetupMenu_Color"          , "COLOR" },
-     { "MultiplayerSetupMenu_Protocol"       , "PROTOCOL" },
-     { "MultiplayerSetupMenu_Connection"     , "CONNECTION" },
+     { "MultiplayerSetupMenu_Title"_hash          , "MULTIPLAYER" },
+     { "MultiplayerSetupMenu_Name"_hash           , "NAME" },
+     { "MultiplayerSetupMenu_Color"_hash          , "COLOR" },
+     { "MultiplayerSetupMenu_Protocol"_hash       , "PROTOCOL" },
+     { "MultiplayerSetupMenu_Connection"_hash     , "CONNECTION" },
 
 #elif LOCALE == GERMAN  ///////////////////////////////////////////////////////
 
-     { "MainMenu_Title"                      , MAIN_MENU_TITLE },
-     { "MainMenu_Start"                      , "SPIEL STARTEN" },
-     { "MainMenu_Options"                    , "OPTIONEN" },
-     { "MainMenu_Editor"                     , "EDITOR" },
-     { "MainMenu_Buy"                        , "ORDER INFO" },
-     { "MainMenu_Exit"                       , "BEENDEN" },
+     { "MainMenu_Title"_hash                      , MAIN_MENU_TITLE },
+     { "MainMenu_Start"_hash                      , "SPIEL STARTEN" },
+     { "MainMenu_Options"_hash                    , "OPTIONEN" },
+     { "MainMenu_Editor"_hash                     , "EDITOR" },
+     { "MainMenu_Buy"_hash                        , "ORDER INFO" },
+     { "MainMenu_Exit"_hash                       , "BEENDEN" },
 
-     { "VerifyExitMenu_Title"                , "WIRKLICH BEENDEN?" },
-     { "VerifyExitMenu_Yes"                  , "JA" },
-     { "VerifyExitMenu_No"                   , "NEIN" },
+     { "VerifyExitMenu_Title"_hash                , "WIRKLICH BEENDEN?" },
+     { "VerifyExitMenu_Yes"_hash                  , "JA" },
+     { "VerifyExitMenu_No"_hash                   , "NEIN" },
 
-     { "VerifyQuitMenu_Title"                , "WIRKLICH BEENDEN?" },
-     { "VerifyQuitMenu_Yes"                  , "JA" },
-     { "VerifyQuitMenu_No"                   , "NEIN" },
+     { "VerifyQuitMenu_Title"_hash                , "WIRKLICH BEENDEN?" },
+     { "VerifyQuitMenu_Yes"_hash                  , "JA" },
+     { "VerifyQuitMenu_No"_hash                   , "NEIN" },
 
-     { "GameMenu_Title"                      , "SPIEL" },
-     { "GameMenu_Continue"                   , "WEITER" },
-     { "GameMenu_Save"                       , "SPEICHERN" },
-     { "GameMenu_Options"                    , "OPTIONEN" },
-     { "GameMenu_Quit"                       , "BEENDEN" },
+     { "GameMenu_Title"_hash                      , "SPIEL" },
+     { "GameMenu_Continue"_hash                   , "WEITER" },
+     { "GameMenu_Save"_hash                       , "SPEICHERN" },
+     { "GameMenu_Options"_hash                    , "OPTIONEN" },
+     { "GameMenu_Quit"_hash                       , "BEENDEN" },
 
-     { "EditorMenu_Title"                    , "EDITOR" },
-     { "EditorMenu_Continue"                 , "WEITER" },
-     { "EditorMenu_Options"                  , "OPTIONEN" },
-     { "EditorMenu_Quit"                     , "BEENDEN" },
+     { "EditorMenu_Title"_hash                    , "EDITOR" },
+     { "EditorMenu_Continue"_hash                 , "WEITER" },
+     { "EditorMenu_Options"_hash                  , "OPTIONEN" },
+     { "EditorMenu_Quit"_hash                     , "BEENDEN" },
 
-     { "OptionsMenu_Title"                   , "OPTIONEN" },
-     { "OptionsMenu_Video"                   , "VIDEO" },
-     { "OptionsMenu_Audio"                   , "AUDIO" },
-     { "OptionsMenu_Controls"                , "STEUERUNG" },
-     { "OptionsMenu_Multiplayer"             , "MEHRERE SPIELER" },
-     { "OptionsMenu_Performance"             , "LEISTUNG" },
-     { "OptionsMenu_Difficulty"              , "SCHWIERIGKEIT" },
+     { "OptionsMenu_Title"_hash                   , "OPTIONEN" },
+     { "OptionsMenu_Video"_hash                   , "VIDEO" },
+     { "OptionsMenu_Audio"_hash                   , "AUDIO" },
+     { "OptionsMenu_Controls"_hash                , "STEUERUNG" },
+     { "OptionsMenu_Multiplayer"_hash             , "MEHRERE SPIELER" },
+     { "OptionsMenu_Performance"_hash             , "LEISTUNG" },
+     { "OptionsMenu_Difficulty"_hash              , "SCHWIERIGKEIT" },
 
-     { "DifficultyMenu_Title"                , "SCHWIERIGKEIT" },
-     { "DifficultyMenu_SetDifficulty"        , "" },
+     { "DifficultyMenu_Title"_hash                , "SCHWIERIGKEIT" },
+     { "DifficultyMenu_SetDifficulty"_hash        , "" },
 
-     { "OrganMenu_Title"                     , "SOUND-TEST" },
-     { "OrganMenu_SpecialKeysHeading"        , "SONDERTASTEN" },
-     { "OrganMenu_NumericKeysFunction"       , "0 BIS 9 - SOUND ABSPIELEN" },
-     { "OrganMenu_AlphaKeysFunction"         , "A BIS Z - SOUND ABSPIELEN" },
-     { "OrganMenu_TabKeyFunction"            , "TAB - NACHSTE SOUND-REIHE" },
-     { "OrganMenu_Exit"                      , "BEENDEN" },
+     { "OrganMenu_Title"_hash                     , "SOUND-TEST" },
+     { "OrganMenu_SpecialKeysHeading"_hash        , "SONDERTASTEN" },
+     { "OrganMenu_NumericKeysFunction"_hash       , "0 BIS 9 - SOUND ABSPIELEN" },
+     { "OrganMenu_AlphaKeysFunction"_hash         , "A BIS Z - SOUND ABSPIELEN" },
+     { "OrganMenu_TabKeyFunction"_hash            , "TAB - NACHSTE SOUND-REIHE" },
+     { "OrganMenu_Exit"_hash                      , "BEENDEN" },
 
-     { "AudioMenu_Title"                     , "AUDIO" },
-     { "AudioMenu_Mixer"                     , "MISCHPULT" },
-     { "AudioMenu_SoundTest"                 , "SOUND-TEST" },
+     { "AudioMenu_Title"_hash                     , "AUDIO" },
+     { "AudioMenu_Mixer"_hash                     , "MISCHPULT" },
+     { "AudioMenu_SoundTest"_hash                 , "SOUND-TEST" },
 
-     { "VideoMenu_Title"                     , "VIDEO" },
-     { "VideoMenu_Gamma"                     , "GAMMA" },
+     { "VideoMenu_Title"_hash                     , "VIDEO" },
+     { "VideoMenu_Gamma"_hash                     , "GAMMA" },
 
-     { "ControlsMenu_Title"                  , "STEUERUNG" },
-     { "ControlsMenu_KeyboardSetup"          , "TASTATUR-SETUP" },
-     { "ControlsMenu_MouseSetup"             , "MAUS-SETUP" },
-     { "ControlsMenu_TurningSpeeds"          , "DREHGESCHWINDIGKEITEN" },
-     { "ControlsMenu_UseMouse"               , "MAUS VERWENDEN" },
-     { "ControlsMenu_HorizMouseSensitivity"  , "HORIZONTALE MAUSBEWEGUNG" },
-     { "ControlsMenu_VertMouseSensitivity"   , "VERTIKALE MAUSBEWEGUNG" },
-     { "ControlsMenu_JoystickSetup"          , "JOYSTICK-SETUP" },
-     { "ControlsMenu_UseJoystick"            , "JOYSTICK VERWENDEN" }, // was not in original localizable text.
+     { "ControlsMenu_Title"_hash                  , "STEUERUNG" },
+     { "ControlsMenu_KeyboardSetup"_hash          , "TASTATUR-SETUP" },
+     { "ControlsMenu_MouseSetup"_hash             , "MAUS-SETUP" },
+     { "ControlsMenu_TurningSpeeds"_hash          , "DREHGESCHWINDIGKEITEN" },
+     { "ControlsMenu_UseMouse"_hash               , "MAUS VERWENDEN" },
+     { "ControlsMenu_HorizMouseSensitivity"_hash  , "HORIZONTALE MAUSBEWEGUNG" },
+     { "ControlsMenu_VertMouseSensitivity"_hash   , "VERTIKALE MAUSBEWEGUNG" },
+     { "ControlsMenu_JoystickSetup"_hash          , "JOYSTICK-SETUP" },
+     { "ControlsMenu_UseJoystick"_hash            , "JOYSTICK VERWENDEN" }, // was not in original localizable text.
 
-     { "KeyboardSetupMenu_Title"             , "TASTATUR-SETUP" },
+     { "KeyboardSetupMenu_Title"_hash             , "TASTATUR-SETUP" },
 
-     { "MouseSetupMenu_Title"                , "MAUS-SETUP" },
+     { "MouseSetupMenu_Title"_hash                , "MAUS-SETUP" },
 
-     { "JoystickSetupMenu_Title"             , "JOYSTICK-SETUP" },
+     { "JoystickSetupMenu_Title"_hash             , "JOYSTICK-SETUP" },
 
-     { "PerformanceMenu_Title"               , "LEISTUNG" },
-     { "PerformanceMenu_Transparency"        , "TRANSPARENZ" },
-     { "PerformanceMenu_")3dLighting[]       , "3D-BELEUCHTUNG" },
-     { "PerformanceMenu_Particles"           , "PARTIKEL" },
-     { "PerformanceMenu_DynamicVolume"       , "DYNAMISCHE LAUTSTARKE" },
-     { "PerformanceMenu_AmbientSounds"       , "UMGEBENDE KLANGE" },
+     { "PerformanceMenu_Title"_hash               , "LEISTUNG" },
+     { "PerformanceMenu_Transparency"_hash        , "TRANSPARENZ" },
+     { "PerformanceMenu_3dLighting"_hash          , "3D-BELEUCHTUNG" },
+     { "PerformanceMenu_Particles"_hash           , "PARTIKEL" },
+     { "PerformanceMenu_DynamicVolume"_hash       , "DYNAMISCHE LAUTSTARKE" },
+     { "PerformanceMenu_AmbientSounds"_hash       , "UMGEBENDE KLANGE" },
 
-     { "RotationSetupMenu_Title"             , "DREHGESCHWINDIGKEITEN" },
-     { "RotationSetupMenu_RunningSlow"       , "LAUFT (LANGSAM)" },
-     { "RotationSetupMenu_RunningFast"       , "LAUFT (SCHNELL)" },
-     { "RotationSetupMenu_StandingSlow"      , "STEHT (LANGSAM)" },
-     { "RotationSetupMenu_StandingFast"      , "STEHT (SCHNELL)" },
-     { "RotationSetupMenu_TapDegrees"        , "TIPPEN GRADE" },
-     { "RotationSetupMenu_RestoreDefaults"   , "ZURUCKSETZEN" },
+     { "RotationSetupMenu_Title"_hash             , "DREHGESCHWINDIGKEITEN" },
+     { "RotationSetupMenu_RunningSlow"_hash       , "LAUFT (LANGSAM)" },
+     { "RotationSetupMenu_RunningFast"_hash       , "LAUFT (SCHNELL)" },
+     { "RotationSetupMenu_StandingSlow"_hash      , "STEHT (LANGSAM)" },
+     { "RotationSetupMenu_StandingFast"_hash      , "STEHT (SCHNELL)" },
+     { "RotationSetupMenu_TapDegrees"_hash        , "TIPPEN GRADE" },
+     { "RotationSetupMenu_RestoreDefaults"_hash   , "ZURUCKSETZEN" },
 
-     { "VolumesMenu_Title"                   , "AUDIO-MISCHPULT" },
+     { "VolumesMenu_Title"_hash                   , "AUDIO-MISCHPULT" },
 
-     { "StartGameMenu_Title"                 , "SPIEL STARTEN" },
-     { "StartGameMenu_SinglePlayer"          , "EINZELSPIELER" },
-     { "StartGameMenu_Multiplayer"           , "MEHRERE SPIELER" },
-     { "StartGameMenu_Demo"                  , "DEMO" },
+     { "StartGameMenu_Title"_hash                 , "SPIEL STARTEN" },
+     { "StartGameMenu_SinglePlayer"_hash          , "EINZELSPIELER" },
+     { "StartGameMenu_Multiplayer"_hash           , "MEHRERE SPIELER" },
+     { "StartGameMenu_Demo"_hash                  , "DEMO" },
 
-     { "StartSinglePlayerMenu_Title"         , "EINZELSPIELER" },
-     { "StartSinglePlayerMenu_New"           , "ORIGINAL SPIEL" },  // Mike's lame translation
-     { "StartSinglePlayerMenu_AddOn"         , "ADD-ON SPIEL"     // Mike's lame translation
-     { "StartSinglePlayerMenu_LoadLevel"     , "EBENE LADEN" },
-     { "StartSinglePlayerMenu_LoadGame"      , "SPIEL LADEN" },
-     { "StartSinglePlayerMenu_Challenge"     , "HERAUSFORDERUNG" },
+     { "StartSinglePlayerMenu_Title"_hash         , "EINZELSPIELER" },
+     { "StartSinglePlayerMenu_New"_hash           , "ORIGINAL SPIEL" },  // Mike's lame translation
+     { "StartSinglePlayerMenu_AddOn"_hash         , "ADD-ON SPIEL" },    // Mike's lame translation
+     { "StartSinglePlayerMenu_LoadLevel"_hash     , "EBENE LADEN" },
+     { "StartSinglePlayerMenu_LoadGame"_hash      , "SPIEL LADEN" },
+     { "StartSinglePlayerMenu_Challenge"_hash     , "HERAUSFORDERUNG" },
 
-     { "StartChallengeMenu_Title"            , "HERAUSFORDERUNG" },
-     { "StartChallengeMenu_Gauntlet"         , "SPIESSRUTEN" },
-     { "StartChallengeMenu_Timed"            , "ZEIT NEHMEN" },
-     { "StartChallengeMenu_Goal"             , "ZIEL" },
-     { "StartChallengeMenu_Flag"             , "FLAGGE" },
-     { "StartChallengeMenu_CheckPoint"       , "CHECKPOINT" },
+     { "StartChallengeMenu_Title"_hash            , "HERAUSFORDERUNG" },
+     { "StartChallengeMenu_Gauntlet"_hash         , "SPIESSRUTEN" },
+     { "StartChallengeMenu_Timed"_hash            , "ZEIT NEHMEN" },
+     { "StartChallengeMenu_Goal"_hash             , "ZIEL" },
+     { "StartChallengeMenu_Flag"_hash             , "FLAGGE" },
+     { "StartChallengeMenu_CheckPoint"_hash       , "CHECKPOINT" },
 
-     { "StartMultiplayerMenu_Title"          , "MEHRERE SPIELER" },
-     { "StartMultiplayerMenu_Join"           , "MITSPIELEN" },
-     { "StartMultiplayerMenu_Host"           , "HOST-SPIEL" },
-     { "StartMultiplayerMenu_Options"        , "OPTIONEN" },
+     { "StartMultiplayerMenu_Title"_hash          , "MEHRERE SPIELER" },
+     { "StartMultiplayerMenu_Join"_hash           , "MITSPIELEN" },
+     { "StartMultiplayerMenu_Host"_hash           , "HOST-SPIEL" },
+     { "StartMultiplayerMenu_Options"_hash        , "OPTIONEN" },
 
 
-     { "JoinGameMenu_Title"                  , "MITSPIELEN" },
-     { "JoinGameMenu_Browse"                 , "DURCHSUCHEN" },
-     { "JoinGameMenu_ConnectTo"              , "VERBINDEN MIT" },
+     { "JoinGameMenu_Title"_hash                  , "MITSPIELEN" },
+     { "JoinGameMenu_Browse"_hash                 , "DURCHSUCHEN" },
+     { "JoinGameMenu_ConnectTo"_hash              , "VERBINDEN MIT" },
 
-     { "HostGameMenu_Title"                  , "HOST-SPIEL" },
-     { "HostGameMenu_Start"                  , "START" },
+     { "HostGameMenu_Title"_hash                  , "HOST-SPIEL" },
+     { "HostGameMenu_Start"_hash                  , "START" },
 
-     { "StartDemoMenu_Title"                 , "DEMO" },
-     { "StartDemoMenu_Browse"                , "DURCHSUCHEN" },
-     { "StartDemoMenu_Play"                  , "ABSPIELEN" },
-     { "StartDemoMenu_Record"                , "AUSZEICHNEN" },
+     { "StartDemoMenu_Title"_hash                 , "DEMO" },
+     { "StartDemoMenu_Browse"_hash                , "DURCHSUCHEN" },
+     { "StartDemoMenu_Play"_hash                  , "ABSPIELEN" },
+     { "StartDemoMenu_Record"_hash                , "AUSZEICHNEN" },
 
-     { "MultiplayerSetupMenu_Title"          , "MEHRERE SPIELER" },
-     { "MultiplayerSetupMenu_Name"           , "NAME" },
-     { "MultiplayerSetupMenu_Color"          , "FARBE" },
-     { "MultiplayerSetupMenu_Protocol"       , "PROTOKOLL" },
-     { "MultiplayerSetupMenu_Connection"     , "VERBINDUNG" },
+     { "MultiplayerSetupMenu_Title"_hash          , "MEHRERE SPIELER" },
+     { "MultiplayerSetupMenu_Name"_hash           , "NAME" },
+     { "MultiplayerSetupMenu_Color"_hash          , "FARBE" },
+     { "MultiplayerSetupMenu_Protocol"_hash       , "PROTOKOLL" },
+     { "MultiplayerSetupMenu_Connection"_hash     , "VERBINDUNG" },
 
 #elif LOCALE == FRENCH  ///////////////////////////////////////////////////////
 
-     { "MainMenu_Title"                      , MAIN_MENU_TITLE },
-     { "MainMenu_Start"                      , "DEMARRER" },
-     { "MainMenu_Options"                    , "OPTIONS" },
-     { "MainMenu_Editor"                     , "EDITEUR" },
-     { "MainMenu_Buy"                        , "ORDER INFO" },
-     { "MainMenu_Exit"                       , "QUITTER" },
+     { "MainMenu_Title"_hash                      , MAIN_MENU_TITLE },
+     { "MainMenu_Start"_hash                      , "DEMARRER" },
+     { "MainMenu_Options"_hash                    , "OPTIONS" },
+     { "MainMenu_Editor"_hash                     , "EDITEUR" },
+     { "MainMenu_Buy"_hash                        , "ORDER INFO" },
+     { "MainMenu_Exit"_hash                       , "QUITTER" },
 
-     { "VerifyExitMenu_Title"                , "VRAIMENT SORTIR ?" },
-     { "VerifyExitMenu_Yes"                  , "OUI" },
-     { "VerifyExitMenu_No"                   , "NON" },
+     { "VerifyExitMenu_Title"_hash                , "VRAIMENT SORTIR ?" },
+     { "VerifyExitMenu_Yes"_hash                  , "OUI" },
+     { "VerifyExitMenu_No"_hash                   , "NON" },
 
-     { "VerifyQuitMenu_Title"                , "VRAIMENT QUITTER ?" },
-     { "VerifyQuitMenu_Yes"                  , "OUI" },
-     { "VerifyQuitMenu_No"                   , "NON" },
+     { "VerifyQuitMenu_Title"_hash                , "VRAIMENT QUITTER ?" },
+     { "VerifyQuitMenu_Yes"_hash                  , "OUI" },
+     { "VerifyQuitMenu_No"_hash                   , "NON" },
 
-     { "GameMenu_Title"                      , "JEU" },
-     { "GameMenu_Continue"                   , "CONTINUER" },
-     { "GameMenu_Save"                       , "ENREGISTRER" },
-     { "GameMenu_Options"                    , "OPTIONS" },
-     { "GameMenu_Quit"                       , "QUITTER" },
+     { "GameMenu_Title"_hash                      , "JEU" },
+     { "GameMenu_Continue"_hash                   , "CONTINUER" },
+     { "GameMenu_Save"_hash                       , "ENREGISTRER" },
+     { "GameMenu_Options"_hash                    , "OPTIONS" },
+     { "GameMenu_Quit"_hash                       , "QUITTER" },
 
-     { "EditorMenu_Title"                    , "EDITEUR" },
-     { "EditorMenu_Continue"                 , "CONTINUER" },
-     { "EditorMenu_Options"                  , "OPTIONS" },
-     { "EditorMenu_Quit"                     , "QUITTER" },
+     { "EditorMenu_Title"_hash                    , "EDITEUR" },
+     { "EditorMenu_Continue"_hash                 , "CONTINUER" },
+     { "EditorMenu_Options"_hash                  , "OPTIONS" },
+     { "EditorMenu_Quit"_hash                     , "QUITTER" },
 
-     { "OptionsMenu_Title"                   , "OPTIONS" },
-     { "OptionsMenu_Video"                   , "VIDEO" },
-     { "OptionsMenu_Audio"                   , "AUDIO" },
-     { "OptionsMenu_Controls"                , "COMMANDES" },
-     { "OptionsMenu_Multiplayer"             , "JOUEURS MULTIPLES" },
-     { "OptionsMenu_Performance"             , "PERFORMANCE" },
-     { "OptionsMenu_Difficulty"              , "DIFFICULTE" },
+     { "OptionsMenu_Title"_hash                   , "OPTIONS" },
+     { "OptionsMenu_Video"_hash                   , "VIDEO" },
+     { "OptionsMenu_Audio"_hash                   , "AUDIO" },
+     { "OptionsMenu_Controls"_hash                , "COMMANDES" },
+     { "OptionsMenu_Multiplayer"_hash             , "JOUEURS MULTIPLES" },
+     { "OptionsMenu_Performance"_hash             , "PERFORMANCE" },
+     { "OptionsMenu_Difficulty"_hash              , "DIFFICULTE" },
 
-     { "DifficultyMenu_Title"                , "DIFFICULTE" },
-     { "DifficultyMenu_SetDifficulty"        , "DEFINIR" },
+     { "DifficultyMenu_Title"_hash                , "DIFFICULTE" },
+     { "DifficultyMenu_SetDifficulty"_hash        , "DEFINIR" },
 
-     { "OrganMenu_Title"                     , "TEST SONORE" },
-     { "OrganMenu_SpecialKeysHeading"        , "TOUCHES SPECIALES" },
-     { "OrganMenu_NumericKeysFunction"       , "0 A 9 - JOUER UN SON" },
-     { "OrganMenu_AlphaKeysFunction"         , "A A Z - JOUER UN SON" },
-     { "OrganMenu_TabKeyFunction"            , "TAB - PROCHAIN JEU DE SONS" },
-     { "OrganMenu_Exit"                      , "QUITTER" },
+     { "OrganMenu_Title"_hash                     , "TEST SONORE" },
+     { "OrganMenu_SpecialKeysHeading"_hash        , "TOUCHES SPECIALES" },
+     { "OrganMenu_NumericKeysFunction"_hash       , "0 A 9 - JOUER UN SON" },
+     { "OrganMenu_AlphaKeysFunction"_hash         , "A A Z - JOUER UN SON" },
+     { "OrganMenu_TabKeyFunction"_hash            , "TAB - PROCHAIN JEU DE SONS" },
+     { "OrganMenu_Exit"_hash                      , "QUITTER" },
 
-     { "AudioMenu_Title"                     , "AUDIO" },
-     { "AudioMenu_Mixer"                     , "MIXER" },
-     { "AudioMenu_SoundTest"                 , "TEST SONORE" },
+     { "AudioMenu_Title"_hash                     , "AUDIO" },
+     { "AudioMenu_Mixer"_hash                     , "MIXER" },
+     { "AudioMenu_SoundTest"_hash                 , "TEST SONORE" },
 
-     { "VideoMenu_Title"                     , "VIDEO" },
-     { "VideoMenu_Gamma"                     , "GAMMA" },
+     { "VideoMenu_Title"_hash                     , "VIDEO" },
+     { "VideoMenu_Gamma"_hash                     , "GAMMA" },
 
-     { "ControlsMenu_Title"                  , "COMMANDES" },
-     { "ControlsMenu_KeyboardSetup"          , "CONFIGURATION CLAVIER" },
-     { "ControlsMenu_MouseSetup"             , "CONFIGURATION SOURIS" },
-     { "ControlsMenu_TurningSpeeds"          , "VITESSES DE ROTATION" },
-     { "ControlsMenu_UseMouse"               , "UTILISER LA SOURIS" },
-     { "ControlsMenu_HorizMouseSensitivity"  , "SOURIS HORIZONTALE" },
-     { "ControlsMenu_VertMouseSensitivity"   , "SOURIS VERTICALE" },
-     { "ControlsMenu_JoystickSetup"          , "CONFIGURATION DE LA MANETTE DE JEU" },
-     { "ControlsMenu_UseJoystick"            , "UTILISER LA MANETTE DE JEU" }, // was not in original localizable text.
+     { "ControlsMenu_Title"_hash                  , "COMMANDES" },
+     { "ControlsMenu_KeyboardSetup"_hash          , "CONFIGURATION CLAVIER" },
+     { "ControlsMenu_MouseSetup"_hash             , "CONFIGURATION SOURIS" },
+     { "ControlsMenu_TurningSpeeds"_hash          , "VITESSES DE ROTATION" },
+     { "ControlsMenu_UseMouse"_hash               , "UTILISER LA SOURIS" },
+     { "ControlsMenu_HorizMouseSensitivity"_hash  , "SOURIS HORIZONTALE" },
+     { "ControlsMenu_VertMouseSensitivity"_hash   , "SOURIS VERTICALE" },
+     { "ControlsMenu_JoystickSetup"_hash          , "CONFIGURATION DE LA MANETTE DE JEU" },
+     { "ControlsMenu_UseJoystick"_hash            , "UTILISER LA MANETTE DE JEU" }, // was not in original localizable text.
 
-     { "KeyboardSetupMenu_Title"             , "CONFIGURATION CLAVIER" },
+     { "KeyboardSetupMenu_Title"_hash             , "CONFIGURATION CLAVIER" },
 
-     { "MouseSetupMenu_Title"                , "CONFIGURATION SOURIS" },
+     { "MouseSetupMenu_Title"_hash                , "CONFIGURATION SOURIS" },
 
-     { "JoystickSetupMenu_Title"             , "CONFIGURATION DE LA MANETTE DE JEU" },
+     { "JoystickSetupMenu_Title"_hash             , "CONFIGURATION DE LA MANETTE DE JEU" },
 
-     { "PerformanceMenu_Title"               , "PERFORMANCE" },
-     { "PerformanceMenu_Transparency"        , "TRANSPARENCE" },
-     { "PerformanceMenu_")3dLighting[]       , "ECLAIRAGE 3D" },
-     { "PerformanceMenu_Particles"           , "PARTICULES" },
-     { "PerformanceMenu_DynamicVolume"       , "VOLUME DYNAMIQUE" },
-     { "PerformanceMenu_AmbientSounds"       , "SONS AMBIANTS" },
+     { "PerformanceMenu_Title"_hash               , "PERFORMANCE" },
+     { "PerformanceMenu_Transparency"_hash        , "TRANSPARENCE" },
+     { "PerformanceMenu_3dLighting"_hash          , "ECLAIRAGE 3D" },
+     { "PerformanceMenu_Particles"_hash           , "PARTICULES" },
+     { "PerformanceMenu_DynamicVolume"_hash       , "VOLUME DYNAMIQUE" },
+     { "PerformanceMenu_AmbientSounds"_hash       , "SONS AMBIANTS" },
 
-     { "RotationSetupMenu_Title"             , "VITESSES DE ROTATION" },
-     { "RotationSetupMenu_RunningSlow"       , "COURIR (LENTEMENT)" },
-     { "RotationSetupMenu_RunningFast"       , "COURIR (VITE)" },
-     { "RotationSetupMenu_StandingSlow"      , "SE TENIR DEBOUT (LENTEMENT)" },
-     { "RotationSetupMenu_StandingFast"      , "SE TENIR DEBOUT (VITE)" },
-     { "RotationSetupMenu_TapDegrees"        , "DEGRES DE FRAPPE" },
-     { "RotationSetupMenu_RestoreDefaults"   , "DEFAUT" },
+     { "RotationSetupMenu_Title"_hash             , "VITESSES DE ROTATION" },
+     { "RotationSetupMenu_RunningSlow"_hash       , "COURIR (LENTEMENT)" },
+     { "RotationSetupMenu_RunningFast"_hash       , "COURIR (VITE)" },
+     { "RotationSetupMenu_StandingSlow"_hash      , "SE TENIR DEBOUT (LENTEMENT)" },
+     { "RotationSetupMenu_StandingFast"_hash      , "SE TENIR DEBOUT (VITE)" },
+     { "RotationSetupMenu_TapDegrees"_hash        , "DEGRES DE FRAPPE" },
+     { "RotationSetupMenu_RestoreDefaults"_hash   , "DEFAUT" },
 
-     { "VolumesMenu_Title"                   , "MIXER AUDIO" },
+     { "VolumesMenu_Title"_hash                   , "MIXER AUDIO" },
 
-     { "StartGameMenu_Title"                 , "DEMARRE LE JEU" },
-     { "StartGameMenu_SinglePlayer"          , "JOUEUR UNIQUE" },
-     { "StartGameMenu_Multiplayer"           , "JOUEURS MULTIPLES" },
-     { "StartGameMenu_Demo"                  , "DEMO" },
+     { "StartGameMenu_Title"_hash                 , "DEMARRE LE JEU" },
+     { "StartGameMenu_SinglePlayer"_hash          , "JOUEUR UNIQUE" },
+     { "StartGameMenu_Multiplayer"_hash           , "JOUEURS MULTIPLES" },
+     { "StartGameMenu_Demo"_hash                  , "DEMO" },
 
-     { "StartSinglePlayerMenu_Title"         , "JOUEUR UNIQUE" },
-     { "StartSinglePlayerMenu_New"           , "CHARGER ORIGINAL" },   // Mike's lame translation
-     { "StartSinglePlayerMenu_AddOn"         , "CHARGER ADD-ON" },     // Mike's lame translation
-     { "StartSinglePlayerMenu_LoadLevel"     , "CHARGER LE NIVEAU" },
-     { "StartSinglePlayerMenu_LoadGame"      , "CHARGER LE JEU" },
-     { "StartSinglePlayerMenu_Challenge"     , "DEFI" },
+     { "StartSinglePlayerMenu_Title"_hash         , "JOUEUR UNIQUE" },
+     { "StartSinglePlayerMenu_New"_hash           , "CHARGER ORIGINAL" },   // Mike's lame translation
+     { "StartSinglePlayerMenu_AddOn"_hash         , "CHARGER ADD-ON" },     // Mike's lame translation
+     { "StartSinglePlayerMenu_LoadLevel"_hash     , "CHARGER LE NIVEAU" },
+     { "StartSinglePlayerMenu_LoadGame"_hash      , "CHARGER LE JEU" },
+     { "StartSinglePlayerMenu_Challenge"_hash     , "DEFI" },
 
-     { "StartChallengeMenu_Title"            , "DEFI" },
-     { "StartChallengeMenu_Gauntlet"         , "LE GANT" },
-     { "StartChallengeMenu_Timed"            , "CHRONOMETRE" },
-     { "StartChallengeMenu_Goal"             , "BUT" },
-     { "StartChallengeMenu_Flag"             , "DRAPEAU" },
-     { "StartChallengeMenu_CheckPoint"       , "CONTROLE" },
+     { "StartChallengeMenu_Title"_hash            , "DEFI" },
+     { "StartChallengeMenu_Gauntlet"_hash         , "LE GANT" },
+     { "StartChallengeMenu_Timed"_hash            , "CHRONOMETRE" },
+     { "StartChallengeMenu_Goal"_hash             , "BUT" },
+     { "StartChallengeMenu_Flag"_hash             , "DRAPEAU" },
+     { "StartChallengeMenu_CheckPoint"_hash       , "CONTROLE" },
 
-     { "StartMultiplayerMenu_Title"          , "JOUEURS MULTIPLES" },
-     { "StartMultiplayerMenu_Join"           , "JOINDRE LE JEU" },
-     { "StartMultiplayerMenu_Host"           , "ANIMER LE JEU" },
-     { "StartMultiplayerMenu_Options"        , "OPTIONS" },
+     { "StartMultiplayerMenu_Title"_hash          , "JOUEURS MULTIPLES" },
+     { "StartMultiplayerMenu_Join"_hash           , "JOINDRE LE JEU" },
+     { "StartMultiplayerMenu_Host"_hash           , "ANIMER LE JEU" },
+     { "StartMultiplayerMenu_Options"_hash        , "OPTIONS" },
 
 
-     { "JoinGameMenu_Title"                  , "JOINDRE LE JEU" },
-     { "JoinGameMenu_Browse"                 , "PARCOURIR (RESEAU LOCAL UNIQUEMENT)" },
-     { "JoinGameMenu_ConnectTo"              , "SE CONNECTER A" },
+     { "JoinGameMenu_Title"_hash                  , "JOINDRE LE JEU" },
+     { "JoinGameMenu_Browse"_hash                 , "PARCOURIR (RESEAU LOCAL UNIQUEMENT)" },
+     { "JoinGameMenu_ConnectTo"_hash              , "SE CONNECTER A" },
 
-     { "HostGameMenu_Title"                  , "ANIMER LE JEU" },
-     { "HostGameMenu_Start"                  , "DEMARRER" },
+     { "HostGameMenu_Title"_hash                  , "ANIMER LE JEU" },
+     { "HostGameMenu_Start"_hash                  , "DEMARRER" },
 
-     { "StartDemoMenu_Title"                 , "DEMO" },
-     { "StartDemoMenu_Browse"                , "PARCOURIR" },
-     { "StartDemoMenu_Play"                  , "JOUER" },
-     { "StartDemoMenu_Record"                , "ENREGISTRER" },
+     { "StartDemoMenu_Title"_hash                 , "DEMO" },
+     { "StartDemoMenu_Browse"_hash                , "PARCOURIR" },
+     { "StartDemoMenu_Play"_hash                  , "JOUER" },
+     { "StartDemoMenu_Record"_hash                , "ENREGISTRER" },
 
-     { "MultiplayerSetupMenu_Title"          , "JOUEURS MULTIPLES" },
-     { "MultiplayerSetupMenu_Name"           , "NOM" },
-     { "MultiplayerSetupMenu_Color"          , "COULEUR" },
-     { "MultiplayerSetupMenu_Protocol"       , "PROTOCOLE" },
-     { "MultiplayerSetupMenu_Connection"     , "CONNEXION" },
+     { "MultiplayerSetupMenu_Title"_hash          , "JOUEURS MULTIPLES" },
+     { "MultiplayerSetupMenu_Name"_hash           , "NOM" },
+     { "MultiplayerSetupMenu_Color"_hash          , "COULEUR" },
+     { "MultiplayerSetupMenu_Protocol"_hash       , "PROTOCOLE" },
+     { "MultiplayerSetupMenu_Connection"_hash     , "CONNEXION" },
 
 
 #endif
@@ -1012,7 +1009,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 ///////////////////////////// Sample Master ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#if ENGLISH_LOCALE
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN)
 
    char const * const g_apszSoundCategories[] =
       {
@@ -1066,7 +1063,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 // Score module
 ////////////////////////////////////////////////////////////////////////////////
 
-#if ENGLISH_LOCALE // ScoreDisplayText
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreDisplayText
 
 char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
    {
@@ -1131,7 +1128,7 @@ char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
    };
 #endif // ScoreDisplayText
 
-#if ENGLISH_LOCALE // ScoreGoalText
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreGoalText
 char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
    {
    "      You must kill %d%% of the hostiles.",                                  // Standard
@@ -1198,7 +1195,7 @@ char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
    };
 #endif // ScoreGoalText
 
-#if ENGLISH_LOCALE // ScoreUnits
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreUnits
 // Units for the various scoring types.
 char const * const g_apszScoreUnits[] =
       {
@@ -1263,7 +1260,7 @@ char const * const g_apszScoreUnits[] =
       };
 #endif // ScoreUnits
 
-#if ENGLISH_LOCALE // ScoreExplanations
+#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreExplanations
 // Explanations for the various scoring types.
 char const * const g_apszScoreExplanations[] =
       {

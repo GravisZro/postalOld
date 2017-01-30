@@ -61,7 +61,7 @@
 #include <Realm.h>
 #include <AlphaAnimType.h>
 #include <Smash.h>
-#include <Weapon.h>
+#include <Thing/Weapon.h>
 
 
 /////////////////////////////////////////// CFireball /////////////////////////////////////
@@ -94,24 +94,24 @@ class CFireball : public CWeapon
                                        // when it hits a wall.
 
    protected:
-      long m_lTimer;                   // General purpose timer
-      long m_lCollisionTimer;          // Check for collisions when this expires
-      long m_lBurnUntil;               // Burn until this time.
-      long m_lCurrentAlphaTimeout;     // Use current Alpha until this time, then switch
-      long m_lAlphaChannelInterval;    // Show each alpha for this amount of time
-      long m_lTimeToLive;              // Total time to show this animation
-      long m_lTotalFlameTime;          // Total time to show the flame (non adjusted for game time)
+      int32_t m_lTimer;                   // General purpose timer
+      int32_t m_lCollisionTimer;          // Check for collisions when this expires
+      int32_t m_lBurnUntil;               // Burn until this time.
+      int32_t m_lCurrentAlphaTimeout;     // Use current Alpha until this time, then switch
+      int32_t m_lAlphaChannelInterval;    // Show each alpha for this amount of time
+      int32_t m_lTimeToLive;              // Total time to show this animation
+      int32_t m_lTotalFlameTime;          // Total time to show the flame (non adjusted for game time)
       int16_t m_sCurrentAlphaChannel;    // Use this Alpha channel
       int16_t m_sTotalAlphaChannels;
-      U32   m_u32CollideIncludeBits;   // bits to use for collision checking
-      U32   m_u32CollideDontcareBits;  // bits to use for collision checking
-      U32   m_u32CollideExcludeBits;   // bits to use for collision checking
-      U16   m_u16ShooterID;            // shooter's ID so you don't hit him.
+      uint32_t   m_u32CollideIncludeBits;   // bits to use for collision checking
+      uint32_t   m_u32CollideDontcareBits;  // bits to use for collision checking
+      uint32_t   m_u32CollideExcludeBits;   // bits to use for collision checking
+      uint16_t   m_u16ShooterID;            // shooter's ID so you don't hit him.
       bool  m_bSendMessages;           // Whether or not to send messages to other
                                        // objects telling them to burn or not.
       bool  m_bMoving;                 // Once it hits a wall it will stop moving
-      long  m_lAnimTime;               // Animation time so anims can be offset frames.
-      long m_lPrevTime;                // Previous update time
+      int32_t  m_lAnimTime;               // Animation time so anims can be offset frames.
+      int32_t m_lPrevTime;                // Previous update time
 
       CSprite2    m_sprite;            // 2D sprite to render this object.
 
@@ -124,7 +124,7 @@ class CFireball : public CWeapon
       // Tracks file counter so we know when to load/save "common" data
       static int16_t ms_sFileCount;
       static int16_t ms_sSmallRadius;
-      static long  ms_lCollisionTime;  // Check for collisions this often
+      static int32_t  ms_lCollisionTime;  // Check for collisions this often
       static double ms_dFireVelocity;  // Rate of travel.
 
       // "Constant" values that we want to be able to tune using the editor
@@ -205,7 +205,7 @@ class CFireball : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -235,8 +235,8 @@ class CFireball : public CWeapon
          int16_t sY,                                    // In: New y coord
          int16_t sZ,                                    // In: New z coord
          int16_t sDir,                                  // In: Direction of travel
-         long lTimeToLive,                            // In: Milliseconds to burn
-         U16 u16ShooterID);                           // In: Your ID (the shooter) so it doesn't hit you
+         int32_t lTimeToLive,                            // In: Milliseconds to burn
+         uint16_t u16ShooterID);                           // In: Your ID (the shooter) so it doesn't hit you
 
       // Override base class Setup().
       virtual           // Overridden here.
@@ -277,7 +277,7 @@ class CFireball : public CWeapon
 
       // Allows whoever creates the fire to control what gets burned by it
       // the defaults are set initially to Characters
-      void SetCollideBits(U32 u32Include, U32 u32Dontcare, U32 u32Exclude)
+      void SetCollideBits(uint32_t u32Include, uint32_t u32Dontcare, uint32_t u32Exclude)
       {
          m_u32CollideIncludeBits = u32Include;
          m_u32CollideDontcareBits = u32Dontcare;
@@ -354,21 +354,21 @@ class CFirestream : public CWeapon
                                        // when it hits a wall.
 
    protected:
-      long m_lBurnUntil;               // Burn until this time.
-      long m_lCurrentAlphaTimeout;     // Use current Alpha until this time, then switch
-      long m_lAlphaChannelInterval;    // Show each alpha for this amount of time
-      long m_lTimeToLive;              // Total time to show this animation
+      int32_t m_lBurnUntil;               // Burn until this time.
+      int32_t m_lCurrentAlphaTimeout;     // Use current Alpha until this time, then switch
+      int32_t m_lAlphaChannelInterval;    // Show each alpha for this amount of time
+      int32_t m_lTimeToLive;              // Total time to show this animation
       int16_t m_sCurrentAlphaChannel;    // Use this Alpha channel
       int16_t m_sTotalAlphaChannels;
-      U16   m_u16ShooterID;            // shooter's ID so you don't hit him.
+      uint16_t   m_u16ShooterID;            // shooter's ID so you don't hit him.
       bool  m_bSendMessages;           // Whether or not to send messages to other
                                        // objects telling them to burn or not.
-      long m_lPrevTime;                // Previous update time
+      int32_t m_lPrevTime;                // Previous update time
 
       CSprite2 m_sprite;               // False sprite for positioning info
-      U16 m_idFireball1;
-      U16 m_idFireball2;
-      U16 m_idFireball3;
+      uint16_t m_idFireball1;
+      uint16_t m_idFireball2;
+      uint16_t m_idFireball3;
 
 
       int16_t m_sSuspend;                // Suspend flag
@@ -444,7 +444,7 @@ class CFirestream : public CWeapon
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -474,8 +474,8 @@ class CFirestream : public CWeapon
          int16_t sY,                                    // In: New y coord
          int16_t sZ,                                    // In: New z coord
          int16_t sDir,                                  // In: Direction of travel
-         long lTimeToLive,                            // In: Milliseconds to burn
-         U16 u16ShooterID);                           // In: Your ID (the shooter) so it doesn't hit you
+         int32_t lTimeToLive,                            // In: Milliseconds to burn
+         uint16_t u16ShooterID);                           // In: Your ID (the shooter) so it doesn't hit you
 
       // Override base class Setup().
       virtual           // Overridden here.

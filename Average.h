@@ -42,7 +42,7 @@
 // The filter width is static so there is no dynamic allocation of data
 // Let me know if this kills your heap
 //
-template <class ValueType, long clFixedWidth>
+template <class ValueType, int32_t clFixedWidth>
 class CRunningAverage
    {
 public:
@@ -122,8 +122,8 @@ public:
    //---------------------------------------
    ValueType   m_avDataList[clFixedWidth];
    ValueType   m_vCurrentTotal;
-   long        m_lSignificantNumber;
-   long        m_lNextValue;
+   int32_t     m_lSignificantNumber;
+   int32_t     m_lNextValue;
    };
 
 

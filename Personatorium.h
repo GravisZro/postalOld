@@ -132,7 +132,8 @@ struct Personatorium {
    public:
 
       // This enum has one entry for each index in the g_apersons.
-      enum Index {
+      enum Index : uint32_t
+      {
          Grenader,               // Mimic of classic CGrenader.
          RocketMan,              // Mimic of classic CRocketMan.
          Gunner,                 // Mimic of classic CGunner.
@@ -282,9 +283,9 @@ struct Personatorium {
       Lifestyle      eLifestyle;             //
 
       // Stats.
-      long lGuardTimeout;                    // Interval between checking for intruders
-      long lRunShootInterval;                // Delay between shots while running
-      long lShotTimeout;                     // Time to wait before reacting to next shot.
+      int32_t lGuardTimeout;                    // Interval between checking for intruders
+      int32_t lRunShootInterval;                // Delay between shots while running
+      int32_t lShotTimeout;                     // Time to wait before reacting to next shot.
       int16_t sInitialHitPoints;               // Initial hit points for person
 
       /////// NYI ///////

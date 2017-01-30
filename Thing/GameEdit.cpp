@@ -740,7 +740,7 @@
 
 #include <Scoreboard.h>
 
-#include <CompileOptions.h>
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1121,7 +1121,7 @@ lineset m_NetLines;
 static bool ms_bDrawNetwork = true;
 
 // ID of item most recently pressed or 0, if none.
-static long ms_lPressedId  = 0;
+static int32_t ms_lPressedId  = 0;
 // Realm filename.  Assuming only one Realm loaded at once.
 static char ms_szFileName[RSP_MAX_PATH]   = "";
 
@@ -1213,12 +1213,12 @@ static CThing::ClassIDType ms_idPaste;
 static CSprite2      ms_spriteAttributes;
 
 // Attribute masks to draw.
-static U16           ms_u16TerrainMask;
-static U16           ms_u16LayerMask;
+static uint16_t           ms_u16TerrainMask;
+static uint16_t           ms_u16LayerMask;
 
 // Used by RFile callback function
-static long    ms_lRFileCallbackTime;
-static long    ms_lFileBytesSoFar;
+static int32_t    ms_lRFileCallbackTime;
+static int32_t    ms_lFileBytesSoFar;
 static char    ms_szFileOpDescriptionFrmt[512];
 static RPrint  ms_printFile;
 static int16_t   ms_sFileOpTextX;
@@ -1227,7 +1227,7 @@ static int16_t   ms_sFileOpTextW;
 static int16_t   ms_sFileOpTextH;
 
 // Amount to scroll off edge of realm.
-static long ms_lEdgeOvershoot = 1000;
+static int32_t ms_lEdgeOvershoot = 1000;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function prototypes
@@ -1548,7 +1548,7 @@ static void Maprealm2Screen(  // Returns nothing.
 // Blit attribute areas lit by the specified mask into the specified image.
 static void AttribBlit(       // Returns nothing.
    RMultiGrid* pmg,           // In:  Multigrid of attributes.
-   U16         u16Mask,       // In:  Mask of important attributes.
+   uint16_t         u16Mask,       // In:  Mask of important attributes.
    RImage*     pimDst,        // In:  Destination image.
    int16_t       sSrcX,         // In:  Where in Multigrid to start.
    int16_t       sSrcY,         // In:  Where in Multigrid to start.
@@ -1568,7 +1568,7 @@ static void RlmNameToRgnName( // Returns nothing.
    char* pszRgnName);      // Out: .RGN name.
 
 // Our RFile callback
-static void MyRFileCallback(long lBytes);
+static void MyRFileCallback(int32_t lBytes);
 
 // Update selection info in the info GUI.
 static void UpdateSelectionInfo( // Returns nothing.
@@ -1606,7 +1606,7 @@ static bool RealmOpProgress(        // Returns true to continue; false to
 ////////////////////////////////////////////////////////////////////////////////
 inline void SetPressedCall(   // Returns nothing.
    RGuiItem*   pguiRoot,      // Root item.
-   long  lId)                 // ID of GUI item to set.
+   int32_t  lId)                 // ID of GUI item to set.
    {
    ASSERT(pguiRoot);
 
@@ -1629,10 +1629,10 @@ inline void SetPressedCall(   // Returns nothing.
 ////////////////////////////////////////////////////////////////////////////////
 inline void SetMBValsAndCallback(      // Returns nothing.
    RGuiItem*   pguiRoot,               // In:  Root item.
-   long        lId,                    // In:  ID of child to set user vals on.
-   U32         u32UserInstance,        // In:  Value for m_ulUserInstance.
-   U32         u32UserData,            // In:  Value for m_ulUserData.
-   int16_t       sState)                 // In:  Initial MultiBtn state.
+   int32_t     lId,                    // In:  ID of child to set user vals on.
+   Variant     u32UserInstance,        // In:  Value for m_ulUserInstance.
+   Variant     u32UserData,            // In:  Value for m_ulUserData.
+   int16_t     sState)                 // In:  Initial MultiBtn state.
    {
    RMultiBtn*  pmb   = (RMultiBtn*)pguiRoot->GetItemFromId(lId);
    if (pmb)
@@ -1812,7 +1812,7 @@ extern void GameEdit(
                if (pguiItem)
                   {
                   pguiItem->m_lId         = LIST_ITEM_GUI_ID_BASE + idCur;
-                  pguiItem->m_ulUserData  = (ULONG)idCur;
+                  pguiItem->m_ulUserData  = (uint32_t)idCur;
 
                   // Set the callback on pressed.
                   pguiItem->m_bcUser      = ListItemPressedCall;
@@ -1850,7 +1850,7 @@ extern void GameEdit(
             if (pguiItem)
                {
                // Remember which layer it's associated with.
-               pguiItem->m_ulUserData  = (ULONG)sLayer;
+               pguiItem->m_ulUserData  = (uint32_t)sLayer;
                // We'll need to know when these are pressed.
                pguiItem->m_bcUser   = ListItemPressedCall;
                pguiItem->m_lId      = GUI_ID_TOGGLE_LAYER;
@@ -1892,10 +1892,10 @@ extern void GameEdit(
          ms_pguiNavNets->SetVisible(ms_pguiNavNets->m_sVisible);
 
          // ---------- Show Attribs --------
-         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_LAYERS, (U32)(&ms_u16LayerMask), REALM_ATTR_LAYER_MASK, 1);
-         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_HEIGHT, (U32)(&ms_u16TerrainMask), REALM_ATTR_HEIGHT_MASK, 1);
-         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_NOWALK, (U32)(&ms_u16TerrainMask), REALM_ATTR_NOT_WALKABLE, 1);
-         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_LIGHT, (U32)(&ms_u16TerrainMask), REALM_ATTR_LIGHT_BIT, 1);
+         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_LAYERS, &ms_u16LayerMask, REALM_ATTR_LAYER_MASK, 1);
+         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_HEIGHT, &ms_u16TerrainMask, REALM_ATTR_HEIGHT_MASK, 1);
+         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_NOWALK, &ms_u16TerrainMask, REALM_ATTR_NOT_WALKABLE, 1);
+         SetMBValsAndCallback(ms_pguiShowAttribs, GUI_ID_ATTRIB_LIGHT, &ms_u16TerrainMask, REALM_ATTR_LIGHT_BIT, 1);
 
          ms_pguiShowAttribs->SetVisible(TRUE);
 
@@ -2126,9 +2126,9 @@ static bool DoInput(    // Returns true when done.
          // Get cursor position and event
          GetCursor(&ie, &sCursorX, &sCursorY, &sCursorZ, &sCursorEvent);
 
-         UCHAR ucId  = ms_pylonEdit->m_ucID;
+         uint8_t ucId  = ms_pylonEdit->m_ucID;
 
-         static U8*  pau8KeyStatus  = rspGetKeyStatusArray();
+         static uint8_t*  pau8KeyStatus  = rspGetKeyStatusArray();
 
          // Move unit for arrow key movement of region.
          // Note: Combinations of SHIFT, CONTROL, and ALT
@@ -2813,7 +2813,7 @@ static bool DoInput(    // Returns true when done.
                if (pguiSel)
                   {
                   // Get layer to toggle.
-                  CRealm::Layer  layer = (CRealm::Layer)pguiSel->m_ulUserData;
+                  CRealm::Layer  layer = (CRealm::Layer)(uint32_t)pguiSel->m_ulUserData;
                   // Should be push btn.
                   ASSERT(pguiSel->m_type == RGuiItem::PushBtn);
                   // Toggle.
@@ -3149,7 +3149,7 @@ static void DoOutput(   // Returns nothing.
       // If editting a pylon . . .
       if (ms_pylonEdit)
          {
-         UCHAR ucId  = ms_pylonEdit->m_ucID;
+         uint8_t ucId  = ms_pylonEdit->m_ucID;
          ASSERT(ms_argns[ucId].pimRgn);
 
          // Draw trigger region.
@@ -3229,7 +3229,7 @@ static void GetCursor(  // Returns nothing.
    // Init mouse drag stuff
    static int16_t sDragX;
    static int16_t sDragY;
-   static long lDragTime;
+   static int32_t lDragTime;
 
    // Init mouse pressed stuff.
    static int16_t sPressed   = FALSE;
@@ -3525,10 +3525,10 @@ static void DrawCursor(
       int16_t sMin = MIN(sCursorZ, (int16_t)(sCursorZ - sCursorY));
       int16_t sMax = MAX(sCursorZ, (int16_t)(sCursorZ - sCursorY));
       for (int16_t y = sMin; y <= sMax; y++)
-         rspPlot((UCHAR)255, pimDst, sCursorX, y);
+         rspPlot((uint8_t)255, pimDst, sCursorX, y);
 #else
       rspLine(
-         (UCHAR)255,
+         (uint8_t)255,
          pimDst,
          sBaseX2,
          sBaseY2,
@@ -3785,7 +3785,7 @@ static int16_t LoadRealm(
                   rc.sH,                     // Dimensions.
                   ThingHotCall,              // Callback.
                   TRUE,                      // TRUE, if active.
-                  (U32)phood,                // User value (CThing*).
+                  phood,                // User value (CThing*).
                   FRONTMOST_HOT_PRIORITY);   // New items towards front.
                // If successful . . .
                if (ms_photHood)
@@ -3830,7 +3830,7 @@ static int16_t LoadRealm(
                            rc.sH,                     // Dimensions.
                            ThingHotCall,              // Callback.
                            sActivateHot,              // TRUE, if initially active.
-                           (U32)pthing,               // User value (CThing*).
+                           pthing,               // User value (CThing*).
                            FRONTMOST_HOT_PRIORITY);   // New items towards front.
 
                         // If successful . . .
@@ -4155,7 +4155,7 @@ static void PlayRealm(
                // Startup the realm
                if (prealm->Startup() == 0)
                   {
-                  U16   idSpecificWarp = CIdBank::IdNil;
+                  uint16_t   idSpecificWarp = CIdBank::IdNil;
 
                   //////////// Special behaviors based on the current selection ////////////
                   // Note that pthingSel does not exist in prealm (it is in pEditRealm).
@@ -4203,7 +4203,7 @@ static void PlayRealm(
                   ClearLocalInput();
 
                   // We'll need access to the key status array.
-                  U8* pau8KeyStatus = rspGetKeyStatusArray();
+                  uint8_t* pau8KeyStatus = rspGetKeyStatusArray();
 
                   // Setup camera
                   CCamera* pcamera = new CCamera;
@@ -4232,7 +4232,7 @@ static void PlayRealm(
 
                   // Get thing to track . . .
                   CThing*  pthingTrack = nullptr;
-                  U16      u16IdTrack  = CIdBank::IdNil;
+                  uint16_t      u16IdTrack  = CIdBank::IdNil;
                   if (ms_pgething)
                      {
                      u16IdTrack = ms_pgething->m_u16CameraTrackId;
@@ -4242,7 +4242,7 @@ static void PlayRealm(
                   RGuiItem::SetFocus(nullptr);
 
                   CListNode<CThing>* pNext = prealm->m_aclassHeads[CThing::CDudeID].m_pnNext;
-                  U16 u16IdDude = CIdBank::IdNil;
+                  uint16_t u16IdDude = CIdBank::IdNil;
                   while (pNext->m_powner)
                   {
                      CDude*   pdude = (CDude*) pNext->m_powner;
@@ -4339,10 +4339,10 @@ static void PlayRealm(
                      INFO_STATUS_RECT_W,
                      INFO_STATUS_RECT_H);
 
-                  long  lLastDispTime        = 0;
-                  long  lFramesTime          = 0;
-                  long  lUpdateDisplayTime   = 0;
-                  long  lNumFrames           = 0;
+                  int32_t  lLastDispTime        = 0;
+                  int32_t  lFramesTime          = 0;
+                  int32_t  lUpdateDisplayTime   = 0;
+                  int32_t  lNumFrames           = 0;
 
                   RPrint   printDisp;
                   printDisp.SetFont(DISP_INFO_FONT_H, &g_fontBig);
@@ -4806,7 +4806,7 @@ static int16_t CreateNewThing(     // Returns 0 on success.
                if (pfile)
                   {
                   // Remember its ID.
-                  U16   idInstance  = (*ppthing)->GetInstanceID();
+                  uint16_t   idInstance  = (*ppthing)->GetInstanceID();
                   // Release its ID.
                   (*ppthing)->SetInstanceID(CIdBank::IdNil);
 
@@ -4873,7 +4873,7 @@ static int16_t CreateNewThing(     // Returns 0 on success.
                      rc.sH,                     // Dimensions.
                      ThingHotCall,              // Callback.
                      sActivateHot,              // TRUE, if initially active.
-                     (U32)*ppthing,             // User value (CThing*).
+                     *ppthing,             // User value (CThing*).
                      FRONTMOST_HOT_PRIORITY);   // New items towards front.
 
                   if (*pphot)
@@ -5246,7 +5246,7 @@ static int16_t SizeUpdate(      // Returns 0 on success.
       ms_pguiInfo->Move(INFO_X, INFO_Y);
       }
 
-   long  lEdgeOvershoot;
+   int32_t  lEdgeOvershoot;
    // If not clipping to realm . . .
    if (pcamera->m_bClip == false)
       {
@@ -5485,7 +5485,7 @@ static void ThingHotCall(  // Returns nothing.
             {
             SetSel(pthing, phot);
             // If EDIT_KEY_SENDTOBACK held down . . .
-            UCHAR aucKeys[128];
+            uint8_t aucKeys[128];
             rspScanKeys(aucKeys);
             if (aucKeys[EDIT_KEY_SENDTOBACK] != 0)
                {
@@ -5793,8 +5793,8 @@ static void NetLog(CNavigationNet* pNavNet)
    ofstream routeout;
    CNavigationNet::nodeMap::iterator ibouy;
    CBouy::linkset::iterator ilink;
-   UCHAR i;
-   UCHAR ucHops;
+   uint8_t i;
+   uint8_t ucHops;
 
 
    txtout.open("c:\\temp\\navnet.txt");
@@ -5971,7 +5971,7 @@ static int16_t AddView(      // Returns 0 on success.
          char  szTitle[256];
          sprintf(szTitle, "Camera %d", ++sNum);
          RGuiItem*   pgui        = plb->AddString(szTitle);
-         pgui->m_lId             = (long)pview;
+         pgui->m_lId             = pview;
          plb->AdjustContents();
 
          pview->pgui->SetText("%s", szTitle);
@@ -6003,7 +6003,7 @@ static void RemoveView(    // Returns nothing.
       RGuiItem*   pguiRemove;
       if (pview)
          {
-         pguiRemove  = plb->GetItemFromId((long)pview);
+         pguiRemove  = plb->GetItemFromId(pview);
          }
       else
          {
@@ -7190,7 +7190,7 @@ static void Maprealm2Screen(  // Returns nothing.
 ////////////////////////////////////////////////////////////////////////////////
 static void AttribBlit(       // Returns nothing.
    RMultiGrid* pmg,           // In:  Multigrid of attributes.
-   U16         u16Mask,       // In:  Mask of important attributes.
+   uint16_t         u16Mask,       // In:  Mask of important attributes.
    RImage*     pimDst,        // In:  Destination image.
    int16_t       sSrcX,         // In:  Where in Multigrid to start.
    int16_t       sSrcY,         // In:  Where in Multigrid to start.
@@ -7206,9 +7206,9 @@ static void AttribBlit(       // Returns nothing.
    ASSERT(pimDst->m_sHeight >= sH);
 
    // Get dst start.
-   U8*   pu8RowDst   = pimDst->m_pData;
-   U8*   pu8Dst;
-   long  lPitch;
+   uint8_t*   pu8RowDst   = pimDst->m_pData;
+   uint8_t*   pu8Dst;
+   int32_t  lPitch;
 
    int16_t sGridW, sGridH;
    pmg->GetGridDimensions(&sGridW, &sGridH);
@@ -7246,7 +7246,7 @@ static void AttribMaskBtnPressed(   // Returns nothing.
    RMultiBtn*  pmb   = (RMultiBtn*)pgui_pmb;
 
    // Get mask to affect.
-   U16*  pu16AttribMask = (U16*)(pmb->m_ulUserInstance);
+   uint16_t*  pu16AttribMask = (uint16_t*)(pmb->m_ulUserInstance);
 
    // Add or subtract mask dependent on state.
    switch (pmb->m_sState)
@@ -7254,10 +7254,10 @@ static void AttribMaskBtnPressed(   // Returns nothing.
       case 0:  // Pressing.
          break;
       case 1:  // Off.
-         *pu16AttribMask   &= ~pmb->m_ulUserData;
+         *pu16AttribMask   &= ~(uint16_t)pmb->m_ulUserData;
          break;
       case 2:  // On.
-         *pu16AttribMask   |= pmb->m_ulUserData;
+         *pu16AttribMask   |= (uint16_t)pmb->m_ulUserData;
          break;
       }
 
@@ -7350,11 +7350,11 @@ static int16_t SizeShowAttribsSprite(void)  // Returns 0 on success.
 // Our RFile callback
 //
 ////////////////////////////////////////////////////////////////////////////////
-static void MyRFileCallback(long lBytes)
+static void MyRFileCallback(int32_t lBytes)
    {
    ms_lFileBytesSoFar   += lBytes;
 
-   long lNow = rspGetMilliseconds();
+   int32_t lNow = rspGetMilliseconds();
    if ((lNow - ms_lRFileCallbackTime) > MY_RFILE_CALLBACK_INTERVAL)
       {
       // Do an update
@@ -7545,7 +7545,7 @@ static int16_t TmpFileName(                       // Returns 0 if successfull, n
    #if defined(WIN32)
 
       char  szPath[RSP_MAX_PATH];
-      ULONG ulLen = GetTempPath(sizeof(szPath), szPath);
+      uint32_t ulLen = GetTempPath(sizeof(szPath), szPath);
       if (ulLen >= sizeof(szPath) )
          {
          TRACE("TmpFileName(): GetTempPath() could not fit the path and filename into our string.\n");
@@ -7622,7 +7622,7 @@ static int16_t ShowRealmStatistics(   // Returns 0 on success.
          char  szY[256];
          char  szZ[256];
          double   dX, dY, dZ;
-         long  lNum  = 0;
+         int32_t  lNum  = 0;
          CListNode<CThing>*   pthingnode  = prealm->m_everythingHead.m_pnNext;
          CThing*  pthing;
          while (pthingnode != &(prealm->m_everythingTail))
@@ -7652,7 +7652,7 @@ static int16_t ShowRealmStatistics(   // Returns 0 on success.
             if (pguiThing)
                {
                // Success.
-               pguiThing->m_lId  = (long)pthing;
+               pguiThing->m_lId  = pthing;
                }
             else
                {
@@ -7717,12 +7717,12 @@ static bool RealmOpProgress(        // Returns true to continue; false to
    int16_t sLastItemProcessed,        // In:  Number of items processed so far.
    int16_t sTotalItemsToProcess)      // In:  Total items to process.
    {
-   static long lLastProgressPos;
-   static long lProgressX, lProgressY, lProgressW, lProgressH;
-   static long lLastCallTime;
+   static int32_t lLastProgressPos;
+   static int32_t lProgressX, lProgressY, lProgressW, lProgressH;
+   static int32_t lLastCallTime;
 
    // Just need to get the key status array once.
-   U8*   pau8KeyStatus  = rspGetKeyStatusArray();
+   uint8_t*   pau8KeyStatus  = rspGetKeyStatusArray();
 
    bool  bContinue   = true;  // Assume we want to continue.
 
@@ -7762,17 +7762,17 @@ static bool RealmOpProgress(        // Returns true to continue; false to
          lProgressH + 2);
       }
 
-   long lNow = rspGetMilliseconds();
+   int32_t lNow = rspGetMilliseconds();
    if ((lNow - lLastCallTime) > PROGRESS_CALLBACK_INTERVAL)
       {
       // Do an update
       UpdateSystem();
 
       // Compute new position.
-      long  lNewProgressPos;
+      int32_t  lNewProgressPos;
       if (sTotalItemsToProcess > 0)
          {
-         lNewProgressPos   = (long)sLastItemProcessed * lProgressW / (long)sTotalItemsToProcess;
+         lNewProgressPos   = (int32_t)sLastItemProcessed * lProgressW / (int32_t)sTotalItemsToProcess;
          }
       else
          {

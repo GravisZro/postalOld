@@ -79,7 +79,7 @@ class CWeapon : public CThing
    //---------------------------------------------------------------------------
    public:
 
-   typedef unsigned char CWeaponState;
+   typedef uint8_t CWeaponState;
 
    enum Macros {
       LaunchSndHalfLife       = 1000,
@@ -118,18 +118,18 @@ class CWeapon : public CThing
 
       CWeaponState m_eState;           // State variable for run routine
 
-      U16      m_idParent;             // Anyone can be this item's parent.
+      uint16_t      m_idParent;             // Anyone can be this item's parent.
                                        // It'd probably be a good idea to make
                                        // sure this is nullptr before setting it,
                                        // though.
 
-      U16      m_u16ShooterID;         // Instance ID of the shooter (so that credit
+      uint16_t      m_u16ShooterID;         // Instance ID of the shooter (so that credit
                                        // for a kill can be determined)
       CSprite2 m_spriteShadow;         // 2D sprite for shadow on the ground
 
    protected:
-      long m_lTimer;                   // Timer for explosion
-      long m_lPrevTime;                // Previous update time
+      int32_t m_lTimer;                   // Timer for explosion
+      int32_t m_lPrevTime;                // Previous update time
 
       int16_t m_sSuspend;                // Suspend flag
       int16_t m_sCurRadius;              // Radius of the dude's current frame.
@@ -191,7 +191,7 @@ class CWeapon : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       virtual int16_t Save(                                      // Returns 0 if successfull, non-zero otherwise
@@ -299,9 +299,9 @@ class CWeapon : public CThing
       // the request to set the bits.
       virtual
       void SetCollideBits(    // Returns nothing
-         U32 u32BitsInclude,  // Bits included in a collision
-         U32 u32BitsDontCare, // Bits that are ignored for collision
-         U32 u32BitsExclude)  // Bits that invalidate collision
+         uint32_t u32BitsInclude,  // Bits included in a collision
+         uint32_t u32BitsDontCare, // Bits that are ignored for collision
+         uint32_t u32BitsExclude)  // Bits that invalidate collision
       {
          // The base class does nothing - override if you want to use it, but
          // you don't have to if your weapon doesn't have collide bits.
@@ -312,9 +312,9 @@ class CWeapon : public CThing
       // can override this function, otherwise the bits will be ignored
       virtual
       void SetDetectionBits(     // Returns nothing
-         U32 u32BitsInclude,     // Bits included in a collision
-         U32 u32BitsDontcare,    // Bits that are ignored for collision
-         U32 u32BitsExclude)     // Bits that invalidate collision
+         uint32_t u32BitsInclude,     // Bits included in a collision
+         uint32_t u32BitsDontcare,    // Bits that are ignored for collision
+         uint32_t u32BitsExclude)     // Bits that invalidate collision
       {
          // The base class does nothing - override if you want to use it, but
          // you don't have to if your weapon doesn't have detect bits

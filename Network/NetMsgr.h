@@ -99,8 +99,9 @@ inline void GetSocketAddress(
    CBufQ* pBuf,
    RSocket::Address* paddress)
    {
+#if 0
    // Stuff that's common to all sockets
-   long lTmp;
+   int32_t lTmp;
    pBuf->Get(&lTmp);
    paddress->prototype = (RSocket::ProtoType)lTmp;
    pBuf->Get(&paddress->lAddressLen);
@@ -113,16 +114,17 @@ inline void GetSocketAddress(
          RProtocolBSDIP::AddressIP* p = (RProtocolBSDIP::AddressIP*)paddress;
          pBuf->Get(&p->address.sin_family);
          // Don't byte-swap these!!!  They are always in network order on all systems!
-         pBuf->Get((U8*)&p->address.sin_port, sizeof(p->address.sin_port));
-         pBuf->Get((U8*)&p->address.sin_addr, sizeof(p->address.sin_addr));
-         pBuf->Get((U8*)&p->address.sin_zero, sizeof(p->address.sin_zero));
+         pBuf->Get((uint8_t*)&p->address.sin_port, sizeof(p->address.sin_port));
+         pBuf->Get((uint8_t*)&p->address.sin_addr, sizeof(p->address.sin_addr));
+         pBuf->Get((uint8_t*)&p->address.sin_zero, sizeof(p->address.sin_zero));
          }
          break;
 
       default:
-         TRACE("PutSocketAddress(): Unknown protocol!\n";
+         TRACE("PutSocketAddress(): Unknown protocol!\n");
          break;
       }
+#endif
    }
 
 
@@ -133,8 +135,9 @@ inline void PutSocketAddress(
    CBufQ* pBuf,
    RSocket::Address* paddress)
    {
+#if 0
    // The RSocket::Address is a bit tricky, and different for each protocol
-   pBuf->Put((long)paddress->prototype);
+   pBuf->Put((int32_t)paddress->prototype);
    pBuf->Put(paddress->lAddressLen);
    switch(paddress->prototype)
       {
@@ -143,16 +146,17 @@ inline void PutSocketAddress(
          RProtocolBSDIP::AddressIP* p = (RProtocolBSDIP::AddressIP*)paddress;
          pBuf->Put(p->address.sin_family);
          // Don't let these byte-swap!!!  They are always in network order on all systems!
-         pBuf->Put((U8*)&p->address.sin_port, sizeof(p->address.sin_port));
-         pBuf->Put((U8*)&p->address.sin_addr, sizeof(p->address.sin_addr));
-         pBuf->Put((U8*)&p->address.sin_zero, sizeof(p->address.sin_zero));
+         pBuf->Put((uint8_t*)&p->address.sin_port, sizeof(p->address.sin_port));
+         pBuf->Put((uint8_t*)&p->address.sin_addr, sizeof(p->address.sin_addr));
+         pBuf->Put((uint8_t*)&p->address.sin_zero, sizeof(p->address.sin_zero));
          }
          break;
 
       default:
-         TRACE("PutSocketAddress(): Unknown protocol!\n";
+         TRACE("PutSocketAddress(): Unknown protocol!\n");
          break;
       }
+#endif
    }
 
 
@@ -279,9 +283,9 @@ class NetMsg
 
       struct Nothing {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
-         long lSize;                                  // Size of message for variable-sized messages
+         int32_t lSize;                                  // Size of message for variable-sized messages
                                                       // This is not an integral part of the Nothing
                                                       // message, but rather it's a way for us to
                                                       // generically access the size member of a
@@ -290,53 +294,53 @@ class NetMsg
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  NOTHING message is not intended to be transmitted!\n";
+            TRACE("ERROR!  NOTHING message is not intended to be transmitted!\n");
             ASSERT(0);
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  NOTHING message is not intended to be transmitted!\n";
+            TRACE("ERROR!  NOTHING message is not intended to be transmitted!\n");
             ASSERT(0);
             }
       };
 
       struct Stat {
          enum { Size = 1 + sizeof(Status) };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Status         status;                       // status value
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  STAT message is not intended to be transmitted!\n";
+            TRACE("ERROR!  STAT message is not intended to be transmitted!\n");
             ASSERT(0);
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  STAT message is not intended to be transmitted!\n";
+            TRACE("ERROR!  STAT message is not intended to be transmitted!\n");
             ASSERT(0);
             }
       };
 
       struct Err {
-         enum { Size = 1 + sizeof(Error) + sizeof(ULONG) };
-         unsigned char  ucType;                       // Message type
+         enum { Size = 1 + sizeof(Error) + sizeof(uint32_t) };
+         uint8_t  ucType;                       // Message type
          Error          error;                        // error value
-         ULONG          ulParam;                      // Miscellaneous param for errors.
+         uint32_t          ulParam;                      // Miscellaneous param for errors.
                                                       // For *VersionMismatchError, used
                                                       // for other system's version for
                                                       // error reportage.
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  ERR message is not intended to be transmitted!\n";
+            TRACE("ERROR!  ERR message is not intended to be transmitted!\n");
             ASSERT(0);
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
-            TRACE("ERROR!  ERR message is not intended to be transmitted!\n";
+            TRACE("ERROR!  ERR message is not intended to be transmitted!\n");
             ASSERT(0);
             }
       };;
@@ -344,54 +348,62 @@ class NetMsg
       // client tells server it wants to login
       struct Login {
          enum { Size = 9 };
-         unsigned char  ucType;                       // Message type
-         unsigned long  ulMagic;                      // Magic number
-         unsigned long  ulVersion;                    // Version number
+         uint8_t  ucType;                       // Message type
+         uint32_t  ulMagic;                      // Magic number
+         uint32_t  ulVersion;                    // Version number
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Get(&pmsg->msg.login.ucType);
             pBuf->Get(&pmsg->msg.login.ulMagic);
             pBuf->Get(&pmsg->msg.login.ulVersion);
+#endif
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Put(&pmsg->msg.login.ucType);
             pBuf->Put(&pmsg->msg.login.ulMagic);
             pBuf->Put(&pmsg->msg.login.ulVersion);
+#endif
             }
       };
 
       // server tells client it may login
       struct LoginAccept {
          enum { Size = 10 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID idAssigned;                          // Assigned ID
-         unsigned long  ulMagic;                      // Magic number
-         unsigned long  ulVersion;                    // Version number
+         uint32_t  ulMagic;                      // Magic number
+         uint32_t  ulVersion;                    // Version number
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Get(&pmsg->msg.loginAccept.ucType);
             pBuf->Get(&pmsg->msg.loginAccept.idAssigned);
             pBuf->Get(&pmsg->msg.loginAccept.ulMagic);
             pBuf->Get(&pmsg->msg.loginAccept.ulVersion);
+#endif
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Put(&pmsg->msg.loginAccept.ucType);
             pBuf->Put(&pmsg->msg.loginAccept.idAssigned);
             pBuf->Put(&pmsg->msg.loginAccept.ulMagic);
             pBuf->Put(&pmsg->msg.loginAccept.ulVersion);
+#endif
             }
       };
 
       // server tells client it may not login
       struct LoginDeny {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -407,7 +419,7 @@ class NetMsg
       // client tells server it is logging out
       struct Logout {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -423,10 +435,10 @@ class NetMsg
       // client tells server it wants to join
       struct JoinReq {
          enum { Size = 1 + Net::MaxPlayerNameSize + 1 + 1 + 2 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          char           acName[Net::MaxPlayerNameSize];// Name
-         unsigned char  ucColor;                      // Color number
-         unsigned char  ucTeam;                       // Team number
+         uint8_t  ucColor;                      // Color number
+         uint8_t  ucTeam;                       // Team number
          int16_t          sBandwidth;                   // Bandwidth
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -451,7 +463,7 @@ class NetMsg
       // server tells client it can join
       struct JoinAccept {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -467,8 +479,8 @@ class NetMsg
       // server tells client it cannot join
       struct JoinDeny {
          enum { Size = 2 };
-         unsigned char  ucType;                       // Message type
-         unsigned char  ucReason;                     // Reason for denail
+         uint8_t  ucType;                       // Message type
+         uint8_t  ucReason;                     // Reason for denail
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -487,12 +499,12 @@ class NetMsg
       struct Joined {
          enum { Size = 1 + 1 + sizeof(RSocket::Address) + Net::MaxPlayerNameSize + 1 + 1 + 2 };
 
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID id;                                  // ID
          RSocket::Address address;                    // Address
          char           acName[Net::MaxPlayerNameSize];// Name
-         unsigned char  ucColor;                      // Color number
-         unsigned char  ucTeam;                       // Team number
+         uint8_t  ucColor;                      // Color number
+         uint8_t  ucTeam;                       // Team number
          int16_t          sBandwidth;                   // Bandwidth
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -521,10 +533,10 @@ class NetMsg
       // client tells server it wants to change its info
       struct ChangeReq {
          enum { Size = 1 + Net::MaxPlayerNameSize + 1 + 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          char           acName[Net::MaxPlayerNameSize];// Name
-         unsigned char  ucColor;                      // Color number
-         unsigned char  ucTeam;                       // Team number
+         uint8_t  ucColor;                      // Color number
+         uint8_t  ucTeam;                       // Team number
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -546,11 +558,11 @@ class NetMsg
       // server tells client about a client's change
       struct Changed {
          enum { Size = 1 + 1 + Net::MaxPlayerNameSize + 1 + 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID id;                                  // ID
          char           acName[Net::MaxPlayerNameSize];// Name
-         unsigned char  ucColor;                      // Color number
-         unsigned char  ucTeam;                       // Team number
+         uint8_t  ucColor;                      // Color number
+         uint8_t  ucTeam;                       // Team number
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -574,7 +586,7 @@ class NetMsg
       // client tells server it wants to drop
       struct DropReq {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -601,7 +613,7 @@ class NetMsg
       // must respond to this message with a DropAck.
       struct Dropped {
          enum { Size = 1 + 1 + 2 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID id;                                  // Dropee's ID
          int16_t sContext;                              // Context or -1 if none
 
@@ -637,7 +649,7 @@ class NetMsg
       // they all have the same information.
       struct DropAck {
          enum { Size = 1 + sizeof(Net::SEQ) + sizeof(Net::SEQ) };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::SEQ seqLastDropeeInput;                 // Client's last input seq from dropee
          Net::SEQ seqLastDoneFrame;                   // Client's last frame that was done
 
@@ -666,7 +678,7 @@ class NetMsg
       // the DropAck that the client sent to the server.
       struct InputReq {
          enum { Size = 1 + 1 + sizeof(Net::SEQ) + 2 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID id;                                  // ID whose input is being requested
          Net::SEQ seqStart;                           // Startng seq of range
          int16_t sNum;                                  // Number of seq's in range
@@ -694,16 +706,17 @@ class NetMsg
       // The client sends this in response to the server's InputReq.
       struct InputData {
          enum { Size = -1 };                          // -1 indicates variable-sized message
-         unsigned char  ucType;                       // Message type
-         long lSize;                                  // Message size (must follow type!)
+         uint8_t  ucType;                       // Message type
+         int32_t lSize;                                  // Message size (must follow type!)
          Net::ID id;                                  // ID whose input is being sent
          Net::SEQ seqStart;                           // Starting seq of range
          int16_t sNum;                                  // Number of seq's in range
-         UINPUT* pInputs;                             // Pointer used to read/write actual input data
-         U8*      pFrameTimes;                           // Pointer to read/write actual frame time data *SPA
+         uint64_t* pInputs;                             // Pointer used to read/write actual input data
+         uint8_t*      pFrameTimes;                           // Pointer to read/write actual frame time data *SPA
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Get(&pmsg->msg.inputData.ucType);
             pBuf->Get(&pmsg->msg.inputData.lSize);
             pBuf->Get(&pmsg->msg.inputData.id);
@@ -711,16 +724,18 @@ class NetMsg
             pBuf->Get(&pmsg->msg.inputData.sNum);
 
             // Allocate buffer for variable-sized data
-            pmsg->msg.inputData.pInputs = (UINPUT*)AllocVar(pmsg, (long)pmsg->msg.inputData.sNum * sizeof(UINPUT));
+            pmsg->msg.inputData.pInputs = (uint64_t*)AllocVar(pmsg, (int32_t)pmsg->msg.inputData.sNum * sizeof(uint64_t));
 
             // Get the variable-sized data
-            pBuf->Get(pmsg->msg.inputData.pInputs, (long)(pmsg->msg.inputData.sNum));
+            pBuf->Get(pmsg->msg.inputData.pInputs, (int32_t)(pmsg->msg.inputData.sNum));
+#endif
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             // Calculate message size
-            pmsg->msg.inputData.lSize = 1 + 4 + 1 + sizeof(Net::SEQ) + 2 + ((long)(pmsg->msg.inputData.sNum) * sizeof(UINPUT));
+            pmsg->msg.inputData.lSize = 1 + 4 + 1 + sizeof(Net::SEQ) + 2 + ((int32_t)(pmsg->msg.inputData.sNum) * sizeof(uint64_t));
 
             // Write message
             pBuf->Put(&pmsg->msg.inputData.ucType);
@@ -728,7 +743,8 @@ class NetMsg
             pBuf->Put(&pmsg->msg.inputData.id);
             pBuf->Put(&pmsg->msg.inputData.seqStart);
             pBuf->Put(&pmsg->msg.inputData.sNum);
-            pBuf->Put(pmsg->msg.inputData.pInputs, (long)(pmsg->msg.inputData.sNum));
+            pBuf->Put(pmsg->msg.inputData.pInputs, (int32_t)(pmsg->msg.inputData.sNum));
+#endif
             }
       };
 
@@ -739,7 +755,7 @@ class NetMsg
       // invalid after the specified seq.
       struct InputMark {
          enum { Size = 1 + 1 + sizeof(Net::SEQ) };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::ID id;                                  // ID whose input is being requested
          Net::SEQ seqMark;                            // Seq to mark
 
@@ -762,8 +778,8 @@ class NetMsg
       struct ChatReq {
          enum { Size = 1 + 2 + Net::MaxChatSize };
 
-         unsigned char  ucType;                       // Message type
-         U16            u16Mask;                      // Who will get this chat text
+         uint8_t  ucType;                       // Message type
+         uint16_t            u16Mask;                      // Who will get this chat text
          char           acText[Net::MaxChatSize];     // Chat text
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -785,8 +801,8 @@ class NetMsg
       struct Chat {
          enum { Size = 1 + 1 + Net::MaxChatSize };
 
-         unsigned char  ucType;                       // Message type
-         unsigned char  id;                           // Who said this
+         uint8_t  ucType;                       // Message type
+         uint8_t  id;                           // Who said this
          char           acText[Net::MaxChatSize];     // Chat text
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -808,7 +824,7 @@ class NetMsg
       struct SetupGame {
          enum { Size = 1 + 2 + Net::MaxRealmNameSize + 2 + 2 + 2 + 2 + 2 + 2 };
 
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          int16_t          sRealmNum;                    // Starting realm number or -1 to use name
          char           acRealmFile[Net::MaxRealmNameSize];// Name of realm file to load
          int16_t          sDifficulty;                  // Difficulty level
@@ -848,7 +864,7 @@ class NetMsg
       // server tells clients to start game
       struct StartGame {
          enum { Size = 1 + 1 + 2 + Net::MaxRealmNameSize + 2 + 2 + 2 + 2 + 2 + sizeof(Net::SEQ) + 2 + 2};
-         unsigned char  ucType;                                   // Message type
+         uint8_t  ucType;                                   // Message type
          Net::ID        idServer;                                 // Server's ID
          int16_t          sRealmNum;                                // Starting realm number or -1 to use name
          char           acRealmFile[Net::MaxRealmNameSize];       // Name of realm file to load
@@ -897,8 +913,8 @@ class NetMsg
       // server tells clients to abort game
       struct AbortGame {
          enum { Size = 1 + 1 };
-         unsigned char  ucType;                       // Message type
-         unsigned char  ucReason;                     // Reason for abort
+         uint8_t  ucType;                       // Message type
+         uint8_t  ucReason;                     // Reason for abort
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -916,7 +932,7 @@ class NetMsg
       // client tells server the loaded realm is ready
       struct ReadyRealm {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -932,7 +948,7 @@ class NetMsg
       // client tells server the load failed
       struct BadRealm {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -948,7 +964,7 @@ class NetMsg
       // server tells clients to start realm
       struct StartRealm {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -964,7 +980,7 @@ class NetMsg
       // server tells clients to start realm
       struct HaltRealm {
          enum { Size = 1 + sizeof(Net::SEQ) };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::SEQ seqHalt;                            // Which seq to halt on
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -983,7 +999,7 @@ class NetMsg
       // server tells clients to go to next realm when the specified frame seq is reached
       struct NextRealm {
          enum { Size = 1 + sizeof(Net::SEQ) };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          Net::SEQ seqHalt;                            // Which seq to halt on
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
@@ -1003,7 +1019,7 @@ class NetMsg
       // or something like that which requires a centralized "user input"
       struct ProgressRealm {
          enum { Size = 1 + 2 + 2 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
          int16_t sNumReady;                             // Number of players that are ready
          int16_t sNumNotReady;                          // Number of players that are NOT ready
 
@@ -1026,7 +1042,7 @@ class NetMsg
       // or something like that which requires a centralized "user input"
       struct Proceed {
          enum { Size = 1 };
-         unsigned char  ucType;                       // Message type
+         uint8_t  ucType;                       // Message type
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
@@ -1042,44 +1058,52 @@ class NetMsg
       // ping (back and forth between client and server)
       struct Ping {
          enum { Size = 1 + 4 + 4 };
-         unsigned char  ucType;                       // Message type
-         long           lTimeStamp;                   // Timestap for this ping
-         long           lLatestPingResult;            // Latest ping result (round trip time)
+         uint8_t  ucType;                       // Message type
+         int32_t           lTimeStamp;                   // Timestap for this ping
+         int32_t           lLatestPingResult;            // Latest ping result (round trip time)
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Get(&pmsg->msg.ping.ucType);
             pBuf->Get(&pmsg->msg.ping.lTimeStamp);
             pBuf->Get(&pmsg->msg.ping.lLatestPingResult);
+#endif
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Put(&pmsg->msg.ping.ucType);
             pBuf->Put(&pmsg->msg.ping.lTimeStamp);
             pBuf->Put(&pmsg->msg.ping.lLatestPingResult);
+#endif
             }
       };
 
       // debug message used to compare random number sequences
       struct Rand {
          enum { Size = 1 + 4 + 4 };
-         unsigned char  ucType;                       // Message type
-         long           lFrame;                       // Current frame
-         long           lRand;                        // Current rand()
+         uint8_t  ucType;                       // Message type
+         int32_t           lFrame;                       // Current frame
+         int32_t           lRand;                        // Current rand()
 
          static void Read(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Get(&pmsg->msg.rand.ucType);
             pBuf->Get(&pmsg->msg.rand.lFrame);
             pBuf->Get(&pmsg->msg.rand.lRand);
+#endif
             }
 
          static void Write(NetMsg* pmsg, CBufQ* pBuf)
             {
+#if 0
             pBuf->Put(&pmsg->msg.rand.ucType);
             pBuf->Put(&pmsg->msg.rand.lFrame);
             pBuf->Put(&pmsg->msg.rand.lRand);
+#endif
             }
       };
 
@@ -1131,14 +1155,14 @@ class NetMsg
       // This is not sent as part of the message.  It is filled in at the receiving
       // end to indicate the sender of the message.  Note that this is NOT handled
       // by either NetMsg or CNetMsgr, which don't know who sent what.
-      unsigned char ucSenderID;
+      uint8_t ucSenderID;
 
    protected:
       // This is not sent as part of the message.  It is used by variable-length
       // messages that require a separate memory block for their data.  Note that
       // the size refers to the size of this data, not the whole msg.
-      U8*   m_pVarData;
-      long  m_lVarSize;
+      uint8_t*   m_pVarData;
+      int32_t  m_lVarSize;
 
    //------------------------------------------------------------------------------
    // Functions
@@ -1162,12 +1186,12 @@ class NetMsg
          msg.nothing.ucType = NOTHING;
          }
 
-      U8* AllocVar(
-         long lSize)
+      uint8_t* AllocVar(
+         int32_t lSize)
          {
          FreeVar();
          m_lVarSize = lSize;
-         m_pVarData = new U8[lSize];
+         m_pVarData = new uint8_t[lSize];
          return m_pVarData;
          }
 
@@ -1178,9 +1202,9 @@ class NetMsg
          m_lVarSize = 0;
          }
 
-      static U8* AllocVar(
+      static uint8_t* AllocVar(
          NetMsg* pmsg,
-         long lSize)
+         int32_t lSize)
          {
          return pmsg->AllocVar(lSize);
          }
@@ -1249,7 +1273,7 @@ class CNetMsgr
       typedef void (*FUNC_READ)(NetMsg* pmsg, CBufQ* pBuf); // Pointer to read function
       typedef void (*FUNC_WRITE)(NetMsg* pmsg, CBufQ* pBuf);   // Pointer to write function
       struct InfoMsg {
-         UCHAR          ucType;                       // Type (used only for debug ASSERTs)
+         uint8_t          ucType;                       // Type (used only for debug ASSERTs)
          size_t         size;                         // Size of data to read/write (bytes)
          FUNC_READ      funcRead;                     // Pointer to read function
          FUNC_WRITE     funcWrite;                    // Pointer to write function
@@ -1264,8 +1288,8 @@ class CNetMsgr
       RSocket::Address  m_address;                    // Address we're connected to
       CBufQ             m_bufIn;                      // Input buffer
       CBufQ             m_bufOut;                     // Output buffer
-      long              m_lMsgRecvTime;               // When most-recent message was recieved
-      long              m_lMsgSentTime;               // When most-recent message was sent
+      int32_t              m_lMsgRecvTime;               // When most-recent message was recieved
+      int32_t              m_lMsgSentTime;               // When most-recent message was sent
       NetMsg::Error     m_error;                      // Error value.
 
    // Made public by JMB for TAPI access
@@ -1353,7 +1377,7 @@ class CNetMsgr
             }
          else
             {
-            TRACE("CNetMsgr::Connect(): Couldn't open socket!\n";
+            TRACE("CNetMsgr::Connect(): Couldn't open socket!\n");
             }
 
          return sResult;
@@ -1455,12 +1479,12 @@ class CNetMsgr
       ////////////////////////////////////////////////////////////////////////////////
       // Determine the time of the most-recently received or sent message
       ////////////////////////////////////////////////////////////////////////////////
-      long GetMostRecentMsgReceiveTime(void)
+      int32_t GetMostRecentMsgReceiveTime(void)
          {
          return m_lMsgRecvTime;
          }
 
-      long GetMostRecentMsgSentTime(void)
+      int32_t GetMostRecentMsgSentTime(void)
          {
          return m_lMsgSentTime;
          }

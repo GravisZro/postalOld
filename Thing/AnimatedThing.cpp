@@ -96,7 +96,7 @@ int16_t CAnimThing::Load(                      // Returns 0 if successfull, non-
    RFile* pFile,                             // In:  File to load from
    bool bEditMode,                           // In:  True for edit mode, false otherwise
    int16_t sFileCount,                         // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                      // In:  Version of file format to load.
+   uint32_t ulFileVersion)                      // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
    if (sResult == 0)
@@ -235,7 +235,7 @@ double dScaleInc = 0.025;
 void CAnimThing::Render(void)
    {
    // Get current time diff.
-   long lCurTime     = m_pRealm->m_time.GetGameTime();
+   int32_t lCurTime     = m_pRealm->m_time.GetGameTime();
    m_lAnimTime       += lCurTime - m_lAnimPrevTime;
    m_lAnimPrevTime   = lCurTime;
 
@@ -280,7 +280,7 @@ void CAnimThing::Render(void)
 ///////////////////////////////////////////////////////////
 if (sEdit && (paa->m_sNumAlphas > 2))
    {
-   unsigned char auc[128];
+   uint8_t auc[128];
    rspScanKeys(auc);
    if (auc[RSP_SK_LEFT])
       {
@@ -294,17 +294,17 @@ if (sEdit && (paa->m_sNumAlphas > 2))
       }
    for (int16_t y = 0; y < paa->m_pimAlphaArray[1].m_sHeight; y++)
       {
-      U8* pSrc = paa->m_pimAlphaArray[1].m_pData + (y * paa->m_pimAlphaArray[1].m_lPitch);
-      U8* pDst = paa->m_pimAlphaArray[0].m_pData + (y * paa->m_pimAlphaArray[0].m_lPitch);
+      uint8_t* pSrc = paa->m_pimAlphaArray[1].m_pData + (y * paa->m_pimAlphaArray[1].m_lPitch);
+      uint8_t* pDst = paa->m_pimAlphaArray[0].m_pData + (y * paa->m_pimAlphaArray[0].m_lPitch);
 
       for (int16_t x = 0; x < paa->m_pimAlphaArray[1].m_sWidth; x++)
          {
          double dVal = (double)(*pSrc);
          dVal *= dScale;
          if (dVal < 256.0)
-            *pDst = (U8)dVal;
+            *pDst = (uint8_t)dVal;
          else
-            *pDst = (U8)255;
+            *pDst = (uint8_t)255;
          pSrc++;
          pDst++;
          }
@@ -392,7 +392,7 @@ int16_t CAnimThing::EditModify(void)
                RGuiItem* pguiSel = plb->GetSel();
                if (pguiSel)
                   {
-                  switch (pguiSel->m_lId)
+                  switch (pguiSel->m_lId.operator int16_t())
                      {
                      case GUI_ID_DONTLOOP:
                         m_sLoop = FALSE;

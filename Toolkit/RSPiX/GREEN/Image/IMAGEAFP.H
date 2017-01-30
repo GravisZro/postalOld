@@ -45,7 +45,7 @@
 
 #include "imagecon.h"
 
-typedef short (*CONVFUNC)(CImage* pImage);
+typedef int16_t (*CONVFUNC)(CImage* pImage);
 
 // These are "convert to..." functions which should first check the current image type
 // to see if it can convert from the current type to the specified type

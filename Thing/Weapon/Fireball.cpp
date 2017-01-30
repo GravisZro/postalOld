@@ -159,7 +159,7 @@ int16_t CFirestream::Load(                              // Returns 0 if successf
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -278,7 +278,7 @@ void CFirestream::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CFirestream::Update(void)
 {
-   long lThisTime;
+   int32_t lThisTime;
 
    if (!m_sSuspend)
    {
@@ -373,8 +373,8 @@ int16_t CFirestream::Setup(                          // Returns 0 if successfull
    int16_t sY,                                    // In:  New y coord
    int16_t sZ,                                    // In:  New z coord
    int16_t sDir,                                  // In:  Direction of travel
-   long lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
-   U16 u16ShooterID)                            // In:  Shooter's ID so you don't hit him
+   int32_t lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
+   uint16_t u16ShooterID)                            // In:  Shooter's ID so you don't hit him
 {
    int16_t sResult = 0;
    double dX;
@@ -590,7 +590,7 @@ CFirestream::CFirestreamState CFirestream::ProcessFireballMessages(void)
 // Let this auto-init to 0
 int16_t CFireball::ms_sFileCount;
 int16_t CFireball::ms_sSmallRadius = 8;
-long  CFireball::ms_lCollisionTime = 250;       // Check for collisions this often
+int32_t  CFireball::ms_lCollisionTime = 250;       // Check for collisions this often
 double CFireball::ms_dFireVelocity = 300;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -600,7 +600,7 @@ int16_t CFireball::Load(                             // Returns 0 if successfull
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -721,7 +721,7 @@ void CFireball::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CFireball::Update(void)
 {
-   long lThisTime;
+   int32_t lThisTime;
    double dSeconds;
    double dDistance;
    double dNewX;
@@ -870,7 +870,7 @@ void CFireball::Render(void)
          m_lTotalFlameTime = 500;
          }
 
-//    m_sprite.m_sAlphaLevel = MIN((long)255, (long) (((m_lTimeToLive - m_pRealm->m_time.GetGameTime()) / m_lTotalFlameTime) * 255));
+//    m_sprite.m_sAlphaLevel = MIN((int32_t)255, (int32_t) (((m_lTimeToLive - m_pRealm->m_time.GetGameTime()) / m_lTotalFlameTime) * 255));
 
       // Copy the color info and the alpha channel to the Alpha Sprite
       m_sprite.m_pImage = &(pAnim->m_imColor);
@@ -901,8 +901,8 @@ int16_t CFireball::Setup(                         // Returns 0 if successfull, n
    int16_t sY,                                    // In:  New y coord
    int16_t sZ,                                    // In:  New z coord
    int16_t sDir,                                  // In:  Direction of travel
-   long lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
-   U16 u16ShooterID)                            // In:  Shooter's ID so you don't hit him
+   int32_t lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
+   uint16_t u16ShooterID)                            // In:  Shooter's ID so you don't hit him
 {
    int16_t sResult = 0;
 

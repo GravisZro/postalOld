@@ -170,7 +170,7 @@ int16_t CSmashatorium::CollideCyl(CSmash* pSmashee,RSphere* pSphere) // sphere o
    if (!pSmashee->m_pThing) return SUCCESS;  // not a dude
    if (pSmashee->m_pThing->GetClassID() != CThing::CDudeID) return SUCCESS;   // not a dude
    // it's a dude !  see if the cylinder collides:
-   long  lCylR = pSmashee->m_sphere.sphere.lRadius / 3;  // go with half the sphere radius
+   int32_t  lCylR = pSmashee->m_sphere.sphere.lRadius / 3;  // go with half the sphere radius
    // NOTE that if it's a DUDE colliding with a DUDE, only one uses a cylinder:
    if (ABS2(pSmashee->m_sphere.sphere.X - pSphere->X,
       pSmashee->m_sphere.sphere.Z - pSphere->Z) >
@@ -191,8 +191,8 @@ int16_t CSmashatorium::CollideCyl(CSmash* pSmashee,R3DLine* pLine) // sphere of 
    if (!pSmashee->m_pThing) return SUCCESS;  // not a dude
    if (pSmashee->m_pThing->GetClassID() != CThing::CDudeID) return SUCCESS;   // not a dude
    // it's a dude !  see if the cylinder collides:
-   long  lCylR = pSmashee->m_sphere.sphere.lRadius / 3;  // go with half the sphere radius
-   long  lOldR = pSmashee->m_sphere.sphere.lRadius;
+   int32_t  lCylR = pSmashee->m_sphere.sphere.lRadius / 3;  // go with half the sphere radius
+   int32_t  lOldR = pSmashee->m_sphere.sphere.lRadius;
    pSmashee->m_sphere.sphere.lRadius = lCylR;   // shrink it:
    int16_t sCollide = pSmashee->m_sphere.Collide(pLine);
    pSmashee->m_sphere.sphere.lRadius = lOldR;   // shrink it:
@@ -231,18 +231,18 @@ int16_t CSmashatorium::Alloc(int16_t sWorldW,int16_t sWorldH,int16_t sTileW,int1
       m_sGridH = (m_sClipH + sTileH - 1) / sTileH;
 
       // For current logic convenience, do not allow partial tiles to exist:
-      m_sClipW = long(m_sGridW) * sTileW;
-      m_sClipH = long(m_sGridH) * sTileH;
+      m_sClipW = int32_t(m_sGridW) * sTileW;
+      m_sClipH = int32_t(m_sGridH) * sTileH;
 
       // Note that we must add 2 tile lengths to each access line:
-      m_pGrid = new CSmashatoriumList[long(m_sGridW) * m_sGridH];
+      m_pGrid = new CSmashatoriumList[int32_t(m_sGridW) * m_sGridH];
       m_psAccessX = (int16_t*) calloc(sizeof(int16_t),m_sClipW);
       m_psAccessY = (int16_t*) calloc(sizeof(int16_t),m_sClipH);
       m_ppslAccessY = (CSmashatoriumList**) calloc(sizeof (CSmashatoriumList*),m_sClipH);
 
       if (!m_psAccessX || !m_psAccessX || !m_ppslAccessY || !m_pGrid)
          {
-         TRACE("CSmashatorium::Ran out of memory!\n";
+         TRACE("CSmashatorium::Ran out of memory!\n");
          Destroy();
          Erase();
          return FAILURE;
@@ -273,7 +273,7 @@ int16_t CSmashatorium::Alloc(int16_t sWorldW,int16_t sWorldH,int16_t sTileW,int1
             {
             m_psAccessY[p] = g;
             // Remember you are in pointer arithmetic mode!!!!
-            m_ppslAccessY[p] = m_pGrid + long(m_sGridW) * g;
+            m_ppslAccessY[p] = m_pGrid + int32_t(m_sGridW) * g;
             }
          }
 
@@ -300,8 +300,8 @@ void  CSmashatorium::Reset()
    m_sCurrentListX = m_sCurrentListY = m_sSearchW = m_sSearchH = 0;
    //----------------------------------------------------------------
    // Go down the list of CSmashatoriumList's:
-   long lCur;
-   for (lCur = 0; lCur < long(m_sGridW) * m_sGridH; lCur++)
+   int32_t lCur;
+   for (lCur = 0; lCur < int32_t(m_sGridW) * m_sGridH; lCur++)
       {
       CSmashatoriumList *pCur = m_pGrid + lCur;
       pCur->m_sNum = 0;
@@ -337,10 +337,10 @@ void CSmashatorium::QuickCheckReset(// Returns true if collision detected, false
    // (1) cast into a square:
    //---------------------------------------------------------------
    RSphere* pSphere = &(m_pSmasher->m_sphere.sphere);
-   long lR = pSphere->lRadius;
+   int32_t lR = pSphere->lRadius;
 
    // Find upper left & lower right position:
-   long  lX,lY,lX2,lY2;
+   int32_t  lX,lY,lX2,lY2;
    lX = pSphere->X - lR;
    lY = pSphere->Z - lR;
 
@@ -442,7 +442,7 @@ void CSmashatorium::QuickCheckReset(            // Returns true if collision det
    CSmash::Bits dontcare,                       // In:  Bits that you don't care about
    CSmash::Bits exclude)                        // In:  Bits that must be 0 to collide with a given CSmash
    {
-   TRACE("NEVER USED!\n";
+   TRACE("NEVER USED!\n");
    ASSERT(0);
    }
 
@@ -599,10 +599,10 @@ bool CSmashatorium::QuickCheck(                 // Returns true if collision det
    // (1) cast into a square:
    //---------------------------------------------------------------
    RSphere* pSphere = &(pSmasher->m_sphere.sphere);
-   long lR = pSphere->lRadius;
+   int32_t lR = pSphere->lRadius;
 
    // Find upper left & lower right position:
-   long  lX,lY,lX2,lY2;
+   int32_t  lX,lY,lX2,lY2;
    lX = pSphere->X - lR;
    lY = pSphere->Z - lR;
 
@@ -731,18 +731,18 @@ bool CSmashatorium::QuickCheckClosest(          // Returns true if collision det
    // (1) cast into a square:
    //---------------------------------------------------------------
    RSphere* pSphere = &(pSmasher->m_sphere.sphere);
-   long lR = pSphere->lRadius;
+   int32_t lR = pSphere->lRadius;
 
-   long lClosestDist2 = 2000000000; // a large number
-   long lCurDist2;
+   int32_t lClosestDist2 = 2000000000; // a large number
+   int32_t lCurDist2;
 
-   long lSmasherX = pSphere->X;
-   long lSmasherY = pSphere->Z;
+   int32_t lSmasherX = pSphere->X;
+   int32_t lSmasherY = pSphere->Z;
 
    CSmash* pClosestSmash = nullptr;
 
    // Find upper left & lower right position:
-   long  lX,lY,lX2,lY2;
+   int32_t  lX,lY,lX2,lY2;
    lX = lSmasherX - lR;
    lY = lSmasherY - lR;
 
@@ -941,10 +941,10 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
    //************************************************************************************
    // Sort points left to right:
 
-   long lLeft = pline->X1;
-   long lRight = pline->X2;
-   long lLeftY = pline->Z1;
-   long lRightY = pline->Z2;
+   int32_t lLeft = pline->X1;
+   int32_t lRight = pline->X2;
+   int32_t lLeftY = pline->Z1;
+   int32_t lRightY = pline->Z2;
 
    // Inverted case
    if (lRight < lLeft)
@@ -956,24 +956,24 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
       }
    //************************************************************************************
    // Calculate y major line coefficients: (later, adapt to clipping values)
-   long  lDelX = lRight - lLeft;
-   long  lDelY = lRightY - lLeftY;
-   long  lDet = lDelX * lRightY - lDelY * lRight;
-   long  lDetY = lDelY * lRight - lDelX * lRightY; // for x-major line form
+   int32_t  lDelX = lRight - lLeft;
+   int32_t  lDelY = lRightY - lLeftY;
+   int32_t  lDet = lDelX * lRightY - lDelY * lRight;
+   int32_t  lDetY = lDelY * lRight - lDelX * lRightY; // for x-major line form
 
    //************************************************************************************
    // Handle Clipping, x-major line caclulation, and special cases
             //***************  NYI!  **************
 
    // Check for horizontal clipping (easy)
-   long  lClipLeft = lLeft;// = MAX(0,lLeft);
-   long  lClipRight = lRight;// = MIN(m_sWorldW - 1,lRight);
-   long  lClipLeftY = lLeftY;
-   long  lClipRightY = lRightY;
+   int32_t  lClipLeft = lLeft;// = MAX(0,lLeft);
+   int32_t  lClipRight = lRight;// = MIN(m_sWorldW - 1,lRight);
+   int32_t  lClipLeftY = lLeftY;
+   int32_t  lClipRightY = lRightY;
 
    int16_t sVerticalStrip = false;
-   long  lGridLeft;
-   long  lGridRight;
+   int32_t  lGridLeft;
+   int32_t  lGridRight;
 
    if (lDelX)  // determine x-clipping values:
       {
@@ -998,8 +998,8 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
    // Check for case of reverse clip out:
    if ( (lLeft >= m_sWorldW) || (lRight < 0) ) return false;   // clipped out!
 
-   lGridLeft = (long)m_psClipX[lClipLeft];   // These represent pts BETWEEN grid squares
-   lGridRight = 1 + (long)m_psClipX[lClipRight];
+   lGridLeft = (int32_t)m_psClipX[lClipLeft];   // These represent pts BETWEEN grid squares
+   lGridRight = 1 + (int32_t)m_psClipX[lClipRight];
 
    if ((lDelX == 0) || ( (lGridRight - lGridLeft) <= 1) )
       {
@@ -1041,7 +1041,7 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
 
             if ( (lClipLeft < 0) || (lClipLeft >= m_sWorldW) ) return false;
 
-            lGridLeft = (long)m_psClipX[lClipLeft];
+            lGridLeft = (int32_t)m_psClipX[lClipLeft];
             sClippingY = true;
             }
 
@@ -1052,7 +1052,7 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
 
             if ( (lClipRight < 0) || (lClipRight >= m_sWorldW) ) return false;
 
-            lGridRight = 1 + (long)m_psClipX[lClipRight];
+            lGridRight = 1 + (int32_t)m_psClipX[lClipRight];
             sClippingY = true;
             }
 
@@ -1077,7 +1077,7 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
 
             if ( (lClipRight < 0) || (lClipRight >= m_sWorldW) ) return false;
 
-            lGridRight = 1 + (long)m_psClipX[lClipRight];
+            lGridRight = 1 + (int32_t)m_psClipX[lClipRight];
             sClippingY = true;
             }
 
@@ -1097,7 +1097,7 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
 
             if ( (lClipLeft < 0) || (lClipLeft >= m_sWorldW) ) return false;
 
-            lGridLeft = (long)m_psClipX[lClipLeft];
+            lGridLeft = (int32_t)m_psClipX[lClipLeft];
             sClippingY = true;
             }
 
@@ -1122,12 +1122,12 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
    // allocate on the stack a local point chart:
 #define MAX_GRID_W 1024 //************************************ NEED TO DEAL WITH THIS!
 
-   long  alPointsY[MAX_GRID_W + 1];
+   int32_t  alPointsY[MAX_GRID_W + 1];
    int16_t i,x;
 
    // Get end points:
-   alPointsY[lGridLeft] = (long)m_psClipY[lClipLeftY];
-   alPointsY[lGridRight] = (long)m_psClipY[lClipRightY];
+   alPointsY[lGridLeft] = (int32_t)m_psClipY[lClipLeftY];
+   alPointsY[lGridRight] = (int32_t)m_psClipY[lClipRightY];
 
    //************************************************************************************
    // Handle vertical strip case, if applicable:
@@ -1141,7 +1141,7 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
       for (i = lGridLeft + 1; i < lGridRight; i++, x += m_sTileW)
          {
          alPointsY[i] = (x * lDelY + lDet) / lDelX; // WARNING - watch for lDelX
-         alPointsY[i] = (long)m_psClipY[alPointsY[i]]; // convert to grid coordinates
+         alPointsY[i] = (int32_t)m_psClipY[alPointsY[i]]; // convert to grid coordinates
          }
       }
 
@@ -1154,8 +1154,8 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
    if (lDelY < 0) sSignY = -1;
 
    // SET UP DISTANCE VARIABLES:
-   long lClosestDist2 = 2000000000; // a large number
-   long lCurDist2;
+   int32_t lClosestDist2 = 2000000000; // a large number
+   int32_t lCurDist2;
    CSmash* pClosestSmash = nullptr;
 
    m_lCurrentSearchCode++;       // prepare for a new searching code
@@ -1324,11 +1324,11 @@ void CSmashatorium::Update(CSmash* pSmash)   // In:  CSmash to be updated
    //---------------------------------------------------------------
    // (1) Cast the sphere into a 2 point square
    RSphere* pSphere = &(pSmash->m_sphere.sphere);
-   long lR = pSphere->lRadius;
-   long lD = lR << 1;
+   int32_t lR = pSphere->lRadius;
+   int32_t lD = lR << 1;
 
    // Find upper left position:
-   long  lX,lY;
+   int32_t  lX,lY;
    lX = pSphere->X - lR;
    lY = pSphere->Z - lR;
 
@@ -1351,7 +1351,7 @@ void CSmashatorium::Update(CSmash* pSmash)   // In:  CSmash to be updated
 
          if (!pFat)
             {
-            TRACE("CSmashatorium::Update: memory alloc error! Couldn't add to smashatorium!\n";
+            TRACE("CSmashatorium::Update: memory alloc error! Couldn't add to smashatorium!\n");
             return;
             }
 
@@ -1366,7 +1366,7 @@ void CSmashatorium::Update(CSmash* pSmash)   // In:  CSmash to be updated
          pFat->m_sNumGrids = pFat->m_sW * pFat->m_sH;
          if (pFat->Alloc(pFat->m_sNumGrids) != SUCCESS)
             {
-            TRACE("CSmashatorium::Update: memory alloc error! Couldn't add to smashatorium!\n";
+            TRACE("CSmashatorium::Update: memory alloc error! Couldn't add to smashatorium!\n");
             return;
             }  // (all links are now nullptr!
 
@@ -1550,7 +1550,7 @@ void  CSmashatorium::AddFat(CFatSmash* pFatSmash)
    m_sNumInSmash++;
    if (m_sNumInSmash > m_sMaxNumInSmash) m_sMaxNumInSmash = m_sNumInSmash;
 
-   TRACE("Fat added\n";
+   TRACE("Fat added\n");
    }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1624,7 +1624,7 @@ void  CSmashatorium::RemoveFat(CFatSmash* pFatSmash)
    //===========================================
    m_sNumInSmash--;
 
-   TRACE("Fat removed\n";
+   TRACE("Fat removed\n");
    }
 
 //******************************************************************************

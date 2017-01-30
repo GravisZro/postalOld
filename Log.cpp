@@ -52,7 +52,7 @@ int16_t OpenLogFile()
 #endif
             {
             sResult = 1;
-            TRACE("Play: Cannot open network syn log file\n";
+            TRACE("Play: Cannot open network syn log file\n");
             }
          }
       }
@@ -73,7 +73,7 @@ int16_t CloseLogFile()
       if ((g_GameSettings.m_rfNetSyncLog.Close()) != 0)
          {
          sResult = 1;
-         TRACE("Play: Failed to close the network syn log file\n";
+         TRACE("Play: Failed to close the network syn log file\n");
          }
       }
    return sResult;
@@ -88,18 +88,18 @@ int16_t CloseLogFile()
 extern
 int16_t WriteTimeStamp(char const * const pszCaller,                // Name of calling routine
                      char const * const pszCalleeName,               // Name of player being sent or sending
-                     unsigned char ucMsgType,         // Message type
+                     uint8_t ucMsgType,         // Message type
                      Net::SEQ seqStart,               // Beginning sequent sent/received
-                     long sNum,                       // Number of seq's sent/received
+                     int32_t sNum,                       // Number of seq's sent/received
                      char bReceived,                     // a received or a sent message? TRUE if received
-                     U16 u16PackageID/*=0*/)          // Uniquely identifiable package id                                                    //    True if receiving, false if sending
+                     uint16_t u16PackageID/*=0*/)          // Uniquely identifiable package id                                                    //    True if receiving, false if sending
    {
    int16_t sResult = 0;
    char const * szCallerMsg;
    char szTime[256];
    char szSeq[256];
    char szNum[256];
-   long lTime = rspGetMilliseconds();
+   int32_t lTime = rspGetMilliseconds();
 
    if ((ucMsgType == NetMsg::START_REALM)&&(bReceived))
       {
@@ -125,7 +125,7 @@ int16_t WriteTimeStamp(char const * const pszCaller,                // Name of c
       {
       if ((prfLog->Open(g_GameSettings.m_szNetSyncLogFile, "wt+", endian)) != 0)
          {
-         TRACE("WriteTimeStamp: Failed to open network time stamp log file\n";
+         TRACE("WriteTimeStamp: Failed to open network time stamp log file\n");
          sResult = -1;
          }
       }
@@ -148,7 +148,7 @@ int16_t WriteTimeStamp(char const * const pszCaller,                // Name of c
 
    // Write package ID
    char szPackageID[256];
-   ltoa((long)u16PackageID, szPackageID, 10);
+   ltoa((int32_t)u16PackageID, szPackageID, 10);
    prfLog->Write(szPackageID);
    prfLog->Write(" ");
 
@@ -293,7 +293,7 @@ int16_t WriteTimeStamp(char const * const pszCaller,                // Name of c
 //    global variables used:     g_GameSettings
 ////////////////////////////////////////////////////////////////////////////////
 extern
-int16_t WriteInputData(U32 *input)
+int16_t WriteInputData(uint32_t *input)
    {
    int16_t sResult = 0;
    char szInput[256];

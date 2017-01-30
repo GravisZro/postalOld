@@ -58,20 +58,20 @@ void rspAlphaMaskBlit(RMultiAlpha* pX,RImage* pimMask,
       rDstClip.sX,rDstClip.sY,rDstClip.sW,rDstClip.sH) == -1) return ; // clipped out
 
    int16_t i,j;
-   long lSrcP = pimSrc->m_lPitch;
-   long lDstP = pimDst->m_lPitch;
-   long lMaskP = pimMask->m_lPitch;
-   UCHAR* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
-   UCHAR* pMask,*pMaskLine = pimMask->m_pData + sSrcX + sSrcY * lSrcP;
-   UCHAR* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
-   UCHAR ucOpaque = (UCHAR) pX->m_sNumLevels;
+   int32_t lSrcP = pimSrc->m_lPitch;
+   int32_t lDstP = pimDst->m_lPitch;
+   int32_t lMaskP = pimMask->m_lPitch;
+   uint8_t* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
+   uint8_t* pMask,*pMaskLine = pimMask->m_pData + sSrcX + sSrcY * lSrcP;
+   uint8_t* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
+   uint8_t ucOpaque = (uint8_t) pX->m_sNumLevels;
 
    for (j=0;j<sDstH;j++,pSrcLine += lSrcP,pDstLine += lDstP,pMaskLine += lMaskP)
       {
       pSrc = pSrcLine;
       pDst = pDstLine;
       pMask = pMaskLine;
-      UCHAR ucMask;
+      uint8_t ucMask;
 
       for (i=0;i<sDstW;i++,pSrc++,pDst++,pMask++)
          {
@@ -101,10 +101,10 @@ void rspAlphaBlit(RAlpha* pX,RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t
       pimDst->m_sWidth,pimDst->m_sHeight) == -1) return ; // clipped out
 
    int16_t i,j;
-   long lSrcP = pimSrc->m_lPitch;
-   long lDstP = pimDst->m_lPitch;
-   UCHAR* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
-   UCHAR* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
+   int32_t lSrcP = pimSrc->m_lPitch;
+   int32_t lDstP = pimDst->m_lPitch;
+   uint8_t* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
+   uint8_t* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
 
    for (j=0;j<sDstH;j++,pSrcLine += lSrcP,pDstLine += lDstP)
       {
@@ -120,9 +120,9 @@ void rspAlphaBlit(RAlpha* pX,RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t
    */
 
 // alpha key values
-UCHAR sCheckSum1[40] = {184,176,176,187,189,166,186,0};
-UCHAR sCheckSum2[40] = {173, 172, 175, 223, 149,154,153,153,220,205,210,204,209,136,158,137,0};
-UCHAR sCheckSum3[40] = {173, 172, 175, 223, 173,158,145,155,134,220,205,210,204,209,136,158,137,255};
+uint8_t sCheckSum1[40] = {184,176,176,187,189,166,186,0};
+uint8_t sCheckSum2[40] = {173, 172, 175, 223, 149,154,153,153,220,205,210,204,209,136,158,137,0};
+uint8_t sCheckSum3[40] = {173, 172, 175, 223, 173,158,145,155,134,220,205,210,204,209,136,158,137,255};
 
 /*
 // This draws source to destination with clipping only if destination is not zero!
@@ -138,10 +138,10 @@ void rspMaskBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY)
       pimDst->m_sWidth,pimDst->m_sHeight) == -1) return ; // clipped out
 
    int16_t i,j;
-   long lSrcP = pimSrc->m_lPitch;
-   long lDstP = pimDst->m_lPitch;
-   UCHAR* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
-   UCHAR* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
+   int32_t lSrcP = pimSrc->m_lPitch;
+   int32_t lDstP = pimDst->m_lPitch;
+   uint8_t* pSrc,*pSrcLine = pimSrc->m_pData + sSrcX + sSrcY * lSrcP;
+   uint8_t* pDst,*pDstLine = pimDst->m_pData + sDstX + lDstP * sDstY;
 
    for (j=0;j<sDstH;j++,pSrcLine += lSrcP,pDstLine += lDstP)
       {
@@ -156,11 +156,11 @@ void rspMaskBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY)
    }
 
 // Takes a BMP8 and converts it to a mask of 0 and ucVal
-void rspMakeMask(RImage* pimSrc,UCHAR ucVal)
+void rspMakeMask(RImage* pimSrc,uint8_t ucVal)
    {
    int16_t i,j;
-   long lSrcP = pimSrc->m_lPitch;
-   UCHAR* pSrc,*pSrcLine = pimSrc->m_pData;
+   int32_t lSrcP = pimSrc->m_lPitch;
+   uint8_t* pSrc,*pSrcLine = pimSrc->m_pData;
 
    for (j=0;j<pimSrc->m_sHeight;j++,pSrcLine += lSrcP)
       {
@@ -174,13 +174,13 @@ void rspMakeMask(RImage* pimSrc,UCHAR ucVal)
 
 // Takes a BMP8 and converts it to a mask of 0 and ucVal
 // Currently, no clipping or positioning possible
-void rspCopyAsMask(RImage* pimSrc,RImage* pimDst,UCHAR ucVal)
+void rspCopyAsMask(RImage* pimSrc,RImage* pimDst,uint8_t ucVal)
    {
    int16_t i,j;
-   long lSrcP = pimSrc->m_lPitch;
-   long lDstP = pimDst->m_lPitch;
-   UCHAR* pSrc,*pSrcLine = pimSrc->m_pData;
-   UCHAR* pDst,*pDstLine = pimDst->m_pData;
+   int32_t lSrcP = pimSrc->m_lPitch;
+   int32_t lDstP = pimDst->m_lPitch;
+   uint8_t* pSrc,*pSrcLine = pimSrc->m_pData;
+   uint8_t* pDst,*pDstLine = pimDst->m_pData;
 
    int16_t sDstW = pimSrc->m_sWidth;
    int16_t sDstH = pimSrc->m_sHeight;
@@ -234,7 +234,7 @@ void g_alphaBlit(
    if (imMask.CreateImage(sW,sH,RImage::BMP8)==SUCCESS)
       {
       // make copy of source converting it into a mask value
-      rspCopyAsMask(&imSource,&imMask,UCHAR(255)); // hard code 4 for now!
+      rspCopyAsMask(&imSource,&imMask,uint8_t(255)); // hard code 4 for now!
       }
 
    // NOW IN A SPECIAL WAY, get the hole into the mask:
@@ -318,9 +318,9 @@ void test(RImage* pimF,RImage* pimB)
    // Wait until user input
    bool bContinue = TRUE;
 
-   long  lTime = rspGetMilliseconds();
-   long lKey = 0;
-   long lPrevTime = lTime;
+   int32_t  lTime = rspGetMilliseconds();
+   int32_t lKey = 0;
+   int32_t lPrevTime = lTime;
    rspSetMouse(sCenterX,sCenterY);
 
    while (bContinue)
@@ -416,9 +416,9 @@ void SetAll()
       g_resmgrShell.Release(pimF);
       return;
       }
-   U8 Map[256];
-   for (i=0;i < 256;i++) Map[i] = UCHAR(i);
-   rspSetPaletteMaps(0,256,Map,Map,Map,sizeof(U8));
+   uint8_t Map[256];
+   for (i=0;i < 256;i++) Map[i] = uint8_t(i);
+   rspSetPaletteMaps(0,256,Map,Map,Map,sizeof(uint8_t));
 
    test(pimF,pimB);
 

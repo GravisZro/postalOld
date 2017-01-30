@@ -39,7 +39,7 @@
 
 // Access into window.
 struct PANE {
-	UCHAR		*puc;		// Pane data.
+	uint8_t		*puc;		// Pane data.
 	long		lSize;	// Size of pane.
 	long		lPos;		// Pane's position in Window.
 };
@@ -47,9 +47,9 @@ struct PANE {
 typedef PANE* PPANE;
 
 // User callback.
-typedef void (*FWFUNC)(PPANE ppane, long lUser);
+typedef void (*FWFUNC)(PPANE ppane, int32_t lUser);
 
-typedef long (*FILEWIN_TIMEFUNC)(long lUserTime);
+typedef int32_t (*FILEWIN_TIMEFUNC)(int32_t lUserTime);
 
 class CFileWin
 	{
@@ -62,38 +62,38 @@ class CFileWin
 	public:		// Methods.
 		// Sets size of window, i/o pane, and user pane.
 		// Returns 0 on success.
-		short SetSize(long lWinSize, long lIOPaneSize, long lUserPaneSize);
+		int16_t SetSize(int32_t lWinSize, int32_t lIOPaneSize, int32_t lUserPaneSize);
 		
 		// Sets interval between input access.
-		void SetInputInterval(long lInputInterval)
+		void SetInputInterval(int32_t lInputInterval)
 			{ m_lInputInterval = lInputInterval; }
 
 		// Opens a window into pszFile.  Read only!
 		// Returns 0 on success.
-		short Open(char* pszFile);
+		int16_t Open(char* pszFile);
 
 		// Closes the currently open file.
 		// Returns 0 on success.
-		short Close(void);
+		int16_t Close(void);
 
 		// Move to next user pane.
 		// Returns 0 on success.
-		short NextPane(void);
+		int16_t NextPane(void);
 
 		// Start reading.
 		// Returns 0 on success.
-		short Start(void);
+		int16_t Start(void);
 
 		// Suspend reading.
 		// Returns 0 on success.
-		short Suspend(void);
+		int16_t Suspend(void);
 
 		// Clear status flag.
 		void ClearStatus(void)
 			{ m_usStatus = 0; }
 
 		// Set time function.  Set to nullptr to clear.
-		void SetTimeFunc(FILEWIN_TIMEFUNC fnTime, long lTimeUser)
+		void SetTimeFunc(FILEWIN_TIMEFUNC fnTime, int32_t lTimeUser)
 			{ m_fnTime = fnTime; m_lTimeUser = lTimeUser; }
 
 	public:		// Querries.
@@ -104,12 +104,12 @@ class CFileWin
 			}
 
 		// Returns TRUE if next user pane is ready; FALSE otherwise.
-		short IsNextPaneReady(void);
+		int16_t IsNextPaneReady(void);
 		// Returns TRUE if next i/o pane is ready; FALSE otherwise.
-		short IsNextInputPaneReady(void);
+		int16_t IsNextInputPaneReady(void);
 
 		// Current callback status.
-		USHORT GetStatus(void)
+		uint16_t GetStatus(void)
 			{ return m_usStatus; }
 
 		// Get time based on user handler or blue.
@@ -117,7 +117,7 @@ class CFileWin
 			{ return (m_fnTime == nullptr ? Blu_GetTime() : (*m_fnTime)(m_lTimeUser) ); }
 
 		// Returns TRUE if critical handler is Blue's critical list.
-		short IsActive(void)
+		int16_t IsActive(void)
 			{ return m_sActive; }
 
 	protected:	// Internal methods.
@@ -128,7 +128,7 @@ class CFileWin
 		
 		// Allocates the file window of size lSize.
 		// Returns 0 on success.
-		short Alloc(long lSize);
+		int16_t Alloc(int32_t lSize);
 		// Frees the file window.
 		void Free(void);
 
@@ -139,7 +139,7 @@ class CFileWin
 
 		// Move to next i/o pane.
 		// Returns 0 on success.
-		short NextIOPane(void);
+		int16_t NextIOPane(void);
 
 	public:		// Members.
 		long		m_lUser;				// Set this to whatever you want!
@@ -147,18 +147,18 @@ class CFileWin
 	
 	protected:	// Members.
 		CNFile	m_file;				// File object use to read data.
-		UCHAR*	m_pucWindow;		// Window into file.
+		uint8_t*	m_pucWindow;		// Window into file.
 		long		m_lWinSize;			// Size of window.
 		long		m_lInputInterval;	// Time between pane input accesses.
 		long		m_lNextTime;		// Time of next pane input.
 		PANE		m_paneIn;			// Window pane for input.
 		PANE		m_paneUser;			// Window pane for user access.
-		USHORT	m_usStatus;			// Current status.
+		uint16_t	m_usStatus;			// Current status.
 		FILEWIN_TIMEFUNC	m_fnTime;// Custom time handler.
 		long		m_lTimeUser;		// User value for time handler.
-		short		m_sActive;			// TRUE if critical is active, FALSE 
+		int16_t		m_sActive;			// TRUE if critical is active, FALSE 
 											// otherwise.
-		short		m_sSuspend;			// Number of calls to suspend w/o matching
+		int16_t		m_sSuspend;			// Number of calls to suspend w/o matching
 											// start.
 	};
 

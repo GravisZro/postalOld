@@ -23,7 +23,7 @@
 // History:
 //    12/05/96 MJR   Started.
 //
-//    03/24/97 JMI   Changed m_aInputs[] from long to UINPUT.
+//    03/24/97 JMI   Changed m_aInputs[] from long to uint64_t.
 //
 //    03/31/97 JMI   Added g_InputSettings instantiation.
 //
@@ -84,7 +84,7 @@
 //                   If you fill the entire record buffer, the dude will
 //                   automatically commit suicide as the last thing he does.
 //
-//    07/06/97 JMI   Changed m_au8PlayKeys[] from a U8 array to a int16_t array,
+//    07/06/97 JMI   Changed m_au8PlayKeys[] from a uint8_t array to a int16_t array,
 //                   m_asPlayKeys[].
 //                   Also, changed m_asPlayButtons to m_asPlayMouseButtons.
 //
@@ -188,7 +188,7 @@
 
 #include <RSPiX.h>
 #include "Input.h"
-#include <CompileOptions.h>
+
 
 #ifdef MOBILE
 #include <android/android.h>
@@ -277,8 +277,8 @@
 
 struct Cheat {
    char  szCheat[21];
-   UINPUT   input;
-   long  lLastValidInputTime;
+   uint64_t   input;
+   int32_t  lLastValidInputTime;
    int16_t sCurrentIndex;
 };
 
@@ -287,10 +287,10 @@ struct Cheat {
 ////////////////////////////////////////////////////////////////////////////////
 
 // Data for each dude
-UINPUT m_aInputs[INPUT_MAX_DUDES];
+uint64_t m_aInputs[INPUT_MAX_DUDES];
 
 // Last input for the local dude.
-UINPUT   ms_inputLastLocal = 0;
+uint64_t   ms_inputLastLocal = 0;
 
 // Global input settings
 CInputSettings g_InputSettings;
@@ -299,9 +299,9 @@ CInputSettings g_InputSettings;
 INPUT_MODE m_mode;
 
 // Buffer-related stuff
-U32* m_pBuf = 0;           // Pointer to buffer. Must be a U32 to maintain demo compatibility!
-long m_lBufIndex;             // Current index into buffer
-long m_lBufEntries;           // Total entries in buffer
+uint32_t* m_pBuf = 0;           // Pointer to buffer. Must be a uint32_t to maintain demo compatibility!
+int32_t m_lBufIndex;             // Current index into buffer
+int32_t m_lBufEntries;           // Total entries in buffer
 
 // Cheat structs.
 // Add one plus the index of each string item so it's not recognizable when
@@ -407,7 +407,7 @@ extern void SetInputMode(
       default:
          // Change to known mode
          m_mode = INPUT_MODE_LIVE;
-         TRACE("SetInputMode(): Unknown mode -- defaulting to INPUT_MODE_LIVE!\n";
+         TRACE("SetInputMode(): Unknown mode -- defaulting to INPUT_MODE_LIVE!\n");
          break;
       }
    }
@@ -440,11 +440,11 @@ extern int16_t InputDemoInit(void)
    // Allocate buffer
    if (m_pBuf == 0)
       {
-      m_pBuf = new U32[BUF_MAX_ENTRIES];
+      m_pBuf = new uint32_t[BUF_MAX_ENTRIES];
       if (m_pBuf == 0)
          {
          sResult = -1;
-         TRACE("InputDemoInit(): Error allocating buffer!\n";
+         TRACE("InputDemoInit(): Error allocating buffer!\n");
          }
       }
 
@@ -486,32 +486,32 @@ extern int16_t InputDemoLoad(                     // Returns 0 if successfull, n
             {
 
             // Load all entries
-            for (long l = 0; l < m_lBufEntries; l++)
+            for (int32_t l = 0; l < m_lBufEntries; l++)
                pFile->Read(&m_pBuf[l]);
 
             // Check for errors
             if (pFile->Error())
                {
                sResult = -1;
-               TRACE("InputDemoLoad(): Error reading data!\n";
+               TRACE("InputDemoLoad(): Error reading data!\n");
                }
             }
          else
             {
             sResult = -1;
-            TRACE("InputDemoLoad(): Too many entries to fit into current buffer size!\n";
+            TRACE("InputDemoLoad(): Too many entries to fit into current buffer size!\n");
             }
          }
       else
          {
          sResult = -1;
-         TRACE("InputDemoLoad(): Error reading number of entries!\n";
+         TRACE("InputDemoLoad(): Error reading number of entries!\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("InputDemoLoad(): No buffer!\n";
+      TRACE("InputDemoLoad(): No buffer!\n");
       }
 
    return sResult;
@@ -535,20 +535,20 @@ extern int16_t InputDemoSave(                     // Returns 0 if successfull, n
       pFile->Write(m_lBufEntries);
 
       // Save all entries
-      for (long l = 0; l < m_lBufEntries; l++)
+      for (int32_t l = 0; l < m_lBufEntries; l++)
          pFile->Write(m_pBuf[l]);
 
       // Check for errors
       if (pFile->Error())
          {
          sResult = -1;
-         TRACE("InputDemoSave(): Error saving data!\n";
+         TRACE("InputDemoSave(): Error saving data!\n");
          }
       }
    else
       {
       sResult = -1;
-      TRACE("InputDemoSave(): No buffer!\n";
+      TRACE("InputDemoSave(): No buffer!\n");
       }
 
    return sResult;
@@ -590,18 +590,18 @@ extern void ClearLocalInput(void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 static void FindCheatCombos(  // Returns nothing.
-   UINPUT*  pinput,           // In:  Input to augment.
+   uint64_t*  pinput,           // In:  Input to augment.
                               // Out: Input with cheats.
    RInputEvent* pie)          // In:  Latest input event or nullptr.
    {
-   long     lNow     = rspGetMilliseconds();
+   int32_t     lNow     = rspGetMilliseconds();
    int16_t i;
 
    if (pie)
       {
       if (pie->type == RInputEvent::Key)
          {
-         long  lKey  = (pie->lKey & 0x00FF);
+         int32_t  lKey  = (pie->lKey & 0x00FF);
          // Force alpha lower keys to upper keys
          if (islower(lKey))
             lKey  = toupper(lKey);
@@ -624,7 +624,7 @@ static void FindCheatCombos(  // Returns nothing.
             // obvious when searching/viewing the exe.
             char  c = DETWEAK_CHAR(pcheat->szCheat, pcheat->sCurrentIndex);
             // If current key is hit . . .
-            if ( lKey == (long)c && c != 0)
+            if ( lKey == (int32_t)c && c != 0)
                {
                // Remember time of this key.
                pcheat->lLastValidInputTime            = lNow;
@@ -672,9 +672,9 @@ bool CanCycleThroughWeapons()
 {
 #define WEAPON_SWITCH_HOLD_TIME 750
 #define WEAPON_SWITCH_CYCLE_TIME 350
-   static long lLastWeaponSwitchTime = 0;
+   static int32_t lLastWeaponSwitchTime = 0;
    static bool bFastWeaponSwitching = false;
-   long lCurTime = rspGetMilliseconds();
+   int32_t lCurTime = rspGetMilliseconds();
    bool bResult = false;
 
    if (lLastWeaponSwitchTime == 0)
@@ -707,14 +707,14 @@ bool CanCycleThroughWeapons()
 // Get local input
 //
 ////////////////////////////////////////////////////////////////////////////////
-extern UINPUT GetLocalInput(           // Returns local input.
+extern uint64_t GetLocalInput(           // Returns local input.
    CRealm* prealm,                     // In:  Realm (used to access realm timer)
    RInputEvent* pie  /*= nullptr */)   // In:  Latest input event.  nullptr to
                                        // disable cheats in a way that will be
                                        // harder to hack.
    {
    // Default to nothing
-   UINPUT input = 0;
+   uint64_t input = 0;
 
    if (m_mode == INPUT_MODE_PLAYBACK)
       {
@@ -728,11 +728,11 @@ extern UINPUT GetLocalInput(           // Returns local input.
       {
 // Set this to 0 to disable all possibility of any user input during the game
 #if 1
-      long           lCurTime       = prealm->m_time.GetGameTime();
-      static long    lPrevTime      = lCurTime;
+      int32_t           lCurTime       = prealm->m_time.GetGameTime();
+      static int32_t    lPrevTime      = lCurTime;
       // Get ptr to Blue's key status array.  Only need to do this
       // once.
-      static U8*     pu8KeyStatus   = rspGetKeyStatusArray();
+      static uint8_t*     pu8KeyStatus   = rspGetKeyStatusArray();
 
       int16_t sButtons = 0;
       int16_t sDeltaX  = 360;
@@ -791,7 +791,7 @@ extern UINPUT GetLocalInput(           // Returns local input.
          }
 
 #if defined(ALLOW_JOYSTICK)
-      U32   u32Buttons  = 0;
+      uint32_t   u32Buttons  = 0;
 
       // If utilizing joystick input . . .
       if (g_InputSettings.m_sUseJoy)
@@ -799,7 +799,7 @@ extern UINPUT GetLocalInput(           // Returns local input.
          // Only need to update joystick 1.
          rspUpdateJoy(0);
 
-         U32   u32Axes  = 0;
+         uint32_t   u32Axes  = 0;
          rspGetJoyState(0, &u32Buttons, &u32Axes);
 
 #if defined(ALLOW_TWINSTICK)
@@ -905,7 +905,7 @@ extern UINPUT GetLocalInput(           // Returns local input.
                   dRate = g_InputSettings.m_dStillSlowDegreesPerSec;
                   break;
                default:
-                  TRACE("GetLocalInput(): Unhandled input case.\n";
+                  TRACE("GetLocalInput(): Unhandled input case.\n");
                   break;
                }
 
@@ -951,7 +951,7 @@ extern UINPUT GetLocalInput(           // Returns local input.
                   dRate = g_InputSettings.m_dStillSlowDegreesPerSec;
                   break;
                default:
-                  TRACE("GetLocalInput(): Unhandled input case.\n";
+                  TRACE("GetLocalInput(): Unhandled input case.\n");
                   break;
                }
 
@@ -1115,7 +1115,7 @@ extern UINPUT GetLocalInput(           // Returns local input.
       // Set only the 10 bits of the delta (as unsigned value).
       // As long as the above range check is used, we don't need
       // to & with the rotation mask.
-      input    |= (U32)sDeltaX;
+      input    |= (uint32_t)sDeltaX;
 
 #ifdef MOBILE
       input = AndroidGetInput();

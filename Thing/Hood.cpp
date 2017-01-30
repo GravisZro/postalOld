@@ -183,7 +183,7 @@
 #include <Game.h>
 #include <Realm.h>
 
-#include <string.h>
+#include <cstring>
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +298,7 @@ int16_t CHood::Load(                        // Returns 0 if successfull, non-zer
    RFile* pFile,                          // In:  File to load from
    bool bEditMode,                        // In:  True for edit mode, false otherwise
    int16_t sFileCount,                      // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                   // In:  Version of file format to load.
+   uint32_t ulFileVersion)                   // In:  Version of file format to load.
    {
    int16_t sResult = 0;
 
@@ -664,7 +664,7 @@ int16_t CHood::EditNew(                           // Returns 0 if successfull, n
          RSP_SAFE_GUI_REF_VOID(pguiScaleHeights, Compose() );
 
          RSP_SAFE_GUI_REF(pguiBrowse, m_bcUser = BrowseBtnUp);
-         RSP_SAFE_GUI_REF(pguiBrowse, m_ulUserInstance = (ULONG)pguiBaseName);
+         RSP_SAFE_GUI_REF_IF(pguiBrowse, m_ulUserInstance = pguiBaseName);
 
          switch (pgui2dResPaths->m_type)
             {
@@ -857,7 +857,7 @@ int16_t CHood::Init(void)                         // Returns 0 if successfull, n
          m_pRealm->m_scene.UpdateSprite(pSprite2);
 
          // Attempt to load all layers . . .
-         long  lIndex;
+         int32_t  lIndex;
          // Put the contents of the various spry's onto the other layers
          for (lIndex = 0; lIndex < MaxLayers; lIndex++)
             {
@@ -1071,7 +1071,7 @@ int16_t CHood::GetResources(void)                 // Returns 0 if successfull, n
          }
 
       // Attempt to load all layers . . .
-      long  lIndex;
+      int32_t  lIndex;
       int16_t sNumAlphaLayersLoaded   = 0;
       int16_t sNumOpaqueLayersLoaded  = 0;
       for (lIndex = 0; lIndex < MaxLayers; lIndex++)
@@ -1229,8 +1229,8 @@ int16_t CHood::GetResources(void)                 // Returns 0 if successfull, n
       {
          for (int x=0;x<stretched->m_sWidth;x++)
          {
-            UCHAR* dest = stretched->m_pData + n * stretched->m_lPitch + x;
-            UCHAR* src = m_pimTopBar->m_pData + n * m_pimTopBar->m_lPitch + (int)((float)x * widthScale);
+            uint8_t* dest = stretched->m_pData + n * stretched->m_lPitch + x;
+            uint8_t* src = m_pimTopBar->m_pData + n * m_pimTopBar->m_lPitch + (int)((float)x * widthScale);
             *dest = *src;
          }
          //memcpy(ms_pimCompositeBufferScaled->m_pData + n * ms_pimCompositeBufferScaled->m_lPitch,
@@ -1268,7 +1268,7 @@ int16_t CHood::FreeResources(void)                // Returns 0 if successfull, n
    if (m_pimBackground)
       rspReleaseResource(&(m_pRealm->m_resmgr), &m_pimBackground);
 
-   long  lIndex;
+   int32_t  lIndex;
    for (lIndex = 0; lIndex < MaxLayers; lIndex++)
       {
       if (m_apspryAlphas[lIndex])

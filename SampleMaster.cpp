@@ -182,7 +182,7 @@
 
 #include "SampleMaster.h"
 #include <Game.h>
-#include <CompileOptions.h>
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Module specific macros.
@@ -590,11 +590,11 @@ void PlaySample(                                      // Returns nothing.
    SampleMaster::SoundCategory eType,                 // In:  Sound Volume Category for user adjustment
    int16_t sInitialVolume /* = 255 */,                  // In:  Initial Sound Volume (0 - 255)
    SampleMaster::SoundInstance*  psi/* = nullptr */,  // Out: Handle for adjusting sound volume
-   long* plSampleDuration /* = nullptr */,            // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime /* = -1 */,                    // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration /* = nullptr */,            // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime /* = -1 */,                    // In:  Where to loop back to in milliseconds.
                                                       // -1 indicates no looping (unless m_sLoop is
                                                       // explicitly set).
-   long lLoopEndTime /* = 0 */,                       // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime /* = 0 */,                       // In:  Where to loop back from in milliseconds.
                                                       // In:  If less than 1, the end + lLoopEndTime is used.
    bool bPurgeSample /* = false */)                   // In:  Call ReleaseAndPurge rather than Release after playing
    {
@@ -649,7 +649,7 @@ void PlaySample(                                      // Returns nothing.
                }
             else
                {
-   //          TRACE("PlaySample(): RSnd::Play() failed for sample.\n";
+   //          TRACE("PlaySample(): RSnd::Play() failed for sample.\n");
                sError   = 3;
                }
             }
@@ -689,11 +689,11 @@ void PlaySample(                       // Returns nothing.
                                        // Does not fail.
    SampleMasterID id,                  // In:  Identifier of sample you want played.
 
-   long* plSampleDuration /* = nullptr*/, // Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime /* = -1 */,     // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration /* = nullptr*/, // Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime /* = -1 */,     // In:  Where to loop back to in milliseconds.
                                        // -1 indicates no looping (unless m_sLoop is
                                        // explicitly set).
-   long lLoopEndTime /* = 0 */,        // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime /* = 0 */,        // In:  Where to loop back from in milliseconds.
                                        // In:  If less than 1, the end + lLoopEndTime is used.
    bool bPurgeSample /* = false */)    // In:  Call ReleaseAndPurge rather than Release after playing
    {
@@ -713,11 +713,11 @@ void PlaySampleThenPurge(                 // Returns nothing.
    SampleMaster::SoundCategory::Unspecified */, // In:  Sound Volume Category for user adjustment
    int16_t sInitialVolume /* = 255 */,      // In:  Initial Sound Volume (0 - 255)
 
-   long* plSampleDuration /* = nullptr */,// Out: Sample duration in ms, if not nullptr.
-   long lLoopStartTime /* = -1 */,        // In:  Where to loop back to in milliseconds.
+   int32_t* plSampleDuration /* = nullptr */,// Out: Sample duration in ms, if not nullptr.
+   int32_t lLoopStartTime /* = -1 */,        // In:  Where to loop back to in milliseconds.
                                           // -1 indicates no looping (unless m_sLoop is
                                           // explicitly set).
-   long lLoopEndTime /* = 0 */)           // In:  Where to loop back from in milliseconds.
+   int32_t lLoopEndTime /* = 0 */)           // In:  Where to loop back from in milliseconds.
                                           // In:  If less than 1, the end + lLoopEndTime is used.
    {
    PlaySampleEx(id, psi, eType, sInitialVolume,
@@ -856,7 +856,7 @@ int16_t AbortSample(      // Returns 0 if sample aborted, 1 if not.
                }
             else
                {
-               TRACE("AbortSample(): ms_asndChannels[sChannel].Abort() failed.\n";
+               TRACE("AbortSample(): ms_asndChannels[sChannel].Abort() failed.\n");
                }
             }
          }
@@ -891,7 +891,7 @@ void PurgeSamples(void) // Returns nothing.
 void PurgeSample(       // Returns nothing.
    SampleMasterID id)   // Identifier of sample you want played.
    {
-   TRACE("PurgeSample(): NYI.\n";
+   TRACE("PurgeSample(): NYI.\n");
    }
 
 

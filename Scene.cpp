@@ -1035,7 +1035,7 @@ if (g_bSceneDontBlit == false)
 ////////////////////////////////////////////////////////////////////////////////
 inline
 void DrawLine2d(        // Returns nothing.
-   U8       u8Color,    // Color to draw line with.
+   uint8_t       u8Color,    // Color to draw line with.
    RImage*  pimDst,     // Destination image.
    int16_t    sDstX1,     // Start pt.
    int16_t    sDstY1,     // Start pt.
@@ -1078,7 +1078,7 @@ void DrawLine2d(        // Returns nothing.
 ////////////////////////////////////////////////////////////////////////////////
 inline
 void DrawLine3d(        // Returns nothing.
-   U8       u8Color,    // Color to draw line with.
+   uint8_t       u8Color,    // Color to draw line with.
    RImage*  pimDst,     // Destination image.
    int16_t    sDstX1,     // Start pt.
    int16_t    sDstY1,     // Start pt.
@@ -1368,7 +1368,7 @@ void CScene::Render2D(     // Returns nothing.
                      *  m_bXRayAll
                      )
                   )
-               *  (long)psprXRayee
+               *  (int32_t)psprXRayee
                *  (  g_GameSettings.m_sXRayEffect
                   +  m_bXRayAll
                   )
@@ -1732,7 +1732,7 @@ void CScene::SetupPipeline(                        // Returns nothing.
 
    // Use the built in adjustment features of the pipeline:
    if (m_pipeline.Create(1000, SCREEN_DIAMETER_FOR_3D) != 0)
-      TRACE("SetupPipeline(): FONGOOL!  m_pipeline.Create() failed!  No 3D for you!\n";
+      TRACE("SetupPipeline(): FONGOOL!  m_pipeline.Create() failed!  No 3D for you!\n");
 
    /////////////////////////////////////////////////////////////////////////////
    // End previously done in UpdatePipeline().

@@ -55,7 +55,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 void rspSetWin32StaticColors(
-	short sLock = 0);										// In:  1 means lock colors, 0 means don't
+	int16_t sLock = 0);										// In:  1 means lock colors, 0 means don't
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -88,8 +88,8 @@ void rspSetWin32StaticColors(
 #define RSP_MB_RET_NO					0x0006
 
 // Display a message (with buttons and/or icon if specified).
-extern short rspMsgBox(	// Returns one of the macro defined RSP_MB_RET_*.
-	USHORT usFlags,		// |'ed RSP_MB_BUT/ICO_* representing buttons and icons
+extern int16_t rspMsgBox(	// Returns one of the macro defined RSP_MB_RET_*.
+	uint16_t usFlags,		// |'ed RSP_MB_BUT/ICO_* representing buttons and icons
 								// desired.
 	char const * pszTitle,		// Title for box.
 	char const * pszFrmt,			// Format of string (sprintf flags).
@@ -135,11 +135,11 @@ extern short rspMsgBox(	// Returns one of the macro defined RSP_MB_RET_*.
 // directory, volume or drive.
 //
 ////////////////////////////////////////////////////////////////////////////////
-extern short rspOpenBox(								// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspOpenBox(								// Returns 0 if successfull, non-zero otherwise
 	char const* pszBoxTitle,							// In:  Title of box
 	char const*	pszDefaultPath,						// In:  Default directory and file
 	char * pszSelectedFile,								// Out: File that user selected
-	short sSelectedFileBufSize,						// In:  Size of buffer pointed to by pszSelectedFile
+	int16_t sSelectedFileBufSize,						// In:  Size of buffer pointed to by pszSelectedFile
 	char const*	pszFilter = nullptr);					// In:  Filename filter or nullptr for none
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,11 +149,11 @@ extern short rspOpenBox(								// Returns 0 if successfull, non-zero otherwise
 // Note: See rspOpenBox() documentation -- it's the same for this function!
 //
 ////////////////////////////////////////////////////////////////////////////////
-extern short rspSaveBox(								// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspSaveBox(								// Returns 0 if successfull, non-zero otherwise
 	char const* pszBoxTitle,							// In:  Title of box
 	char const*	pszDefaultPath,						// In:  Default directory and file
 	char * pszSelectedFile,								// Out: File that user selected
-	short sSelectedFileBufSize,						// In:  Size of buffer pointed to by pszSelectedFile
+	int16_t sSelectedFileBufSize,						// In:  Size of buffer pointed to by pszSelectedFile
 	char const*	pszFilter = nullptr);					// In:  Filename filter or nullptr for none
 
 
@@ -164,13 +164,13 @@ extern short rspSaveBox(								// Returns 0 if successfull, non-zero otherwise
 // Executes pszExe with pszDir as its current directory.  Note that the
 // pszExe can be relative, but only to the current path.  The pszDir parameter
 // is only for the current directory for the rspExec'd process.
-extern short rspExec(			// Returns 0 on success.
+extern int16_t rspExec(			// Returns 0 on success.
 	char const *	pszExe,					// Executable (full path or relative to CURRENT).
 	char const * pszDir = nullptr,			// Current drive/directory for the child process,
 										// if not nullptr.
-	short	sWait = FALSE,			// Waits for child execution to stop before
+	int16_t	sWait = FALSE,			// Waits for child execution to stop before
 										// returning if TRUE.
-	short (*waitcall)(void)		// App callback to call during wait, if not nullptr.
+	int16_t (*waitcall)(void)		// App callback to call during wait, if not nullptr.
 					= nullptr);			// Returns 0 to continue waiting, 
 										// non-zero otherwise.
 
@@ -193,9 +193,9 @@ extern short rspExec(			// Returns 0 on success.
 #define RSP_SYSTEM_PATH_SEPARATOR	'/'
 #endif
 
-extern short rspGetTempPath(			// Returns 0 on success, non-zero otherwise
+extern int16_t rspGetTempPath(			// Returns 0 on success, non-zero otherwise
 	char* pszPath,							// Out: Temp path returned here if available.
-	short	sMaxPathLen);					// In:  Max path length (to avoid overwrites)
+	int16_t	sMaxPathLen);					// In:  Max path length (to avoid overwrites)
 
 extern char* rspPathToSystem(			// Returns pszSystem
 	char const* pszRSPiX,				// In:  RSPiX path
@@ -219,9 +219,9 @@ extern char* rspPathFromSystem(		// Returns pointer to system-specific path (sta
 #define RSP_READPERMISSION		0x0001
 #define RSP_WRITEPERMISSION	0x0002
 
-extern short rspSetFileAttributes(	// Returns 0 on success, non-zero otherwise
+extern int16_t rspSetFileAttributes(	// Returns 0 on success, non-zero otherwise
 	char const * pszFileName,					// In:  Filename of file to update. 
-	short sAttributes);					// Out: New attributes to be set.
+	int16_t sAttributes);					// Out: New attributes to be set.
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -229,28 +229,28 @@ extern short rspSetFileAttributes(	// Returns 0 on success, non-zero otherwise
 ///////////////////////////////////////////////////////////////////////////////
 
 // Cursor ID's for built-in cursors (never need loading or unloading)
-#define RSP_CURSOR_ARROW		((short)0)
-#define RSP_CURSOR_IBEAM		((short)1)
-#define RSP_CURSOR_CROSSHAIR	((short)2)
-//#define RSP_CURSOR_BIGPLUS	((short)3)	// Not used for now
-#define RSP_CURSOR_WAIT			((short)4)
+#define RSP_CURSOR_ARROW		((int16_t)0)
+#define RSP_CURSOR_IBEAM		((int16_t)1)
+#define RSP_CURSOR_CROSSHAIR	((int16_t)2)
+//#define RSP_CURSOR_BIGPLUS	((int16_t)3)	// Not used for now
+#define RSP_CURSOR_WAIT			((int16_t)4)
 
 // CURSOR type used to manipulate cursors
 struct RCursor {
-	short sType;			// Indicates type of cursor (b&w or color) and also
+	int16_t sType;			// Indicates type of cursor (b&w or color) and also
 								// whether this struct is valid.
-	long lParam;			// Used as CursHandle or CCrsrHandle but declared as long
+	int32_t lParam;			// Used as CursHandle or CCrsrHandle but declared as long
 								// to avoid requiring the use of MacOS header files.
 };
 
 extern void rspSetCursor(
-	short sCursorID);						// In:  ID of built-in cursor (use RSP_CURSOR_* macros)
+	int16_t sCursorID);						// In:  ID of built-in cursor (use RSP_CURSOR_* macros)
 	
 extern void rspSetCursor(
 	RCursor* pCursor);						// In:  Pointer to RCursor
 
-extern short rspLoadCursor(			// Returns 0 if successfull, non-zero otherwise
-	short sResourceID,					// In:  Resource ID of cursor (type 'CURS' or 'crsr')
+extern int16_t rspLoadCursor(			// Returns 0 if successfull, non-zero otherwise
+	int16_t sResourceID,					// In:  Resource ID of cursor (type 'CURS' or 'crsr')
 	RCursor** ppCursor);					// Out: Pointer to RCursor returned here
 
 extern void rspUnloadCursor(
@@ -261,95 +261,95 @@ extern void rspUnloadCursor(
 // Quit API
 ///////////////////////////////////////////////////////////////////////////////
 
-extern short rspGetQuitStatus(void);	// Returns TRUE if quit detected, FALSE otherwise
+extern int16_t rspGetQuitStatus(void);	// Returns TRUE if quit detected, FALSE otherwise
 
 extern void rspSetQuitStatus(
-	short sStatus);							// In:  New status (TRUE or FALSE)
+	int16_t sStatus);							// In:  New status (TRUE or FALSE)
 
 // Set which modifier keys must be pressed in addition to the whatever ones
 // are normally associated with the system's "quit key".
 extern void rspSetQuitStatusFlags(
-	long lModifiers);							// In:  Modifier key flags (RSP_GKF_*)
+	int32_t lModifiers);							// In:  Modifier key flags (RSP_GKF_*)
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Printer API
 ///////////////////////////////////////////////////////////////////////////////
 
-extern short rspSetPrinterResolution(		// Returns 0 if successfull, non-zero otherwise
-	long lReqHorzRes,								// In:  Requested horizontal resolution (dpi)
-	long lReqVertRes,								// In:  Requested vertical resolution (dpi)
-	short sReqSquareRes);						// In:  Requested square resolution (TRUE or FALSE)
+extern int16_t rspSetPrinterResolution(		// Returns 0 if successfull, non-zero otherwise
+	int32_t lReqHorzRes,								// In:  Requested horizontal resolution (dpi)
+	int32_t lReqVertRes,								// In:  Requested vertical resolution (dpi)
+	int16_t sReqSquareRes);						// In:  Requested square resolution (TRUE or FALSE)
 
-extern short rspPrinterPageSetupDialog(void);	// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspPrinterPageSetupDialog(void);	// Returns 0 if successfull, non-zero otherwise
 
-extern short rspPrinterPrintDialog(void);	// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspPrinterPrintDialog(void);	// Returns 0 if successfull, non-zero otherwise
 
-extern short rspGetPrinterResolution(		// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspGetPrinterResolution(		// Returns 0 if successfull, non-zero otherwise
 	long* plHorzRes,								// Out: Horizontal resolution (dpi)
 	long* plVertRes);								// Out: Vertical resolution (dpi)
 
-extern short rspGetPrinterPageSize(			// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspGetPrinterPageSize(			// Returns 0 if successfull, non-zero otherwise
 	long* plPageWidth,							// Out: Page width (in dots)
 	long* plPageHeight);							// Out: Page height (in dots)
 
-extern short rspGetPrinterPageRotation(	// Returns 0 if successfull, non-zero otherwise
-	short* psRotation);							// Out: Rotation (0, 90, or 270 degrees)
+extern int16_t rspGetPrinterPageRotation(	// Returns 0 if successfull, non-zero otherwise
+	int16_t* psRotation);							// Out: Rotation (0, 90, or 270 degrees)
 
-extern short rspGetPrinterPageMargins(		// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspGetPrinterPageMargins(		// Returns 0 if successfull, non-zero otherwise
 	long* plLeftMargin,							// Out: Page's left margin (in dots)
 	long* plRightMargin,							// Out: Page's right margin (in dots)
 	long* plTopMargin,							// Out: Page's top margin (in dots)
 	long* plBottomMargin);						// Out: Page's bottom margin (in dots)
 
-extern short rspGetPrinterJob(				// Returns 0 if successfull, non-zero otherwise
-	short* psFirstPage,							// Out: First page of range to be printed
-	short* psLastPage,							// Out: Last page of range to be printed
-	short* psCopies);								// Out: Copies to be printed
+extern int16_t rspGetPrinterJob(				// Returns 0 if successfull, non-zero otherwise
+	int16_t* psFirstPage,							// Out: First page of range to be printed
+	int16_t* psLastPage,							// Out: Last page of range to be printed
+	int16_t* psCopies);								// Out: Copies to be printed
 
-extern short rspStartPrinterDoc(void);		// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspStartPrinterDoc(void);		// Returns 0 if successfull, non-zero otherwise
 
 extern void rspEndPrinterDoc(void);
 
-extern short rspStartPrinterPage(void);	// Returns 0 if successfull, non-zero otherwise
+extern int16_t rspStartPrinterPage(void);	// Returns 0 if successfull, non-zero otherwise
 
-extern short rspEndPrinterPage(void);
+extern int16_t rspEndPrinterPage(void);
 
-extern short rspPrintToPage(					// Returns 0 if successfull, non-zero otherwise
-	U8* pu8Src,										// In:  Source data
-	long lPitch,									// In:  Source pitch
-	long lWidth,									// In:  Source width
-	long lHeight,									// In:  Source height
-	short sDepth,									// In:  Source depth (1 or 8)
-	long lSrcX,										// In:  Source (image) X coord
-	long lSrcY,										// In:  Source (image) Y coord
-	long lSrcW,										// In:  Source (image) width
-	long lSrcH,										// In:  Source (image) height
-	long lDstX,										// In:  Destination (page) X coord
-	long lDstY,										// In:  Destination (page) Y coord
-	long lDstW,										// In:  Destination (page) width
-	long lDstH);									// In:  Distination (page) height
+extern int16_t rspPrintToPage(					// Returns 0 if successfull, non-zero otherwise
+	uint8_t* pu8Src,										// In:  Source data
+	int32_t lPitch,									// In:  Source pitch
+	int32_t lWidth,									// In:  Source width
+	int32_t lHeight,									// In:  Source height
+	int16_t sDepth,									// In:  Source depth (1 or 8)
+	int32_t lSrcX,										// In:  Source (image) X coord
+	int32_t lSrcY,										// In:  Source (image) Y coord
+	int32_t lSrcW,										// In:  Source (image) width
+	int32_t lSrcH,										// In:  Source (image) height
+	int32_t lDstX,										// In:  Destination (page) X coord
+	int32_t lDstY,										// In:  Destination (page) Y coord
+	int32_t lDstW,										// In:  Destination (page) width
+	int32_t lDstH);									// In:  Distination (page) height
 
-extern short rspPrintToPage(					// Returns 0 if successfull, non-zero otherwise
-	U8* pu8Src,										// In:  Source data
-	long lPitch,									// In:  Source pitch
-	long lWidth,									// In:  Source width
-	long lHeight,									// In:  Source height
-	short sDepth,									// In:  Source depth (1 or 8 - if 8, palette info must be valid!)
-	short sSrcPalStartIndex,					// In:  Starting palette index (0 to 255)
-	short sSrcPalEntries,						// In:  Number of palette entries (1 to 256)
-	U8* pu8SrcPalRed,								// In:  Pointer to starting source red value
-	U8* pu8SrcPalGreen,							// In:  Pointer to starting source green value
-	U8* pu8SrcPalBlue,							// In:  Pointer to starting source blue value
-	long lSrcPalIncBytes,						// In:  What to add to pointers to move to next value
-	long lSrcX,										// In:  Source (image) X coord
-	long lSrcY,										// In:  Source (image) Y coord
-	long lSrcW,										// In:  Source (image) width
-	long lSrcH,										// In:  Source (image) height
-	long lDstX,										// In:  Destination (page) X coord
-	long lDstY,										// In:  Destination (page) Y coord
-	long lDstW,										// In:  Destination (page) width
-	long lDstH);									// In:  Distination (page) height
+extern int16_t rspPrintToPage(					// Returns 0 if successfull, non-zero otherwise
+	uint8_t* pu8Src,										// In:  Source data
+	int32_t lPitch,									// In:  Source pitch
+	int32_t lWidth,									// In:  Source width
+	int32_t lHeight,									// In:  Source height
+	int16_t sDepth,									// In:  Source depth (1 or 8 - if 8, palette info must be valid!)
+	int16_t sSrcPalStartIndex,					// In:  Starting palette index (0 to 255)
+	int16_t sSrcPalEntries,						// In:  Number of palette entries (1 to 256)
+	uint8_t* pu8SrcPalRed,								// In:  Pointer to starting source red value
+	uint8_t* pu8SrcPalGreen,							// In:  Pointer to starting source green value
+	uint8_t* pu8SrcPalBlue,							// In:  Pointer to starting source blue value
+	int32_t lSrcPalIncBytes,						// In:  What to add to pointers to move to next value
+	int32_t lSrcX,										// In:  Source (image) X coord
+	int32_t lSrcY,										// In:  Source (image) Y coord
+	int32_t lSrcW,										// In:  Source (image) width
+	int32_t lSrcH,										// In:  Source (image) height
+	int32_t lDstX,										// In:  Destination (page) X coord
+	int32_t lDstY,										// In:  Destination (page) Y coord
+	int32_t lDstW,										// In:  Destination (page) width
+	int32_t lDstH);									// In:  Distination (page) height
 
 #endif // CYAN
 ///////////////////////////////////////////////////////////////////////////////

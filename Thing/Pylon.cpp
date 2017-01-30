@@ -104,7 +104,7 @@ int16_t CPylon::Load(                             // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    // Call the base load to get the u16InstanceID
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
@@ -335,8 +335,8 @@ int16_t CPylon::EditNew(                          // Returns 0 if successfull, n
 inline
 void SetText(              // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
-   long        lVal)       // In:  Value to set text to.
+   int32_t        lId,        // In:  ID of GUI to set text.
+   int32_t        lVal)       // In:  Value to set text to.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)
@@ -385,7 +385,7 @@ int16_t CPylon::EditModify(void)
                RGuiItem* pSelection = pList->GetSel();
                if (pSelection)
                {
-                  switch (pSelection->m_lId)
+                  switch ((int16_t)pSelection->m_lId)
                   {
 /*
                      // Start Popout dialog
@@ -700,9 +700,9 @@ void CPylon::MessageRequest(CThing* pRequestingThing)
 //                  not used before it is given out.
 ////////////////////////////////////////////////////////////////////////////////
 
-UCHAR CPylon::GetFreePylonID(void)
+uint8_t CPylon::GetFreePylonID(void)
 {
-   UCHAR id = m_pRealm->m_ucNextPylonID;
+   uint8_t id = m_pRealm->m_ucNextPylonID;
 
    if (m_pRealm->m_sNumPylons >= PYLON_MAX_PYLONS)
       return 0;
@@ -746,7 +746,7 @@ UCHAR CPylon::GetFreePylonID(void)
 // GetPylon
 ////////////////////////////////////////////////////////////////////////////////
 
-CPylon* CPylon::GetPylon(UCHAR ucPylonID)
+CPylon* CPylon::GetPylon(uint8_t ucPylonID)
 {
    CPylon* pPylon = nullptr;;
 
@@ -760,9 +760,9 @@ CPylon* CPylon::GetPylon(UCHAR ucPylonID)
 // GetPylonUniqueID - loop through list of pylons to get Unique ID
 ////////////////////////////////////////////////////////////////////////////////
 
-U16 CPylon::GetPylonUniqueID(UCHAR ucPylonID)
+uint16_t CPylon::GetPylonUniqueID(uint8_t ucPylonID)
 {
-   U16 u16UniqueID = CIdBank::IdNil;
+   uint16_t u16UniqueID = CIdBank::IdNil;
    CListNode<CThing>* pNext = m_pRealm->m_aclassHeads[CThing::CPylonID].m_pnNext;
 
    bool bSearching = true;

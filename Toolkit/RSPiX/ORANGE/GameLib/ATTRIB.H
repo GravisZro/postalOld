@@ -32,7 +32,7 @@ struct CONTOUR {
 };
 
 struct ATTRIB {
-	short s;
+	int16_t s;
 };
 
 
@@ -42,7 +42,7 @@ protected:
 
 	WORD*    m_pAttribMap;			//Pointer to attribute map
 	CONTOUR* m_pAttribCont;
-	short		m_sMapWidth;
+	int16_t		m_sMapWidth;
 
 public:
 	CAttribute();
@@ -53,8 +53,8 @@ public:
 	void ToBlock();
 	void PutBlock();
 	void GetReward();
-	BOOL GetPointAttrib(short sX, short sY, WORD* wAttribute);
-	short GetPointSurface(short sX, short sY);
+	BOOL GetPointAttrib(int16_t sX, int16_t sY, WORD* wAttribute);
+	int16_t GetPointSurface(int16_t sX, int16_t sY);
 
 };
 

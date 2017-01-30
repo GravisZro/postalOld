@@ -87,14 +87,14 @@ class CNetServer
             State             m_state;                         // State
             RSocket::Address  m_address;                       // Address
             char              m_acName[Net::MaxPlayerNameSize];// Name
-            unsigned char     m_ucColor;                       // Color number
-            unsigned char     m_ucTeam;                        // Team number
+            uint8_t     m_ucColor;                       // Color number
+            uint8_t     m_ucTeam;                        // Team number
             int16_t             m_sBandwidth;                    // Net::Bandwidth
 
             CNetMsgr          m_msgr;                          // Messenger for communicating with client
             bool              m_bLoggedIn;                     // Whether client is logged in
 
-            long              m_lLatestPingTime;               // Latest ping time
+            int32_t              m_lLatestPingTime;               // Latest ping time
             Net::SEQ          m_seqLastDoneFrame;              // Last frame client did
             Net::SEQ          m_seqInput;
             bool              m_bSentReadyRealm;               // Whether this client sent READY_REALM msg
@@ -167,7 +167,7 @@ class CNetServer
       bool           m_bWaitingForRealmStatus;           // Whether we're waiting for realm status messages
 
       char           m_acHostName[Net::MaxHostNameSize]; // Host's name
-      long           m_lHostMagic;                       // Host's magic number
+      int32_t           m_lHostMagic;                       // Host's magic number
       bool           m_bSetupGameValid;                  // Whether m_msgSetupGame is valid
       NetMsg         m_msgSetupGame;                     // The latest SetupGame msg (if valid)
 
@@ -267,7 +267,7 @@ class CNetServer
       // Send message to specified group of clients - only Joined clients are allowed!
       ////////////////////////////////////////////////////////////////////////////////
       void SendMsg(
-         U16 mask,                                    // In:  Bit-mask indicating who to send to
+         uint16_t mask,                                    // In:  Bit-mask indicating who to send to
          NetMsg* pmsg);                               // In:  Message to send
 
 
@@ -329,7 +329,7 @@ class CNetServer
       // Abort game
       ////////////////////////////////////////////////////////////////////////////////
       void AbortGame(
-         unsigned char ucReason);                     // In:  Why game was aborted
+         uint8_t ucReason);                     // In:  Why game was aborted
 
 
       ////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +367,7 @@ class CNetServer
       ////////////////////////////////////////////////////////////////////////////////
       // Get host's magic number
       ////////////////////////////////////////////////////////////////////////////////
-      long GetHostMagic(void)
+      int32_t GetHostMagic(void)
          {
          return m_lHostMagic;
          }

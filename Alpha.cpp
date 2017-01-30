@@ -45,7 +45,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #if 0
 //========================================================================================
-extern   int16_t rspBlitT(U8 u8Trans, RImage* pimSrc,RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_t sDstX,
+extern   int16_t rspBlitT(uint8_t u8Trans, RImage* pimSrc,RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_t sDstX,
            int16_t sDstY,int16_t sW,int16_t sH,RRect* prDst,const RRect* prSrc);
 //========================================================================================
 #endif
@@ -151,12 +151,12 @@ static int16_t Alpha(  // Returns 0 on success.
    // If there's anything left . . .
    if (sW > 0 && sH > 0)
       {
-      U8*   pu8SrcRow   = pimSrc->m_pData + sSrcX + sSrcY * pimSrc->m_lPitch;
-      U8*   pu8SrcBlt;
-      U8*   pu8MaskRow  = pimMask->m_pData + sMaskX + sMaskY * pimMask->m_lPitch;
-      U8*   pu8MaskBlt;
-      U8*   pu8DstRow   = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
-      U8*   pu8DstBlt;
+      uint8_t*   pu8SrcRow   = pimSrc->m_pData + sSrcX + sSrcY * pimSrc->m_lPitch;
+      uint8_t*   pu8SrcBlt;
+      uint8_t*   pu8MaskRow  = pimMask->m_pData + sMaskX + sMaskY * pimMask->m_lPitch;
+      uint8_t*   pu8MaskBlt;
+      uint8_t*   pu8DstRow   = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
+      uint8_t*   pu8DstBlt;
 
       int16_t sWidth;
 
@@ -244,13 +244,13 @@ int16_t CAlpha::Blit(  // Returns 0 on success.
          }
       else
          {
-         TRACE("Blit(): Unable to allocate image to decompress pimSrc.\n";
+         TRACE("Blit(): Unable to allocate image to decompress pimSrc.\n");
          sRes  = -2;
          }
       }
    else
       {
-      TRACE("Blit(): No mask!  Use regular blt.\n";
+      TRACE("Blit(): No mask!  Use regular blt.\n");
       sRes  = -1;
       }
 
@@ -280,7 +280,7 @@ int16_t CAlpha::Load(     // Returns 0 on success.
          }
       else
          {
-         TRACE("Load(): RImage::Convert(FSPR1) failed.\n";
+         TRACE("Load(): RImage::Convert(FSPR1) failed.\n");
          sRes  = -2;
          }
 #endif
@@ -291,7 +291,7 @@ int16_t CAlpha::Load(     // Returns 0 on success.
       }
    else
       {
-      TRACE("Load(): RImage::Load() failed.\n";
+      TRACE("Load(): RImage::Load() failed.\n");
       sRes  = -1;
       }
 

@@ -208,7 +208,7 @@ int16_t CPowerUp::Load(                        // Returns 0 if successfull, non-
    RFile* pFile,                             // In:  File to load from
    bool bEditMode,                           // In:  True for edit mode, false otherwise
    int16_t sFileCount,                         // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                      // In:  Version of file format to load.
+   uint32_t ulFileVersion)                      // In:  Version of file format to load.
    {
    int16_t sResult = 0;
    if (ulFileVersion < 20)
@@ -269,9 +269,9 @@ int16_t CPowerUp::Load(                        // Returns 0 if successfull, non-
             pFile->Read(&m_dX);
             pFile->Read(&m_dY);
             pFile->Read(&m_dZ);
-            U8 u8Type   = (U8)CStockPile::Bullets;
+            uint8_t u8Type   = (uint8_t)CStockPile::Bullets;
             pFile->Read(&u8Type);
-            long  lPowerVal;
+            int32_t  lPowerVal;
             pFile->Read(&lPowerVal);
             switch (u8Type)
                {
@@ -356,10 +356,10 @@ void CPowerUp::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Advance the animation timer.
-      long  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
+      int32_t  lDifTime    = lThisTime - m_lAnimPrevUpdateTime;
       m_lAnimTime       += lDifTime;
 
       // Update prev time.

@@ -209,10 +209,10 @@ void RMultiBtn::DrawBackgroundRes(	// Returns nothing.
 // Set number of states.
 // This will clear all existing state images.
 ////////////////////////////////////////////////////////////////////////
-short RMultiBtn::SetNumStates(	// Returns 0 on success.
-	short sNumStates)					// In:  New number of states.
+int16_t RMultiBtn::SetNumStates(	// Returns 0 on success.
+	int16_t sNumStates)					// In:  New number of states.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Allocate an array of image ptrs and clear them all . . .
 	RImage** papimNewStates	= new RImage*[sNumStates + 1];
@@ -225,7 +225,7 @@ short RMultiBtn::SetNumStates(	// Returns 0 on success.
 		if (m_papimStates)
 			{
 			// Copy any currently valid ptrs within new range.
-			short	i;
+			int16_t	i;
 			for (i = 0; i <= sNumStates && i <= m_sNumStates; i++)
 				{
 				// Copy entry.
@@ -255,12 +255,12 @@ short RMultiBtn::SetNumStates(	// Returns 0 on success.
 ////////////////////////////////////////////////////////////////////////
 // Set button state or feedback state image.
 ////////////////////////////////////////////////////////////////////////
-short RMultiBtn::SetState(	// Returns 0 on success.
+int16_t RMultiBtn::SetState(	// Returns 0 on success.
 	RImage*	pim,				// In:  Image for state sState.
-	short		sState)			// In:  State to update (0 == feedback state,
+	int16_t		sState)			// In:  State to update (0 == feedback state,
 									// 1..n == state number).
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	if (m_papimStates == nullptr || sState >= m_sNumStates)
 		{
@@ -294,12 +294,12 @@ short RMultiBtn::SetState(	// Returns 0 on success.
 // Set button state or feedback state image.
 // The feedback state image is always the last image (m_sNumStates).
 //////////////////////////////////////////////////////////////////////////////
-short RMultiBtn::SetState(	// Returns 0 on success.
+int16_t RMultiBtn::SetState(	// Returns 0 on success.
 	char const *	pszImageName,		// In:  File name of image for state sState.
-	short		sState)			// In:  State to update (0 == feedback state,
+	int16_t		sState)			// In:  State to update (0 == feedback state,
 									// 1..n == state number).
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	RImage	im;
 	if (RFileEZLoad(&im, pszImageName, "rb", RFile::LittleEndian) == 0)
@@ -320,7 +320,7 @@ short RMultiBtn::SetState(	// Returns 0 on success.
 // The feedback state image is always the first image.
 //////////////////////////////////////////////////////////////////////////////
 void RMultiBtn::ClearState(	// Returns nothing.
-	short	sState)					// In:  State to clear (0 == feedback state,
+	int16_t	sState)					// In:  State to clear (0 == feedback state,
 										// 1..n == state number).
 	{
 	if (sState >= 0 && sState <= m_sNumStates)
@@ -338,7 +338,7 @@ void RMultiBtn::ClearState(	// Returns nothing.
 //////////////////////////////////////////////////////////////////////////////
 // Go to the next logical state.
 //////////////////////////////////////////////////////////////////////////////
-short RMultiBtn::NextState(void)	// Returns new state.
+int16_t RMultiBtn::NextState(void)	// Returns new state.
 	{
 	if (m_sNumStates > 0)
 		{
@@ -360,7 +360,7 @@ short RMultiBtn::NextState(void)	// Returns new state.
 // Get the current image for the specified state.
 //////////////////////////////////////////////////////////////////////////////
 RImage* RMultiBtn::GetState(	// Returns image, if available; nullptr, otherwise.
-	short	sState)					// In:  State to get (0 == feedback state,
+	int16_t	sState)					// In:  State to get (0 == feedback state,
 										// 1..n == state number).
 	{
 	RImage*	pimRes	= nullptr;	// Assume not available.
@@ -387,7 +387,7 @@ void RMultiBtn::DestroyStates(void)	// Returns nothing.
 	{
 	if (m_papimStates)
 		{
-		short i;
+		int16_t i;
 		for (i = 0; i <= m_sNumStates; i++)
 			{
 			delete m_papimStates[i];
@@ -403,11 +403,11 @@ void RMultiBtn::DestroyStates(void)	// Returns nothing.
 // Read item's members from file.
 // (virtual/protected (overriden here)).
 ////////////////////////////////////////////////////////////////////////
-short RMultiBtn::ReadMembers(		// Returns 0 on success.
+int16_t RMultiBtn::ReadMembers(		// Returns 0 on success.
 	RFile*	pfile,					// File to read from.
-	U32		u32Version)				// File format version to use.
+	uint32_t		u32Version)				// File format version to use.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Invoke base class to read base members.
 	sRes	= RBtn::ReadMembers(pfile, u32Version);
@@ -433,15 +433,15 @@ short RMultiBtn::ReadMembers(		// Returns 0 on success.
 
 			case 1:
 				{
-				short	sNumStates	= 0;	// Safety.
+				int16_t	sNumStates	= 0;	// Safety.
 				// Read this class's members.
 				pfile->Read(&sNumStates);
 				// Set number of states.
 				if (SetNumStates(sNumStates) == 0)
 					{
 					// Read all the images.
-					short	sCurState;
-					short	sImageForState;
+					int16_t	sCurState;
+					int16_t	sImageForState;
 					for (sCurState = 0; sCurState <= m_sNumStates && sRes == 0; sCurState++)
 						{
 						pfile->Read(&sImageForState);
@@ -505,10 +505,10 @@ short RMultiBtn::ReadMembers(		// Returns 0 on success.
 // Write item's members to file.
 // (virtual/protected (overriden here)).
 ////////////////////////////////////////////////////////////////////////
-short RMultiBtn::WriteMembers(	// Returns 0 on success.
+int16_t RMultiBtn::WriteMembers(	// Returns 0 on success.
 	RFile*	pfile)					// File to write to.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Invoke base class to read base members.
 	sRes	= RBtn::WriteMembers(pfile);
@@ -523,7 +523,7 @@ short RMultiBtn::WriteMembers(	// Returns 0 on success.
 		pfile->Write(m_sState);
 		pfile->Write(m_sNumStates);
 		// Write all the images.
-		short	sCurState;
+		int16_t	sCurState;
 		for (sCurState = 0; sCurState <= m_sNumStates && sRes == 0; sCurState++)
 			{
 			// If there is a bitmap for this state . . .
@@ -531,14 +531,14 @@ short RMultiBtn::WriteMembers(	// Returns 0 on success.
 			if (pimState)
 				{
 				// There is an image.  Write flag indicating such.
-				pfile->Write((short)TRUE);
+				pfile->Write((int16_t)TRUE);
 				// Write image.
 				sRes	= pimState->Save(pfile);
 				}
 			else
 				{
 				// No image.  Write flag indicating such.
-				pfile->Write((short)FALSE);
+				pfile->Write((int16_t)FALSE);
 				}
 			}
 

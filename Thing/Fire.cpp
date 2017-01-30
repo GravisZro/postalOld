@@ -234,8 +234,8 @@ int16_t CFire::ms_sFileCount;
 int16_t CFire::ms_sLargeRadius = 20;
 int16_t CFire::ms_sSmallRadius = 8;
 int16_t CFire::ms_sWindDirection = INIT_WIND_DIR;    // Start wind in this direction
-long  CFire::ms_lCollisionTime = 250;              // Check for collisions this often
-long  CFire::ms_lSmokeTime = 10000;                // Time to let smoke run
+int32_t  CFire::ms_lCollisionTime = 250;              // Check for collisions this often
+int32_t  CFire::ms_lSmokeTime = 10000;                // Time to let smoke run
 double CFire::ms_dWindVelocity = INIT_WIND_VEL;    // Pixels per second drift due to wind
 
 
@@ -246,7 +246,7 @@ int16_t CFire::Load(                              // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -373,7 +373,7 @@ void CFire::Resume(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CFire::Update(void)
 {
-   long lThisTime;
+   int32_t lThisTime;
    double dSeconds;
    double dDistance;
    double dNewX;
@@ -588,7 +588,7 @@ int16_t CFire::Setup(                          // Returns 0 if successfull, non-
    int16_t sX,                                    // In:  New x coord
    int16_t sY,                                    // In:  New y coord
    int16_t sZ,                                    // In:  New z coord
-   long lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
+   int32_t lTimeToLive,                            // In:  Number of milliseconds to burn, default 1sec
    bool  bThick,                                // In:  Use thick fire (more opaque) default = true
    FireAnim eAnimType)                          // In:  Animation type to use default = LargeFire
 {

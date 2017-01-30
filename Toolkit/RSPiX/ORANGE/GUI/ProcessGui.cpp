@@ -132,14 +132,14 @@ void DrawDirty(			// Returns nothing.
 // Prepare to handle a GUI.
 // This must be called to setup components before Do*Gui() is called.
 //////////////////////////////////////////////////////////////////////////////
-short RProcessGui::Prepare(			// Returns 0 on success.
+int16_t RProcessGui::Prepare(			// Returns 0 on success.
 	RGuiItem* pguiRoot,					// In:  GUI to be processed.
 	RGuiItem* pguiOk/* = nullptr*/,		// In:  If not nullptr, specifies GUI 
 												// activated by ENTER key.
 	RGuiItem* pguiCancel/* = nullptr*/)	// In:  If not nullptr, specifies GUI
 												// activated by ESCAPE key.
 	{
-	short	sRes	= 0;	// Assume success.
+	int16_t	sRes	= 0;	// Assume success.
 
 	// Create erase buffer . . .
 	if (m_imEraser.CreateImage(
@@ -269,7 +269,7 @@ long RProcessGui::DoModal(				// Returns ID of pressed GUI that terminated
 												// screen image unless pimDst is the screen
 												// image.
 	{
-	long	lId	= 0;
+	int32_t	lId	= 0;
 
 	// Set up ptrs and erase buffer.
 	Prepare(pgui, pguiOk, pguiCancel);

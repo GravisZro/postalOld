@@ -71,7 +71,7 @@ class CBall : public CThing
       int16_t m_sPrevHeight;
       int16_t m_sSuspend;
 
-      long  m_lPrevTime;
+      int32_t  m_lPrevTime;
 
       CSprite3    m_sprite;   // Container (contains ref's to below).
 
@@ -139,7 +139,7 @@ class CBall : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

@@ -62,7 +62,7 @@ extern int16_t StartTitle(                  // Returns 0 if successfull, non-zer
 // running total.  The ration between the running total and the value passed to
 // StartTitle() determines the new position of the progress meter.
 extern int16_t DoTitle(                  // Returns 0 if successfull, non-zero otherwise
-   long lUnits);                       // In:  Additional progess units
+   int32_t lUnits);                       // In:  Additional progess units
 
 // When you are completely done, call EndTitle().  This gives the title sequence
 // a chance to fully complete the progess meter (in case it never reached 100%

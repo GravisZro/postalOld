@@ -28,7 +28,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <BLUE/Blue.h>
 #include <math.h>
 
@@ -51,8 +51,8 @@
 //////////////////////////////////////////////////////////////////////////////
 
 struct JoyState {
-	U32	u32Buttons;
-	U32	u32Axes;
+	uint32_t	u32Buttons;
+	uint32_t	u32Axes;
 #if defined(ALLOW_TWINSTICK)
 	Sint16 axis_MoveUpDown, axis_MoveLeftRight, axis_FireUpDown, axis_FireLeftRight;
 #endif
@@ -113,7 +113,7 @@ extern void Joy_Init(void)
 	}
 
 
-static void calcAxis(SDL_GameController *controller, const SDL_GameControllerAxis axis, U32 *bits, const U32 posbit, const U32 negbit)
+static void calcAxis(SDL_GameController *controller, const SDL_GameControllerAxis axis, uint32_t *bits, const uint32_t posbit, const uint32_t negbit)
 {
     const Sint16 deadzone = (Sint16) (32767.0f * (MID_THRESHOLD_PERCENT / 100.0f));
     const Sint16 val = SDL_GameControllerGetAxis(controller, axis);
@@ -123,7 +123,7 @@ static void calcAxis(SDL_GameController *controller, const SDL_GameControllerAxi
         *bits |= posbit;
 }
 
-static inline void calcButton(SDL_GameController *controller, const SDL_GameControllerButton button, U32 *bits, const U32 posbit)
+static inline void calcButton(SDL_GameController *controller, const SDL_GameControllerButton button, uint32_t *bits, const uint32_t posbit)
 {
     if (SDL_GameControllerGetButton(controller, button) != 0)
         *bits |= posbit;
@@ -232,7 +232,7 @@ extern bool GetDudeFireAngle(double* d_Angle)
 // previous.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern void rspUpdateJoy(short sJoy)
+extern void rspUpdateJoy(int16_t sJoy)
 	{
         if ((sJoy > NUM_JOYSTICKS) || (ms_Controllers[sJoy] == nullptr))
             return;
@@ -300,11 +300,11 @@ extern void rspUpdateJoy(short sJoy)
 //
 //////////////////////////////////////////////////////////////////////////////
 extern void rspGetJoyState(
-	short sJoy,						// In:  Joystick to query.
-	U32*	pu32Buttons,			// Out: Buttons that are down, if not nullptr.
+	int16_t sJoy,						// In:  Joystick to query.
+	uint32_t*	pu32Buttons,			// Out: Buttons that are down, if not nullptr.
 										// An RSP_JOY_BUT_## bit field that is set indicates
 										// that button is down.
-	U32*	pu32Axes /*= nullptr */)	// Out: Directions that are specificed, if not nullptr.
+	uint32_t*	pu32Axes /*= nullptr */)	// Out: Directions that are specificed, if not nullptr.
 										// An RSP_JOY_?_POS bit set indicates the ? axis is positive.
 										// An RSP_JOY_?_NEG bit set indicates the ? axis is negative.
 										// If neither is set for ? axis, that axis is 0.
@@ -320,11 +320,11 @@ extern void rspGetJoyState(
 //
 //////////////////////////////////////////////////////////////////////////////
 extern void rspGetJoyPrevState(
-	short sJoy,						// In:  Joystick to query.
-	U32*	pu32Buttons,			// Out: Buttons that are down, if not nullptr.
+	int16_t sJoy,						// In:  Joystick to query.
+	uint32_t*	pu32Buttons,			// Out: Buttons that are down, if not nullptr.
 										// An RSP_JOY_BUT_## bit field that is set indicates
 										// that button is down.
-	U32*	pu32Axes /*= nullptr */)	// Out: Directions that are specificed, if not nullptr.
+	uint32_t*	pu32Axes /*= nullptr */)	// Out: Directions that are specificed, if not nullptr.
 										// An RSP_JOY_?_POS bit set indicates the ? axis is positive.
 										// An RSP_JOY_?_NEG bit set indicates the ? axis is negative.
 										// If neither is set for ? axis, that axis is 0.
@@ -336,10 +336,10 @@ extern void rspGetJoyPrevState(
 //////////////////////////////////////////////////////////////////////////////
 // Functions to convert bitfields to joybutton numbers and back again.
 //////////////////////////////////////////////////////////////////////////////
-extern short MouseBitfieldToIndex(U32 bitfield)
+extern int16_t MouseBitfieldToIndex(uint32_t bitfield)
 {
 	// Also clunky
-	short result;
+	int16_t result;
 	if (bitfield & 0x0001)
 		result = 1;
 	else if (bitfield & 0x0002)
@@ -362,10 +362,10 @@ extern short MouseBitfieldToIndex(U32 bitfield)
 
 	return result;
 }
-extern short JoyBitfieldToIndex(U32 bitfield)
+extern int16_t JoyBitfieldToIndex(uint32_t bitfield)
 {
 	// Clunky.
-	short result;
+	int16_t result;
 	if (bitfield & RSP_JOY_BUT_1)
 		result = 1;
 	else if (bitfield & RSP_JOY_BUT_2)
@@ -412,10 +412,10 @@ extern short JoyBitfieldToIndex(U32 bitfield)
 	return result;
 }
 
-extern U32 MouseIndexToBitfield(short index)
+extern uint32_t MouseIndexToBitfield(int16_t index)
 {
 	// Still clunky
-	U32 result;
+	uint32_t result;
 	if (index == 1)
 		result = 0x1;
 	else if (index == 2)
@@ -440,8 +440,8 @@ extern U32 MouseIndexToBitfield(short index)
 }
 
 // index starts at 1 apparently
-extern U32 JoyIndexToBitfield(short index) {
-	static U32 const lookup[18] = {
+extern uint32_t JoyIndexToBitfield(int16_t index) {
+	static uint32_t const lookup[18] = {
 		RSP_JOY_BUT_1,
 		RSP_JOY_BUT_2,
 		RSP_JOY_BUT_3,
@@ -467,7 +467,7 @@ extern U32 JoyIndexToBitfield(short index) {
 		return 0;
 	}
 
-	U32 result = lookup[index - 1];
+	uint32_t result = lookup[index - 1];
 	printf("JoyIndexToBitfield(%i) = %lu\n", index - 1, result);
 
 	return result;

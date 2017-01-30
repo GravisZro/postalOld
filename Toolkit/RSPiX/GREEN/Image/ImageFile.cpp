@@ -39,7 +39,7 @@
 //
 // NOTES TO THOSE ADDING NEW FILE VERSIONS:
 //	Please follow these steps when adding a new version Load or Save:
-//	o	Define a new static short RImageFile::LoadVersion#(RImage*, RFile*) 
+//	o	Define a new static int16_t RImageFile::LoadVersion#(RImage*, RFile*) 
 //	where # is the number of the new version.
 //
 // o	Call your new LoadVersion#(...) in the switch statement in 
@@ -94,12 +94,12 @@
 // Loads an RImage with file version 1 into pim from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
+int16_t RImageFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
 											// failure.
 	RImage*	/*pim*/,					// Image to load into.
 	RFile*	/*pfile*/)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	TRACE("LoadVersion1(): No current support for version 1 RImage.\n");
 	sRes	= FAILURE;
@@ -112,15 +112,15 @@ short RImageFile::LoadVersion1(	// Returns SUCCESS on success or FAILURE on
 // Loads an RImage with file version 2 into pim from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
+int16_t RImageFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 											// failure.
 	RImage*	pim,						// Image to load into.
 	RFile*	pfile)					// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
-	// No RFile support for RImage::Type, so we used a U32.
-	U32	u32Temp				= 0;
+	// No RFile support for RImage::Type, so we used a uint32_t.
+	uint32_t	u32Temp				= 0;
 	
 	pfile->Read(&u32Temp);
 	pim->m_type					= (RImage::Type)u32Temp;
@@ -133,22 +133,22 @@ short RImageFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 	// Note that the window ones may need to be read after the other ones or,
 	// more likely, we may need to put in the same patch that is in version 5.
 	pfile->Read(&u32Temp);
-	pim->m_sWinWidth			= (short)u32Temp;
+	pim->m_sWinWidth			= (int16_t)u32Temp;
 
 	pfile->Read(&u32Temp);
-	pim->m_sWinHeight			= (short)u32Temp;
+	pim->m_sWinHeight			= (int16_t)u32Temp;
 
 	pfile->Read(&u32Temp);
-	pim->m_sWidth				= (short)u32Temp;
+	pim->m_sWidth				= (int16_t)u32Temp;
 
 	pfile->Read(&u32Temp);
-	pim->m_sHeight				= (short)u32Temp;
+	pim->m_sHeight				= (int16_t)u32Temp;
 
 	pfile->Read(&u32Temp);
-	pim->m_sWinX				= (short)u32Temp;
+	pim->m_sWinX				= (int16_t)u32Temp;
 
 	pfile->Read(&u32Temp);
-	pim->m_sWinY				= (short)u32Temp;
+	pim->m_sWinY				= (int16_t)u32Temp;
 
 	pfile->Read(&pim->m_lPitch);
 	pfile->Read(&pim->m_sDepth);
@@ -160,7 +160,7 @@ short RImageFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 			{
 			if (pim->ReadPixelData(pfile) == SUCCESS)
 				{
-				ULONG ulPalSize;
+				uint32_t ulPalSize;
 				if (pfile->Read(&ulPalSize) == 1)
 					{
 					if (ulPalSize > 0)
@@ -203,12 +203,12 @@ short RImageFile::LoadVersion2(	// Returns SUCCESS on success or FAILURE on
 // Loads an RImage with file version 3 into pim from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
+int16_t RImageFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
 											// failure.
 	RImage*	/*pim*/,					// Image to load into.
 	RFile*	/*pfile*/)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	TRACE("LoadVersion3(): No current support for version 3 RImage.\n");
 	sRes	= FAILURE;
@@ -221,11 +221,11 @@ short RImageFile::LoadVersion3(	// Returns SUCCESS on success or FAILURE on
 // Loads an RImage with file version 4 into pim from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::LoadVersion4(	// Returns SUCCESS on success or FAILURE on failure.
+int16_t RImageFile::LoadVersion4(	// Returns SUCCESS on success or FAILURE on failure.
 	RImage*	/*pim*/,					// Image to load into.
 	RFile*	/*pfile*/)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	TRACE("LoadVersion4(): No current support for version 4 RImage.\n");
 	sRes	= FAILURE;
@@ -238,15 +238,15 @@ short RImageFile::LoadVersion4(	// Returns SUCCESS on success or FAILURE on fail
 // Loads an RImage with file version 5 into pim from pfile.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::LoadVersion5(	// Returns SUCCESS on success or FAILURE on
+int16_t RImageFile::LoadVersion5(	// Returns SUCCESS on success or FAILURE on
 											// failure.
 	RImage*	pim,						// Image to load into.
 	RFile*	pfile)					// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
-	// No RFile support for RImage::Type, so we used a U32.
-	U32	u32Temp				= 0;
+	// No RFile support for RImage::Type, so we used a uint32_t.
+	uint32_t	u32Temp				= 0;
 	pfile->Read(&u32Temp);
 	pim->m_type					= (RImage::Type)u32Temp;
 	pfile->Read(&u32Temp);
@@ -312,7 +312,7 @@ short RImageFile::LoadVersion5(	// Returns SUCCESS on success or FAILURE on
 	// If file is still okay . . .
 	if (pfile->Error() == FALSE)
 		{
-		USHORT usFlag;
+		uint16_t usFlag;
 		// See if there is any pixel data to be read
 		pfile->Read(&usFlag);
 		if (usFlag == 1)
@@ -333,7 +333,7 @@ short RImageFile::LoadVersion5(	// Returns SUCCESS on success or FAILURE on
 	// If file is still okay . . .
 	if (pfile->Error() == FALSE)
 		{
-		USHORT usFlag;
+		uint16_t usFlag;
 		// See if there is a palette to load
 		pfile->Read(&usFlag);
 		if (usFlag == 1)
@@ -360,19 +360,19 @@ short RImageFile::LoadVersion5(	// Returns SUCCESS on success or FAILURE on
 // Maps a particular file load onto the appropriate function, if available.
 //
 //////////////////////////////////////////////////////////////////////////////
-short RImageFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
+int16_t RImageFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 	RImage*	pim,					// Image to load into.
 	RFile*	pfile)				// File to load from.
 	{
-	short	sRes	= SUCCESS;	// Assume success.
+	int16_t	sRes	= SUCCESS;	// Assume success.
 
 	// Get finger print . . .
-	ULONG	ulFinger;
+	uint32_t	ulFinger;
 	if (pfile->Read(&ulFinger) == 1)
 		{
 		if (ulFinger == IMAGE_COOKIE)
 			{
-			ULONG	ulVersion;
+			uint32_t	ulVersion;
 			if (pfile->Read(&ulVersion) == 1)
 				{
 				switch (ulVersion)
@@ -440,7 +440,7 @@ short RImageFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 				// Seek back for LoadDib() call.  99% of the time this will not cause a seek
 				// b/c it's within the buffered i/o's buffer.
 				// The other 1%.....uhhh...well.
-				pfile->Seek( - (long)sizeof(ulFinger), SEEK_CUR);
+				pfile->Seek( - (int32_t)sizeof(ulFinger), SEEK_CUR);
 				
 				// Invoke LoadDib() . . .
 				sRes	= pim->LoadDib(pfile);

@@ -172,7 +172,7 @@ int16_t CExplode::Load(                           // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
    {
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -302,7 +302,7 @@ void CExplode::Update(void)
       m_MessageQueue.Empty();
 
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       if (m_lTimer < m_pAnimChannel->TotalTime())
       {
@@ -371,7 +371,7 @@ int16_t CExplode::Setup(                          // Returns 0 if successfull, n
    int16_t sX,                                    // In:  New x coord
    int16_t sY,                                    // In:  New y coord
    int16_t sZ,                                    // In:  New z coord
-   U16   u16ShooterID,                          // In:  Who is responsible for this explosion
+   uint16_t   u16ShooterID,                          // In:  Who is responsible for this explosion
    int16_t sAnim)                                 // In:  Which animation to use
 {
    int16_t sResult = 0;

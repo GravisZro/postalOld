@@ -98,8 +98,8 @@ class CSoundThing : public CThing
    public:
       bool m_bInitiallyEnabled;
       bool m_bInitiallyRepeats;
-      long m_lMinTime[2];
-      long m_lRndTime[2];
+      int32_t m_lMinTime[2];
+      int32_t m_lRndTime[2];
       char  m_szResName[RSP_MAX_PATH];    // Resource name
 
       SampleMasterID m_id;
@@ -112,35 +112,35 @@ class CSoundThing : public CThing
 
       SampleMaster::SoundInstance   m_siChannel;
 
-      long m_lLastStartTime;
-      long m_lNextStartTime;
+      int32_t m_lLastStartTime;
+      int32_t m_lNextStartTime;
       int16_t m_sWhichTime;
       bool m_bEnabled;
       bool m_bRepeats;
 
       int16_t m_sUseLooping;                // TRUE, to use looping parameters.
-      long  m_lStopLoopingTime;           // Time that we stop looping the sample.
-      long  m_lNumLoopBacks;              // Number of times to play loop area of sample.
-      long  m_lLoopBackTo;                // Where to loop back to.
-      long  m_lLoopBackFrom;              // Where to loop back from.
+      int32_t  m_lStopLoopingTime;           // Time that we stop looping the sample.
+      int32_t  m_lNumLoopBacks;              // Number of times to play loop area of sample.
+      int32_t  m_lLoopBackTo;                // Where to loop back to.
+      int32_t  m_lLoopBackFrom;              // Where to loop back from.
 
       int16_t m_sSuspend;                   // Suspend flag
 
       State m_state;                      // Current state.
 
-      long  m_lVolumeHalfLife;            // Half life of the current sound.
+      int32_t  m_lVolumeHalfLife;            // Half life of the current sound.
 
       int16_t m_sPurgeSampleWhenDone;       // TRUE, to purge sample when done.
 
       int16_t m_sAmbient;                   // TRUE, if ambient (i.e., non-essential) sound.
 
-      long  m_lCollectiveVolume;          // Collective volume from this object and
+      int32_t  m_lCollectiveVolume;          // Collective volume from this object and
                                           // its child satellites.
 
    protected:
 
       static int16_t   ms_sFileCount;       // File count.
-      static long    ms_lGetRandomSeed;   // Seed for get random.
+      static int32_t    ms_lGetRandomSeed;   // Seed for get random.
 
    //---------------------------------------------------------------------------
    // Constructor(s) / destructor
@@ -225,7 +225,7 @@ class CSoundThing : public CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -305,7 +305,7 @@ class CSoundThing : public CThing
    public:
       // Relay the volume to add to this CSoundThing's collective volume.
       void RelayVolume( // Returns nothing.
-         long lVolume); // In:  Volume to relay.
+         int32_t lVolume); // In:  Volume to relay.
 
    //---------------------------------------------------------------------------
    // Internal functions
@@ -322,8 +322,8 @@ class CSoundThing : public CThing
 
       // Don't call this from outside of CSoundThing.  It should affect only
       // CSoundThing stuff.
-      static long GetRandom(void);
-      static long GetRand(void)
+      static int32_t GetRandom(void);
+      static int32_t GetRand(void)
          {
          return GetRandom();
          }

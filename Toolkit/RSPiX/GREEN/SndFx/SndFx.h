@@ -18,7 +18,7 @@
 #ifndef SNDFX_H
 #define SNDFX_H
 
-#include <stdio.h> // For FILE*
+#include <cstdio> // For FILE*
 
 #include <BLUE/System.h>
 
@@ -70,8 +70,8 @@ class RSndFx
 		// This costs sNumStemps * 256 * bits per sample / 8 bytes of memory.
 		// This function should only be called after the bits per sample have
 		// been set via a call to SetDataType().
-		static short SetFadeAccuracy(	// Returns 0 on success.
-			short sNumSteps);				// Number of steps to fades; see above.
+		static int16_t SetFadeAccuracy(	// Returns 0 on success.
+			int16_t sNumSteps);				// Number of steps to fades; see above.
 
 		// Release any dynamic memory referenced by static members.
 		static void CleanUp(void);
@@ -87,15 +87,15 @@ class RSndFx
 
 		// Set type of PCM data in use.  This will reset all effects.
 		static void SetDataType(	// Returns nothing.
-			long lSamplesPerSec,		// Samples per second.
-			long lBitsPerSample,		// Bits per sample.
-			long lNumChannels);		// Number of channels.
+			int32_t lSamplesPerSec,		// Samples per second.
+			int32_t lBitsPerSample,		// Bits per sample.
+			int32_t lNumChannels);		// Number of channels.
 		
 		// Implements the effect on the provided buffer.
 		void Do(								// Returns nothing.
-			UCHAR* pucSrcData,			// Data to affect.
-			long lBufSize,					// Amount of data.
-			UCHAR* pucDstData = nullptr);	// Destination for data, defaults to
+			uint8_t* pucSrcData,			// Data to affect.
+			int32_t lBufSize,					// Amount of data.
+			uint8_t* pucDstData = nullptr);	// Destination for data, defaults to
 												// same as source.
 		
 		/////////////////////////////////////////////////////////////////////////
@@ -105,22 +105,22 @@ class RSndFx
 		/////////////////////// Fade In /////////////////////////////////////////
 
 		// Set up a fade in.
-		short SetUpFadeIn(	// Returns 0 on success.
-			long lDuration);	// Duration until silence in milliseconds.
+		int16_t SetUpFadeIn(	// Returns 0 on success.
+			int32_t lDuration);	// Duration until silence in milliseconds.
 
 		// Activate/Deactivate fade in.
 		void ActivateFadeIn(	// Returns nothing.
-			short	sActivate);	// TRUE to activate, FALSE to deactivate.
+			int16_t	sActivate);	// TRUE to activate, FALSE to deactivate.
 
 		/////////////////////// Fade Out ////////////////////////////////////////
 
 		// Set up a fade out.
-		short SetUpFadeOut(	// Returns 0 on success.
-			long lDuration);	// Duration until full volume in milliseconds.
+		int16_t SetUpFadeOut(	// Returns 0 on success.
+			int32_t lDuration);	// Duration until full volume in milliseconds.
 		
 		// Activate/Deactivate fade out.
 		void ActivateFadeOut(	// Returns nothing.
-			short	sActivate);		// TRUE to activate, FALSE to deactivate.
+			int16_t	sActivate);		// TRUE to activate, FALSE to deactivate.
 
 	////////////////////////// Internal Methods ///////////////////////////////
 	protected:
@@ -155,8 +155,8 @@ class RSndFx
 
 		///////////////////// Protected Typedefs ///////////////////////////////
 		struct PCMINFO {		// Stores info particular PCM type.
-			long	lMin;		// Mininum value (silence).
-			long	lMax;		// Maximum value (saturation).
+			int32_t	lMin;		// Mininum value (silence).
+			int32_t	lMax;		// Maximum value (saturation).
 		};
 
 		/////////////////////// Static members /////////////////////////////////
@@ -174,12 +174,12 @@ class RSndFx
 																			// particular to each 
 																			// PCM type.
 
-		static U8*		ms_pu8Fade;			// Unsigned 8 bit output
+		static uint8_t*		ms_pu8Fade;			// Unsigned 8 bit output
 													// fade table.
-		static S16*		ms_ps16Fade;		// Signed 16 bit output
+		static int16_t*		ms_ps16Fade;		// Signed 16 bit output
 													// fade table.
 
-		static short	ms_sNumFadeSteps;		// Number of fade steps.
+		static int16_t	ms_sNumFadeSteps;		// Number of fade steps.
 	};
 
 #endif // SNDFX_H

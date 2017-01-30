@@ -28,8 +28,8 @@
 #include "portable.h"
 #include "flx.h"
 
-short ReadFlic(char* pszIn);
-short CopyFlic(char* pszIn, char* pszOut);
+int16_t ReadFlic(char* pszIn);
+int16_t CopyFlic(char* pszIn, char* pszOut);
 void DumpHeader(FLX_FILE_HDR* pfilehdr);
 
 
@@ -50,11 +50,11 @@ void main(void)
 // Copy a flic frame by frame to test the reading and writing functions.
 //
 ///////////////////////////////////////////////////////////////////////////////
-short ReadFlic(char* pszIn)
+int16_t ReadFlic(char* pszIn)
 	{
 	static FLX_BUF buf1;
 
-	short sError = 0;
+	int16_t sError = 0;
 	
 	// Open existing FLI file for reading
 	CFlx flxRead;
@@ -64,7 +64,7 @@ short ReadFlic(char* pszIn)
 		DumpHeader(&filehdrRead);
 
 		// Read each frame
-		for (short sFrame = 1; (sFrame <= filehdrRead.sNumFrames) && (sError == 0); sFrame++)
+		for (int16_t sFrame = 1; (sFrame <= filehdrRead.sNumFrames) && (sError == 0); sFrame++)
 			{
 			if (flxRead.ReadNextFrame(&buf1) == 0)
 				{
@@ -94,11 +94,11 @@ short ReadFlic(char* pszIn)
 // Copy a flic frame by frame to test the reading and writing functions.
 //
 ///////////////////////////////////////////////////////////////////////////////
-short CopyFlic(char* pszIn, char* pszOut)
+int16_t CopyFlic(char* pszIn, char* pszOut)
 	{
 	static FLX_BUF buf1;
 
-	short sError = 0;
+	int16_t sError = 0;
 	
 	// Open existing FLI file for reading
 	CFlx flxRead;
@@ -118,7 +118,7 @@ short CopyFlic(char* pszIn, char* pszOut)
 			DumpHeader(&filehdrWrite);
 							
 			// Read each frame and write it out
-			for (short sFrame = 1; (sFrame <= filehdrRead.sNumFrames) && (sError == 0); sFrame++)
+			for (int16_t sFrame = 1; (sFrame <= filehdrRead.sNumFrames) && (sError == 0); sFrame++)
 				{
 				if (flxRead.ReadNextFrame(&buf1) == 0)
 					{
@@ -190,18 +190,18 @@ void DumpHeader(FLX_FILE_HDR* pfilehdr)
 // Old code to display image and palette - takes about 10 minutes per frame!!!!
 ///////////////////////////////////////////////////////////////////////////////
 #if 0
-				for (short c = 10; c < 246; c++)
+				for (int16_t c = 10; c < 246; c++)
 					{
-					long rgb = ((long)((long)(prgbColors[c].bR) >> (long)2) & 0x000000ffL) |
-					           ((long)((long)(prgbColors[c].bG) << (long)6) & 0x0000ff00L) |
-					           ((long)((long)(prgbColors[c].bB) << (long)14) & 0x00ff0000L);
+					long rgb = ((int32_t)((int32_t)(prgbColors[c].bR) >> (int32_t)2) & 0x000000ffL) |
+					           ((int32_t)((int32_t)(prgbColors[c].bG) << (int32_t)6) & 0x0000ff00L) |
+					           ((int32_t)((int32_t)(prgbColors[c].bB) << (int32_t)14) & 0x00ff0000L);
 					_remappalette(c, rgb);
 					}
-				for (short y = 0; y < filehdrRead.sHeight; y++)
+				for (int16_t y = 0; y < filehdrRead.sHeight; y++)
 					{
-					for (short x = 0; x < filehdrRead.sWidth; x++)
+					for (int16_t x = 0; x < filehdrRead.sWidth; x++)
 						{
-						_setcolor((short)(pbPixels[y][x]));
+						_setcolor((int16_t)(pbPixels[y][x]));
 						_setpixel(x, y);
 						}
 					}

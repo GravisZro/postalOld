@@ -120,7 +120,7 @@
 double COstrich::ms_dExplosionVelocity = 180.0;
 double COstrich::ms_dMaxMarchVel = 30.0;
 double COstrich::ms_dMaxRunVel = 80.0;
-long COstrich::ms_lStateChangeTime = 10000;
+int32_t COstrich::ms_lStateChangeTime = 10000;
 int16_t COstrich::ms_sStartingHitPoints = 100;
 
 // Let this auto-init to 0
@@ -242,7 +242,7 @@ int16_t COstrich::Load(               // Returns 0 if successfull, non-zero othe
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
 
@@ -396,8 +396,8 @@ void COstrich::Update(void)
    double dNewZ;
    double dX;
    double dZ;
-   long lThisTime;
-   long lTimeDifference;
+   int32_t lThisTime;
+   int32_t lTimeDifference;
 
 
    if (!m_sSuspend)

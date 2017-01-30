@@ -66,7 +66,7 @@ int16_t CGoalTimer::Load(                   // Returns 0 if successfull, non-zer
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    // Call the base class load to get the instance ID
    int16_t sResult = CThing::Load(pFile, bEditMode, sFileCount, ulFileVersion);
@@ -240,7 +240,7 @@ int16_t CGoalTimer::EditNew(                         // Returns 0 if successfull
          RGuiItem* pgui = plb->AddString((char*) m_rstrNetName);
          pgui->m_lId = GetInstanceID();
          pgui->m_bcUser = NavNetListPressedCall;
-         pgui->m_ulUserInstance = (unsigned long) this;
+         pgui->m_ulUserInstance = this;
          plb->AdjustContents();
          plb->SetSel(pgui);
       }
@@ -256,8 +256,8 @@ int16_t CGoalTimer::EditNew(                         // Returns 0 if successfull
 inline
 void SetText(              // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
-   long        lVal)       // In:  Value to set text to.
+   int32_t        lId,        // In:  ID of GUI to set text.
+   int32_t        lVal)       // In:  Value to set text to.
    {
    RGuiItem*   pgui  = pguiRoot->GetItemFromId(lId);
    if (pgui)
@@ -273,7 +273,7 @@ void SetText(              // Returns nothing.
 inline
 void CheckMultiBtn(        // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId,        // In:  ID of GUI to set text.
+   int32_t        lId,        // In:  ID of GUI to set text.
    int16_t       sChecked)   // In:  1 to check, 0 to uncheck.
    {
    int16_t sRes  = 0;  // Assume nothing;
@@ -295,7 +295,7 @@ void CheckMultiBtn(        // Returns nothing.
 inline
 int16_t IsMultiBtnChecked(   // Returns multibtn's state.
    RGuiItem*   pguiRoot,   // In:  Root GUI.
-   long        lId)        // In:  ID of GUI to set text.
+   int32_t        lId)        // In:  ID of GUI to set text.
    {
    int16_t sRes  = 0;  // Assume nothing;
 

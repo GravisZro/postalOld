@@ -189,8 +189,8 @@ public:
    CSmashLink*          m_pFirstLink;  // offset into pLinks...
    //--------------------------------------------------------------------
    CSmashatoriumList*   m_pClippedGrid;// Start Grid in 'torium
-   long                 m_lX;          // See if it's moved!
-   long                 m_lY;
+   int32_t                 m_lX;          // See if it's moved!
+   int32_t                 m_lY;
    //--------------------------------------------------------------------
    void  Erase();
    void  Destroy();
@@ -214,7 +214,7 @@ class CSmash
    // Types, enums, etc.
    //---------------------------------------------------------------------------
    public:
-      typedef U32 Bits;
+      typedef uint32_t Bits;
 
       // Available bits for classifying a CSmash
       enum
@@ -251,7 +251,7 @@ class CSmash
       int16_t m_sInGrid;              // int16_t cut to tell if in a grid...
 
       //---- these remain separate for fater access, since compilers SUCK
-      long  m_lSearchTagCode;       // By using a 32bit value, we don't need to untag!
+      int32_t  m_lSearchTagCode;       // By using a 32bit value, we don't need to untag!
       CSmashLink  m_link1;
       CSmashLink  m_link2;
       CSmashLink  m_link3;
@@ -352,7 +352,7 @@ public:
    int16_t m_sSearchW; //  base 1 !
    int16_t m_sSearchH; //  base 1 !
 
-   long  m_lCurrentSearchCode;   // change it for each search
+   int32_t  m_lCurrentSearchCode;   // change it for each search
 
    int16_t m_sNumInSmash; // Used for debugging
    int16_t m_sMaxNumInSmash; // Used for debugging
@@ -546,9 +546,9 @@ public:
       //---------------------------------------------------------------
       // (1) Cast the sphere into a 2 point square
       RSphere* pSphere = &(pSmash->m_sphere->sphere);
-      long lR = pSphere->lRadius;
+      int32_t lR = pSphere->lRadius;
 
-      long  x1,x2,y1,y2;
+      int32_t  x1,x2,y1,y2;
       x1 = x2 = pSphere->X;
       y1 = y2 = pSphere->Z;
       x1 -= lR;
@@ -606,12 +606,12 @@ public:
       m_link4.m_pLast = pCurrent; // NOT YET INSTALLED THOUGH!
       //-------------------------------------------------------------
 
-      //**************************************************
+      // **************************************************
       // there is an error here! There could have been a
       // quadrant which did not CHANGE (so was not removed),
       // but is now REDUNDANT.  Think about combining these
       // sections!
-      //**************************************************
+      // **************************************************
 
       // (4) Check for redundancies before installing:
       // USE a nullptr pointer to signify redundancy

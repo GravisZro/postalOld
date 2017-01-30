@@ -115,7 +115,7 @@
 // Message Types
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef unsigned char MessageType;
+typedef uint8_t MessageType;
 
 enum
 {
@@ -165,7 +165,7 @@ struct Shot_Message {
    int16_t       sPriority;
    int16_t       sDamage;
    int16_t       sAngle;
-   U16         u16ShooterID; // Instance ID of the shooter (for scoring)
+   uint16_t         u16ShooterID; // Instance ID of the shooter (for scoring)
 };
 
 typedef Shot_Message* pShot_Message;
@@ -178,7 +178,7 @@ struct Explosion_Message {
    int16_t       sY;         // Center of explosion
    int16_t       sZ;         // Center of explosion
    int16_t       sVelocity;  // Relative size of explosion
-   U16         u16ShooterID;// Instance ID of the shooter
+   uint16_t         u16ShooterID;// Instance ID of the shooter
 };
 
 typedef Explosion_Message* pExplosion_Message;
@@ -187,7 +187,7 @@ struct Burn_Message {
    MessageType eType; // = typeBurn;
    int16_t       sPriority;
    int16_t       sDamage;
-   U16         u16ShooterID;  // Instance ID of the shooter
+   uint16_t         u16ShooterID;  // Instance ID of the shooter
 };
 
 typedef Burn_Message* pBurn_Message;
@@ -202,9 +202,9 @@ typedef ObjectDelete_Message* pObjectDelte_Message;
 struct Popout_Message {
    MessageType eType; // = typePopout
    int16_t       sPriority;
-   UCHAR       ucIDNext;         // Next Pylon to run to
-   U16         u16UniqueDudeID;  // Dude to target
-   U16         u16UniquePylonID; // Easier way to get to pylon data
+   uint8_t       ucIDNext;         // Next Pylon to run to
+   uint16_t         u16UniqueDudeID;  // Dude to target
+   uint16_t         u16UniquePylonID; // Easier way to get to pylon data
    int16_t       sNextPylonX;      // Next pylon X position
    int16_t       sNextPylonZ;      // Next pylon Z position
 };
@@ -214,9 +214,9 @@ typedef Popout_Message* pPopout_Message;
 struct ShootCycle_Message {
    MessageType eType; // = typeShootCycle
    int16_t       sPriority;
-   UCHAR       ucIDNext;         // ID of next bouy in cycle
-   U16         u16UniqueDudeID;  // Dude to target
-   U16         u16UniquePylonID; // Easier way to get to pylon data
+   uint8_t       ucIDNext;         // ID of next bouy in cycle
+   uint16_t         u16UniqueDudeID;  // Dude to target
+   uint16_t         u16UniquePylonID; // Easier way to get to pylon data
    int16_t       sNextPylonX;      // Next pylon X position
    int16_t       sNextPylonZ;      // Next pylon Z position
 };
@@ -260,7 +260,7 @@ struct Trigger_Message {
 struct DudeTrigger_Message {
    MessageType eType; // = typeDudeTrigger
    int16_t       sPriority;
-   U16         u16DudeUniqueID;
+   uint16_t         u16DudeUniqueID;
    double      dX;
    double      dZ;
 };
@@ -300,7 +300,7 @@ struct Help_Message {
 struct PutMeDown_Message {
    MessageType eType;// = typePutMeDown
    int16_t       sPriority;
-   U16         u16FlagInstanceID;
+   uint16_t         u16FlagInstanceID;
 };
 
 struct GameMessage {

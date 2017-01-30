@@ -141,7 +141,7 @@ void CNetMsgr::Update(void)
             }
          else if (serr != RSocket::errWouldBlock)
             {
-            TRACE("CNetMsgr::Connect(): Attempt to connect failed!\n";
+            TRACE("CNetMsgr::Connect(): Attempt to connect failed!\n");
             // It may seem harsh, but resetting is just fine in this
             // situation because it cleans everything up, and there's
             // nothing to be "nice" about -- we're not connected to anyone!
@@ -164,7 +164,7 @@ void CNetMsgr::Update(void)
          break;
 
       default:
-         TRACE("CNetMsgr::Update(): Unknown state!\n";
+         TRACE("CNetMsgr::Update(): Unknown state!\n");
          break;
       }
    }
@@ -182,11 +182,11 @@ bool CNetMsgr::GetMsg(                          // True if message was available
    if (m_error == NetMsg::NoError)
       {
       // See how much data (if any) is available
-      long lGetable = m_bufIn.CheckGetable();
+      int32_t lGetable = m_bufIn.CheckGetable();
       if (lGetable >= 1)
          {
          // Peek at first byte of data, which ought to be the message type
-         unsigned char ucMsg;
+         uint8_t ucMsg;
          if (m_bufIn.Get(&ucMsg) == 1)
             {
             // Make sure it's a valid message type
@@ -195,7 +195,7 @@ bool CNetMsgr::GetMsg(                          // True if message was available
                // Get the expected message length.  A value of -1 indicates a
                // variable-sized message, in which case the next 2 bytes (if
                // they are available) would indicate the message size.
-               long lMsgSize = ms_aInfoMsg[ucMsg].size;
+               int32_t lMsgSize = ms_aInfoMsg[ucMsg].size;
                if (lMsgSize == -1)
                   {
                   // Check if at least enough is available (beyond the ucMsg byte we got)
@@ -232,7 +232,7 @@ bool CNetMsgr::GetMsg(                          // True if message was available
                   (ms_aInfoMsg[ucMsg].funcRead)(pmsg, &m_bufIn);
 
                   // Verify that the correct number of bytes were read
-                  long lNewGetable = m_bufIn.CheckGetable();
+                  int32_t lNewGetable = m_bufIn.CheckGetable();
                   if ((lGetable - lNewGetable) == lMsgSize)
                      {
                      // Update most-recent receive time
@@ -352,19 +352,19 @@ void CNetMsgr::SendMsg(
    if (m_state == Connected)
       {
       // Get msg type.
-      U8 ucMsg = pmsg->msg.nothing.ucType;
+      uint8_t ucMsg = pmsg->msg.nothing.ucType;
 
       // Make sure it's a valid message type
       if ((ucMsg >= 0) && (ucMsg < NetMsg::NumMessages))
          {
          // Determine message size.  A size of -1 indicates a variable-sized message,
          // in which case the actual size is stored within the message itself.
-         long lMsgSize = ms_aInfoMsg[ucMsg].size;
+         int32_t lMsgSize = ms_aInfoMsg[ucMsg].size;
          if (lMsgSize == -1)
             lMsgSize = pmsg->msg.nothing.lSize;
 
          // Check available space in the queue, and if it's enough for the message, go ahead
-         long lPutable = m_bufOut.CheckPutable();
+         int32_t lPutable = m_bufOut.CheckPutable();
          if (lPutable >= lMsgSize)
             {
             // Make sure the write func is the right one . . .
@@ -374,7 +374,7 @@ void CNetMsgr::SendMsg(
             (ms_aInfoMsg[ucMsg].funcWrite)(pmsg, &m_bufOut);
 
             // Verify that the correct number of bytes were written
-            long lNewPutable = m_bufOut.CheckPutable();
+            int32_t lNewPutable = m_bufOut.CheckPutable();
             if ((lPutable - lNewPutable) == lMsgSize)
                {
                // Update time last message was sent (hmmmm....not really!  This merely indicates
@@ -394,7 +394,7 @@ void CNetMsgr::SendMsg(
          else
             {
             m_error = NetMsg::OutQFullError;
-            TRACE("CNetMsgr::SendMsg(): Output queue is full!\n";
+            TRACE("CNetMsgr::SendMsg(): Output queue is full!\n");
             }
          }
       else
@@ -459,11 +459,11 @@ void CNetMsgr::ReceiveData(void)
          NetBlockingWatchdog();
 
          // No bytes received yet
-         long lReceivedBytes = 0;
+         int32_t lReceivedBytes = 0;
 
          // Lock the buffer so we can write directly into it
-         U8* pu8Put;
-         long lMaxPuttableBytes;
+         uint8_t* pu8Put;
+         int32_t lMaxPuttableBytes;
          m_bufIn.LockPutPtr(&pu8Put, &lMaxPuttableBytes);
 
          // Make sure there's room in the buffer
@@ -474,12 +474,12 @@ void CNetMsgr::ReceiveData(void)
             if ((serr != 0) && (serr != RSocket::errWouldBlock))
                {
                m_error = NetMsg::ReceiveError;
-               TRACE("CNetMsgr::Update(): Receive error!\n";
+               TRACE("CNetMsgr::Update(): Receive error!\n");
                }
             }
          else
             {
-            TRACE("CNetMsgr::Update(): Warning! Input queue is full!\n";
+            TRACE("CNetMsgr::Update(): Warning! Input queue is full!\n");
             }
 
          // Release pointer, telling it how many bytes we actually added to it
@@ -510,11 +510,11 @@ void CNetMsgr::SendData(void)
          NetBlockingWatchdog();
 
          // No bytes sent yet
-         long lSentBytes = 0;
+         int32_t lSentBytes = 0;
 
          // Lock the buffer so we can read directly from it
-         U8* pu8Get;
-         long lMaxGettableBytes;
+         uint8_t* pu8Get;
+         int32_t lMaxGettableBytes;
          m_bufOut.LockGetPtr(&pu8Get, &lMaxGettableBytes);
 
          // Make sure we can get something from buffer (this is not really
@@ -526,7 +526,7 @@ void CNetMsgr::SendData(void)
             if ((serr != 0) && (serr != RSocket::errWouldBlock))
                {
                m_error = NetMsg::SendError;
-               TRACE("CNetMsgr::Update(): Send error!\n";
+               TRACE("CNetMsgr::Update(): Send error!\n");
                }
             }
          else
@@ -534,7 +534,7 @@ void CNetMsgr::SendData(void)
             // If for some unbelievable reason this test fails even though the
             // previous test said there was data, then we're in deep shit, but
             // let's avoid an infinite loop in any case...
-            TRACE("CNetMsgr::Update(): Internal inconsistancy detected!!!\n";
+            TRACE("CNetMsgr::Update(): Internal inconsistancy detected!!!\n");
             ASSERT(0);
             break;
             }

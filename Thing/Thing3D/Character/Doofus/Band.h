@@ -81,7 +81,7 @@ class CBand : public CDoofus
       CAnim3D m_animBlownup;              // Blown up by explosion
       CAnim3D m_animOnFire;               // Running while on fire
 
-      U16               m_idChildItem;    // ID of child item or CIdBank::IdNil.
+      uint16_t               m_idChildItem;    // ID of child item or CIdBank::IdNil.
 
       // Tracks file counter so we know when to load/save "common" data
       static int16_t ms_sFileCount;
@@ -92,10 +92,10 @@ class CBand : public CDoofus
       static double ms_dExplosionVelocity;// How high he will get blown up.
       static double ms_dMaxMarchVel;      // How fast to march
       static double ms_dMaxRunVel;        // Hos fast to run
-      static long ms_lMingleTime;         // How long to mingle before moving
+      static int32_t ms_lMingleTime;         // How long to mingle before moving
       static int16_t ms_sStartingHitPoints; // How many hit points to start with
       static SampleMaster::SoundInstance ms_siBandSongInstance;      // sound played during band march.
-      static U16  ms_idBandLeader;        // The person who adjusts the band sound
+      static uint16_t  ms_idBandLeader;        // The person who adjusts the band sound
                                           // volume or IdNil.
 
 
@@ -163,7 +163,7 @@ class CBand : public CDoofus
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise

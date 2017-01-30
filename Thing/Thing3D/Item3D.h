@@ -50,7 +50,7 @@
 
 #include <RSPiX.h>
 
-#include <Character.h>
+#include <Thing/Thing3D/Character.h>
 
 class CItem3d : public CThing3d
    {
@@ -59,7 +59,8 @@ class CItem3d : public CThing3d
    //---------------------------------------------------------------------------
    public:
 
-      enum ItemType {      // Items.
+      enum ItemType : uint8_t
+      {      // Items.
          None,          // No current type.  Must be 0.
          Custom,        // A type whose name is stored in m_szAnimBaseName[].
          Trumpet,
@@ -166,7 +167,7 @@ class CItem3d : public CThing3d
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  Version of file format to load.
+         uint32_t ulFileVersion);                        // In:  Version of file format to load.
 
       // Save object (should call base class version!)
       int16_t Save(                                     // Returns 0 if successfull, non-zero otherwise
@@ -202,7 +203,7 @@ class CItem3d : public CThing3d
          ItemType type,             // In:  Known item type or Custom.
          char const * pszCustomBaseName = nullptr, // In:  Required if type == Custom.
                                           // Base name for custom type resources.
-         U16   u16IdParentInstance = CIdBank::IdNil); // In:  Parent instance ID.
+         uint16_t   u16IdParentInstance = CIdBank::IdNil); // In:  Parent instance ID.
 
       // Message handling functions ////////////////////////////////////////////
 

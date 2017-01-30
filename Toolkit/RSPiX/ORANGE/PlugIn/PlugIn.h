@@ -60,14 +60,14 @@ class CPlugIn
 		// You should define this function if you want to react to 
 		// the user selecting your plug in DLL.
 		// Returns 0 on success.
-		DLL2EXE virtual short Activate(void)	{ return 0; }
+		DLL2EXE virtual int16_t Activate(void)	{ return 0; }
 
 		// Override this to deactivate your plug-in.
 		// This gets called when the DLL must be unloaded.
 		// You should define this function if you need to perform tasks before
 		// your DLL is unloaded.
 		// Returns 0 on success.
-		DLL2EXE virtual short Deactivate(void)	{ return 0; }
+		DLL2EXE virtual int16_t Deactivate(void)	{ return 0; }
 
 		// Override this to initialize your plug-in.
 		// This gets called when the plug-in chooser dialog loads
@@ -75,7 +75,7 @@ class CPlugIn
 		// You should define this function if you want to do things
 		// as soon as your DLL is mapped into the exe.
 		// Returns 0 on success.
-		DLL2EXE virtual short Init(void)	{ return 0; }
+		DLL2EXE virtual int16_t Init(void)	{ return 0; }
 
 		// Override this function to trap menu choices.
 		// This gets called when the user chooses a menu item in the
@@ -83,7 +83,7 @@ class CPlugIn
 		// You should define this function if you want to do things
 		// based on a certain menu choice.
 		// Returns 0 on success.
-		DLL2EXE virtual short OnMenuItem(UINT uiIdChoice)	{ return 0; }
+		DLL2EXE virtual int16_t OnMenuItem(UINT uiIdChoice)	{ return 0; }
 
 		/////////////////////////////////////////////////////////////////////////
 		// The following functions are automatically defined by the plug in DLL.
@@ -113,7 +113,7 @@ class CPlugIn
 
 		// Storage of this object is oversized to accomodate new variables even
 		// in older versions.  ALWAYS add new variables before this.
-		UCHAR			m_aucReserved[1024];	// NEVER use this space.
+		uint8_t			m_aucReserved[1024];	// NEVER use this space.
 
       /////////////////////////////////////////////////////////////////////////
 		// Static members instantiated in the executable for the DLLs' 
@@ -134,7 +134,7 @@ DLL2EXE CPlugIn* GetPlugInObject(void);
 
 // These typedefs is used by the Plugger dialog to refer to the function pointer.
 typedef CPlugIn*	(GETPLUGINOBJECTFUNC)(void);
-typedef long		(GETDLLMAGICSIZE)(CPlugIn*);
+typedef int32_t		(GETDLLMAGICSIZE)(CPlugIn*);
 typedef char*		(GETDLLMAGICTIME)(CPlugIn*);
 
 // These return values from the EXE for the EXE.  They are not necessarily used

@@ -28,7 +28,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include <BLUE/Blue.h>
 
@@ -40,11 +40,11 @@ extern int sdlWindowWidth;
 extern int sdlWindowHeight;
 
 struct RSP_MOUSE_EVENT {
-	short	sX;
-	short	sY;
-	short	sButton;
-	long	lTime;
-	short	sType;
+	int16_t	sX;
+	int16_t	sY;
+	int16_t	sButton;
+   int32_t	lTime;
+	int16_t	sType;
 };
 
 typedef RSP_MOUSE_EVENT* PRSP_MOUSE_EVENT;
@@ -63,7 +63,7 @@ extern bool mouse_grabbed;
 ///////////////////////////////////////////////////////////////////////////////
 // Module specific (static) globals.
 ///////////////////////////////////////////////////////////////////////////////
-static short				ms_sCursorShowLevel	= 0;
+static int16_t				ms_sCursorShowLevel	= 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions.
@@ -72,7 +72,7 @@ static int MouseWheelState = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Puts the coordinates of the mouse position in your shorts.
+// Puts the coordinates of the mouse position in your int16_ts.
 // Note GetAsyncKeyState returns current button state info (unlike
 // GetKeyState); however, if we do not have keyboard focus, it returns 0, or so
 // it is documented.
@@ -80,9 +80,9 @@ static int MouseWheelState = 0;
 // 
 ///////////////////////////////////////////////////////////////////////////////
 extern void rspGetMouse(
-		short* psX,				// Current x position is returned here (unless nullptr)
-		short* psY,				// Current y position is returned here (unless nullptr)
-		short* psButton)		// Current button status is returned here (unless nullptr)
+		int16_t* psX,				// Current x position is returned here (unless nullptr)
+		int16_t* psY,				// Current y position is returned here (unless nullptr)
+		int16_t* psButton)		// Current button status is returned here (unless nullptr)
 	{
 
     if (!mouse_grabbed)
@@ -95,7 +95,7 @@ extern void rspGetMouse(
     }
 
     int x, y;
-    const Uint32 buttons = SDL_GetMouseState(&x, &y);
+    const uint32_t buttons = SDL_GetMouseState(&x, &y);
     SET(psX, x);
     SET(psY, y);
 
@@ -116,7 +116,7 @@ extern void rspGetMouse(
 
 extern void Mouse_Event(SDL_Event *event)
 {
-	static short	sEventIndex	= 0;
+	static int16_t	sEventIndex	= 0;
 
 
     if (!mouse_grabbed)
@@ -128,7 +128,7 @@ extern void Mouse_Event(SDL_Event *event)
     pme->lTime = SDL_GetTicks();
     pme->sType = event->type;
 
-    static short buttonState = 0;
+    static int16_t buttonState = 0;
 
 	bool bQueueMouseWheelRelease = false;
 
@@ -211,13 +211,13 @@ extern void Mouse_Event(SDL_Event *event)
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Sets the mouse position to your shorts.
+// Sets the mouse position to your int16_ts.
 // Returns nothing.
 // 
 ///////////////////////////////////////////////////////////////////////////////
 extern void rspSetMouse(
-		short sX,				// New x position.
-		short sY)				// New y position.
+		int16_t sX,				// New x position.
+		int16_t sY)				// New y position.
 	{
         if (!mouse_grabbed)
             return;  // drop mouse events if input isn't grabbed.
@@ -226,21 +226,21 @@ extern void rspSetMouse(
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Get most recent (last) mouse event from queue (using short coords).
+// Get most recent (last) mouse event from queue (using int16_t coords).
 // This function tosses out any events ahead of the last event in the queue!
 // 
 ///////////////////////////////////////////////////////////////////////////////
-extern short rspGetLastMouseEvent(	// Returns 0 if no event was available, non-zero otherwise
-	short*	psX,						// Event's X position is returned here (unless nullptr)
-	short*	psY,						// Event's Y position is returned here (unless nullptr)
-	short*	psButton,				// Event's button status is returned here (unless nullptr)
-	long*		plTime,					// Event's time stamp returned here (unless nullptr)
-	short*	psType /*= nullptr */)	// Event's type (as per OS) is returned here (unless nullptr)
+extern int16_t rspGetLastMouseEvent(	// Returns 0 if no event was available, non-zero otherwise
+	int16_t*	psX,						// Event's X position is returned here (unless nullptr)
+	int16_t*	psY,						// Event's Y position is returned here (unless nullptr)
+	int16_t*	psButton,				// Event's button status is returned here (unless nullptr)
+   int32_t*		plTime,					// Event's time stamp returned here (unless nullptr)
+	int16_t*	psType /*= nullptr */)	// Event's type (as per OS) is returned here (unless nullptr)
 	{
-	short	sRes	= TRUE;	// Assume success.
+	int16_t	sRes	= TRUE;	// Assume success.
 
 	PRSP_MOUSE_EVENT	peEvent;
-	short					sNumEvents	= ms_qmeEvents.NumItems();
+	int16_t					sNumEvents	= ms_qmeEvents.NumItems();
 
 	// Are there any events?
 	if (sNumEvents > 0)
@@ -274,18 +274,18 @@ extern short rspGetLastMouseEvent(	// Returns 0 if no event was available, non-z
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Get next mouse button event from queue (using short coords).
+// Get next mouse button event from queue (using int16_t coords).
 // Returns 0 on success.
 // 
 ///////////////////////////////////////////////////////////////////////////////
-extern short rspGetMouseEvent(	// Returns 0 if no event was available, non-zero otherwise
-	short*	psX,						// Event's X position is returned here (unless nullptr)
-	short*	psY,						// Event's Y position is returned here (unless nullptr)
-	short*	psButton,				// Event's button status is returned here (unless nullptr)
-	long*		plTime,					// Event's time stamp returned here (unless nullptr)
-	short*	psType /*= nullptr */)	// Event's type (as per OS) is returned here (unless nullptr)
+extern int16_t rspGetMouseEvent(	// Returns 0 if no event was available, non-zero otherwise
+	int16_t*	psX,						// Event's X position is returned here (unless nullptr)
+	int16_t*	psY,						// Event's Y position is returned here (unless nullptr)
+	int16_t*	psButton,				// Event's button status is returned here (unless nullptr)
+   int32_t*		plTime,					// Event's time stamp returned here (unless nullptr)
+	int16_t*	psType /*= nullptr */)	// Event's type (as per OS) is returned here (unless nullptr)
 	{
-	short	sRes	= TRUE;	// Assume success.
+	int16_t	sRes	= TRUE;	// Assume success.
 
 	PRSP_MOUSE_EVENT	peEvent	= ms_qmeEvents.DeQ();
 	if (peEvent)
@@ -377,7 +377,7 @@ extern void rspUnshieldMouseCursor(void)
 // Reports current mouse cursor show level.
 // 
 ///////////////////////////////////////////////////////////////////////////////
-short rspGetMouseCursorShowLevel(void)	// Returns current mouse cursor show level:
+int16_t rspGetMouseCursorShowLevel(void)	// Returns current mouse cursor show level:
 													// Positive indicates cursor is shown.
 													// Non-positive indicates cursor is hidden.
 	{
@@ -390,7 +390,7 @@ short rspGetMouseCursorShowLevel(void)	// Returns current mouse cursor show leve
 // 
 ///////////////////////////////////////////////////////////////////////////////
 void rspSetMouseCursorShowLevel(	// Returns nothing.
-	short sNewShowLevel)				// In:  Current mouse cursor show level:        
+	int16_t sNewShowLevel)				// In:  Current mouse cursor show level:        
 											// Positive indicates cursor is shown.     
 											// Non-positive indicates cursor is hidden.
 	{

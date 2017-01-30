@@ -369,7 +369,7 @@ class CThing
 
       // Typedef for class ID's, required because we want specify the type,
       // whereas the compiler always uses type int for enums.
-      typedef unsigned char ClassIDType;
+      typedef uint8_t ClassIDType;
 
       // Class ID's for all derived classes that need to be loaded/saved.  If
       // these numbers change, it will completely invalidate any world files
@@ -525,7 +525,7 @@ class CThing
 
       // Unique ID specific to this instance of CThing (set in constructor,
       // released in destructor).
-      U16         m_u16InstanceId;
+      uint16_t         m_u16InstanceId;
 
    //---------------------------------------------------------------------------
    // Public member variables
@@ -560,14 +560,14 @@ class CThing
          }
 
       // Get object instance's unique ID.
-      U16 GetInstanceID(void)
+      uint16_t GetInstanceID(void)
          {
          return m_u16InstanceId;
          }
 
       // Set object instance's unique ID.
       void SetInstanceID(  // Returns nothing.
-         U16   u16Id);     // New id for this instance.
+         uint16_t   u16Id);     // New id for this instance.
 
       // Helper for processing your GUIs.
       // Will be made visible by calling pguiRoot->SetVisible(TRUE).
@@ -578,7 +578,7 @@ class CThing
       // Processing involves using queued RSPiX user input via
       // rspGetNextInputEvent().
       static                     // Static for your usage pleasure.
-      long DoGui(                // Returns ID of item that terminated looping.
+      int32_t DoGui(                // Returns ID of item that terminated looping.
                                  // Returns 0 if rspGetQuitStatus() is nonzero.
                                  // Returns negative on error.
          RGuiItem*   pguiRoot);  // Root of GUI items to process through user.
@@ -592,11 +592,11 @@ class CThing
 
       // Callback from ms_pgDoGui for system update.
       static                        // Static for use as a callback.
-      long SysUpdate(               // Returns a non-zero ID to abort or zero
+      int32_t SysUpdate(               // Returns a non-zero ID to abort or zero
                                     // to continue.
          RInputEvent*   pie);       // Out: Next input event to process.
 
-      int16_t SendThingMessage(pGameMessage pMessage, U16 u16ID)
+      int16_t SendThingMessage(pGameMessage pMessage, uint16_t u16ID)
          {
             return SendThingMessage(pMessage, pMessage->msg_Generic.sPriority, u16ID);
          }
@@ -606,7 +606,7 @@ class CThing
             return SendThingMessage(pMessage, pMessage->msg_Generic.sPriority, pThing);
          }
 
-      int16_t SendThingMessage(pGameMessage pMessage, int16_t sPriority, U16 u16ID);
+      int16_t SendThingMessage(pGameMessage pMessage, int16_t sPriority, uint16_t u16ID);
 
       int16_t SendThingMessage(pGameMessage pMessage, int16_t sPriority, CThing* pThing);
 
@@ -636,7 +636,7 @@ class CThing
          RFile* pFile,                                // In:  File to load from
          bool bEditMode,                              // In:  True for edit mode, false otherwise
          int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-         ULONG ulFileVersion);                        // In:  File version being loaded.
+         uint32_t ulFileVersion);                        // In:  File version being loaded.
 
       // Save object (should call base class version!)
       virtual int16_t Save(                             // Returns 0 if successfull, non-zero otherwise
@@ -795,13 +795,13 @@ class CThing
          return false;
          }
 
-      long rspGetMilliseconds(void)
+      int32_t rspGetMilliseconds(void)
          {
          ASSERT(0);
          return 0;
          }
 
-      long rspGetMicroseconds(
+      int32_t rspGetMicroseconds(
          int16_t /*sReset = FALSE*/)
          {
          ASSERT(0);

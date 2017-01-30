@@ -21,7 +21,7 @@
 // History:
 //    02/03/97 JMI   Added "BadNoSakDirPath"_lookup[].
 //
-//    04/11/97 JMI   Added "SaveDemoTitle"_lookup and CLocale::Get("GeneralWriteError").
+//    04/11/97 JMI   Added "SaveDemoTitle"_lookup and "GeneralWriteError"_lookup).
 //
 //    04/16/97 MJR   Added a few more messages.
 //
@@ -31,7 +31,7 @@
 //
 //    05/14/97 JMI   Added "PickedUpMessage_ld_s"_lookup for CDude.
 //
-//    06/03/97 JMI   Changed "AudioModeError"_lookup to CLocale::Get("AudioModeGeneralError")
+//    06/03/97 JMI   Changed "AudioModeError"_lookup to "AudioModeGeneralError"_lookup)
 //                   and added "AudioModeInUseError"_lookup,
 //                   "AudioModeNoDeviceError"_lookup,
 //                   "AudioModeNotSupportedError"_lookup.
@@ -52,7 +52,7 @@
 //                   the case when the hardware does not support the vanilla
 //                   mode.
 //
-//    07/21/97 JMI   Added "NoWeaponButHaveAmmo_s_s"_lookup and CLocale::Get("NoWeapon_s").
+//    07/21/97 JMI   Added "NoWeaponButHaveAmmo_s_s"_lookup and "NoWeapon_s"_lookup).
 //
 //    07/28/97 JMI   Added "DispenserNoDispenseeTypeChosen"_lookup.
 //
@@ -112,7 +112,7 @@
 // C++
 #include <cstdint>
 
-inline const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept;
+const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept;
 
 
 // I went with variables instead of macros for one primary reason.  At some

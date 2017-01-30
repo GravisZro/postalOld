@@ -202,10 +202,10 @@ double CRocket::ms_dAccUser     = 250.0;           // Acceleration due to user
 double CRocket::ms_dMaxVelFore  = 250.0;           // Maximum forward velocity
 double CRocket::ms_dMaxVelBack  = -250.0;          // Maximum backward velocity
 double CRocket::ms_dCloseDistance = 30.0;       // Close enough to hit CDude
-long CRocket::ms_lArmingTime = 500;             // Time before weapon arms.
+int32_t CRocket::ms_lArmingTime = 500;             // Time before weapon arms.
 int16_t CRocket::ms_sOffScreenDist = 200;            // Go off screen this far before blowing up
-long CRocket::ms_lSmokeTrailInterval = 10;         // Time to emit smoke trail.
-long CRocket::ms_lSmokeTimeToLive = 1000;          // Time for smoke to stick around.
+int32_t CRocket::ms_lSmokeTrailInterval = 10;         // Time to emit smoke trail.
+int32_t CRocket::ms_lSmokeTimeToLive = 1000;          // Time for smoke to stick around.
 
 
 // Let this auto-init to 0
@@ -231,7 +231,7 @@ int16_t CRocket::Load(                            // Returns 0 if successfull, n
    RFile* pFile,                                // In:  File to load from
    bool bEditMode,                              // In:  True for edit mode, false otherwise
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)                         // In:  Version of file format to load.
+   uint32_t ulFileVersion)                         // In:  Version of file format to load.
 {
    int16_t sResult = CWeapon::Load(pFile, bEditMode, sFileCount, ulFileVersion);
 
@@ -323,7 +323,7 @@ void CRocket::Update(void)
    if (!m_sSuspend)
       {
       // Get new time
-      long lThisTime = m_pRealm->m_time.GetGameTime();
+      int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
       // Calculate elapsed time in seconds
       double dSeconds = (double)(lThisTime - m_lPrevTime) / 1000.0;
@@ -637,7 +637,7 @@ void CRocket::Update(void)
 ////////////////////////////////////////////////////////////////////////////////
 void CRocket::Render(void)
 {
-   long lThisTime = m_pRealm->m_time.GetGameTime();
+   int32_t lThisTime = m_pRealm->m_time.GetGameTime();
 
    m_sprite.m_pmesh = (RMesh*) m_anim.m_pmeshes->GetAtTime(lThisTime);
    m_sprite.m_psop = (RSop*) m_anim.m_psops->GetAtTime(lThisTime);

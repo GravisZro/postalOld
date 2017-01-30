@@ -803,7 +803,7 @@ int16_t CRealm::Open(                             // Returns 0 if successfull, n
    else
       {
       sResult = -1;
-      TRACE("CRealm::Open(): Empty file name!\n";
+      TRACE("CRealm::Open(): Empty file name!\n");
       }
 
    return sResult;
@@ -858,14 +858,14 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
    ms_sFileCount++;
 
    // Read & validate file ID
-   ULONG ulFileID;
+   uint32_t ulFileID;
    if (pFile->Read(&ulFileID) == 1)
       {
       if (ulFileID == CRealm::FileID)
          {
 
          // Read & validate file version
-         ULONG ulFileVersion;
+         uint32_t ulFileVersion;
          if (pFile->Read(&ulFileVersion) == 1)
             {
             // If a known version . . .
@@ -1018,7 +1018,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
                                     }
                                  else
                                     {
-                                    STRACE("This was the first thing to load.\n";
+                                    STRACE("This was the first thing to load.\n");
                                     }
                                  }
                               }
@@ -1027,7 +1027,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
                         else
                            {
                            sResult = -1;
-                           TRACE("CRealm::Load(): Error reading class ID!\n";
+                           TRACE("CRealm::Load(): Error reading class ID!\n");
                            }
                         }
 
@@ -1035,7 +1035,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
                      if (!sResult && pFile->Error())
                         {
                         sResult = -1;
-                        TRACE("CRealm::Load(): Error reading file!\n";
+                        TRACE("CRealm::Load(): Error reading file!\n");
                         }
 
                      // If any errors occurred . . .
@@ -1048,7 +1048,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
                   else
                      {
                      sResult = -1;
-                     TRACE("CRealm::Load(): Error reading count of objects in file!\n";
+                     TRACE("CRealm::Load(): Error reading count of objects in file!\n");
                      }
                   }
                }
@@ -1061,7 +1061,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
          else
             {
             sResult = -1;
-            TRACE("CRealm::Load(): Error reading file version!\n";
+            TRACE("CRealm::Load(): Error reading file version!\n");
             }
          }
       else
@@ -1073,7 +1073,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
    else
       {
       sResult = -1;
-      TRACE("CRealm::Load(): Error reading file ID!\n";
+      TRACE("CRealm::Load(): Error reading file ID!\n");
       }
 
 #ifdef NEW_SMASH
@@ -1093,7 +1093,7 @@ int16_t CRealm::Load(                             // Returns 0 if successfull, n
 
       if (m_smashatorium.Alloc(sOldW,sOldH,sOldTileW,sOldTileH) != SUCCESS)
          {
-         TRACE("CRealm::Load(): Error reallocating the smashatorium!\n";
+         TRACE("CRealm::Load(): Error reallocating the smashatorium!\n");
          sResult = -1;
          }
       */
@@ -1147,8 +1147,8 @@ int16_t CRealm::Save(                             // Returns 0 if successfull, n
    ms_sFileCount++;
 
    // Write out file ID and version
-   pFile->Write((unsigned long)CRealm::FileID);
-   pFile->Write((unsigned long)CRealm::FileVersion);
+   pFile->Write((uint32_t)CRealm::FileID);
+   pFile->Write((uint32_t)CRealm::FileVersion);
 
    // Save properties for the realm
    pFile->Write(m_s2dResPathIndex);
@@ -1221,7 +1221,7 @@ int16_t CRealm::Save(                             // Returns 0 if successfull, n
    if (!sResult && pFile->Error())
       {
       sResult = -1;
-      TRACE("CRealm::Save(): Error writing file!\n";
+      TRACE("CRealm::Save(): Error writing file!\n");
       }
 
    return sResult;
@@ -1261,7 +1261,7 @@ int16_t CRealm::Startup(void)                     // Returns 0 if successfull, n
    // set.  Keep in mind that since objects may be interacting with one another,
    // calling one object may result in indirectly changing another's flag!
    int16_t sDone;
-   long lPassNum = 0;
+   int32_t lPassNum = 0;
    do {
       // Always assume this will be the last pass.  If it isn't, this flag will
       // be reset to 0, and we'll do the whole thing again.
@@ -1311,7 +1311,7 @@ int16_t CRealm::Shutdown(void)                    // Returns 0 if successfull, n
    // calling one object may result in indirectly changing another's flag!
    int16_t sDone;
    int16_t sFirstTime = 1;
-   long lPassNum = 0;
+   int32_t lPassNum = 0;
    do {
       // Always assume this will be the last pass.  If it isn't, this flag will
       // be reset to 0, and we'll do the whole thing again.
@@ -1618,8 +1618,8 @@ void CRealm::EditModify(void)
       REdit* peditFlagsNum = (REdit*) pguiRoot->GetItemFromId(FLAGS_NUM_EDIT_ID);
       RListBox* plbScoreModes = (RListBox*) pguiRoot->GetItemFromId(SCORE_MODE_LB_ID);
       RGuiItem* pguiItem = nullptr;
-      long lMinutes;
-      long lSeconds;
+      int32_t lMinutes;
+      int32_t lSeconds;
 
       if (peditMinutes != nullptr && peditSeconds != nullptr && peditKillsNum != nullptr &&
           peditKillsPct != nullptr && peditFlagsNum != nullptr && plbScoreModes)
@@ -1669,7 +1669,7 @@ void CRealm::EditModify(void)
 
             pguiItem = plbScoreModes->GetSel();
             if (pguiItem)
-               m_ScoringMode = pguiItem->m_lId - SCORE_MODE_LIST_BASE;
+               m_ScoringMode = (uint16_t)pguiItem->m_lId - SCORE_MODE_LIST_BASE;
          }
       }
    }
@@ -2009,7 +2009,7 @@ void CRealm::DrawStatus(   // Returns nothing.
    RImage*  pim,           // In:  Image in which to draw status.
    RRect*   prc)           // In:  Rectangle in which to draw status.  Clips to.
    {
-   long  lCurTime = m_time.GetGameTime();
+   int32_t  lCurTime = m_time.GetGameTime();
    if (lCurTime > m_lLastStatusDrawTime + STATUS_UPDATE_INTERVAL)
       {
       // Set print/clip to area.
@@ -2208,7 +2208,7 @@ int16_t CRealm::GetHeightAndNoWalk(   // Returns height at new location.
    // Scale the Z based on the view angle.
    ::MapZ3DtoY2D(sZ, &sZ, sRotX);
 
-   U16   u16Attrib   = m_pTerrainMap->GetVal(sX, sZ, REALM_ATTR_NOT_WALKABLE);
+   uint16_t   u16Attrib   = m_pTerrainMap->GetVal(sX, sZ, REALM_ATTR_NOT_WALKABLE);
 
    int16_t sH = 4 * (u16Attrib & REALM_ATTR_HEIGHT_MASK);
 
@@ -2331,8 +2331,8 @@ void CRealm::CreateLayerMap(void)
    // If table needs to be built . . .
    if (ms_asAttribToLayer[0] != LayerSprite16)
       {
-      long  l;
-      for (l = 0; l < NUM_ELEMENTS(ms_asAttribToLayer); l++)
+      int32_t  l;
+      for (l = 0; l < (int32_t)NUM_ELEMENTS(ms_asAttribToLayer); l++)
          {
          if (l & 0x0001)
             ms_asAttribToLayer[l]   = LayerSprite1;

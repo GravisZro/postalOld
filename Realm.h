@@ -619,7 +619,7 @@ class CRealm
       // Pylon stuff
       uint16_t   m_asPylonUIDs[256]; // Complete Cheese!
       int16_t    m_sNumPylons;
-      UCHAR    m_ucNextPylonID;
+      uint8_t    m_ucNextPylonID;
 
       // Path index for 2D assets.
       int16_t    m_s2dResPathIndex;
@@ -642,15 +642,15 @@ class CRealm
 
       // Timer values for different scoring methods.
       bool m_bScoreTimerCountsUp;      // Which direction the timer runs, up or down
-      long m_lScoreInitialTime;        // What timer was initially set to.
-      long m_lScoreTimeDisplay;        // Time in ms that is used for the Score display
+      int32_t m_lScoreInitialTime;        // What timer was initially set to.
+      int32_t m_lScoreTimeDisplay;        // Time in ms that is used for the Score display
                                        // (score converts it to minutes:seconds)
-      long m_lPrevTime;                // Previous read of the clock
-      long m_lElapsedTime;
-      long m_lThisTime;
+      int32_t m_lPrevTime;                // Previous read of the clock
+      int32_t m_lElapsedTime;
+      int32_t m_lThisTime;
 
 
-      long  m_lLastStatusDrawTime;     // Last time the status was drawn.
+      int32_t  m_lLastStatusDrawTime;     // Last time the status was drawn.
 
       // Goals for different modes of play.
       ScoringMode m_ScoringMode;       // Scoring mode that score module uses
@@ -1087,7 +1087,7 @@ class CRealm
 
       static int16_t GetLayerViaAttrib(  // Returns the sprite layer indicated by
                                        // the specified attribute.
-         U16 u16Attrib)
+         uint16_t u16Attrib)
          {
          return ms_asAttribToLayer[u16Attrib & REALM_ATTR_LAYER_MASK];
          }

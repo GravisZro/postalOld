@@ -183,9 +183,9 @@ void RDlg::Do(			// Returns nothing.
 		// If we're pressed . . .
 		if (m_sPressed != FALSE)
 			{
-			short	sTopPosX, sTopPosY;
-			short	sPosX, sPosY;
-			short	sParentW, sParentH;
+			int16_t	sTopPosX, sTopPosY;
+			int16_t	sPosX, sPosY;
+			int16_t	sParentW, sParentH;
 
 			// Get mouse position RSPiX relative.
 			rspGetMouse(&sTopPosX, &sTopPosY, nullptr);
@@ -205,8 +205,8 @@ void RDlg::Do(			// Returns nothing.
 				}
 
 			// Stay within parent.
-			short sClippedPosX	= MAX((short)0, MIN(sPosX, sParentW) );
-			short sClippedPosY	= MAX((short)0, MIN(sPosY, sParentH) );
+			int16_t sClippedPosX	= MAX((int16_t)0, MIN(sPosX, sParentW) );
+			int16_t sClippedPosY	= MAX((int16_t)0, MIN(sPosY, sParentH) );
 
 			// If clipped . . .
 			if (sClippedPosX != sPosX || sClippedPosY != sPosY)
@@ -269,7 +269,7 @@ void RDlg::Compose(			// Returns nothing.
 	RGuiItem::Compose(pim);
 
 	// Draw dlg stuff.
-	short	sX, sY, sW, sH;
+	int16_t	sX, sY, sW, sH;
 	
 	// Get client relative to border (minus title) so we know where to
 	// put title.
@@ -278,7 +278,7 @@ void RDlg::Compose(			// Returns nothing.
 	// Draw text.
 	if (m_szText[0] != '\0')
 		{
-		short	sTextHeight	= m_sFontCellHeight;
+		int16_t	sTextHeight	= m_sFontCellHeight;
 
 		// Draw title bar.
 		rspRect( m_u32BorderColor, pim,
@@ -325,10 +325,10 @@ void RDlg::SetEventArea(void)	// Returns nothing.
 //
 //////////////////////////////////////////////////////////////////////////////
 void RDlg::GetClient(	// Returns nothing.
-	short* psX,				// Out: X position unless nullptr.
-	short* psY,				// Out: Y position unless nullptr.
-	short* psW,				// Out: Width unless nullptr.
-	short* psH)				// Out: Height unless nullptr.
+	int16_t* psX,				// Out: X position unless nullptr.
+	int16_t* psY,				// Out: Y position unless nullptr.
+	int16_t* psW,				// Out: Width unless nullptr.
+	int16_t* psH)				// Out: Height unless nullptr.
 	{
 	// Call base.
 	RGuiItem::GetClient(psX, psY, psW, psH);

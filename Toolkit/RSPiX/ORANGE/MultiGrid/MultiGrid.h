@@ -96,8 +96,8 @@ public:
 	//  User members:
 	//////////////////////////////////////////////////////////////////////
 
-	short	m_sWidth;	// With compression, you might get huge objects!
-	short	m_sHeight;
+	int16_t	m_sWidth;	// With compression, you might get huge objects!
+	int16_t	m_sHeight;
 
 	//////////////////////////////////////////////////////////////////////
 	//  User methods:
@@ -106,7 +106,7 @@ public:
 	// This inline does a high speed lookup into the compressed data.
 	// It ONLY works AFTER the data has been compressed!
 	//
-	short	GetVal(short sX, short sY,short sClipVal = -1)
+	int16_t	GetVal(int16_t sX, int16_t sY,int16_t sClipVal = -1)
 		{
 		//-----------------------------------------------------------------
 		ASSERT(m_sIsCompressed);
@@ -117,7 +117,7 @@ public:
 	#endif
 		//-----------------------------------------------------------------
 
-		short sVal = *( m_ppsGridLines[sY] + (sX >> m_sShiftX) );
+		int16_t sVal = *( m_ppsGridLines[sY] + (sX >> m_sShiftX) );
 		if (sVal >=0) return sVal; 
 
 		// Cache miss -> must look into a stored tile:
@@ -129,13 +129,13 @@ public:
 	// If you wish to know the scale, you can get it from
 	// the mask members:
 	//
-	long	GetScale(short sMask) // decode the mask
+	long	GetScale(int16_t sMask) // decode the mask
 		{
 		return ++sMask;
 		}
 
 	// If you wish to know the coarse grid dimensions:
-	void	GetGridDimensions(short *psW,short *psH)
+	void	GetGridDimensions(int16_t *psW,int16_t *psH)
 		{
 		*psW = m_sWidth >> m_sShiftX;
 		*psH = m_sHeight >> m_sShiftY;
@@ -144,21 +144,21 @@ public:
 		}
 
 	// If you wish to know the enumber of unique blocks:
-	short	GetNumTiles()
+	int16_t	GetNumTiles()
 		{
 		ASSERT(m_sIsCompressed);
 
-		short sNumTiles = 0 ;// scan for the number of tiles:
-		short i,j;
-		short sGridW,sGridH;
+		int16_t sNumTiles = 0 ;// scan for the number of tiles:
+		int16_t i,j;
+		int16_t sGridW,sGridH;
 		GetGridDimensions(&sGridW,&sGridH);
 
 		for (j=0;j < sGridH;j++)
 			{
 			for (i=0;i < sGridW;i++)
 				{
-				short sValue = *(m_ppsGridLines[j * (m_sMaskY + 1)] + i);
-				if (sValue < 0) sNumTiles = MAX(sNumTiles,short(-sValue));
+				int16_t sValue = *(m_ppsGridLines[j * (m_sMaskY + 1)] + i);
+				if (sValue < 0) sNumTiles = MAX(sNumTiles,int16_t(-sValue));
 				}
 			}
 		return sNumTiles + 1;
@@ -166,12 +166,12 @@ public:
 
 	// Load a compressed data set from disk
 	//
-	short Load(RFile* prFile);
+	int16_t Load(RFile* prFile);
 	//////////////////////////////////////////////////////////////////////
 
 	// Save a compressed data set to disk
 	//
-	short Save(RFile* prFile);
+	int16_t Save(RFile* prFile);
 	
 	//////////////////////////////////////////////////////////////////////
 	// These user methods are for initially creating the 2d data
@@ -180,11 +180,11 @@ public:
 	// Returns SUCCESS or FAILURE
 	// Sets up the UNCOMPRESSED data
 	//
-	short	Alloc(short sW, short sH);
+	int16_t	Alloc(int16_t sW, int16_t sH);
 
 	// UNCOMPRESSED ACCESS:
 	//
-	void	SetValueUncompressed(short sVal,short sX,short sY)
+	void	SetValueUncompressed(int16_t sVal,int16_t sX,int16_t sY)
 		{
 		ASSERT(m_psGrid);
 		ASSERT(sVal >= 0);
@@ -196,7 +196,7 @@ public:
 
 	// UNCOMPRESSED READ ACCESS
 	//
-	short GetValueUncompressed(short sX, short sY)
+	int16_t GetValueUncompressed(int16_t sX, int16_t sY)
 		{
 		ASSERT(m_psGrid);
 		ASSERT(!m_sIsCompressed);
@@ -207,8 +207,8 @@ public:
 
 	// A visual Debug View: (Uncompressed)
 	//
-	void	Dump(RImage* pimDst,short sSrcX,short sSrcY,short sDstX,short sDstY,
-					short sW,short sH);
+	void	Dump(RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_t sDstX,int16_t sDstY,
+					int16_t sW,int16_t sH);
 
 	// A visual Debug View: (Compressed)
 	//
@@ -228,12 +228,12 @@ public:
 	// or if compression did not succeed ( > 32k blocks were needed)
 	//
 	//////////////////////////////////////////////////////////////////////
-	short Compress(
-		short sTileW,				// Size of tiles to try on this data
-		short sTileH,
+	int16_t Compress(
+		int16_t sTileW,				// Size of tiles to try on this data
+		int16_t sTileH,
 		long* plSize = nullptr,		// New Data Size (BYTES)
 		long* lNumBlocks = nullptr,// Number of unique tiles needed
-		short sMatchSame = TRUE	// If false, NO TILE WILL BE REUSED
+		int16_t sMatchSame = TRUE	// If false, NO TILE WILL BE REUSED
 										// which increases the speed of compresion
 		);
 
@@ -241,16 +241,16 @@ public:
 	// Returns the Data to an uncompressed state to try another
 	// compression tile size.
 	//////////////////////////////////////////////////////////////////////
-	short	Decompress();
+	int16_t	Decompress();
 
 	//////////////////////////////////////////////////////////////////////
 	//  Internal members:
 	//////////////////////////////////////////////////////////////////////
-	short	m_sIsCompressed;
-	short	m_sMaskX;	// Encodes the scale of the tiles
-	short m_sMaskY;
-	short m_sShiftX;
-	short m_sShiftY;	// For user convenience ONLY
+	int16_t	m_sIsCompressed;
+	int16_t	m_sMaskX;	// Encodes the scale of the tiles
+	int16_t m_sMaskY;
+	int16_t m_sShiftX;
+	int16_t m_sShiftY;	// For user convenience ONLY
 
 	//////////////////////////////////////////////////////////////////////
 	//  Internal methods:
@@ -302,13 +302,13 @@ public:
 		Free();
 		}
 
-	short	AllocGrid(short sScaleW, short sScaleH);
+	int16_t	AllocGrid(int16_t sScaleW, int16_t sScaleH);
 
-	long	MaskToShift(short sMask)
+	long	MaskToShift(int16_t sMask)
 		{
-		long	lShift = 0;
-		long	lValue = 1;
-		long	lMask = long(sMask);
+		int32_t	lShift = 0;
+		int32_t	lValue = 1;
+		int32_t	lMask = long(sMask);
 
 		while (lValue < lMask)
 			{
@@ -323,16 +323,16 @@ public:
 	//////////////////////////////////////////////////////////////////////
 	//  Data Structures
 	//////////////////////////////////////////////////////////////////////
-	short*	m_psGrid; // Stores the grid data, compressed or uncompressed
-	short**	m_ppsGridLines;	// fast access into the grid lines
-	short*	m_psTiles;			// Stores the array of tiles
-	short**	m_ppsTileList;		// fast access into the tile array
-	short*	m_psTileLine;		// fast access into each tile line
+	int16_t*	m_psGrid; // Stores the grid data, compressed or uncompressed
+	int16_t**	m_ppsGridLines;	// fast access into the grid lines
+	int16_t*	m_psTiles;			// Stores the array of tiles
+	int16_t**	m_ppsTileList;		// fast access into the tile array
+	int16_t*	m_psTileLine;		// fast access into each tile line
 
 	//////////////////////////////////////////////////////////////////////
 	//  Statics:
 	//////////////////////////////////////////////////////////////////////
-	static	short	ms_sShiftToMask[16];  // general conversion
+	static	int16_t	ms_sShiftToMask[16];  // general conversion
 	};
 
 

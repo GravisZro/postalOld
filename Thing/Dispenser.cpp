@@ -261,7 +261,7 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
    RFile* pFile,           // In:  File to load from
    bool bEditMode,         // In:  True for edit mode, false otherwise
    int16_t sFileCount,       // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)    // In:  Version of file format to load.
+   uint32_t ulFileVersion)    // In:  Version of file format to load.
    {
    int16_t sResult = 0;
 
@@ -293,12 +293,12 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
             pFile->Read(&m_sY);
             pFile->Read(&m_sZ);
             pFile->Read(&m_idDispenseeType);
-            U16   u16LogicType;
+            uint16_t   u16LogicType;
             pFile->Read(&u16LogicType);
             m_logictype = (LogicType)u16LogicType;
             pFile->Read(m_alLogicParms, 4);
             pFile->Read(&m_ulFileVersion);
-            long  lSize;
+            int32_t  lSize;
             if (pFile->Read(&lSize) == 1)
                {
                // Open memory file to receive the clone data . . .
@@ -362,7 +362,7 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
             pFile->Read(&m_sY);
             pFile->Read(&m_sZ);
             pFile->Read(&m_idDispenseeType);
-            U16   u16LogicType;
+            uint16_t   u16LogicType;
             pFile->Read(&u16LogicType);
             m_logictype = (LogicType)u16LogicType;
             pFile->Read(m_alLogicParms + 0);
@@ -376,7 +376,7 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
                }
 
             pFile->Read(&m_ulFileVersion);
-            long  lSize;
+            int32_t  lSize;
             if (pFile->Read(&lSize) == 1)
                {
                // Open memory file to receive the clone data . . .
@@ -446,7 +446,7 @@ int16_t CDispenser::Save(    // Returns 0 if successfull, non-zero otherwise
       pFile->Write(m_sY);
       pFile->Write(m_sZ);
       pFile->Write(m_idDispenseeType);
-      pFile->Write((U16)m_logictype);
+      pFile->Write((uint16_t)m_logictype);
       pFile->Write(m_alLogicParms, 4);
 
       // We do this here instead of on EditMove() b/c EditMove() can
@@ -518,7 +518,7 @@ void CDispenser::Suspend(void)
    if (m_sSuspend == 0)
       {
       // Store current delta so we can restore it.
-      long  lCurTime          = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime          = m_pRealm->m_time.GetGameTime();
       m_lNextUpdate           = lCurTime - m_lNextUpdate;
       }
 
@@ -537,7 +537,7 @@ void CDispenser::Resume(void)
    // This method is far from precise, but I'm hoping it's good enough.
    if (m_sSuspend == 0)
       {
-      long  lCurTime          = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime          = m_pRealm->m_time.GetGameTime();
       m_lNextUpdate           = lCurTime - m_lNextUpdate;
       }
    }
@@ -549,7 +549,7 @@ void CDispenser::Update(void)
    {
    if (!m_sSuspend)
       {
-      long  lCurTime = m_pRealm->m_time.GetGameTime();
+      int32_t  lCurTime = m_pRealm->m_time.GetGameTime();
 
       if (m_sNumDispensees < m_sMaxDispensees || m_sMaxDispensees < 0)
          {
@@ -623,7 +623,7 @@ void CDispenser::Update(void)
                if (lCurTime >= m_lNextUpdate)
                   {
                   // If in range . . .
-                  long  lDudeDist;
+                  int32_t  lDudeDist;
                   if (GetClosestDudeDistance(&lDudeDist) == 0)
                      {
                      if ( (lDudeDist >= m_alLogicParms[0] || m_alLogicParms[0] == 0) && (lDudeDist <= m_alLogicParms[1] || m_alLogicParms[1] == 0) )
@@ -674,9 +674,9 @@ int16_t CDispenser::EditNew(                         // Returns 0 if successfull
 ////////////////////////////////////////////////////////////////////////////////
 inline void SetLogicText(  // Returns nothing.
    RGuiItem*   pguiRoot,   // In:  Root item.
-   long        lId,        // In:  ID of item to update text.
+   int32_t        lId,        // In:  ID of item to update text.
    char const * pszText,      // In:  New text or nullptr for none and to disable lIdEdit.
-   long        lIdEdit)    // In:  Item to enable or disable.
+   int32_t        lIdEdit)    // In:  Item to enable or disable.
    {
    RGuiItem*   pguiEdit = pguiRoot->GetItemFromId(lIdEdit);
    RGuiItem*   pguiText = pguiRoot->GetItemFromId(lId);
@@ -790,7 +790,7 @@ static void UpdateMaxDispensees(
 int16_t CDispenser::EditModify(void)              // Returns 0 if successfull, non-zero otherwise
    {
    // Get key status array.
-   U8*   pau8KeyStatus  = rspGetKeyStatusArray();
+   uint8_t*   pau8KeyStatus  = rspGetKeyStatusArray();
 
    int16_t sResult  = 0;
    ClassIDType idNewThingType;
@@ -839,7 +839,7 @@ int16_t CDispenser::EditModify(void)              // Returns 0 if successfull, n
 
             // Point instance data at the max dispensees edit so it can show and
             // hide it.
-            pmbInfiniteDispensees->m_ulUserInstance   = (ULONG)peditMaxDispensees;
+            pmbInfiniteDispensees->m_ulUserInstance   = peditMaxDispensees;
             pmbInfiniteDispensees->m_sState           = (m_sMaxDispensees < 0) ? 2 : 1;
             pmbInfiniteDispensees->m_bcUser           = UpdateMaxDispensees;
             pmbInfiniteDispensees->Compose();
@@ -859,7 +859,7 @@ int16_t CDispenser::EditModify(void)              // Returns 0 if successfull, n
                   // Set item number.
                   pguiItem->m_ulUserData     = i;
                   // Set listbox ptr.
-                  pguiItem->m_ulUserInstance = (ULONG)plbLogics;
+                  pguiItem->m_ulUserInstance = plbLogics;
                   // Set callback.
                   pguiItem->m_bcUser         = LogicItemCall;
                   // If this item is the current logic type . . .
@@ -894,7 +894,7 @@ int16_t CDispenser::EditModify(void)              // Returns 0 if successfull, n
                   pguiItem = plbThings->AddString(CThing::ms_aClassInfo[idCur].pszClassName);
                   if (pguiItem)
                      {
-                     pguiItem->m_ulUserData  = (ULONG)idCur;
+                     pguiItem->m_ulUserData  = (uint32_t)idCur;
 
                      // If this is the current type . . .
                      if (m_idDispenseeType == idCur)
@@ -930,7 +930,7 @@ int16_t CDispenser::EditModify(void)              // Returns 0 if successfull, n
                      RGuiItem*   pguiSel  = plbLogics->GetSel();
                      if (pguiSel)
                         {
-                        m_logictype = (LogicType)pguiSel->m_ulUserData;
+                        m_logictype = (LogicType)(uint32_t)pguiSel->m_ulUserData;
                         }
                      else
                         {
@@ -1289,7 +1289,7 @@ int16_t CDispenser::InstantiateDispensee(   // Returns 0 on success.
                --ms_sDispenseeFileCount,  // Always load statics for these.
                m_ulFileVersion) == 0)
                {
-               U16   idInstance;
+               uint16_t   idInstance;
                if (m_pRealm->m_idbank.Get(*ppthing, &idInstance) == 0)
                   {
                   // Release file's ID (cannot have all the dispensee's
@@ -1509,14 +1509,14 @@ int16_t CDispenser::RenderDispensee(  // Returns 0 on success.
 // Get the distance to the closest dude.
 ////////////////////////////////////////////////////////////////////////////////
 int16_t CDispenser::GetClosestDudeDistance( // Returns 0 on success.  Fails, if no dudes.
-   long* plClosestDistance)               // Out:  Distance to closest dude.
+   int32_t* plClosestDistance)               // Out:  Distance to closest dude.
    {
    int16_t sRes  = 1;  // Assume no dude found.
 
-   ULONG ulSqrDistance;
-   ULONG ulCurSqrDistance  = 0xFFFFFFFF;
-   ULONG ulDistX;
-   ULONG ulDistZ;
+   uint32_t ulSqrDistance;
+   uint32_t ulCurSqrDistance  = 0xFFFFFFFF;
+   uint32_t ulDistX;
+   uint32_t ulDistZ;
    CDude*   pdude;
 
    CListNode<CThing>* pDudeList = m_pRealm->m_aclassHeads[CThing::CDudeID].m_pnNext;

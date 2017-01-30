@@ -29,7 +29,7 @@
 #include <BLUE/System.h>
 #include <ORANGE/GUI/dlg.h>
 
-#include <string.h>
+#include <cstring>
 
 //////////////////////////////////////////////////////////////////////////////
 // Macros.
@@ -83,19 +83,19 @@ class RMeter : public RDlg
 
 		// Composes the meter into the image provided.  For consistency, you
 		// should probably always draw the meter.
-		short Draw(					// Returns 0 on success.
+		int16_t Draw(					// Returns 0 on success.
 			RImage* pimDst,		// Destination image.
-			short sDstX	= 0,		// X position in destination.
-			short sDstY	= 0,		// Y position in destination.
-			short sSrcX = 0,		// X position in source.
-			short sSrcY = 0,		// Y position in source.
-			short sW = 0,			// Amount to draw.
-			short sH = 0,			// Amount to draw.
+			int16_t sDstX	= 0,		// X position in destination.
+			int16_t sDstY	= 0,		// Y position in destination.
+			int16_t sSrcX = 0,		// X position in source.
+			int16_t sSrcY = 0,		// Y position in source.
+			int16_t sW = 0,			// Amount to draw.
+			int16_t sH = 0,			// Amount to draw.
 			RRect* prc = nullptr);	// Clip to.
 
 		// Activate or deactivate mouse reaction.
 		void SetActive(		// Returns nothing.
-			short sActive)		// TRUE to make active, FALSE otherwise.
+			int16_t sActive)		// TRUE to make active, FALSE otherwise.
 			{ 
 			RDlg::SetActive(sActive); 
 			m_guiMeter.SetActive(sActive);
@@ -106,9 +106,9 @@ class RMeter : public RDlg
 		// Set the new value for the meter.  Do this BEFORE drawing for most
 		// accurate results.
 		long SetNewValue(	// Returns previous value.
-			long lNewVal)	// In: New value.
+			int32_t lNewVal)	// In: New value.
 			{
-			long	lRes	= m_lCurVal;
+			int32_t	lRes	= m_lCurVal;
 			// Store new val.
 			m_lCurVal	= lNewVal;
 			// Accumulate total.
@@ -146,7 +146,7 @@ class RMeter : public RDlg
 
 		// Set duration between updates.
 		void SetUpdateInterval(	// Returns nothing.
-			long lDuration)		// Time in milliseconds between updates.
+			int32_t lDuration)		// Time in milliseconds between updates.
 			{
 			m_lDuration	= lDuration;
 			}
@@ -164,8 +164,8 @@ class RMeter : public RDlg
 
 		// Set the range for the meter.
 		void SetRange(		// Returns nothing.
-			long lMin,		// Minimum value.
-			long lMax)		// Maximum value.
+			int32_t lMin,		// Minimum value.
+			int32_t lMax)		// Maximum value.
 			{
 			m_lMin	= lMin;
 			m_lMax	= lMax;
@@ -181,11 +181,11 @@ class RMeter : public RDlg
 
 		// Set the colors.
 		void SetColors(			// Returns nothing.
-			U32 u32Background,	// Background color.
-			U32 u32Meter,			// Meter color.
-			U32 u32Needle,			// Needle, bar, etc. color.
-			U32 u32Text,			// Text foreground color.
-			U32 u32Overflow)		// Needle color for over/underflow.
+			uint32_t u32Background,	// Background color.
+			uint32_t u32Meter,			// Meter color.
+			uint32_t u32Needle,			// Needle, bar, etc. color.
+			uint32_t u32Text,			// Text foreground color.
+			uint32_t u32Overflow)		// Needle color for over/underflow.
 			{
 			m_u32BackColor		= u32Background;
 			m_u32Meter			= u32Meter;
@@ -237,9 +237,9 @@ class RMeter : public RDlg
 		long				m_lMax;								// Maximum value on meter.
 		DisplayType		m_dtType;							// Type of meter display.
 		InfoType			m_itType;							// Type of meter info.
-		U32				m_u32Meter;							// Meter color.
-		U32				m_u32Needle;						// Needle, bar, etc. color.
-		U32				m_u32Overflow;						// Needle color for over/underflow.
+		uint32_t				m_u32Meter;							// Meter color.
+		uint32_t				m_u32Needle;						// Needle, bar, etc. color.
+		uint32_t				m_u32Overflow;						// Needle color for over/underflow.
 
 		long				m_lDuration;						// Time between updates in
 																	// milliseconds.
@@ -255,14 +255,14 @@ class RMeter : public RDlg
 		RGuiItem			m_guiMeter;							// Actual meter gui.
 
 		// History of values for histogram.
-		short				m_asQHistory[METER_HISTOGRAM_HISTORY];
+		int16_t				m_asQHistory[METER_HISTOGRAM_HISTORY];
 		long				m_lQIndex;
 
 
 	protected:	// Internal typedefs.
 
 	protected:	// Protected member variables.
-		short				m_sInfoY;	
+		int16_t				m_sInfoY;	
 
 	};
 

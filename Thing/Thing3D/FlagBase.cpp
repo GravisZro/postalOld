@@ -122,7 +122,7 @@ int16_t CFlagbase::Load(           // Returns 0 if successfull, non-zero otherwi
    RFile* pFile,                 // In:  File to load from
    bool bEditMode,               // In:  True for edit mode, false otherwise
    int16_t sFileCount,             // In:  File count (unique per file, never 0)
-   ULONG ulFileVersion)          // In:  Version of file format to load.
+   uint32_t ulFileVersion)          // In:  Version of file format to load.
 {
    int16_t sResult = 0;
    // Call the base load function to get ID, position, etc.
@@ -328,9 +328,9 @@ int16_t CFlagbase::Shutdown(void)                    // Returns 0 if successfull
 void CFlagbase::Update(void)
 {
    int16_t sHeight = m_sPrevHeight;
-   long lThisTime;
-   long lTimeDifference;
-   long lSqDistanceToDude = 0;
+   int32_t lThisTime;
+   int32_t lTimeDifference;
+   int32_t lSqDistanceToDude = 0;
    CSmash* pSmashed = nullptr;
 
    if (!m_sSuspend)
@@ -521,7 +521,7 @@ void CFlagbase::EditHotSpot(        // Returns nothiing.
 int16_t CFlagbase::EditModify(void)
 {
    int16_t sResult = 0;
-   U16 u16OrigColor = m_u16Color;
+   uint16_t u16OrigColor = m_u16Color;
    RGuiItem* pGuiItem = nullptr;
    RGuiItem* pguiRoot = RGuiItem::LoadInstantiate(FullPathVD("res/editor/flagbase.gui"));
    if (pguiRoot)
@@ -543,7 +543,7 @@ int16_t CFlagbase::EditModify(void)
          if (sResult == 1)
          {
             m_u16FlagID = peditFlagID->GetVal();
-            m_u16Color = MIN((long) (CFlag::EndOfColors - 1), peditColor->GetVal());
+            m_u16Color = MIN((int32_t) (CFlag::EndOfColors - 1), peditColor->GetVal());
          }
       }
    }

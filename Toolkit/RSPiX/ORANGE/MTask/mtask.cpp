@@ -63,8 +63,8 @@
 // Includes
 //////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <ORANGE/MTask/mtask.h>
 
@@ -72,8 +72,8 @@
 // "Member" variables (Globals)
 //////////////////////////////////////////////////////////////////////
 
-static long m_lMainProgramStack;		// save Main program stack here
-static long m_lTaskStack;				// save Current task stack here
+static int32_t m_lMainProgramStack;		// save Main program stack here
+static int32_t m_lTaskStack;				// save Current task stack here
 static PTASKINFO ptiCurrentTask;		// Pointer to current task for
 												// use in error reporting
 static RList<TASKINFO> MTaskList;
@@ -122,7 +122,7 @@ void MTaskManager(void)
 		ASSERT(ptiTask->plSP);
 		// Set current task for error reporting & killing
 		ptiCurrentTask = ptiTask;
-		m_lTaskStack = (long) ptiTask->plSP;
+		m_lTaskStack = (int32_t) ptiTask->plSP;
 		ptiTask->plSP = MTaskRun();
 		if (ptiTask->plSP == 0)
 		{
@@ -162,12 +162,12 @@ void MTaskManager(void)
 //
 //////////////////////////////////////////////////////////////////////
 
-short MTaskAddFunc(void* pFunction, char* pszFuncName, short sStackSize)
+int16_t MTaskAddFunc(void* pFunction, char* pszFuncName, int16_t sStackSize)
 {
 	PTASKINFO ptiNewTask = nullptr;
 	long* plNewStack = nullptr;
-	short sLongElements = sStackSize/4;
-	short sReturn = SUCCESS;
+	int16_t sLongElements = sStackSize/4;
+	int16_t sReturn = SUCCESS;
 	
 	ptiNewTask = new TASKINFO;
 	if (ptiNewTask)
@@ -175,8 +175,8 @@ short MTaskAddFunc(void* pFunction, char* pszFuncName, short sStackSize)
 		plNewStack = (long*) calloc(sLongElements, 4);
 		if (plNewStack)
 		{
-			plNewStack[sLongElements-1] = (long) MTaskReturnCatcher;
-			plNewStack[sLongElements-2] = (long) pFunction;
+			plNewStack[sLongElements-1] = (int32_t) MTaskReturnCatcher;
+			plNewStack[sLongElements-2] = (int32_t) pFunction;
 			plNewStack[sLongElements-3] = 0; //bp
 
 			ptiNewTask->plStackAddress = plNewStack;

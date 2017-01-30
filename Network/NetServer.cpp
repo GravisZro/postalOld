@@ -98,16 +98,16 @@ int16_t CNetServer::Startup(                      // Returns 0 if successfull, n
 
                }
             else
-               TRACE("CNetServer::Setup(): Error putting antenna socket into broadcast mode!\n";
+               TRACE("CNetServer::Setup(): Error putting antenna socket into broadcast mode!\n");
             }
          else
-            TRACE("CNetServer::Setup(): Error opening antenna socket!\n";
+            TRACE("CNetServer::Setup(): Error opening antenna socket!\n");
          }
       else
-         TRACE("CNetServer::Setup(): Error putting listen socket into listen mode!\n";
+         TRACE("CNetServer::Setup(): Error putting listen socket into listen mode!\n");
       }
    else
-      TRACE("CNetServer::Setup(): Error opening listen socket!\n";
+      TRACE("CNetServer::Setup(): Error opening listen socket!\n");
 
    return sResult;
    }
@@ -159,11 +159,11 @@ void CNetServer::Update(void)
                   // If the return error indicates that it would have blocked, then something
                   // is not kosher since CanAcceptWithoutBlocking() just said it woulnd NOT block.
                   if (serr == RSocket::errWouldBlock)
-                     TRACE("CNetServer()::Update(): It waid it wouldn't block, but then said it would!\n";
+                     TRACE("CNetServer()::Update(): It waid it wouldn't block, but then said it would!\n");
 
                   // Don't return an actual error code from this function because we can't
                   // get all bent-out-of-shape over not being able to connect to a client
-//                TRACE("CNetServer()::Update(): Tried to accept connection, but failed.\n";
+//                TRACE("CNetServer()::Update(): Tried to accept connection, but failed.\n");
                   }
                }
             // Break out of loop that was looking for unused clients
@@ -190,8 +190,8 @@ void CNetServer::Update(void)
       // we can ignore it as well.  Bad messages could come from a foreign app that is
       // using the same port as us.  If we do get a message, the address of the sender
       // will be recorded -- this gives us the host's address!
-      U8 buf1[4];
-      long lReceived;
+      uint8_t buf1[4];
+      int32_t lReceived;
       RSocket::Address address;
       int16_t serr = m_socketAntenna.ReceiveFrom(buf1, sizeof(buf1), &lReceived, &address);
       if (serr == 0)
@@ -210,38 +210,38 @@ void CNetServer::Update(void)
             // that sent it, so as long as the encoding and decoding of the bytes
             // is the same, that entity will get the same value that it sent.  All
             // other entities will see this as a meaningless value, which is fine.
-            U8 buf2[4 + 4 + sizeof(m_acHostName)];
+            uint8_t buf2[4 + 4 + sizeof(m_acHostName)];
             buf2[0] = Net::BroadcastMagic0;
             buf2[1] = Net::BroadcastMagic1;
             buf2[2] = Net::BroadcastMagic2;
             buf2[3] = Net::BroadcastMagic3;
-            buf2[4] = (U8)(m_lHostMagic & 0xff);
-            buf2[5] = (U8)((m_lHostMagic >>  8) & 0xff);
-            buf2[6] = (U8)((m_lHostMagic >> 16) & 0xff);
-            buf2[7] = (U8)((m_lHostMagic >> 24) & 0xff);
+            buf2[4] = (uint8_t)(m_lHostMagic & 0xff);
+            buf2[5] = (uint8_t)((m_lHostMagic >>  8) & 0xff);
+            buf2[6] = (uint8_t)((m_lHostMagic >> 16) & 0xff);
+            buf2[7] = (uint8_t)((m_lHostMagic >> 24) & 0xff);
             strncpy((char*)&buf2[8], m_acHostName, sizeof(m_acHostName));
 
             // Send the message directly to the sender of the previous message
-            long lBytesSent;
+            int32_t lBytesSent;
             int16_t serr = m_socketAntenna.SendTo(buf2, sizeof(buf2), &lBytesSent, &address);
             if (serr == 0)
                {
                if (lBytesSent != sizeof(buf2))
-                  TRACE("CNetServer::Update(): Error sending broadcast (wrong size)!\n";
+                  TRACE("CNetServer::Update(): Error sending broadcast (wrong size)!\n");
                }
             else
                {
                if (serr != RSocket::errWouldBlock)
-                  TRACE("CNetServer::Update(): Error sending broadcast!\n";
+                  TRACE("CNetServer::Update(): Error sending broadcast!\n");
                }
             }
          else
-            TRACE("CNetServer::Update(): Validation failed -- another app may be sending crap to our port!\n";
+            TRACE("CNetServer::Update(): Validation failed -- another app may be sending crap to our port!\n");
          }
       else
          {
          if (serr != RSocket::errWouldBlock)
-            TRACE("CNetServer::Update(): Warning: Error receiving broadcast -- ignored!\n";
+            TRACE("CNetServer::Update(): Warning: Error receiving broadcast -- ignored!\n");
          }
       }
 
@@ -384,7 +384,7 @@ void CNetServer::GetMsg(
                      // Store version number from original message before we clobber it
                      // by creating an error message in the same area (not sure if this
                      // is really an issue but just in case).
-                     ULONG ulVersion   = pmsg->msg.login.ulVersion;
+                     uint32_t ulVersion   = pmsg->msg.login.ulVersion;
                      // Incompatible version number.
                      pmsg->msg.err.error     = NetMsg::ServerVersionMismatchError;
                      pmsg->msg.err.ulParam   = ulVersion & ~CNetMsgr::MacVersionBit;
@@ -640,7 +640,7 @@ void CNetServer::GetMsg(
                   Net::ID id2;
                   int16_t sNumExpected = 0;
                   int16_t sNumReady = 0;
-                  U16 mask = 0;
+                  uint16_t mask = 0;
                   for (id2 = 0; id2 < Net::MaxNumIDs; id2++)
                      {
                      mask = (mask >> 1) & 0x7fff;
@@ -765,7 +765,7 @@ void CNetServer::SendMsg(
 // Send message to specified group of clients - only Joined clients are allowed!
 ////////////////////////////////////////////////////////////////////////////////
 void CNetServer::SendMsg(
-   U16 mask,                                    // In:  Bit-mask indicating who to send to
+   uint16_t mask,                                    // In:  Bit-mask indicating who to send to
    NetMsg* pmsg)                                // In:  Message to send
    {
    // Bit-mask determines who to send the message to
@@ -962,7 +962,7 @@ void CNetServer::StartGame(
 // Abort game
 ////////////////////////////////////////////////////////////////////////////////
 void CNetServer::AbortGame(
-   unsigned char ucReason)                      // In:  Why game was aborted
+   uint8_t ucReason)                      // In:  Why game was aborted
    {
    // Tell players to abort game
    NetMsg msg;
