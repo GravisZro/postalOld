@@ -359,9 +359,10 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	int32_t	lSizeEstimate = ((int32_t)(pImage->m_sHeight+1))*(pImage->m_sWidth*2+1) + 15;
 	pHeader->m_pCompMem = (uint8_t*)malloc((size_t)pImage->m_sHeight*(size_t)pImage->m_sWidth+15);
 
-	pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) + 15) & ~ 15); // align it 128!
+#ifndef BUILD_CHEAT
+   pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) + 15) & ~ 15); // align it 128!
 	pHeader->m_pCodeBuf = (uint8_t*)malloc((size_t)lSizeEstimate);
-
+#endif
 	//******** For convenience, generate the Compressed Buffer immediately:
 	uint8_t*	pucCPos = pHeader->m_pCompBuf;
 	uint8_t*	pucBPos = pImage->m_pData; // read the actual buffer
@@ -404,7 +405,9 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	// NOTE: pucCPos is an open stack!
 	pHeader->m_pCompMem = (uint8_t*)calloc(1,(size_t)(pucCPos - pHeader->m_pCompBuf + 15));
 	// And align it:
-	pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) +15)&~15);
+#ifndef BUILD_CHEAT
+   pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) +15)&~15);
+#endif
 	// Store the size of the Compressed Buffer:
 	pHeader->m_pBufArry[sH] = (uint8_t*)(size_t)(pucCPos - pHeader->m_pCompBuf);
 
@@ -414,7 +417,9 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	free(pucOldMem);
 	
 	// Now update the indexes (m_pBufArry) which point into PCBuf:
-	for (y=0;y<sH;y++) pHeader->m_pBufArry[y] += (int32_t)(pHeader->m_pCompBuf);
+#ifndef BUILD_CHEAT
+   for (y=0;y<sH;y++) pHeader->m_pBufArry[y] += (int32_t)(pHeader->m_pCompBuf);
+#endif
 
 	//******** NOW, the challange... Create the Control Block!
 	pucBPos = pImage->m_pData;
@@ -485,7 +490,9 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 										(size_t)(pucConBlk - pHeader->m_pCodeBuf));	
 
 	// Move the indexes in (m_pCodeArry)
-	for (y=0;y<sH;y++) pHeader->m_pCodeArry[y] += (int32_t)(pHeader->m_pCodeBuf);
+#ifndef BUILD_CHEAT
+   for (y=0;y<sH;y++) pHeader->m_pCodeArry[y] += (int32_t)(pHeader->m_pCodeBuf);
+#endif
 
 	//******************************************************************
 
@@ -605,7 +612,9 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
 	// NOT NECESSARY!!! THe SOURCE WILL ALWAYS BE A BUFFER!
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#ifndef BUILD_CHEAT
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#endif
 
 	switch (sBlitTypeDst) // 0 = normal image
 		{

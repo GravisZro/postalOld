@@ -96,7 +96,6 @@
 #include <ORANGE/Attribute/attribute.h>
 #include <ORANGE/ImageTools/lasso.h>
 #include <ORANGE/Laymage/laymage.h>
-#include <ORANGE/MTask/mtask.h>
 #include <ORANGE/RString/rstring.h>
 #include <ORANGE/Channel/channel.h>
 #include <ORANGE/color/colormatch.h>

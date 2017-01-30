@@ -290,8 +290,8 @@ void rspWaitForClick(int16_t sWait)
 class RCompressedImageData
    {
 public:
-   USHORT	usCompType;	// = FSPR8 image type
-   USHORT	usSourceType;	// uncompressed Image pre-compressed type
+   uint16_t	usCompType;	// = FSPR8 image type
+   uint16_t	usSourceType;	// uncompressed Image pre-compressed type
    uint8_t*	pCBuf;		// Start of compressed picture data, 128-aligned, nullptr for monochrome
    uint8_t*	pCMem;
    uint8_t* pControlBlock;// 32-aligned run length code for compressed BLiT
@@ -323,7 +323,7 @@ void	rspSetBMPColors(RImage* pim,int16_t sStartIndex,int16_t sNum)
    // Actually, we ONLY need to worry about type FSPR8
    if (pim->m_type == RImage::FSPR8)
       {
-      if ( ((RCompressedImageData*)pim->m_pSpecial)->usSourceType != (USHORT)RImage::BMP8)
+      if ( ((RCompressedImageData*)pim->m_pSpecial)->usSourceType != (uint16_t)RImage::BMP8)
          {
          TRACE("rspSetBMPColors:  Palette not type BMP8\n");
          return;
@@ -479,6 +479,7 @@ int16_t	rspGeneralLock(RImage* pimDst)
    // If it is a stub . . .
    if (pimDst->m_type == RImage::IMAGE_STUB)
       {
+#ifndef BUILD_CHEAT
       switch (((int16_t)(((int32_t)pimDst->m_pSpecial)))) // 0 = normal image
          {
          case 0:	// it's YOUR IMAGE!
@@ -500,6 +501,7 @@ int16_t	rspGeneralLock(RImage* pimDst)
          default:
             TRACE("rspGeneralLock: unrecognized image case - probably FSPR.\n");
          }
+#endif
       }
 
    return SUCCESS;
@@ -514,6 +516,7 @@ int16_t	rspGeneralUnlock(RImage* pimDst)
    // If it is a stub . . .
    if (pimDst->m_type == RImage::IMAGE_STUB)
       {
+#ifndef BUILD_CHEAT
       switch (((int16_t)(((int32_t)pimDst->m_pSpecial)))) // 0 = normal image
          {
          case 0:	// it's YOUR IMAGE!
@@ -536,6 +539,7 @@ int16_t	rspGeneralUnlock(RImage* pimDst)
          default:
             TRACE("rspGeneralLock: unrecognized image case - probably FSPR.\n");
          }
+#endif
       }
 
    return SUCCESS;

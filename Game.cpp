@@ -967,12 +967,14 @@ extern void TheGame(void)
    rspSetBackgroundCallback(BackgroundCall);
    rspSetForegroundCallback(ForegroundCall);
 
+#ifdef CHECK_EXPIRATION_DATE
+  #ifdef CHECK_FOR_COOKIE
    ms_u32Cookie   = ~ms_u32Cookie;
+  #endif
    g_lRegValue = 0;
    g_lExpValue = 0;
    g_lRegTime = 0;
 
-#ifdef CHECK_EXPIRATION_DATE
    g_lExpTime = EXPIRATION_DATE;
    g_lReleaseTime = RELEASE_DATE;
 #endif

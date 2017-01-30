@@ -176,9 +176,10 @@ int16_t	rspBlitT(uint32_t ucTransparent,RImage* pimSrc,RImage* pimDst,int16_t sS
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-	if (pimSrc->m_type == RImage::IMAGE_STUB) sBlitTypeSrc = (int16_t)((int32_t)pimSrc->m_pSpecial);
+#ifndef BUILD_CHEAT
+   if (pimSrc->m_type == RImage::IMAGE_STUB) sBlitTypeSrc = (int16_t)((int32_t)pimSrc->m_pSpecial);
 	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-
+#endif
 	switch ( (sBlitTypeSrc<<3) + sBlitTypeDst) // 0 = normal image
 		{
 		case (BUF_MEMORY<<3) + 0: // system buffer to an image
@@ -300,7 +301,7 @@ int16_t	rspBlitT(uint32_t ucTransparent,RImage* pimSrc,RImage* pimDst,int16_t sS
 			_BLiTT((uint8_t)ucTransparent,(uint8_t*)pSrc,(uint8_t*)pDst,pimSrc->m_lPitch,pimDst->m_lPitch,sH,sW); 
 		break;
 		case 16:
-			_BLiTT((USHORT)ucTransparent,(uint16_t*)pSrc,(uint16_t*)pDst,(pimSrc->m_lPitch),(pimDst->m_lPitch),sH,int16_t(sW>>1)); 
+         _BLiTT((uint16_t)ucTransparent,(uint16_t*)pSrc,(uint16_t*)pDst,(pimSrc->m_lPitch),(pimDst->m_lPitch),sH,int16_t(sW>>1));
 		break;
 		case 32:
 			_BLiTT((uint32_t)ucTransparent,(uint32_t*)pSrc,(uint32_t*)pDst,(pimSrc->m_lPitch),(pimDst->m_lPitch),sH,int16_t(sW>>2)); 

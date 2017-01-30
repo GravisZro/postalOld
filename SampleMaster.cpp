@@ -379,7 +379,7 @@ void SndDoneCall(    // Returns nothing.
 
       // Either release the sample, or purge and release//////////////////////////////////////////////////////////////////////
 
-      if (psnd->m_ulUser)
+      if (psnd->m_ulUser != nullptr)
          rspReleaseAndPurgeResource(&g_resmgrSamples, &psample);
       else
          rspReleaseResource(&g_resmgrSamples, &psample);

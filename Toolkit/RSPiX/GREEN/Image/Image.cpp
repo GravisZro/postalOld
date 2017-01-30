@@ -182,7 +182,7 @@
 //						NOT_SUPPORTED.  Also, SaveDib() was improperly setting the 
 //						size field of the DIB file header to the lPitch * lHeight 
 //						when it should have been the lDibPitch * lHeight.  Also, 
-//						WIDTHuint8_t and WIDTH128 macros were not 'order-of-operations'
+//						WIDTHU8 and WIDTH128 macros were not 'order-of-operations'
 //						safe macros.  Added parenthesis surrounding arguments for 
 //						that extra sense of comfort we've come to know and love.  We
 //						deserve that kind of protection.
@@ -517,7 +517,9 @@ int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 			else
 			{
 				// Set Data buffer to 128-bit alignment
-            *hData = (void*) (( *hMem + (void*)0x0f) & 0xfffffff0);
+#ifndef BUILD_CHEAT
+           *hData = (void*) (( *hMem + (void*)0x0f) & 0xfffffff0);
+#endif
 				// success		 	
 				return SUCCESS;
 			}
@@ -1413,7 +1415,7 @@ int16_t RImage::LoadDib(RFile* pcf)
 																			// Pre calc width in bits.
 																			int32_t lBitsWidth	= dh.lWidth * (int32_t)dh.usBitCount;
 																			m_lPitch		= WIDTH128(((lBitsWidth + 7) & ~7) / 8);
-																			lDibPitch	= WIDTHuint8_t(((lBitsWidth + 7) & ~7) / 8);
+                                                         lDibPitch	= WIDTHU8(((lBitsWidth + 7) & ~7) / 8);
 
 																			// Calculate size.
 																			// If not compressed . . .
@@ -1744,7 +1746,7 @@ int16_t RImage::SaveDib(RFile* pcf)
 
 	if (pcf && pcf->IsOpen())
 	{
-		int32_t lDibPitch = WIDTHuint8_t((((int32_t)m_sWidth * (int32_t)m_sDepth + 7L) & ~7L) / 8L);
+      int32_t lDibPitch = WIDTHU8((((int32_t)m_sWidth * (int32_t)m_sDepth + 7L) & ~7L) / 8L);
 
 		long	ulColorData	= 0;
 		if (m_pPalette)

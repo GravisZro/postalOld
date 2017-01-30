@@ -370,7 +370,7 @@
 #include <stdarg.h>
 #include <cstring>
 #include <cstdlib>
-#include <limits.h>
+#include <climits>
 
 //////////////////////////////////////////////////////////////////////////////
 // RSPiX Headers.
@@ -2210,7 +2210,9 @@ int16_t RGuiItem::ReadMembers(	// Returns 0 on success.
 			pfile->Read(&m_sInvertedBorder);
 			pfile->Read(&m_sTransparent);
 			pfile->Read(&m_u32TransparentColor);
-			pfile->Read(&m_lId);
+         int32_t tmp;
+         pfile->Read(&tmp);
+         m_lId = tmp;
 			
 			// Used to load m_sCanBeFocused (TRUE, FALSE); now load
 			// m_targetFocus.
@@ -2387,7 +2389,7 @@ int16_t RGuiItem::WriteMembers(	// Returns 0 on success.
 	pfile->Write(m_sInvertedBorder);
 	pfile->Write(m_sTransparent);
 	pfile->Write(m_u32TransparentColor);
-	pfile->Write(m_lId);
+   pfile->Write((int32_t)m_lId);
 	pfile->Write((int16_t)m_targetFocus);
 	pfile->Write(m_sShowFocus);
 	pfile->Write(m_u32FocusColor);

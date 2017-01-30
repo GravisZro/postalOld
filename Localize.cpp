@@ -1326,7 +1326,7 @@ char const * const g_apszScoreExplanations[] =
 #endif // ScoreExplanations
 
 
-inline const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept
+const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept
   { return g_text.at(crc32_compiletime(str, sz - 2) ^ 0xFFFFFFFF); }
 
 ////////////////////////////////////////////////////////////////////////////////

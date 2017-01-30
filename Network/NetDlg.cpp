@@ -371,7 +371,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // THIS ENTIRE SECTION OF STRINGS SHOULD BE MOVED TO LOCALIZE.CPP!!!
 //////////////////////////////////////////////////////////////////////////////
-#if 0
+#ifndef BUILD_CHEAT
 // Client-specific messages displayed in client dialog's status area
 char const * const  "ClientStat_NameTooLongForChat"_lookup      = "Name too long, can't chat";
 char const * const  "ClientStat_YouWereDropped"_lookup          = "Connection was lost";

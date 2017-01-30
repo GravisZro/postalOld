@@ -102,7 +102,7 @@ CVideo::CVideo(char* szFilename,						// filename of the video
 					long y, 									// top of the playback window
 					long w, 									// width of the playback window
 					long h, 									// height of the playback window
-					short sClip) 							// clipping flag
+					int16_t sClip) 							// clipping flag
 	{
 	// Call the default constructor.
 	CVideo();
@@ -152,7 +152,7 @@ CVideo::~CVideo(void)
 // History:			05/17/95, PPL,	Started coding.
 //						05/18/95, PPL, Rewrote using the MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Create(void)
+int16_t CVideo::Create(void)
 	{
 	// Let's create the avi video window if one has not already been created.
 	if (m_lhwnd == 0)
@@ -225,19 +225,19 @@ void CVideo::Destroy(void)
 // History:			05/17/95, PPL,	Started coding.
 //						05/18/95, PPL, Rewrote using MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Open(char* szFilename,						// name of the video file
+int16_t CVideo::Open(char* szFilename,						// name of the video file
 						 long x,									// left edge of the playback window
 						 long y,									// top of the playback window
 						 long w,									// width of the playback window
 						 long h,									// height of the playback window
-						 short sClip)								// clipping flag, use following values:
+						 int16_t sClip)								// clipping flag, use following values:
 				 														//    0: no clipping, window will be resized to 
 																		//			actual video's size.
 																		//		1:	video will be clipped to the size supplied.
 																		//		2:	video will not be clipped, video will be
 																		//			stretched/shrinked to the window's size.
 	{
-	short		sResult;
+	int16_t		sResult;
 	RECT		rect;
 	long 		lXdelta;
 	long		lYdelta;
@@ -361,9 +361,9 @@ short CVideo::Open(char* szFilename,						// name of the video file
 //						05/18/95, PPL, Rewrote using MCIWnd Class.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Close(void)
+int16_t CVideo::Close(void)
 	{
-	short	sRes = VIDEO_ERR_CLOSE;
+	int16_t	sRes = VIDEO_ERR_CLOSE;
 
 	// If there is a window . . .
 	if (m_lhwnd)
@@ -395,7 +395,7 @@ short CVideo::Close(void)
 // History:			05/17/95, PPL,	Started coding.
 //						05/18/95, PPL, Rewrote using MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Play(short sMode, int32_t lStart, int32_t lEnd)
+int16_t CVideo::Play(int16_t sMode, int32_t lStart, int32_t lEnd)
 	{
 	int32_t lResult;
 
@@ -445,9 +445,9 @@ short CVideo::Play(short sMode, int32_t lStart, int32_t lEnd)
 // History:			05/17/95, PPL,	Started coding.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Pause(void)
+int16_t CVideo::Pause(void)
 	{
-	short sRes = VIDEO_ERR_PAUSE;
+	int16_t sRes = VIDEO_ERR_PAUSE;
 
 	if (m_lhwnd)
 		{
@@ -473,9 +473,9 @@ short CVideo::Pause(void)
 // History:			05/17/95, PPL,	Started coding.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Resume(void)
+int16_t CVideo::Resume(void)
 	{
-	short sRes = VIDEO_ERR_RESUME;
+	int16_t sRes = VIDEO_ERR_RESUME;
 
 	if (m_lhwnd)
 		{
@@ -500,7 +500,7 @@ short CVideo::Resume(void)
 //						1 - Error.  (more detailed error codes may be defined later.)
 // History:			05/17/95, PPL,	Started coding.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::Stop(void)
+int16_t CVideo::Stop(void)
 	{
 	int32_t lResult;
 
@@ -523,7 +523,7 @@ short CVideo::Stop(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 long CVideo::GetFrame(void)
 	{
-	short sResult;
+	int16_t sResult;
 
 	sResult = VIDEO_SUCCESS;
 
@@ -550,7 +550,7 @@ long CVideo::GetFrame(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 long CVideo::GetPosition(void)
 	{
-	short sResult;
+	int16_t sResult;
 
 	sResult = VIDEO_SUCCESS;
 
@@ -572,10 +572,10 @@ long CVideo::GetPosition(void)
 // Name:				IsOpened
 // Description:	This function checks to see if a video is currently opened.
 // Input:			none
-// Output:			short: TRUE/FALSE
+// Output:			int16_t: TRUE/FALSE
 // History:			05/22/95, PPL,	Started coding.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::IsOpened(void)
+int16_t CVideo::IsOpened(void)
 	{
 	int32_t lResult;
 
@@ -600,13 +600,13 @@ short CVideo::IsOpened(void)
 // Name:				IsPlaying
 // Description:	This function checks to see if a video is currently playing.
 // Input:			none
-// Output:			short: TRUE/FALSE
+// Output:			int16_t: TRUE/FALSE
 // History:			05/22/95, PPL,	Started coding.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::IsPlaying(void)
+int16_t CVideo::IsPlaying(void)
 	{
-	short sRes = FALSE;
+	int16_t sRes = FALSE;
 
 	if (m_lhwnd)
 		{
@@ -625,13 +625,13 @@ short CVideo::IsPlaying(void)
 // Name:				IsPaused
 // Description:	This function checks to see if a video is currently paused.
 // Input:			none
-// Output:			short: TRUE/FALSE
+// Output:			int16_t: TRUE/FALSE
 // History:			05/22/95, PPL,	Started coding.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::IsPaused(void)
+int16_t CVideo::IsPaused(void)
 	{
-	short	sRes	= FALSE;
+	int16_t	sRes	= FALSE;
 
 	if (m_lhwnd)
 		{
@@ -651,13 +651,13 @@ short CVideo::IsPaused(void)
 // Name:				IsStopped
 // Description:	This function checks to see if a video has been stopped.
 // Input:			none
-// Output:			short: TRUE/FALSE
+// Output:			int16_t: TRUE/FALSE
 // History:			05/22/95, PPL,	Started coding.
 //						08/10/95, JMI, Altered to be aware of possibility of HWND not being valid.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-short CVideo::IsStopped(void)
+int16_t CVideo::IsStopped(void)
 	{
-	short	sRes = FALSE;
+	int16_t	sRes = FALSE;
 
 	if (m_lhwnd)
 		{
@@ -688,7 +688,7 @@ short CVideo::IsStopped(void)
 void CVideo::Init(void)
 	{
 	// To be consistent with the way all our functions return sucess, 0 is success (or TRUE) while all other
-	// numbers denote error of some sort (or FALSE).  All of our 'boolean' shorts are therefore intialized
+	// numbers denote error of some sort (or FALSE).  All of our 'boolean' int16_ts are therefore intialized
 	// to 0.
 	m_ulDeviceID = 0;
 	m_lhwnd = 0;

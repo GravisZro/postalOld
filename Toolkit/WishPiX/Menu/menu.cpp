@@ -134,7 +134,7 @@
 // RSPiX Headers.
 ///////////////////////////////////////////////////////////////////////////////
 #include <BLUE/Blue.h>
-#include <input.h>
+#include <Input.h>
 
 #include <ORANGE/color/colormatch.h>
 #include <ORANGE/MsgBox/MsgBox.h>

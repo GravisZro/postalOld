@@ -129,7 +129,7 @@ public:
 	// If you wish to know the scale, you can get it from
 	// the mask members:
 	//
-	long	GetScale(int16_t sMask) // decode the mask
+   int32_t	GetScale(int16_t sMask) // decode the mask
 		{
 		return ++sMask;
 		}
@@ -191,7 +191,7 @@ public:
 		ASSERT(!m_sIsCompressed);
 		ASSERT( (sX >=0) && (sY >= 0) && (sX < m_sWidth) && (sY < m_sHeight));
 
-		*(m_psGrid + sX + long(sY) * m_sWidth) = sVal;
+      *(m_psGrid + sX + int32_t(sY) * m_sWidth) = sVal;
 		}
 
 	// UNCOMPRESSED READ ACCESS
@@ -202,7 +202,7 @@ public:
 		ASSERT(!m_sIsCompressed);
 		ASSERT( (sX >= 0) && (sY >= 0) && (sX < m_sWidth) && (sY < m_sHeight));
 
-		return *(m_psGrid + sX + long(sY) * m_sWidth);
+      return *(m_psGrid + sX + int32_t(sY) * m_sWidth);
 		}
 
 	// A visual Debug View: (Uncompressed)
@@ -231,8 +231,8 @@ public:
 	int16_t Compress(
 		int16_t sTileW,				// Size of tiles to try on this data
 		int16_t sTileH,
-		long* plSize = nullptr,		// New Data Size (BYTES)
-		long* lNumBlocks = nullptr,// Number of unique tiles needed
+      int32_t* plSize = nullptr,		// New Data Size (BYTES)
+      int32_t* lNumBlocks = nullptr,// Number of unique tiles needed
 		int16_t sMatchSame = TRUE	// If false, NO TILE WILL BE REUSED
 										// which increases the speed of compresion
 		);
@@ -304,11 +304,11 @@ public:
 
 	int16_t	AllocGrid(int16_t sScaleW, int16_t sScaleH);
 
-	long	MaskToShift(int16_t sMask)
+   int32_t	MaskToShift(int16_t sMask)
 		{
 		int32_t	lShift = 0;
 		int32_t	lValue = 1;
-		int32_t	lMask = long(sMask);
+      int32_t	lMask = int32_t(sMask);
 
 		while (lValue < lMask)
 			{

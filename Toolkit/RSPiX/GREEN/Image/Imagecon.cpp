@@ -134,7 +134,7 @@
 //	11/01/96	JMI	Changed all members of image to be preceded by m_ (e.g.,
 //						sDepth to m_sDepth).  Changed all position members (i.e., 
 //						lWidth, lHeight, lBufferWidth, lBufferHeight, lXPos, & lYPos)
-//						to be shorts (i.e., m_sWidth, m_sHeight, m_sBufferWidth,
+//						to be int16_ts (i.e., m_sWidth, m_sHeight, m_sBufferWidth,
 //						m_sBufferHeight, m_sXPos, m_sYPos).  Changed ulType to
 //						m_type and ulDestinationType to m_typeDestination.
 //
@@ -170,8 +170,8 @@
 //							
 //
 //////////////////////////////////////////////////////////////////////
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "Image.h"
 
@@ -483,7 +483,7 @@ int16_t ConvertToBMP24(RImage* pImage)
             pImage->m_pData	= (uint8_t*)ulp32;
 				TRACE("ConvertToBMP24(): CreateData() failed.\n");
 				// Return old type.
-				sReturn = (short)pImage->m_type;
+				sReturn = (int16_t)pImage->m_type;
 				}
 			break;
 		}
@@ -923,7 +923,7 @@ int16_t ConvertToSCREEN16_555(RImage* pImage)
 			// Create a new 16-bit buffer
 			pImage->m_sDepth = 16;
 			pImage->m_lPitch = RImage::GetPitch(pImage->m_sWidth, pImage->m_sDepth);
-			pImage->CreateData(pImage->m_lPitch * (short)pImage->m_sHeight);
+			pImage->CreateData(pImage->m_lPitch * (int16_t)pImage->m_sHeight);
          uint16_t* usp16 = (uint16_t*) pImage->m_pData;
          uint8_t  ucIndex;
          int32_t dPitch = pImage->m_lPitch / (pImage->m_sDepth / 8);
@@ -1539,7 +1539,7 @@ int16_t ConvertFromBMP8RLE(RImage* pImage)
 
 		pImage->m_type = RImage::BMP8;
 
-		sRes = (short)pImage->m_type;
+		sRes = (int16_t)pImage->m_type;
 		}
 	else
 		{
@@ -1713,7 +1713,7 @@ int16_t ConvertToBMP8RLE(RImage* pImage)
 
 				pImage->m_type = RImage::BMP8RLE;
 
-				sRes = (short)pImage->m_type;
+				sRes = (int16_t)pImage->m_type;
 				}
 			else
 				{
@@ -1810,7 +1810,7 @@ int16_t ConvertFromBMP1(RImage* pImage)
 		pImage->m_type = RImage::BMP8;
 
 		// Set return value.
-		sRes = (short)pImage->m_type;
+		sRes = (int16_t)pImage->m_type;
 		}
 	else
 		{
@@ -1917,7 +1917,7 @@ int16_t ConvertToBMP1(RImage* pImage)
 				pImage->m_type = RImage::BMP1;
 
 				// Set return value.
-				sRes = (short)pImage->m_type;
+				sRes = (int16_t)pImage->m_type;
 				}
 			else
 				{

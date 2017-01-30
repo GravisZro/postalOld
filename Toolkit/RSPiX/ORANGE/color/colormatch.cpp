@@ -15,7 +15,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
-#include <string.h>
+#include <cstring>
 #include <BLUE/Blue.h>
 #include <GREEN/Image/Image.h>
 #include <ORANGE/color/colormatch.h>
@@ -885,12 +885,20 @@ uint8_t*** RMultiAlpha::pppucCreateFastMultiAlpha(
 	// how you seek!
 
 	// I am adding on in BYTES, not words...
-	uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#if BUILD_CHEAT
+   uint8_t*** pppucFastAligned = nullptr;
+#else
+   uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#endif
 
 	if (!pppucFastMem) return nullptr;
 	uint8_t* pInfo = (uint8_t*)pppucFastAligned;
 	// For freeing:
+#if BUILD_CHEAT
+   int32_t lMemOffset = 0;
+#else
 	int32_t lMemOffset = uint32_t(pppucFastAligned) - uint32_t(pppucFastMem);
+#endif
 
 	// Remember offsets for each main memory structure:
 
@@ -1247,10 +1255,20 @@ int16_t RFastMultiAlphaWrapper::Load(RFile* pf)
 	// how you seek!
 
 	// I am adding on in BYTES, not words...
-	uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#if BUILD_CHEAT
+   uint8_t*** pppucFastAligned = nullptr;
+#else
+   uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#endif
 
-	// For freeing (in bytes):
-	int32_t lMemOffset = uint32_t(pppucFastAligned) - uint32_t(pppucFastMem);
+   if (!pppucFastMem) return 0;
+//   uint8_t* pInfo = (uint8_t*)pppucFastAligned;
+   // For freeing:
+#if BUILD_CHEAT
+   int32_t lMemOffset = 0;
+#else
+   int32_t lMemOffset = uint32_t(pppucFastAligned) - uint32_t(pppucFastMem);
+#endif
 
 	//==============  Idenitfy the different data sections  ===============
 	// NOTE:  once debugged, remove ppucFirstSrcArray,pucData

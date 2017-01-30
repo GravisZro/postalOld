@@ -1,3 +1,5 @@
+QT=
+
 #SmartHeap Stuff.  Normally, we define these in debug mode and comment them out otherwise.
 #DEFINES += "NOSHMALLOC"
 #DEFINES += "MEM_DEBUG"
@@ -6,13 +8,15 @@
 #Define this for debug mode, comment it out otherwise.
 #DEFINES += "_DEBUG"
 
+DEFINES += "BUILD_CHEAT"
+
+DEFINES += "PLATFORM_UNIX"
+
 DEFINES += "US=1"
 DEFINES += "UK=2"
 DEFINES += "GERMAN=3"
 DEFINES += "FRENCH=4"
 DEFINES += "JAPAN=5"
-
-# LOCALE: US,UK,GERMAN,FRENCH,JAPAN
 DEFINES += "LOCALE=US"
 
 #DEFINES += "APP_NAME=\"\\\"Postal Plus MP\\\"\""
@@ -39,6 +43,8 @@ DEFINES += "LOADLEVEL_REMOVED"
 
 INCLUDEPATH += Toolkit/RSPiX
 INCLUDEPATH += Toolkit/WishPiX
+
+LIBS += -lSDL2
 
 HEADERS += \
     PostalAttrib.h \
@@ -214,12 +220,9 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/Laymage/laymage.h \
     Toolkit/RSPiX/ORANGE/Meter/meter.h \
     Toolkit/RSPiX/ORANGE/MsgBox/MsgBox.h \
-    Toolkit/RSPiX/ORANGE/MTask/mtask.h \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGrid.h \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGridIndirect.h \
     Toolkit/RSPiX/ORANGE/Parse/SimpleBatch.h \
-    Toolkit/RSPiX/ORANGE/PlugIn/exe2dll.h \
-    Toolkit/RSPiX/ORANGE/PlugIn/PlugIn.h \
     Toolkit/RSPiX/ORANGE/Props/Props.h \
     Toolkit/RSPiX/ORANGE/QuickMath/FixedPoint.h \
     Toolkit/RSPiX/ORANGE/QuickMath/Fractions.h \
@@ -227,17 +230,6 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/QuickMath/VectorMath.h \
     Toolkit/RSPiX/ORANGE/RString/rstring.h \
     Toolkit/RSPiX/ORANGE/str/str.h \
-    Toolkit/RSPiX/ORANGE/Stream/dispatch.h \
-    Toolkit/RSPiX/ORANGE/Stream/FileWin.h \
-    Toolkit/RSPiX/ORANGE/Stream/filter.h \
-    Toolkit/RSPiX/ORANGE/Stream/res.h \
-    Toolkit/RSPiX/ORANGE/Stream/resitem.h \
-    Toolkit/RSPiX/ORANGE/Stream/rtflic.h \
-    Toolkit/RSPiX/ORANGE/Stream/rtplay.h \
-    Toolkit/RSPiX/ORANGE/Stream/rtsnd.h \
-    Toolkit/RSPiX/ORANGE/Stream/rttime.h \
-    Toolkit/RSPiX/ORANGE/Stream/rttypes.h \
-    Toolkit/RSPiX/ORANGE/Stream/rtvidc.h \
     Toolkit/RSPiX/RSPiX.h \
     Toolkit/RSPiX/RSPiXUnix.h \
     Toolkit/WishPiX/Menu/menu.h \
@@ -356,7 +348,12 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/3D/types3d.cpp \
     Toolkit/RSPiX/GREEN/3D/zbuffer.cpp \
     Toolkit/RSPiX/GREEN/BLiT/alphablit.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/BLIT.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/BLITINIT.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/BLiTT.cpp \
     Toolkit/RSPiX/GREEN/BLiT/CFNT.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/Fspr1.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/FSPR8.cpp \
     Toolkit/RSPiX/GREEN/BLiT/line.cpp \
     Toolkit/RSPiX/GREEN/BLiT/mono.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Rotate96.cpp \
@@ -405,25 +402,13 @@ SOURCES += \
     Toolkit/RSPiX/ORANGE/Laymage/laymage.cpp \
     Toolkit/RSPiX/ORANGE/Meter/meter.cpp \
     Toolkit/RSPiX/ORANGE/MsgBox/MsgBox.cpp \
-    Toolkit/RSPiX/ORANGE/MTask/mtask.cpp \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGrid.cpp \
     Toolkit/RSPiX/ORANGE/MultiGrid/MultiGridIndirect.cpp \
     Toolkit/RSPiX/ORANGE/Parse/SimpleBatch.cpp \
-    Toolkit/RSPiX/ORANGE/Parse/testBatch.cpp \
-    Toolkit/RSPiX/ORANGE/PlugIn/plugin.cpp \
     Toolkit/RSPiX/ORANGE/QuickMath/FixedPoint.cpp \
     Toolkit/RSPiX/ORANGE/QuickMath/QuickMath.cpp \
     Toolkit/RSPiX/ORANGE/RString/rstring.cpp \
     Toolkit/RSPiX/ORANGE/str/str.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/dispatch.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/filewin.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/filter.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/res.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/resitem.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/rtflic.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/rtplay.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/rtsnd.cpp \
-    Toolkit/RSPiX/ORANGE/Stream/RtVidc.cpp \
     Toolkit/WishPiX/Menu/menu.cpp \
     Toolkit/WishPiX/Prefs/prefline.cpp \
     Toolkit/WishPiX/Prefs/prefs.cpp \

@@ -682,8 +682,9 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-
+#ifndef BUILD_CHEAT
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#endif
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -980,8 +981,9 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-
+#ifndef BUILD_CHEAT
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#endif
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -1232,8 +1234,9 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-
+#ifndef BUILD_CHEAT
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#endif
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -1452,8 +1455,9 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-
+#ifndef BUILD_CHEAT
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+#endif
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer

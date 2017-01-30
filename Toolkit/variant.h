@@ -21,12 +21,19 @@ public:
   Variant& operator = (int16_t  val) { data.i16 = val; return *this; }
   Variant& operator = (int8_t   val) { data.i8  = val; return *this; }
 
-  template<typename T>
-  T*& value(void) { return static_cast<T*>(data.ptr); }
-
   template<typename T> T& value(void);
 
-  template<typename T> operator T*(void) const { return static_cast<T*>(data.ptr); }
+  template<typename T> operator T*(void) { return static_cast<T*>(data.ptr); }
+
+  operator uint64_t&(void) { return data.u64; }
+  operator uint32_t&(void) { return data.u32; }
+  operator uint16_t&(void) { return data.u16; }
+  operator uint8_t& (void) { return data.u8 ; }
+  operator int64_t& (void) { return data.i64; }
+  operator int32_t& (void) { return data.i32; }
+  operator int16_t& (void) { return data.i16; }
+  operator int8_t&  (void) { return data.i8 ; }
+
 
   operator uint64_t(void) const { return data.u64; }
   operator uint32_t(void) const { return data.u32; }
@@ -51,14 +58,5 @@ private:
     int8_t   i8;
   } data;
 };
-
-template<> inline uint64_t& Variant::value<uint64_t>(void) { return data.u64; }
-template<> inline uint32_t& Variant::value<uint32_t>(void) { return data.u32; }
-template<> inline uint16_t& Variant::value<uint16_t>(void) { return data.u16; }
-template<> inline uint8_t&  Variant::value<uint8_t >(void) { return data.u8 ; }
-template<> inline int64_t&  Variant::value<int64_t >(void) { return data.i64; }
-template<> inline int32_t&  Variant::value<int32_t >(void) { return data.i32; }
-template<> inline int16_t&  Variant::value<int16_t >(void) { return data.i16; }
-template<> inline int8_t&   Variant::value<int8_t  >(void) { return data.i8 ; }
 
 #endif // VARIANT_H

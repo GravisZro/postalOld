@@ -23,7 +23,7 @@ char	RBatch::ms_Error[256];
 int16_t RBatch::GetLine()
 	{
 	m_sNumTokens = 0;
-	int16_t i;
+   int16_t i;
 	for (i=0; i < SB_MAX_TOKENS; i++)
 		{
 		m_pszTokenList[i][0] = '\0';
@@ -38,12 +38,12 @@ int16_t RBatch::GetLine()
 
 	int iChar;
 	char c;
-	int16_t sLinePos = 0;
-	int16_t sTokenChar = 0;
-	int16_t sLoop = TRUE;
-	int16_t sRet = 0;
-	int16_t sMidToken = FALSE;
-	int16_t sInString = FALSE;
+   int16_t sLinePos = 0;
+   int16_t sTokenChar = 0;
+   int16_t sLoop = TRUE;
+   int16_t sRet = 0;
+   int16_t sMidToken = FALSE;
+   int16_t sInString = FALSE;
 
 	while (sLoop)
 		{
@@ -114,7 +114,7 @@ BEGIN_LOOP:
 					}
 
 			// 3) Check for a filtered character
-			if (((int16_t)c < m_sLowFilter) || ( (int16_t)c > m_sHighFilter))
+         if (((int16_t)c < m_sLowFilter) || ( (int16_t)c > m_sHighFilter))
 				{
 				if (sMidToken)
 					{
@@ -218,7 +218,7 @@ char* RBatch::NextToken()
 	{
 	if (m_sCurToken == -2) // first time:
 		{
-		if (GetLine() == int16_t(-1)) 
+      if (GetLine() == int16_t(-1))
 			{
 			return nullptr;
 			}
