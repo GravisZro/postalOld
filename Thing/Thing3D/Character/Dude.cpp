@@ -153,7 +153,7 @@
 //
 //    02/24/97 JMI   Now State_Damage cannot interrupt State_Damage which looks
 //                   a lot better.  It would look even better still, I think,
-//                   if the shot animation was a little int16_ter/faster.
+//                   if the shot animation was a little shorter/faster.
 //
 //    02/24/97 JMI   Now tweaks angle slightly before calling FireDeluxe() so
 //                   the gun does not aim perfectly.
