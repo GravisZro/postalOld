@@ -66,7 +66,7 @@
 //
 //*****************************************************************************
 
-#include <ORANGE/GameLib/SPRITE.H>
+#include <ORANGE/GameLib/Sprite.h>
 
 ////////////////// Instantiate Static members ////////////////////////////////
 

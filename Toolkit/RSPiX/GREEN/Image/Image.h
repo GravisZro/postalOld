@@ -183,7 +183,7 @@
 #include <BLUE/Blue.h>
 
 // Green include files
-#include <GREEN/Image/pal.h>
+#include <GREEN/Image/Pal.h>
 
 // Orange include files
 #include <ORANGE/File/file.h>

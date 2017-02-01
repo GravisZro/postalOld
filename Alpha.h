@@ -24,7 +24,7 @@
 #include <BLUE/System.h>
 
 #include <GREEN/Image/Image.h>
-#include <GREEN/BLiT/BLIT.H>
+#include <GREEN/BLiT/Blit.h>
 
 //////////////////////////////////////////////////////////////////////////////
 // Macros.

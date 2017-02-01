@@ -32,7 +32,7 @@
 
 #include <SDL2/SDL.h>
 #include <BLUE/Blue.h>
-#include <ORANGE/CDT/QUEUE.H>
+#include <ORANGE/CDT/Queue.h>
 
 
 #define MAX_EVENTS	256

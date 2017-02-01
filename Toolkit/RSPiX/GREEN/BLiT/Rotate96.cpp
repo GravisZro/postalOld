@@ -19,8 +19,8 @@
 
 #include <BLUE/System.h>
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/Cfnt.h>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/RFont.h>
 #include <ORANGE/QuickMath/Fractions.h>
 
 #define _ROT64 // 64-bit math

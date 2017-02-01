@@ -40,7 +40,8 @@
 
 #ifndef SPECIAL_TYP_H
 #define SPECIAL_TYP_H
-// This currently depends only on "system.h"
+
+#include <cstdint>
 
 //*******************************************************************
 //*****  NOTE:  In the same convention as m_pData, 

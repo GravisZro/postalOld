@@ -23,8 +23,8 @@
 //       ( support for FSRP8 NYI )
 //********************************************
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/BlitInternal.h>
 #include <ORANGE/QuickMath/Fractions.h>
 #include <GREEN/Image/SpecialTyp.h>
 
@@ -86,7 +86,7 @@ ConversionInfoFSPR1 gFSPR1 =
 	(uint32_t)	0xffffff01,	// And the color to the correct depth
 	(uint32_t)	0,
 	(int16_t) TRUE
-	}; // Defaults...
+   }; // Defaults...
 
 void ResetFSPR1();
 void ResetFSPR1()	// only traits DESIRABLE to reset between Converts

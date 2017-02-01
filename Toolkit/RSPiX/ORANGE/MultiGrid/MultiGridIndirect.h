@@ -35,7 +35,7 @@
 #include <BLUE/Blue.h>
 #include <ORANGE/File/file.h>
 #include <GREEN/Image/Image.h> // For Debugging only
-#include <GREEN/BLiT/BLIT.H>
+#include <GREEN/BLiT/Blit.h>
 #include <ORANGE/MultiGrid/MultiGrid.h>
  
 #define MGI_COOKIE "_MultiGridIndirect_"

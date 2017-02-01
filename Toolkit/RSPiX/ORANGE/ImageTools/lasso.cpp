@@ -61,7 +61,7 @@
 #include <BLUE/System.h>
 
 // Green /////////////////////////////////////////////////////////////////////
-#include <GREEN/BLiT/BLIT.H>
+#include <GREEN/BLiT/Blit.h>
 #include <ORANGE/ImageTools/lasso.h>
 #include <ORANGE/CDT/slist.h>
 

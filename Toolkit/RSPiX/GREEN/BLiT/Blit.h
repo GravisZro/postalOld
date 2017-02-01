@@ -597,7 +597,7 @@ static const int16_t gsBitsToShift[] =
 //***********************************************************************************
 
 //====================================
-#include <GREEN/BLiT/Cfnt.h>
+#include <GREEN/BLiT/RFont.h>
 #include <GREEN/BLiT/RPrint.h>
 #include <ORANGE/QuickMath/QuickMath.h>
 

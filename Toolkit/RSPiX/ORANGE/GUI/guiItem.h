@@ -122,8 +122,8 @@
 #include <BLUE/System.h>
 #include <GREEN/Image/Image.h>
 #include <ORANGE/CDT/List.h>
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/Hot/hot.h>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/Hot/Hot.h>
 #include <ORANGE/Props/Props.h>
 #include <ORANGE/File/file.h>
 #include <CYAN/cyan.h>

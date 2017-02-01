@@ -18,8 +18,8 @@
 #ifndef CFNT_H
 #define CFNT_H
 //====================
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include "Blit.h"
+#include "BlitInternal.h"
 //====================
 
 // This class is used to hold the information for

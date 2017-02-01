@@ -19,12 +19,10 @@
 // the CAnim of text.  It is currently designed for FSPR1 images,
 // but it could very easily be updated for TC use and any
 // image type.
+#include "RFont.h"
+
 #include <cstring>
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
-
-#include "Cfnt.h"
 
 //========================================================
 RFont::RFont()

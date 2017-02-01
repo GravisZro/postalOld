@@ -16,8 +16,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/BlitInternal.h>
 #include <ORANGE/QuickMath/Fractions.h>
 
 

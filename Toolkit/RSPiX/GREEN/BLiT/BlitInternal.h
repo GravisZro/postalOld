@@ -15,9 +15,14 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
-// This is designed to handle all the non-user particulars amoung the BLiT source:
+// This is designed to handle all the non-user particulars amongst the BLiT source:
 #ifndef _BLITINT_H
 #define _BLITINT_H
+
+#include <cstdint>
+
+#include "Blit.h"
+
 
 //============================== INTERNAL STUFF  ==================================
 enum { BUF_MEMORY = 1,BUF_VRAM,BUF_VRAM2,BUF_WIN };

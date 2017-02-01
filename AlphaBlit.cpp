@@ -38,7 +38,7 @@
 #include <RSPiX.h>
 
 #include <ORANGE/color/colormatch.h>
-#include <GREEN/BLiT/alphablit.h>
+#include <GREEN/BLiT/AlphaBlit.h>
 #include <ResourceManager/resmgr.h>
 
 #include "AlphaBlit.h"

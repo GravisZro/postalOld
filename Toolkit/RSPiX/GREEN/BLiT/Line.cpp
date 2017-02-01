@@ -19,7 +19,7 @@
 #include <cstdlib>
 #include <BLUE/System.h>
 
-#include <GREEN/BLiT/BLIT.H>
+#include <GREEN/BLiT/Blit.h>
 //#include <math.h>
 //#include "numbers.h" // allow
 //#include "_QuickTrig.h"

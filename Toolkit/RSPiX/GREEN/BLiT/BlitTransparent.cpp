@@ -17,8 +17,8 @@
 //
 // Do uncompressed transparent copying!
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include "Blit.h"
+#include "BlitInternal.h"
 
 //========================================================================================
 //========================================================================================

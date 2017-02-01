@@ -22,8 +22,8 @@
 // functions.  Whatcha gonna do, man?
 //
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/BlitInternal.h>
 //	#include <GREEN/BLiT/_ic.h>
 
 // For now, do the shrink case only...

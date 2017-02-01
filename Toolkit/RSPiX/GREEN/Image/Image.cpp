@@ -353,24 +353,14 @@
 // code to imagecon.cpp.
 //
 //////////////////////////////////////////////////////////////////////
+
+#include "Image.h"
+#include "ImageFile.h"
+
 #include <cstdio>
 #include <cstdlib> // For malloc, etc.
 #include <cstring> // For memcpy...
 #include <cstdalign>
-
-#include <BLUE/Blue.h>
-
-#include <GREEN/Image/Image.h>
-#include <GREEN/Image/ImageFile.h>
-#include <ORANGE/File/file.h>
-
-
-
-// Local function prototypes
-static int16_t sCreateMem(void **hMem,uint32_t ulSize);
-static int16_t sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize);
-static int16_t sDestroyMem(void **hMem);
-
 
 //////////////////////////////////////////////////////////////////////
 // Instantiate class statics.

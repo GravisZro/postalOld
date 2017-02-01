@@ -19,8 +19,8 @@
 // It hooks references to special areas (screens & their buffers), and
 // calls the appropriate functions...
 
-#include <GREEN/BLiT/BLIT.H>
-#include <GREEN/BLiT/_BlitInt.H>
+#include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/BlitInternal.h>
 
 	template <class PIXSIZE>
 	void	rspClipPlot(PIXSIZE color, RImage* pimDst,int16_t sX,int16_t sY,const RRect* prClip)

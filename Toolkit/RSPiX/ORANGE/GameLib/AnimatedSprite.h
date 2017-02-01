@@ -39,7 +39,7 @@
 
 #include <BLUE/System.h>
 // Orange includes
-#include <ORANGE/GameLib/SPRITE.H>
+#include <ORANGE/GameLib/Sprite.h>
 #include <ORANGE/File/file.h>
 
 #ifdef _MSC_VER

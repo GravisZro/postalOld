@@ -99,12 +99,6 @@ HEADERS += \
     MenuTrans.h \
     Message.h \
     Network/Net.h \
-    Network/NetBrowse.h \
-    Network/NetClient.h \
-    Network/NetDlg.h \
-    Network/NetInput.h \
-    Network/NetMsgr.h \
-    Network/NetServer.h \
     Organ.h \
     Personatorium.h \
     Play.h \
@@ -159,18 +153,9 @@ HEADERS += \
     Toolkit/RSPiX/GREEN/3D/types3d.h \
     Toolkit/RSPiX/GREEN/3D/user3d.h \
     Toolkit/RSPiX/GREEN/3D/zbuffer.h \
-    Toolkit/RSPiX/GREEN/BLiT/_BlitInt.H \
-    Toolkit/RSPiX/GREEN/BLiT/alphablit.h \
-    Toolkit/RSPiX/GREEN/BLiT/BLIT.H \
-    Toolkit/RSPiX/GREEN/BLiT/Cfnt.h \
     Toolkit/RSPiX/GREEN/BLiT/RPrint.h \
-    Toolkit/RSPiX/GREEN/Hot/hot.h \
     Toolkit/RSPiX/GREEN/Image/Image.h \
-    Toolkit/RSPiX/GREEN/Image/IMAGEAFP.H \
-    Toolkit/RSPiX/GREEN/Image/Imagecon.h \
     Toolkit/RSPiX/GREEN/Image/ImageFile.h \
-    Toolkit/RSPiX/GREEN/Image/Imagetyp.h \
-    Toolkit/RSPiX/GREEN/Image/pal.h \
     Toolkit/RSPiX/GREEN/Image/PalFile.h \
     Toolkit/RSPiX/GREEN/Image/SpecialTyp.h \
     Toolkit/RSPiX/GREEN/InputEvent/InputEvent.h \
@@ -188,7 +173,6 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/CDT/listbase.h \
     Toolkit/RSPiX/ORANGE/CDT/pixel.h \
     Toolkit/RSPiX/ORANGE/CDT/PQueue.h \
-    Toolkit/RSPiX/ORANGE/CDT/QUEUE.H \
     Toolkit/RSPiX/ORANGE/CDT/slist.h \
     Toolkit/RSPiX/ORANGE/CDT/smrtarry.h \
     Toolkit/RSPiX/ORANGE/CDT/stack.h \
@@ -199,10 +183,8 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/Debug/profile.h \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.h \
     Toolkit/RSPiX/ORANGE/File/file.h \
-    Toolkit/RSPiX/ORANGE/GameLib/ANIMSPRT.H \
     Toolkit/RSPiX/ORANGE/GameLib/Region.h \
     Toolkit/RSPiX/ORANGE/GameLib/Shapes.h \
-    Toolkit/RSPiX/ORANGE/GameLib/SPRITE.H \
     Toolkit/RSPiX/ORANGE/GUI/btn.h \
     Toolkit/RSPiX/ORANGE/GUI/dlg.h \
     Toolkit/RSPiX/ORANGE/GUI/edit.h \
@@ -237,7 +219,16 @@ HEADERS += \
     Toolkit/WishPiX/Prefs/prefs.h \
     Toolkit/WishPiX/ResourceManager/resmgr.h \
     Toolkit/WishPiX/Spry/spry.h \
-    Toolkit/variant.h
+    Toolkit/variant.h \
+    Toolkit/RSPiX/ORANGE/GameLib/AnimatedSprite.h \
+    Toolkit/RSPiX/ORANGE/GameLib/Sprite.h \
+    Toolkit/RSPiX/ORANGE/CDT/Queue.h \
+    Toolkit/RSPiX/GREEN/BLiT/Blit.h \
+    Toolkit/RSPiX/GREEN/BLiT/RFont.h \
+    Toolkit/RSPiX/GREEN/BLiT/BlitInternal.h \
+    Toolkit/RSPiX/GREEN/Image/Pal.h \
+    Toolkit/RSPiX/GREEN/Hot/Hot.h \
+    Toolkit/RSPiX/GREEN/BLiT/AlphaBlit.h
 
 SOURCES += \
     Network/ProtoBSDIP.cpp \
@@ -342,23 +333,13 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/3D/render.cpp \
     Toolkit/RSPiX/GREEN/3D/types3d.cpp \
     Toolkit/RSPiX/GREEN/3D/zbuffer.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/alphablit.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLIT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLITINIT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BLiTT.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/CFNT.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Fspr1.cpp \
     Toolkit/RSPiX/GREEN/BLiT/FSPR8.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/line.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/mono.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Rotate96.cpp \
     Toolkit/RSPiX/GREEN/BLiT/RPrint.cpp \
     Toolkit/RSPiX/GREEN/BLiT/ScaleFlat.cpp \
-    Toolkit/RSPiX/GREEN/Hot/hot.cpp \
     Toolkit/RSPiX/GREEN/Image/Image.cpp \
-    Toolkit/RSPiX/GREEN/Image/Imagecon.cpp \
     Toolkit/RSPiX/GREEN/Image/ImageFile.cpp \
-    Toolkit/RSPiX/GREEN/Image/pal.cpp \
     Toolkit/RSPiX/GREEN/Image/PalFile.cpp \
     Toolkit/RSPiX/GREEN/InputEvent/InputEvent.cpp \
     Toolkit/RSPiX/GREEN/Mix/mix.cpp \
@@ -368,8 +349,6 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/SndFx/SndFx.cpp \
     Toolkit/RSPiX/GREEN/Task/task.cpp \
     Toolkit/RSPiX/ORANGE/Attribute/attribute.cpp \
-    Toolkit/RSPiX/ORANGE/CDT/LIST.CPP \
-    Toolkit/RSPiX/ORANGE/CDT/QUEUE.CPP \
     Toolkit/RSPiX/ORANGE/Channel/channel.cpp \
     Toolkit/RSPiX/ORANGE/Chips/chip.cpp \
     Toolkit/RSPiX/ORANGE/color/colormatch.cpp \
@@ -377,10 +356,7 @@ SOURCES += \
     Toolkit/RSPiX/ORANGE/Debug/profile.cpp \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.cpp \
     Toolkit/RSPiX/ORANGE/File/file.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/ANIMSPRT.cpp \
     Toolkit/RSPiX/ORANGE/GameLib/Region.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/SHAPES.cpp \
-    Toolkit/RSPiX/ORANGE/GameLib/SPRITE.cpp \
     Toolkit/RSPiX/ORANGE/GUI/btn.cpp \
     Toolkit/RSPiX/ORANGE/GUI/dlg.cpp \
     Toolkit/RSPiX/ORANGE/GUI/edit.cpp \
@@ -408,7 +384,30 @@ SOURCES += \
     Toolkit/WishPiX/Prefs/prefline.cpp \
     Toolkit/WishPiX/Prefs/prefs.cpp \
     Toolkit/WishPiX/ResourceManager/resmgr.cpp \
-    Toolkit/WishPiX/Spry/spry.cpp
+    Toolkit/WishPiX/Spry/spry.cpp \
+    Toolkit/RSPiX/ORANGE/GameLib/AnimatedSprite.cpp \
+    Toolkit/RSPiX/ORANGE/GameLib/Shapes.cpp \
+    Toolkit/RSPiX/ORANGE/GameLib/Sprite.cpp \
+    Toolkit/RSPiX/ORANGE/CDT/Queue.cpp \
+    Toolkit/RSPiX/ORANGE/CDT/List.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/RFont.cpp \
+    Toolkit/RSPiX/GREEN/Image/ImageConvert.cpp \
+    Toolkit/RSPiX/GREEN/Image/Pal.cpp \
+    Toolkit/RSPiX/GREEN/Hot/Hot.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/AlphaBlit.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/Blit.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/BlitInternal.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/Line.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/Mono.cpp \
+    Toolkit/RSPiX/GREEN/BLiT/BlitTransparent.cpp
+
+win32:HEADERS += \
+    Network/NetBrowse.h \
+    Network/NetClient.h \
+    Network/NetDlg.h \
+    Network/NetInput.h \
+    Network/NetMsgr.h \
+    Network/NetServer.h
 
 win32:SOURCES += \
     Network/NetBrowse.cpp \

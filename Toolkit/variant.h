@@ -2,6 +2,7 @@
 #define VARIANT_H
 
 #include <cassert>
+#include <cstdint>
 
 class Variant
 {

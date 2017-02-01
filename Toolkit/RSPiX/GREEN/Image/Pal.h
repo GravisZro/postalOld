@@ -156,7 +156,7 @@ class RPal
 
 		// Will tell you the number of bytes per palette entry for the
 		// this instance of the palette
-		int16_t GetPalEntrySize()	{return m_sPalEntrySize;};
+      int16_t GetPalEntrySize()	{ return m_sPalEntrySize; }
 
 		// Create PAL's data using the specified values.
 		int16_t CreateData(	// Returns 0 if successful
