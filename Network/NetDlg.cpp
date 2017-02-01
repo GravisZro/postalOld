@@ -375,7 +375,7 @@
 // Client-specific messages displayed in client dialog's status area
 char const * const  "ClientStat_NameTooLongForChat"_lookup      = "Name too long, can't chat";
 char const * const  "ClientStat_YouWereDropped"_lookup          = "Connection was lost";
-char const * const  "ClientStat_SomeoneDropped_s"_lookup        = "\"%s\" is no longer connected";
+char const * const  "ClientStat_SomeoneDropped"_lookup        = "\"%s\" is no longer connected";
 char const * const  "ClientStat_ServerAborted"_lookup           = "Game aborted";
 char const * const  "ClientStat_ServerStarted"_lookup           = "Starting game";
 char const * const  "ClientStat_Opened"_lookup                  = "Opened connection";
@@ -388,7 +388,7 @@ char const * const  "ClientStat_JoinAccepted"_lookup            = "Joined";
 char const * const  "ClientStat_LoginAccepted_hd"_lookup        = "Logged in (ID = %hd)";
 char const * const  "ClientStat_Startup"_lookup                 = "Trying to connect...";
 char const * const  "ClientStat_Default"_lookup                 = "Ready";
-char const * const  "ClientStat_Error_s"_lookup                 = "Network error (%s) -- aborting";
+char const * const  "ClientStat_Error"_lookup                 = "Network error (%s) -- aborting";
 char const * const  "ClientStat_Retrying"_lookup                = "Retry...";
 
 // Server-specific messages displayed in server dialog's status area
@@ -407,7 +407,7 @@ char const * const  "ServerStat_PlayerErr"_lookup               = "Player was dr
 // General messages displayed in client or server dialog's status area
 char const * const  "NetStat_Aborting"_lookup                = "Aborting...";
 char const * const  "NetStat_Starting"_lookup                = "Starting game...";
-char const * const  "NetStat_AttemptToDrop_s"_lookup            = "Attempting to drop \"%s\"";
+char const * const  "NetStat_AttemptToDrop"_lookup            = "Attempting to drop \"%s\"";
 char const * const  "NetStat_UnhandledMsg"_lookup               = "Ignoring extraneous message";
 
 char const * const  "NetStat_NoError"_lookup                    = "No errors";
@@ -440,12 +440,12 @@ char const * const  "NetStat_ProgramError"_lookup               = "Network error
 // This is  what we say when the user has chosen a protocol that is not supported.
 // There are two variations: one for if the user only has one choice (because we
 // only support that one) and the other for if the user can try another choice.
-char const * const  "NetOnlyProtocolUnsupported_s"_lookup =
+char const * const  "NetOnlyProtocolUnsupported"_lookup =
    "Your system does not support \"%s\", which is the required network protocol.\n"
    "\n"
    "This protocol must be added to your system before multiplayer mode can be used.";
 
-char const * const  "NetProtocolUnsupported_s"_lookup =
+char const * const  "NetProtocolUnsupported"_lookup =
    "Your system does not support \"%s\", which is the currently selected network protocol.\n"
    "\n"
    "Either add this protocol to your system or choose a different protocol from the "
@@ -1928,7 +1928,7 @@ static void OnDroppedMsg(
    if (pmsg->msg.dropped.id == Net::InvalidID)
       AddConsoleMsg(false, "%s", "ClientStat_YouWereDropped"_lookup);
    else
-      AddConsoleMsg(false, "ClientStat_SomeoneDropped_s"_lookup, pnet->GetPlayerName(pmsg->msg.dropped.id));
+      AddConsoleMsg(false, "ClientStat_SomeoneDropped"_lookup, pnet->GetPlayerName(pmsg->msg.dropped.id));
 
    // Update number of players displayed.
    RGuiItem*   pguiConnected  = ms_pguiRoot->GetItemFromId(GUI_ID_PLAYERS_STATIC1);
@@ -2249,7 +2249,7 @@ void ProtoNotSupported(void)
       rspMsgBox(
          RSP_MB_BUT_OK | RSP_MB_ICN_INFO,
          "AppName"_lookup,
-         "NetOnlyProtocolUnsupported_s"_lookup,
+         "NetOnlyProtocolUnsupported"_lookup,
          RSocket::GetProtoName());
       }
    else
@@ -2258,7 +2258,7 @@ void ProtoNotSupported(void)
       rspMsgBox(
          RSP_MB_BUT_OK | RSP_MB_ICN_INFO,
          "AppName"_lookup,
-         "NetProtocolUnsupported_s"_lookup,
+         "NetProtocolUnsupported"_lookup,
          RSocket::GetProtoName());
       }
    }
@@ -2625,7 +2625,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                                        else
                                           {
                                           // Drop player (must get his name BEFORE he is dropped!)
-                                          AddConsoleMsg(false, "NetStat_AttemptToDrop_s"_lookup, pserver->GetPlayerName(id));
+                                          AddConsoleMsg(false, "NetStat_AttemptToDrop"_lookup, pserver->GetPlayerName(id));
                                           pserver->DropClient(id);
                                           }
                                        }

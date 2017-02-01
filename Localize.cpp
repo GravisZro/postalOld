@@ -40,7 +40,7 @@
 //
 //    04/21/97 MJR   Created generic version of "bad path" message.
 //
-//    05/14/97 JMI   Added "PickedUpMessage_ld_s" for CDude.
+//    05/14/97 JMI   Added "PickedUpMessage_ld" for CDude.
 //
 //    06/03/97 JMI   Changed "AudioModeError" to "AudioModeGeneralError"
 //                   and added "AudioModeInUseError"_hash,
@@ -49,37 +49,37 @@
 //
 //    06/04/97 JMI   Added "NotOnCDROM".
 //
-//    06/06/97 JMI   Changed message for "PickedUpMessage_ld_s" and its name
-//                   to "PickedUpMessage_s".
+//    06/06/97 JMI   Changed message for "PickedUpMessage_ld" and its name
+//                   to "PickedUpMessage".
 //
 //    06/14/97 MJR   Added/enhanced general file error messages.
 //
 //    07/13/97 JMI   Changed "AudioModeNotSupportedError" to
-//                   "AudioModeNotSupportedError_s" and changed to ask the
+//                   "AudioModeNotSupportedError" and changed to ask the
 //                   user if they want to try the vanilla mode.
 //                   Also, changed the other audio errors to include the
 //                   sprintf format parameters in their names.
-//                   Also, added "AudioVanillaModeNotSupportedError_s" for
+//                   Also, added "AudioVanillaModeNotSupportedError" for
 //                   the case when the hardware does not support the vanilla
 //                   mode.
 //
 //    07/18/97 BRH   Added strings for new dialogs for loading and saving
 //                   games.
 //
-//    07/21/97 JMI   Added "NoWeaponButHaveAmmo_s" and "NoWeapon_s".
+//    07/21/97 JMI   Added "NoWeaponButHaveAmmo" and "NoWeapon".
 //
 //    07/28/97 JMI   Added "DispenserNoDispenseeTypeChosen".
 //
 //    07/30/97 BRH   Added death messages that come up when the CDude dies.
 //
-//    08/05/97 JMI   Added "DontHaveExecuteWeapon_s" and
-//                   "DontHaveSuicideWeapon_s".
+//    08/05/97 JMI   Added "DontHaveExecuteWeapon" and
+//                   "DontHaveSuicideWeapon".
 //                   Also, made g_sLocalizeNumDeadMessages get its value based
 //                   on the number of elements in g_apszDeathMessages[] so we
 //                   don't have to worry about keeping that up to date.
 //
-//    08/12/97 JMI   Added "GenericBrowseFor_s_Title" and
-//                   "GenericMustBeRelativePath_s".
+//    08/12/97 JMI   Added "GenericBrowseFor_Title" and
+//                   "GenericMustBeRelativePath".
 //
 //    08/17/97 JMI   Got rid of m_szMessages and all message related functions
 //                   and variables from CDude since we are now using the toolbar
@@ -93,14 +93,14 @@
 //                   CPowerUp::GetDescription(), and some strings and a string
 //                   array in localize.*.
 //
-//    08/20/97 JMI   Added "DontDropYourselfMORON".
+//    08/20/97 JMI   Added "DontDropYourself".
 //
-//    08/21/97 JMI   Added "DoofusCannotFindNavNet_EditMode_hu_hu" and
-//                   "DoofusCannotFindNavNet_PlayMode_hu_hu".
+//    08/21/97 JMI   Added "DoofusCannotFindNavNet_EditMode" and
+//                   "DoofusCannotFindNavNet_PlayMode".
 //
-//    08/25/97 JMI   Added "CannotOpenSoundFiles_s_s".
+//    08/25/97 JMI   Added "CannotOpenSoundFiles".
 //
-//    08/27/97 JMI   Upgraded "CannotOpenSoundFiles_s_s" message.
+//    08/27/97 JMI   Upgraded "CannotOpenSoundFiles" message.
 //
 //    09/09/97 MJR   Changed "BadBlueInit" to include reference to DirectX.
 //
@@ -137,7 +137,7 @@
 //
 //    10/07/97 BRH   Added Score localizations to the file.
 //
-//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI_s" and modified
+//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI" and modified
 //                   "VideoChangeDepthError" to only mention the part about
 //                   Windows' help under Win32.
 //
@@ -255,13 +255,13 @@ static constexpr uint32_t crc_table[256] = {
   0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
   0x2d02ef8dL
 };
-
+/*
 // compiletime hashing
 constexpr uint32_t crc32_compiletime(const char* str, std::size_t idx) noexcept
   { return idx == std::size_t(-1) ? 0xFFFFFFFF : ((crc32_compiletime(str, idx-1) >> 8) ^ crc_table[(crc32_compiletime(str, idx-1) ^ str[idx]) & 0x000000FF]); }
-
-constexpr uint32_t operator "" _hash(const char* str, const std::size_t sz) noexcept { return crc32_compiletime(str, sz - 2) ^ 0xFFFFFFFF; }
-/*
+constexpr uint32_t operator "" _hash(const char* str, const std::size_t sz) noexcept {
+  return crc32_compiletime(str, sz - 2) ^ 0xFFFFFFFF; }
+*/
 // runtime hashing
 static inline uint32_t crc32_runtime(const char* str, std::size_t idx) noexcept
 {
@@ -270,7 +270,10 @@ static inline uint32_t crc32_runtime(const char* str, std::size_t idx) noexcept
   uint32_t result = crc32_runtime(str, idx-1);
   return (result >> 8) ^ crc_table[(result ^ str[idx]) & 0x000000FF];
 }
-*/
+
+static uint32_t operator "" _hash(const char* str, const std::size_t sz) noexcept {
+  return crc32_runtime(str, sz - 2) ^ 0xFFFFFFFF; }
+
 //static inline uint32_t hash(const char* str) noexcept { return crc32_runtime(str, std::strlen(str) - 2) ^ 0xFFFFFFFF; }
 //static inline uint32_t hash(const std::string& str) noexcept { return crc32_runtime(str.data(), str.size() - 2) ^ 0xFFFFFFFF; }
 
@@ -348,16 +351,16 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "See code R105 in " APP_NAME " Help for more information." },
 
-  { "VideoChangeDepthErrorUnderGDI_s"_hash,
+  { "VideoChangeDepthErrorUnderGDI"_hash,
    "The required display settings (%s) could not be set properly because you are not "
    "using DirectX."
    "\n\n"
-   "You can manually change your color settings before running " APP_NAME "_hash, but "
+   "You can manually change your color settings before running " APP_NAME ", but "
    "we recommend using DirectX, which allows " APP_NAME " to use any color depth."
    "\n\n"
    "See code R106 in " APP_NAME " Help for more information." },
 
-  { "AudioModeGeneralError_s"_hash,
+  { "AudioModeGeneralError"_hash,
    "The required audio mode (%s) could not be set properly."
    "\n\n"
    "If the audio device is or was being used, it may be available once the current "
@@ -368,18 +371,18 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "If you want to stop the program, choose 'Abort'." },
 
-  { "AudioModeInUseError_s"_hash,
+  { "AudioModeInUseError"_hash,
    "The required audio mode (%s) could not be set properly."
    "\n\n"
    "The audio device is or was being used, it may be available once the current "
    "sound is done.  Choose 'Retry' if you want to try again."
    "\n\n"
-   "If you would like to continue without sound from " APP_NAME "_hash, you can "
+   "If you would like to continue without sound from " APP_NAME ", you can "
    "choose 'Ignore'."
    "\n\n"
    "If you want to stop the program, choose 'Abort'." },
 
-  { "AudioModeNoDeviceError_s"_hash,
+  { "AudioModeNoDeviceError"_hash,
    "The required audio mode (%s) could not be set properly."
    "\n\n"
    "There is no audio device or the driver is incorrectly installed or missing."
@@ -390,7 +393,7 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "Would you like to continue without audio?" },
 
-  { "AudioModeNotSupportedError_s"_hash,
+  { "AudioModeNotSupportedError"_hash,
    "The audio mode (%s) could not be set properly."
    "\n\n"
    "The audio device does not support this mode."
@@ -402,7 +405,7 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "If you want to continue without audio, choose 'Ignore'." },
 
-  { "AudioVanillaModeNotSupportedError_s"_hash,
+  { "AudioVanillaModeNotSupportedError"_hash,
    "The audio mode (%s) could not be set properly."
    "\n\n"
    "The audio device does not support this mode."
@@ -474,7 +477,7 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "See code A107 in " APP_NAME " Help for more information." },
 
-  { "BadPath_s_s"_hash,
+  { "BadPath"_hash,
    "One or more file locations for the game are invalid."
    "\n\n"
    CD_DRIVE_CHANGE_MESSAGE
@@ -483,7 +486,7 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "See code A108 in " APP_NAME " Help for more information." },
 
-  { "BadCDPath_s_s"_hash,
+  { "BadCDPath"_hash,
    "Make sure the " APP_NAME " CD is in the drive you used to install it."
    "\n\n"
    CD_DRIVE_CHANGE_MESSAGE
@@ -492,7 +495,7 @@ std::unordered_map<uint32_t, const char*> g_text =
    "\n\n"
    "See code A108 in " APP_NAME " Help for more information." },
 
-  { "CannotOpenSoundFiles_s_s"_hash,
+  { "CannotOpenSoundFiles"_hash,
    "Your audio hardware supports %s, but the " APP_NAME " file(s) associated with that "
    "sound format were not installed."
    "\n\n"
@@ -527,17 +530,17 @@ std::unordered_map<uint32_t, const char*> g_text =
   { "LoadGameTitle"_hash,
    "Choose the game you wish to restore" },
 
-  { "FileOpenError_s"_hash,
+  { "FileOpenError"_hash,
    "Unable to open the file '%s'."
    "\n\n"
    "The file may be missing or corrupted, or you may not have permission to open it." },
 
-  { "FileReadError_s"_hash,
+  { "FileReadError"_hash,
    "An error has occurred while reading from the file '%s'."
    "\n\n"
    "The file may be corrupted, or you may not have permission to access it." },
 
-  { "FileWriteError_s"_hash,
+  { "FileWriteError"_hash,
    "An error has occurred while writing to the file '%s'."
    "\n\n"
    "The file may be corrupted, or you may not have permission to write to it." },
@@ -546,20 +549,20 @@ std::unordered_map<uint32_t, const char*> g_text =
   { "DispenserNoDispenseeTypeChosen"_hash,
    "You must choose a dispensee type or Cancel." },
 
-  { "GenericBrowseFor_s_Title"_hash,
+  { "GenericBrowseFor_Title"_hash,
    "Browse for %s" },
 
-  { "GenericMustBeRelativePath_s"_hash,
+  { "GenericMustBeRelativePath"_hash,
    "You must choose a file below path \"%s\".\n" },
 
-  { "DontDropYourselfMORON"_hash,
+  { "DontDropYourself"_hash,
    "You don't really want to drop yourself!!\n" },
 
-  { "DoofusCannotFindNavNet_EditMode_hu_hu"_hash,
+  { "DoofusCannotFindNavNet_EditMode"_hash,
    "Doofus with ID %hd found that ID %hd (its NavNet ID) was not "
    "a NavNet.\n" },
 
-  { "DoofusCannotFindNavNet_PlayMode_hu_hu"_hash,
+  { "DoofusCannotFindNavNet_PlayMode"_hash,
    "A character with ID %hd was unable to locate its NavNet with "
    "ID %hd.\n" },
 
@@ -1326,7 +1329,7 @@ char const * const g_apszScoreExplanations[] =
 
 
 const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept
-  { return g_text.at(crc32_compiletime(str, sz - 2) ^ 0xFFFFFFFF); }
+  { return g_text.at(crc32_runtime(str, sz - 2) ^ 0xFFFFFFFF); }
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

@@ -986,7 +986,7 @@ int16_t CDoofus::Startup(void)                       // Returns 0 if successfull
             rspMsgBox(
                RSP_MB_ICN_STOP | RSP_MB_BUT_OK,
                "AppName"_lookup,
-               "DoofusCannotFindNavNet_EditMode_hu_hu"_lookup,
+               "DoofusCannotFindNavNet_EditMode"_lookup,
                m_u16InstanceId,
                m_u16NavNetID);
             }
@@ -995,7 +995,7 @@ int16_t CDoofus::Startup(void)                       // Returns 0 if successfull
             rspMsgBox(
                RSP_MB_ICN_INFO | RSP_MB_BUT_OK,
                "AppName"_lookup,
-               "DoofusCannotFindNavNet_PlayMode_hu_hu"_lookup,
+               "DoofusCannotFindNavNet_PlayMode"_lookup,
                m_u16InstanceId,
                m_u16NavNetID);
             }

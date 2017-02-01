@@ -29,7 +29,7 @@
 //
 //    04/21/97 MJR   Created generic version of "bad path" message.
 //
-//    05/14/97 JMI   Added "PickedUpMessage_ld_s"_lookup for CDude.
+//    05/14/97 JMI   Added "PickedUpMessage_ld"_lookup for CDude.
 //
 //    06/03/97 JMI   Changed "AudioModeError"_lookup to "AudioModeGeneralError"_lookup)
 //                   and added "AudioModeInUseError"_lookup,
@@ -38,29 +38,29 @@
 //
 //    06/04/97 JMI   Added "NotOnCDROM"_lookup.
 //
-//    06/06/97 JMI   Changed message for "PickedUpMessage_ld_s"_lookup and its name
-//                   to "PickedUpMessage_s"_lookup.
+//    06/06/97 JMI   Changed message for "PickedUpMessage_ld"_lookup and its name
+//                   to "PickedUpMessage"_lookup.
 //
 //    06/14/97 MJR   Added/enhanced general file error messages.
 //
 //    07/13/97 JMI   Changed "AudioModeNotSupportedError"_lookup to
-//                   "AudioModeNotSupportedError_s"_lookup and changed to ask the
+//                   "AudioModeNotSupportedError"_lookup and changed to ask the
 //                   user if they want to try the vanilla mode.
 //                   Also, changed the other audio errors to include the
 //                   sprintf format parameters in their names.
-//                   Also, added "AudioVanillaModeNotSupportedError_s"_lookup for
+//                   Also, added "AudioVanillaModeNotSupportedError"_lookup for
 //                   the case when the hardware does not support the vanilla
 //                   mode.
 //
-//    07/21/97 JMI   Added "NoWeaponButHaveAmmo_s_s"_lookup and "NoWeapon_s"_lookup).
+//    07/21/97 JMI   Added "NoWeaponButHaveAmmo"_lookup and "NoWeapon"_lookup).
 //
 //    07/28/97 JMI   Added "DispenserNoDispenseeTypeChosen"_lookup.
 //
-//    08/05/97 JMI   Added "DontHaveExecuteWeapon_s"_lookup and
-//                   "DontHaveSuicideWeapon_s"_lookup.
+//    08/05/97 JMI   Added "DontHaveExecuteWeapon"_lookup and
+//                   "DontHaveSuicideWeapon"_lookup.
 //
-//    08/12/97 JMI   Added "GenericBrowseFor_s_Title"_lookup and
-//                   "GenericMustBeRelativePath_s"_lookup.
+//    08/12/97 JMI   Added "GenericBrowseFor_Title"_lookup and
+//                   "GenericMustBeRelativePath"_lookup.
 //
 //    08/17/97 JMI   Got rid of m_szMessages and all message related functions
 //                   and variables from CDude since we are now using the toolbar
@@ -74,12 +74,12 @@
 //                   CPowerUp::GetDescription(), and some strings and a string
 //                   array in localize.*.
 //
-//    08/20/97 JMI   Added "DontDropYourselfMORON"_lookup.
+//    08/20/97 JMI   Added "DontDropYourself"_lookup.
 //
-//    08/21/97 JMI   Added "DoofusCannotFindNavNet_EditMode_hu_hu"_lookup and
-//                   "DoofusCannotFindNavNet_PlayMode_hu_hu"_lookup.
+//    08/21/97 JMI   Added "DoofusCannotFindNavNet_EditMode"_lookup and
+//                   "DoofusCannotFindNavNet_PlayMode"_lookup.
 //
-//    08/25/97 JMI   Added "CannotOpenSoundFiles_s_s"_lookup.
+//    08/25/97 JMI   Added "CannotOpenSoundFiles"_lookup.
 //
 //    09/11/97 JMI   Added "PlayOneRealmOnlyMessage"_lookup.
 //
@@ -91,7 +91,7 @@
 //
 //    10/07/97 BRH   Added score localizations.
 //
-//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI_s"_lookup.
+//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI"_lookup.
 //
 //    10/13/97 JMI   Added "ControlsMenu_UseJoystick"_lookup to localizable texts.
 //

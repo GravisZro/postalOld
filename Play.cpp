@@ -5546,7 +5546,7 @@ extern int16_t Play_GetRealmInfo(                 // Returns 0 if successfull, 1
          // File name too long (and can't be truncated)
          sResult = -1;
          TRACE("Play_GetRealmInfo(): Realm file name/path too long!\n");
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath_s_s"_lookup, "Realm", (char*)strSection);
+         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "BadPath"_lookup, "Realm", (char*)strSection);
          }
 
       prefsRealm.Close();

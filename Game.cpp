@@ -1889,20 +1889,20 @@ static int16_t GameCore(void)      // Returns 0 on success.
                            else
                               {
                               TRACE("GameCore(): Couldn't load demo data!\n");
-                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
+                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError"_lookup, m_szDemoFile);
                               }
                            }
                         else
                            {
                            TRACE("GameCore(): Couldn't load realm name!\n");
-                           rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
+                           rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError"_lookup, m_szDemoFile);
                            }
                         fileDemo.Close();
                         }
                      else
                         {
                         TRACE("GameCore(): Couldn't open demo file: '%s'\n", m_szDemoFile);
-                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, m_szDemoFile);
+                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError"_lookup, m_szDemoFile);
                         }
                      }
                   else
@@ -2022,7 +2022,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                            if (InputDemoSave(&fileDemo) != 0)
                               {
                               TRACE("GameCore(): Couldn't save demo data!\n");
-                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileWriteError_s"_lookup, szDemoFile);
+                              rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileWriteError"_lookup, szDemoFile);
                               }
                            }
                         fileDemo.Close();
@@ -2030,7 +2030,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                      else
                         {
                         TRACE("GameCore(): Couldn't open demo file: '%s'\n", szDemoFile);
-                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, szDemoFile);
+                        rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError"_lookup, szDemoFile);
                         }
                      }
 
@@ -2554,7 +2554,7 @@ static int16_t OpenSaks(void)
          rspMsgBox(
             RSP_MB_ICN_INFO | RSP_MB_BUT_OK,
             "AppName"_lookup,
-            "CannotOpenSoundFiles_s_s"_lookup,
+            "CannotOpenSoundFiles"_lookup,
             szSoundQuality,
             szSoundQuality);
 
@@ -3366,20 +3366,20 @@ void GameEndingSequence(void)
             else
                {
                TRACE("GameCore(): Couldn't load demo data!\n");
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
+               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError"_lookup, m_szDemoFile);
                }
             }
          else
             {
             TRACE("GameCore(): Couldn't load realm name!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError_s"_lookup, m_szDemoFile);
+            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileReadError"_lookup, m_szDemoFile);
             }
          fileDemo.Close();
          }
       else
          {
          TRACE("GameCore(): Couldn't open demo file: '%s'\n", m_szDemoFile);
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError_s"_lookup, m_szDemoFile);
+         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "FileOpenError"_lookup, m_szDemoFile);
          }
       // Reset demo file name for next time.
       m_szDemoFile[0] = 0;

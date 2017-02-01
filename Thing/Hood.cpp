@@ -557,7 +557,7 @@ static void BrowseBtnUp(   // Returns nothing.  Called on button released in
             rspMsgBox(
                RSP_MB_ICN_STOP | RSP_MB_BUT_OK,
                "AppName"_lookup,
-               "GenericMustBeRelativePath_s"_lookup,
+               "GenericMustBeRelativePath"_lookup,
                FullPathHoods("res/hoods"));
             }
 

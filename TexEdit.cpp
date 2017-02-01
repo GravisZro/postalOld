@@ -834,7 +834,7 @@ CTexEdit::DoModal(
       rspMsgBox(
          RSP_MB_ICN_STOP | RSP_MB_BUT_OK,
          "AppName"_lookup,
-         "FileOpenError_s"_lookup,
+         "FileOpenError"_lookup,
          FullPathVD(c_strGuiFile) );
       }
    }

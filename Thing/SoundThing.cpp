@@ -575,7 +575,7 @@ static void BrowseCall(    // Returns nothing.
    if (pguiName)
       {
       char  szTitle[256];
-      sprintf(szTitle, "GenericBrowseFor_s_Title"_lookup, "sound file");
+      sprintf(szTitle, "GenericBrowseFor_Title"_lookup, "sound file");
 
       // Create full system path from existing RSPiX subpath.
       char  szSystemPath[RSP_MAX_PATH];
@@ -605,7 +605,7 @@ static void BrowseCall(    // Returns nothing.
             rspMsgBox(
                RSP_MB_ICN_STOP | RSP_MB_BUT_OK,
                "AppName"_lookup,
-               "GenericMustBeRelativePath_s"_lookup,
+               "GenericMustBeRelativePath"_lookup,
                pszSakpath);
             }
 

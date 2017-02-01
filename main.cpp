@@ -93,7 +93,7 @@
 //                   rspLock/Unlock behavior to be strict even when in simpler
 //                   modes that don't require that level of behavior (like GDI).
 //
-//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI_s"_lookup in the event
+//    10/09/97 JMI   Added "VideoChangeDepthErrorUnderGDI"_lookup in the event
 //                   the colordepth could not be changed and the user had
 //                   specified to use GDI (i.e., not DirectX).
 //
@@ -925,18 +925,18 @@ rspSetProfileOutput("profile.out");
                      switch (sResult)
                         {
                         case BLU_ERR_DEVICE_IN_USE:
-                           pszMsg   = "AudioModeInUseError_s"_lookup;
+                           pszMsg   = "AudioModeInUseError"_lookup;
                            usFlags  = RSP_MB_ICN_QUERY | RSP_MB_BUT_ABORTRETRYIGNORE;
                            break;
                         case BLU_ERR_NO_DEVICE:
-                           pszMsg   = "AudioModeNoDeviceError_s"_lookup;
+                           pszMsg   = "AudioModeNoDeviceError"_lookup;
                            usFlags  = RSP_MB_ICN_QUERY | RSP_MB_BUT_YESNO;
                            break;
                         case BLU_ERR_NOT_SUPPORTED:
                            // If we haven't already tried vanilla settings . . .
                            if (bSwitchedToVanillaSettings == false)
                               {
-                              pszMsg   = "AudioModeNotSupportedError_s"_lookup;
+                              pszMsg   = "AudioModeNotSupportedError"_lookup;
                               usFlags  = RSP_MB_ICN_QUERY | RSP_MB_BUT_ABORTRETRYIGNORE;
                               // Fall back on our most Vanilla mode.
                               sAudioSamplesPerSec     = MAIN_VANILLA_AUDIO_RATE;
@@ -951,12 +951,12 @@ rspSetProfileOutput("profile.out");
                               }
                            else
                               {
-                              pszMsg   = "AudioVanillaModeNotSupportedError_s"_lookup;
+                              pszMsg   = "AudioVanillaModeNotSupportedError"_lookup;
                               usFlags  = RSP_MB_ICN_QUERY | RSP_MB_BUT_YESNO;
                               }
                            break;
                         default:
-                           pszMsg   = "AudioModeGeneralError_s"_lookup;
+                           pszMsg   = "AudioModeGeneralError"_lookup;
                            usFlags  = RSP_MB_ICN_QUERY | RSP_MB_BUT_ABORTRETRYIGNORE;
                            break;
                         }
