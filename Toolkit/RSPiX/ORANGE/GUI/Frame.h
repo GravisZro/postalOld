@@ -90,6 +90,7 @@ class RFrame : public RGuiItem
     void Compose(      // Returns nothing.
       RImage* pim = nullptr)  // Dest image, uses m_im if nullptr.
       {
+      (void)pim;
       // Set hot area.
       SetHotArea();
 
@@ -107,6 +108,7 @@ class RFrame : public RGuiItem
       int16_t sH,      // Height.
       int16_t sDepth)    // Color depth.
       {
+      (void)sDepth;
       m_sX        = sX;
       m_sY        = sY;
       m_im.m_sWidth  = sW;
@@ -130,6 +132,10 @@ class RFrame : public RGuiItem
       int16_t sH = 0,       // Amount to draw.
       RRect* prc = nullptr)  // Clip to.
       {
+      (void)sSrcX;
+      (void)sSrcY;
+      (void)sW;
+      (void)sH;
       int16_t  sRes  = 0;  // Assume success.
 
       // If visible . . .

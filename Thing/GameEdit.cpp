@@ -711,7 +711,7 @@
 #include <set>
 
 // This is used to get rid of all trace of the editor code when it's disabled
-#if !defined(EDITOR_DISABLED)
+#ifndef EDITOR_REMOVED
 
 #include <Game.h>
 #include <Update.h>
@@ -6919,7 +6919,7 @@ static void DelClass(   // Returns nothing.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Delete all but the pylons, bouys, soundthings and soundrelays.
-// This is useful for making a template of a level that is already fully \
+// This is useful for making a template of a level that is already fully
 // populated.
 ////////////////////////////////////////////////////////////////////////////////
 static void DelMost( // Returns nothing.
@@ -7823,7 +7823,7 @@ static bool RealmOpProgress(        // Returns true to continue; false to
    }
 
 
-#endif // !defined(EDITOR_DISABLED)
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

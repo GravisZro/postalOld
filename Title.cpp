@@ -255,6 +255,7 @@ static char const *  ms_apszFiles[] =
 
 static void TitleRFileCallback(int32_t lBytes)
 {
+  (void)lBytes;
    int32_t lCurrentTime = rspGetMilliseconds();
    if ((lCurrentTime - ms_lTitleRFileCallbackTime) > TITLE_SOUND_UPDATE_INTERVAL)
    {
@@ -435,27 +436,27 @@ static int16_t DisplayImage( // Returns nothing.
 // Loads, displays, and disgards image from file specified via image num.
 ////////////////////////////////////////////////////////////////////////////////
 static int16_t DisplayImageNum( // Returns nothing.
-   int16_t sImageNum)           // In:  Image Num to show [1..n].
+   size_t szImageNum)           // In:  Image Num to show [1..n].
    {
    int16_t sRes  = 0;  // Assume success.
 
    // Switch to array indexing mode.
-   sImageNum--;
+   szImageNum--;
 
    // If not in list of no shows . . .
-   while (sImageNum < NUM_ELEMENTS(ms_apszFiles) )
+   while (szImageNum < NUM_ELEMENTS(ms_apszFiles) )
       {
-      if (IsInList(ms_apszFiles[sImageNum], g_GameSettings.m_szDontShowTitles) == false)
+      if (IsInList(ms_apszFiles[szImageNum], g_GameSettings.m_szDontShowTitles) == false)
          {
          break;
          }
 
-      sImageNum++;
+      szImageNum++;
       }
 
-   if (sImageNum < NUM_ELEMENTS(ms_apszFiles) )
+   if (szImageNum < NUM_ELEMENTS(ms_apszFiles) )
       {
-      sRes  = DisplayImage(ms_apszFiles[sImageNum]);
+      sRes  = DisplayImage(ms_apszFiles[szImageNum]);
       }
 
    return sRes;
@@ -470,7 +471,7 @@ static int16_t DisplayImageNum( // Returns nothing.
 //
 ////////////////////////////////////////////////////////////////////////////////
 extern int16_t StartTitle(                     // Returns 0 if successfull, non-zero otherwise
-   int16_t sStartImage /*= 1*/,                // In:  Image to start with.  Values less
+   size_t szStartImage /*= 1*/,                // In:  Image to start with.  Values less
                                              // than 1 indicate a page relative to the
                                              // end.
    bool  bPlayMusak /*= false*/,             // In:  true to play title musak.
@@ -479,7 +480,7 @@ extern int16_t StartTitle(                     // Returns 0 if successfull, non-
    int16_t sResult = 0;
 
    // Save total units and reset other stuff
-   int16_t i;
+   uint16_t i;
    m_lTotalUnits = 0;
    for (i = 0; i < NUM_ELEMENTS(ms_apszFiles); i++)
       m_lTotalUnits += g_GameSettings.m_alTitleDurations[i];
@@ -498,10 +499,10 @@ extern int16_t StartTitle(                     // Returns 0 if successfull, non-
    m_sValid = 0;
 
    // If value less than 1 . . .
-   if (sStartImage < 1)
+   if (szStartImage < 1)
       {
       // It specifies a value relative to the end.
-      sStartImage += NUM_ELEMENTS(ms_apszFiles);
+      szStartImage += NUM_ELEMENTS(ms_apszFiles);
       }
 
    // Force this sample to load now
@@ -509,7 +510,7 @@ extern int16_t StartTitle(                     // Returns 0 if successfull, non-
 
 
    // Display title screen
-   sResult = DisplayImageNum(sStartImage);
+   sResult = DisplayImageNum(szStartImage);
    if (sResult == 0)
       {
       // If told to play sample . . .
@@ -542,11 +543,11 @@ extern int16_t StartTitle(                     // Returns 0 if successfull, non-
 
       m_sValid          = TRUE;
 
-      ms_sImageNum      = sStartImage;
+      ms_sImageNum      = szStartImage;
       }
    else
       {
-      TRACE("StartTitle(): Error loading %s!\n", ms_apszFiles[sStartImage - 1]);
+      TRACE("StartTitle(): Error loading %s!\n", ms_apszFiles[szStartImage - 1]);
       }
 
 

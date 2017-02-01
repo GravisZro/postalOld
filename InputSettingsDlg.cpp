@@ -452,11 +452,10 @@ static bool IsMappable( // Returns true, if mappable, false otherwise.
    {
    bool  bMappable   = true;
 
-   int16_t sIndex;
-   for (sIndex = 0; sIndex < NUM_ELEMENTS(ms_au8UnmappableKeys); sIndex++)
+   for (uint16_t uIndex = 0; uIndex < NUM_ELEMENTS(ms_au8UnmappableKeys); uIndex++)
       {
       // If this is the specified key . . .
-      if (ms_au8UnmappableKeys[sIndex] == u8Key)
+      if (ms_au8UnmappableKeys[uIndex] == u8Key)
          {
          // Not mappable.
          bMappable   = false;
@@ -480,9 +479,8 @@ inline void ListenForInput(   // Returns nothing.
    bool        bAffirmitiveFeedback = true;  // true to play affirmitive audible
                                              // feedback, false for negative.
 
-   switch (pie->type)
-      {
-      case RInputEvent::Key:
+   if(pie->type == RInputEvent::Key)
+   {
          if (pie->lKey == 27)
             {
             ms_bListenForInput   = false;
@@ -491,9 +489,7 @@ inline void ListenForInput(   // Returns nothing.
 
          // Don't allow menu to respond to any key events.
          pie->sUsed  = TRUE;
-
-         break;
-      }
+   }
 
    // If still listening . . .
    if (ms_bListenForInput == true)
@@ -798,6 +794,8 @@ extern int16_t EditInputSettings(void)   // Returns nothing.
                }
 #endif   // defined(ALLOW_JOYSTICK)
             break;
+        default:
+          ASSERT(0);
          }
 
       // If listening . . .

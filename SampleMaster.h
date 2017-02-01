@@ -329,7 +329,7 @@ class SampleMaster
       // DESCRIPTION IN ms_apszSoundCategories (SAMPLEMASTER.CPP).
       // ALSO, add a volume adjustor in ms_asQualityCategoryAdjustors
       // or it will default to 0.
-      enum SoundCategory : uint32_t
+      enum SoundCategory : uint16_t
       {
          Unspecified = 0,  // Unaffected, generic sound
          BackgroundMusic,  // Actual solid playing music
@@ -351,7 +351,8 @@ class SampleMaster
       // IF YOU ADD A NEW QUALITY, ADD THE CORRESPONDING volume
       // adjustor in ms_asQualityCategoryAdjustors or it will
       // default to zero.
-      enum SoundQuality {
+      enum SoundQuality : uint16_t
+      {
          SQ_11025_8  = 0,
          SQ_11025_16,
          SQ_22050_8,
@@ -364,7 +365,8 @@ class SampleMaster
 
       //////////////////////////////////////////////////////////////
       // SampleMaster specific macros.
-      enum Macros {
+      enum Macros : uint16_t
+      {
          UserDefaultVolume = 8,     // Default user volume for all categories/qualities.
          UserMaxVolume     = 10,    // User volume ranges from 0 to 10.
          UserVolumeRange   = UserMaxVolume + 1, // Ranges from 0 to 10.

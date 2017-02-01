@@ -853,6 +853,7 @@ CTexEdit::DoOutput(
    int16_t sOffsetY,      // In:  Y offset.
    RRect& rcClip)       // In:  Dst clip rect.
    {
+    (void)trans;
    m_scene.Render3D(
       pimDst,        // Destination image.
       sOffsetX,      // Destination 2D x coord.
@@ -955,6 +956,8 @@ CTexEdit::ProcessManip(
             m_transRot.Ry(rspMod360(sDeltaX * c_fRotRate) );
             m_transRot.Rx(rspMod360(-sDeltaY * c_fRotRate) );
             break;
+        default:
+          ASSERT(0);
          }
       }
    else
@@ -1295,6 +1298,7 @@ CTexEdit::ComposeTransform(
 void
 CTexEdit::QuitCall(RGuiItem* pgui)
    {
+  (void)pgui;
    m_bQuit  = true;
    }
 
@@ -1313,6 +1317,7 @@ CTexEdit::ManipCall(RGuiItem* pgui)
 void
 CTexEdit::ColorCall(RGuiItem* pgui, RInputEvent* pie)
    {
+  (void)pgui;
    if (pie->type == RInputEvent::Mouse)
       {
       switch (pie->sEvent)
@@ -1338,6 +1343,7 @@ CTexEdit::ColorCall(RGuiItem* pgui, RInputEvent* pie)
 void
 CTexEdit::ApplyCall(RGuiItem* pgui)
    {
+  (void)pgui;
    Apply();
    }
 
@@ -1347,6 +1353,7 @@ CTexEdit::ApplyCall(RGuiItem* pgui)
 void
 CTexEdit::SaveCall(RGuiItem* pgui)
    {
+  (void)pgui;
    Save();
    }
 
@@ -1356,6 +1363,7 @@ CTexEdit::SaveCall(RGuiItem* pgui)
 void
 CTexEdit::RevertCall(RGuiItem* pgui)
    {
+  (void)pgui;
    Revert();
    }
 
@@ -1391,6 +1399,7 @@ CTexEdit::BrightnessCall(RScrollBar* psb)
 void
 CTexEdit::AdjustCall(RGuiItem* pgui)
    {
+  (void)pgui;
    // Get frequency.
    int32_t  lFreq = m_pguiRoot->GetVal(c_lIdFrequency);
 
@@ -1443,6 +1452,7 @@ CTexEdit::AdjustCall(RGuiItem* pgui)
 void
 CTexEdit::AnimCall(RGuiItem* pgui, RInputEvent* pie)
    {
+  (void)pgui;
    if (pie->type == RInputEvent::Mouse)
       {
       switch (pie->sEvent)

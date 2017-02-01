@@ -19,14 +19,6 @@
 #include "Smash.h"
 #include <Realm.h>
 
-//#define SMASH_DEBUG
-
-#ifdef   SMASH_DEBUG
-
-   #include <debugSmash.H"
-
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 // smash.h (grid based edition)
@@ -442,6 +434,9 @@ void CSmashatorium::QuickCheckReset(            // Returns true if collision det
    CSmash::Bits dontcare,                       // In:  Bits that you don't care about
    CSmash::Bits exclude)                        // In:  Bits that must be 0 to collide with a given CSmash
    {
+    (void)include;
+    (void)dontcare;
+    (void)exclude;
    TRACE("NEVER USED!\n");
    ASSERT(0);
    }
@@ -456,6 +451,9 @@ bool CSmashatorium::QuickCheckNext(             // Returns true if collision det
    CSmash** pSmashee,                        // Out: Thing being smashed into if any (unless 0)
    CSmash*  pSmasher)                        // Out: Smash that should be excluded from search.
    {
+  (void)pline;
+  (void)pSmashee;
+  (void)pSmasher;
    ASSERT(0);
    return false;  // NEVER USED ANYMORE!
    }
@@ -862,6 +860,12 @@ bool CSmashatorium::QuickCheck(// Returns true if collision detected, false othe
    CSmash** ppSmashee,        // Out: Thing being smashed into if any (unless 0)
    CSmash*  pSmasher)         // Out: Smash that should be excluded from search.
    {
+  (void)pLine;
+  (void)include;
+  (void)dontcare;
+  (void)exclude;
+  (void)ppSmashee;
+  (void)pSmasher;
    ASSERT(0);
 
    return false;     // NEVER USED ANYMORE!
@@ -1169,11 +1173,6 @@ bool CSmashatorium::QuickCheckClosest( // Returns true if collision detected, fa
       // Now, a little tricky - do a bidirectional loop to cover both quadrants:
       for (j = alPointsY[i]; j != (alPointsY[i + 1] + sSignY); j += sSignY)
          {
-#ifdef   SMASH_DEBUG
-
-   DebugSmash.DrawSmashSquare(3,0,i-1,j-1);
-
-#endif
          // Get the list:
          ASSERT(j * m_sTileH < m_sWorldH + 2 * m_sTileH);
          ASSERT(i * m_sTileW < m_sWorldW + 2 * m_sTileW);

@@ -344,8 +344,8 @@ class CResourceBlock
 			FreeResource();
 
 			// Delete the function object
-			delete m_pfnDestroy;
-			m_pfnDestroy = 0;
+//			delete m_pfnDestroy;
+//			m_pfnDestroy = nullptr;
          }
 
 		void FreeResource(void)

@@ -68,11 +68,16 @@
 
 #include <RSPiX.h>
 #include <Menus.h>
-#include <Network/NetClient.h>
-#include <Network/NetServer.h>
 #include <Input.h>
 #include <Camera.h>
 #include <Thing/Thing3D/Character/Dude.h>
+
+#include <Network/Net.h>
+
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/NetClient.h>
+#include <Network/NetServer.h>
+#endif
 
 #ifdef MOBILE
 #include <android/android.h>

@@ -1065,7 +1065,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 
 #if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreDisplayText
 
-char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreDisplayText[] =
    {
    "      Population %d                        Hostiles %d   Killed %d (%d%% / %d%%)", // Standard
    " Time Remaining %d:%2.2d                                Kills %d",           // Timed
@@ -1086,7 +1086,7 @@ char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
    };
 
 #elif LOCALE == GERMAN
-char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreDisplayText[] =
    {
    "      Leute %d                        Feinden %d   Totungen %d (%d%%)",   // Standard
    " Verbleibende Zeit %d:%2.2d                                Totungen %d",           // Timed
@@ -1107,7 +1107,7 @@ char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
    };
 
 #elif LOCALE == FRENCH
-char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreDisplayText[] =
    {
    "      Personnes %d                        Ennemis %d   Victimes %d (%d%%)",  // Standard
    " Temps restant %d:%2.2d                                Victimes %d",            // Timed
@@ -1129,7 +1129,7 @@ char const * const g_apszScoreDisplayText[CRealm::TotalScoringModes] =
 #endif // ScoreDisplayText
 
 #if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreGoalText
-char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreGoalText[] =
    {
    "      You must kill %d%% of the hostiles.",                                  // Standard
    " Score as many kills as possible in the time remaining.",                    // Timed
@@ -1147,11 +1147,10 @@ char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
    "",                                                                           // MPLastManFrag
    "",                                                                           // MPLastManTimed
    " There are no time or kill limits on this game - play as long as you like"   // MPLastManTimedFrag
-
    };
 
 #elif LOCALE == GERMAN
-char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreGoalText[] =
    {
    "      Sie mussen %d%% Feinde toten.",                                  // Standard
    " Erzielen Sie in der verbleibenden Zeit su viele Totungen wie moglich.",                    // Timed
@@ -1173,7 +1172,7 @@ char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
    };
 
 #elif LOCALE == FRENCH
-char const * const g_apszScoreGoalText[CRealm::TotalScoringModes] =
+char const * const g_apszScoreGoalText[] =
    {
    "      Vous devez tuer %d%% ennemis.",                                  // Standard
    " Faites autant de victimes que possible dans le delai restant.",                   // Timed

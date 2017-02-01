@@ -49,12 +49,6 @@
 #endif
 #endif
 
-#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-#define SYS_ENDIAN_BIG 1
-#else
-#define SYS_ENDIAN_LITTLE 1
-#endif
-
 #include <map>
 using namespace std;
 

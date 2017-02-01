@@ -546,6 +546,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		void CreateItems(
 			int32_t lNumItems)										// In:  Number of items
 			{
+        (void)lNumItems;
 			}
 
 
@@ -607,6 +608,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		bool IsRealItem(											// Returns true if "real", false otherwise
 			int32_t lNum)												// In:  Item number
 			{
+        (void)lNum;
 			return false;
 			}
 
@@ -626,6 +628,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		datat* GetItem(											// Returns value at specified time
 			int32_t lNum)												// In:  Item number
 			{
+        (void)lNum;
 			return 0;
 			}
 
@@ -646,6 +649,8 @@ class RChanCoreNothing : public RChanCore<datat>
 			int32_t lNum,												// In:  Item number
 			const datat* pdata)									// In:  Pointer to data to be added
 			{
+        (void)lNum;
+        (void)pdata;
 			}
 
 
@@ -667,6 +672,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		datat* GetAtTime(											// Returns pointer to value
 			int32_t lTime)												// In:  Channel time
 			{
+        (void)lTime;
 			return 0;
 			}
 
@@ -690,6 +696,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		void SetTotalTime(
 			int32_t lTotalTime)										// In:  Total time
 			{
+        (void)lTotalTime;
 			}
 
 
@@ -718,6 +725,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		void SetResolution(
 			int32_t lResolution)										// In:  New resolution
 			{
+        (void)lResolution;
 			}
 	};
 
@@ -938,6 +946,7 @@ class RChanCoreArray : public RChanCore<datat>
 		bool IsRealItem(											// Returns true if "real", false otherwise
 			int32_t lNum)												// In:  Item number
 			{
+        (void)lNum;
 			// Every item is real
 			return true;
 			}

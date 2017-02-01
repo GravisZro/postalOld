@@ -9,7 +9,7 @@ QT=
 #DEFINES += "_DEBUG"
 
 DEFINES += "BUILD_CHEAT"
-
+DEFINES += "BUILD_CHEAT_NETWORK"
 DEFINES += "PLATFORM_UNIX"
 
 DEFINES += "US=1"
@@ -285,11 +285,6 @@ SOURCES += \
     MenuSettings.cpp \
     MenuTrans.cpp \
     Network/Net.cpp \
-    Network/NetBrowse.cpp \
-    Network/NetClient.cpp \
-    Network/NetDlg.cpp \
-    Network/NetMsgr.cpp \
-    Network/NetServer.cpp \
     Organ.cpp \
     Personatorium.cpp \
     Play.cpp \
@@ -414,3 +409,10 @@ SOURCES += \
     Toolkit/WishPiX/Prefs/prefs.cpp \
     Toolkit/WishPiX/ResourceManager/resmgr.cpp \
     Toolkit/WishPiX/Spry/spry.cpp
+
+win32:SOURCES += \
+    Network/NetBrowse.cpp \
+    Network/NetClient.cpp \
+    Network/NetDlg.cpp \
+    Network/NetMsgr.cpp \
+    Network/NetServer.cpp

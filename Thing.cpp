@@ -496,6 +496,8 @@ int16_t CThing::Load(                             // Returns 0 if successfull, n
    int16_t sFileCount,                            // In:  File count (unique per file, never 0)
    uint32_t ulFileVersion)                         // In:  File version being loaded.
    {
+  (void)bEditMode;
+  (void)sFileCount;
    // Switch on the file version.
    switch (ulFileVersion)
       {
@@ -553,7 +555,7 @@ void CThing::SetInstanceID(   // Returns nothing.
 
 int16_t CThing::SendThingMessage(pGameMessage pMessage, int16_t sPriority, uint16_t u16ID)
    {
-   int16_t sResult = SUCCESS;
+//   int16_t sResult = SUCCESS;
    CThing* pThing = nullptr;
 
    m_pRealm->m_idbank.GetThingByID(&pThing, u16ID);

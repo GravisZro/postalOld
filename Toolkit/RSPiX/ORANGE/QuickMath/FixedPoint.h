@@ -69,7 +69,7 @@ typedef union	{
   long	val; // ********* Full 32 bit signed value
 	struct	
 		{
-#ifdef SYS_ENDIAN_BIG // big endian
+#ifdef __BIG_ENDIAN__ // big endian
 //-----------------------------------------------
 		union
 			{
@@ -181,7 +181,7 @@ typedef union	{
 	uint16_t	val;
 	struct	
 		{
-#ifdef SYS_ENDIAN_BIG // big endian
+#ifdef __BIG_ENDIAN__ // big endian
       uint8_t	mod;
       uint8_t frac;
 #else // little endian
@@ -197,7 +197,7 @@ typedef union	{
    int16_t	val;
 	struct	
 		{
-#ifdef SYS_ENDIAN_BIG // big endian
+#ifdef __BIG_ENDIAN__ // big endian
       int8_t	mod;
       uint8_t frac;
 #else // little endian

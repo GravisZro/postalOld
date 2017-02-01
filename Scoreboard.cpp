@@ -328,13 +328,15 @@ static int16_t GuiGetRes(    // Returns 0 on success; non-zero on failure.
 // EditInputUserFeedback -- Whines when the user causes an input
 // disgruntlement.
 //////////////////////////////////////////////////////////////////////////////
-
+#ifdef UNUSED_FUNCTIONS
 static void EditInputUserFeedback(  // Called when a user input notification
                                     // should occur.
    REdit*   pedit)                  // In:  Edit field.
    {
+  (void)pedit;
    PlaySample(g_smidEmptyWeapon, SampleMaster::UserFeedBack);
    }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -452,11 +454,14 @@ bool ScoreUpdateDisplay(RImage* pim, RRect* prc, CRealm* pRealm, CNetClient* pcl
       if (pHood) rspBlit(pHood->m_pimTopBar,pim,0,0,sDstX,sDstY,
          pHood->m_pimTopBar->m_sWidth,pHood->m_pimTopBar->m_sHeight);
 
+#ifndef MULTIPLAYER_REMOVED
       int16_t sNumDudes = pRealm->m_asClassNumThings[CThing::CDudeID];
       int16_t i;
+#endif
 
       switch (pRealm->m_ScoringMode)
       {
+#ifndef MULTIPLAYER_REMOVED
          case CRealm::MPFrag:
             ms_print.SetFont(MP_FONT_SIZE, &g_fontBig);
             rcBox.sY = prc->sY + MP_PRINT_Y1;
@@ -585,7 +590,7 @@ bool ScoreUpdateDisplay(RImage* pim, RRect* prc, CRealm* pRealm, CNetClient* pcl
 
          case CRealm::MPLastManTimedFrag:
             break;
-
+#endif
          case CRealm::Standard:
             ms_print.SetDestination(pim, &rcDst);
             ms_print.print(
@@ -698,6 +703,7 @@ bool ScoreUpdateDisplay(RImage* pim, RRect* prc, CRealm* pRealm, CNetClient* pcl
       {
          switch (pRealm->m_ScoringMode)
          {
+#ifndef MULTIPLAYER_REMOVED
             case CRealm::MPFrag:
                rcDst.sY = prc->sY + MP_PRINT_Y3;
                if (pRealm->m_sKillsGoal < 1)
@@ -752,7 +758,7 @@ bool ScoreUpdateDisplay(RImage* pim, RRect* prc, CRealm* pRealm, CNetClient* pcl
                   pRealm->m_sKillsGoal
                   );
                break;
-
+#endif
             case CRealm::Standard:
                rcDst.sY = prc->sY + STATUS_PRINT_Y2;
 
@@ -896,7 +902,7 @@ void ScoreDisplayHighScores(  // Returns nothing.
 
 
    // Let's just not do any of this for modes that have no scoring . . .
-   if (pRealm->m_ScoringMode >= CRealm::Timed && pRealm->m_ScoringMode <= CRealm::MPLastManTimedFrag && GetInputMode() != INPUT_MODE_PLAYBACK)
+   if (pRealm->m_ScoringMode >= CRealm::Timed && pRealm->m_ScoringMode < CRealm::TotalScoringModes && GetInputMode() != INPUT_MODE_PLAYBACK)
    {
       // Determine player's score and note how we determined it in a string
       // for the user.
@@ -985,6 +991,7 @@ void ScoreDisplayHighScores(  // Returns nothing.
             vtScoringUnit  = Value;
             break;
 
+#ifndef MULTIPLAYER_REMOVED
          case CRealm::MPTimed:
          case CRealm::MPFrag:
          case CRealm::MPLastMan:
@@ -998,6 +1005,9 @@ void ScoreDisplayHighScores(  // Returns nothing.
             sprintf(szScoringExplanation, g_apszScoreExplanations[pRealm->m_ScoringMode], MAX_HIGH_SCORES);
             vtScoringUnit  = Value;
             break;
+#endif
+        default:
+          ASSERT(0);
          }
 
       // Get the name or description string for this realm file and use that as
@@ -1011,78 +1021,12 @@ void ScoreDisplayHighScores(  // Returns nothing.
       int16_t sPlayersScorePosition   = -1; // Valid score index once/if we find a slot
                                           // for this player's score.
 
-      // If not a multiplayer scoring . . .
-      if (pRealm->m_flags.bMultiplayer == false)
+      // If multiplayer scoring . . .
+      if (pRealm->m_flags.bMultiplayer)
          {
-         // Try to open the file, but if it doesn't exist, then we simply won't be
-         // getting any values from it.
-         int16_t sOpenRes = scores.Open(FullPathHD(HIGHSCORE_SCORES_FILE), "r");
-
-         // Read in the scores file
-         int16_t sSrcIndex;
-         int16_t sDstIndex;
-         for (sSrcIndex = 0, sDstIndex = 0; sDstIndex < MAX_HIGH_SCORES; sDstIndex++)
-            {
-            sprintf(szKeyName, "Player%d", sSrcIndex);
-            if (sOpenRes == 0)
-               scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, "<Empty>", astrNames[sDstIndex]);
-            else
-               strcpy(astrNames[sDstIndex], "<Empty>");
-
-            // Determine if our score beat this score.
-            bool  bPlayerBeatThisScore = false;
-            sprintf(szKeyName, "Score%d", sSrcIndex);
-            // Some scoring modes need to default to zero scores, but the timed levels
-            // need to default to some high, easy to beat time if there is no saved score
-            if (vtScoringUnit == Value)
-               {
-               if (sOpenRes == 0)
-                  scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, (int32_t) 0, &(alScores[sDstIndex]));
-               else
-                  alScores[sDstIndex] = 0;
-
-               // Did we get a higher value than in score?
-               if (lPlayerScore > alScores[sDstIndex])
-                  {
-                  bPlayerBeatThisScore = true;
-                  }
-               }
-            else
-               {
-               if (sOpenRes == 0)
-                  scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, (int32_t) 3600000, &(alScores[sDstIndex]));
-               else
-                  alScores[sDstIndex] = (int32_t) 3600000;
-
-               // Did we get a better time than read in score?
-               if (lPlayerScore < alScores[sDstIndex] )
-                  {
-                  bPlayerBeatThisScore = true;
-                  }
-               }
-
-            // If we beat this score and haven't yet found a score position . . .
-            if (bPlayerBeatThisScore == true && sPlayersScorePosition < 0)
-               {
-               // Remember player's score.
-               alScores[sDstIndex]     = lPlayerScore;
-               // Clear player's name.
-               astrNames[sDstIndex][0] = '\0';
-               // Remember player's score position.
-               sPlayersScorePosition   = sDstIndex;
-               // Don't increment the source index.
-               }
-            else
-               {
-               // Move to the next source score val and name from the INI.
-               sSrcIndex++;
-               }
-            }
-
-         scores.Close();
-         }
-      else
-         {
+#ifdef MULTIPLAYER_REMOVED
+        ASSERT(0);
+#else
          ASSERT(pclient);
 
          int32_t  alTempScores[MAX_HIGH_SCORES];
@@ -1158,10 +1102,79 @@ void ScoreDisplayHighScores(  // Returns nothing.
                sPlayersScorePosition   = sDstIndex;
                }
             }
-
+#endif
+      }
+      else // Single player scoring
+      {
          // Note that Player's score position stays -1 since there's no name to enter.
-         }
 
+         // Try to open the file, but if it doesn't exist, then we simply won't be
+         // getting any values from it.
+         int16_t sOpenRes = scores.Open(FullPathHD(HIGHSCORE_SCORES_FILE), "r");
+
+         // Read in the scores file
+         int16_t sSrcIndex;
+         int16_t sDstIndex;
+         for (sSrcIndex = 0, sDstIndex = 0; sDstIndex < MAX_HIGH_SCORES; sDstIndex++)
+            {
+            sprintf(szKeyName, "Player%d", sSrcIndex);
+            if (sOpenRes == 0)
+               scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, "<Empty>", astrNames[sDstIndex]);
+            else
+               strcpy(astrNames[sDstIndex], "<Empty>");
+
+            // Determine if our score beat this score.
+            bool  bPlayerBeatThisScore = false;
+            sprintf(szKeyName, "Score%d", sSrcIndex);
+            // Some scoring modes need to default to zero scores, but the timed levels
+            // need to default to some high, easy to beat time if there is no saved score
+            if (vtScoringUnit == Value)
+               {
+               if (sOpenRes == 0)
+                  scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, (int32_t) 0, &(alScores[sDstIndex]));
+               else
+                  alScores[sDstIndex] = 0;
+
+               // Did we get a higher value than in score?
+               if (lPlayerScore > alScores[sDstIndex])
+                  {
+                  bPlayerBeatThisScore = true;
+                  }
+               }
+            else
+               {
+               if (sOpenRes == 0)
+                  scores.GetVal((char*) pRealm->m_rsRealmString, szKeyName, (int32_t) 3600000, &(alScores[sDstIndex]));
+               else
+                  alScores[sDstIndex] = (int32_t) 3600000;
+
+               // Did we get a better time than read in score?
+               if (lPlayerScore < alScores[sDstIndex] )
+                  {
+                  bPlayerBeatThisScore = true;
+                  }
+               }
+
+            // If we beat this score and haven't yet found a score position . . .
+            if (bPlayerBeatThisScore == true && sPlayersScorePosition < 0)
+               {
+               // Remember player's score.
+               alScores[sDstIndex]     = lPlayerScore;
+               // Clear player's name.
+               astrNames[sDstIndex][0] = '\0';
+               // Remember player's score position.
+               sPlayersScorePosition   = sDstIndex;
+               // Don't increment the source index.
+               }
+            else
+               {
+               // Move to the next source score val and name from the INI.
+               sSrcIndex++;
+               }
+            }
+
+         scores.Close();
+         }
 
       int16_t i;
 

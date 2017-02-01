@@ -59,6 +59,7 @@ class CAlphaAnim
 
       bool operator==(const CAlphaAnim& rhs) const
          {
+          (void)rhs;
          // Comparing two of these objects is a major undertaking.  Instead,
          // we'll always say that they are different.  This is not a great
          // solution.  In fact, it sucks.  But what the hell...

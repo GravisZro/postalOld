@@ -1749,7 +1749,9 @@ bool CRealm::IsEndOfLevelGoalMet(bool bEndLevelKey)
       // In a timed flag level, the user must get the flag to a base before
       // the goal is considered met.
       case TimedFlag:
+#ifndef MULTIPLAYER_REMOVED
       case MPTimedFlag:
+#endif
 //       if (m_lScoreTimeDisplay > 0 && m_sFlagsCaptured < m_sFlagsGoal)
          if (m_lScoreTimeDisplay > 0 && m_sFlagbaseCaptured < m_sFlagsGoal)
             bEnd = false;
@@ -1758,7 +1760,9 @@ bool CRealm::IsEndOfLevelGoalMet(bool bEndLevelKey)
       // In a capture the flag level, a user must capture a flag and return it
       // to a base to complete the level.
       case CaptureFlag:
+#ifndef MULTIPLAYER_REMOVED
       case MPCaptureFlag:
+#endif
          if (m_sFlagbaseCaptured < m_sFlagsGoal)
             bEnd = false;
          break;
@@ -1785,6 +1789,7 @@ bool CRealm::IsEndOfLevelGoalMet(bool bEndLevelKey)
          }
          break;
 
+#ifndef MULTIPLAYER_REMOVED
       case MPFrag:
          // Get highest number of kills from score module and
          if ((m_sKillsGoal < 1) || (ScoreHighestKills(this) < m_sKillsGoal))
@@ -1805,6 +1810,7 @@ bool CRealm::IsEndOfLevelGoalMet(bool bEndLevelKey)
          if (m_lScoreTimeDisplay > 0)
             bEnd = false;
          break;
+#endif
    }
 
 #if defined(DEBUG_LEVEL_CHEAT)

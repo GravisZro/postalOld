@@ -198,7 +198,7 @@ extern void TheGame(void);
 extern void Game_StartSinglePlayerGame(
    int16_t sMenuItem);
 
-
+#ifndef MULTIPLAYER_REMOVED
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Callback for the "Start MultiPlayer Game" menu
@@ -224,7 +224,7 @@ extern void Game_JoinMultiPlayerGame(
 ////////////////////////////////////////////////////////////////////////////////
 extern void Game_HostMultiPlayerGame(
    int16_t sMenuItem);
-
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Callback for the Main Menu init/kill.
@@ -437,7 +437,7 @@ extern char const * FullPathCustom(                   // Returns full path in sy
 ////////////////////////////////////////////////////////////////////////////////
 int16_t CorrectifyBasePath(                       // Returns 0 if successfull, non-zero otherwise
    char * pszBasePath,                          // I/O: Base path to be corrected
-   int16_t sMaxPathLen);                          // In:  Maximum length of base path
+   size_t sMaxPathLen);                          // In:  Maximum length of base path
 
 ////////////////////////////////////////////////////////////////////////////////
 //

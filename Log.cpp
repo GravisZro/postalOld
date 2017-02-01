@@ -25,11 +25,13 @@
 //
 //    12/23/97 SPA   Moved from Play.cpp to seperate file
 ////////////////////////////////////////////////////////////////////////////////
-#include <RSPiX.h>
-#include <Game.h>
-#include <Network/Net.h>
-#include <Network/NetMsgr.h>
 #include "Log.h"
+
+#include <Game.h>
+
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/NetMsgr.h>
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // OpenLogFile()
@@ -43,7 +45,7 @@ int16_t OpenLogFile()
       {
          if (!g_GameSettings.m_rfNetSyncLog.IsOpen())
          {
-#ifdef SYS_ENDIAN_BIG
+#ifdef __BIG_ENDIAN__
          if (g_GameSettings.m_rfNetSyncLog.Open(g_GameSettings.m_szNetSyncLogFile,
             "wt+", RFile::BigEndian) != 0)
 #else
@@ -79,7 +81,7 @@ int16_t CloseLogFile()
    return sResult;
    }
 
-
+#ifndef MULTIPLAYER_REMOVED
 ////////////////////////////////////////////////////////////////////////////////
 // WriteTimeStamp()
 //       Write the network time log
@@ -109,7 +111,7 @@ int16_t WriteTimeStamp(char const * const pszCaller,                // Name of c
 
    _ltoa(lTime - g_GameSettings.m_lStartRealmTime, szTime, 10);
 
-#ifdef SYS_ENDIAN_BIG
+#ifdef __BIG_ENDIAN__
    RFile::Endian endian = RFile::BigEndian;
 #else
    RFile::Endian endian = RFile::LittleEndian;
@@ -312,7 +314,7 @@ int16_t WriteInputData(uint32_t *input)
    }
 
 /*** 12/7/97 AJC ***/
-
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 // EOF
 ////////////////////////////////////////////////////////////////////////////////

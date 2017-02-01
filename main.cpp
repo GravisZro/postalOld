@@ -362,7 +362,7 @@ static int16_t SetupVideo(               // Returns 0 on success.
 
    return sResult;
    }
-
+#ifdef UNUSED_FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 // Allocates a chunk and resizes so that we may be able to have some large
 // blocks of contiguous memory.
@@ -384,27 +384,7 @@ static char* CreateChunk(  // Returns the memory ptr that will hold the chunk
       return pcOrig;
       }
    }
-
-
-static void assert_types_are_sane(void)
-{
-    ASSERT(sizeof (int8_t) == 1);
-    ASSERT(sizeof (uint8_t) == 1);
-    ASSERT(sizeof (int16_t) == 2);
-    ASSERT(sizeof (uint16_t) == 2);
-    ASSERT(sizeof (int32_t) == 4);
-    ASSERT(sizeof (uint32_t) == 4);
-    ASSERT(sizeof (int64_t) == 8);
-    ASSERT(sizeof (uint64_t) == 8);
-
-    uint32_t val = 0x02000001;
-#if SYS_ENDIAN_BIG
-    ASSERT(*((uint8_t*) &val) == 0x02);
-#else
-    ASSERT(*((uint8_t*) &val) == 0x01);
 #endif
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Set up the system environment and if all goes well, start the game.
@@ -749,6 +729,22 @@ void RunSteamworksUpkeep()
 }
 #endif
 
+static_assert(sizeof ( int8_t ) == 1, "unexpected size!");
+static_assert(sizeof (uint8_t ) == 1, "unexpected size!");
+static_assert(sizeof ( int16_t) == 2, "unexpected size!");
+static_assert(sizeof (uint16_t) == 2, "unexpected size!");
+static_assert(sizeof ( int32_t) == 4, "unexpected size!");
+static_assert(sizeof (uint32_t) == 4, "unexpected size!");
+static_assert(sizeof ( int64_t) == 8, "unexpected size!");
+static_assert(sizeof (uint64_t) == 8, "unexpected size!");
+
+uint32_t endian_test_value = 0x02000001;
+#if __BIG_ENDIAN__
+//static_assert( *reinterpret_cast<const uint8_t*>(&endian_test_value) == 0x02, "unexpected result!");
+#else
+//static_assert( *reinterpret_cast<const uint8_t*>(&endian_test_value) == 0x01, "unexpected result!");
+#endif
+
 
 int main(int argc, char **argv)
    {
@@ -757,7 +753,6 @@ int main(int argc, char **argv)
     _argc = argc;
     _argv = argv;
 
-    assert_types_are_sane();
     rspPlatformInit();
 
     #if WITH_STEAMWORKS

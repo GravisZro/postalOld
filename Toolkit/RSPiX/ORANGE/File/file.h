@@ -789,8 +789,8 @@ int16_t RFileEZSaveDebug(
 int16_t RFileEZSave(
 #endif
 	ClassType* pObject,
-	char* pszName, 
-	char* pszMode,
+   const char* pszName,
+   const char* pszMode,
 	RFile::Endian endian)
 	{
 	int16_t sResult = 0;

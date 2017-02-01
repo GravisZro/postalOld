@@ -399,15 +399,11 @@ int16_t SetCategoryVolume(
    SampleMaster::SoundCategory eType,
    int16_t sVolume /* = SampleMaster::UserMaxVolume*/)
    {
-   if ((eType < SampleMaster::Unspecified) || (eType >= SampleMaster::MAX_NUM_SOUND_CATEGORIES))
-      {
+   if (eType >= SampleMaster::MAX_NUM_SOUND_CATEGORIES)
       return FAILURE;
-      }
 
-   if ((sVolume < 0) || (sVolume > SampleMaster::UserMaxVolume))
-      {
+   if (sVolume < 0 || sVolume > SampleMaster::UserMaxVolume)
       return FAILURE;
-      }
 
    // Set the new volume for that sound type adjusted through
    // the quality's category volume adjustor.
@@ -423,13 +419,9 @@ int16_t SetCategoryVolume(
    ms_asCategoryVolumes[eType] = sVolume * SampleMaster::ms_asQualityCategoryAdjustors[g_GameSettings.m_eCurSoundQuality][eType] * SampleMaster::MaxVolume / (SampleMaster::UserMaxVolume * SampleMaster::UserMaxVolume);
 
    // Notify all playing sounds of that type that their volume has changed
-   for (int16_t i = 0; i < NUM_CHANNELS; i++)
-      {
+   for (uint16_t i = 0; i < NUM_CHANNELS; i++)
       if (ms_aeSoundTypes[i] == eType)
-         {
          ms_asndChannels[i].m_sTypeVolume = ms_asCategoryVolumes[eType];   // adjust volume
-         }
-      }
 
    return SUCCESS;
    }
@@ -441,10 +433,8 @@ int16_t SetCategoryVolume(
 int16_t GetCategoryVolume(
    SampleMaster::SoundCategory eType /*  = SampleMaster::SoundCategory::Unspecified */)
    {
-   if ((eType < SampleMaster::Unspecified) || (eType >= SampleMaster::MAX_NUM_SOUND_CATEGORIES))
-      {
+   if (eType >= SampleMaster::MAX_NUM_SOUND_CATEGORIES)
       return -1;
-      }
 
    // Get the new volume for that sound type dejusted through
    // the quality's category volume adjustor.
@@ -473,24 +463,20 @@ int16_t SetInstanceVolume(
    SampleMaster::SoundInstance si,           // make sure it is YOUR sound
    int16_t sVolume /* = 255 */) // 0 - 255
    {
-   if ( (si < 0) || (sVolume < 0) || (sVolume > 255) )
-      {
+   if ( si == 0 || sVolume < 0 || sVolume > 255 )
       return FAILURE;
-      }
 
    // Get the channel number from the lowest bits:
-   int16_t sChannel = si & CHANNEL_MASK;
-   if (sChannel >= NUM_CHANNELS)
-      {
+   uint16_t uChannel = si & CHANNEL_MASK;
+   if (uChannel >= NUM_CHANNELS)
       return FAILURE;   // MASK error!
-      }
 
    // Make sure the sound is still playing (this is NOT an error)
    // Compare current channel ID with high bits of vid:
-   if (ms_aSoundInstances[sChannel] == (si & (~CHANNEL_MASK) ) )
+   if (ms_aSoundInstances[uChannel] == (si & (~CHANNEL_MASK) ) )
       {
       // Security approved!  You may set the sound volume!
-      ms_asndChannels[sChannel].m_sChannelVolume = sVolume;
+      ms_asndChannels[uChannel].m_sChannelVolume = sVolume;
       }
 
    return SUCCESS;
@@ -599,7 +585,7 @@ void PlaySample(                                      // Returns nothing.
    bool bPurgeSample /* = false */)                   // In:  Call ReleaseAndPurge rather than Release after playing
    {
    int16_t sError   = 0;              // Assume no error.
-   RSnd*    psnd  = &ms_sndFailure; // Default to failure case.
+   //RSnd*    psnd  = &ms_sndFailure; // Default to failure case.
    if (psi) *psi = 0;               // Default to failure case.
 
    if (id.pszId != nullptr && CAN_PLAY_SAMPLE(id) )
@@ -641,7 +627,7 @@ void PlaySample(                                      // Returns nothing.
                ms_asndChannels[i].m_sTypeVolume, lLoopStartTime, lLoopEndTime) == 0)
                {
                // Success.  Give user access to this channel.
-               psnd  = &(ms_asndChannels[i]);
+//               psnd  = &(ms_asndChannels[i]);
                // Set return ID so user can tweak the volume:
                ms_aSoundInstances[i] += NUM_CHANNELS; // It is a new sound now!
                // Reserve the lower mask bits for the channel number
@@ -891,6 +877,7 @@ void PurgeSamples(void) // Returns nothing.
 void PurgeSample(       // Returns nothing.
    SampleMasterID id)   // Identifier of sample you want played.
    {
+  (void)id;
    TRACE("PurgeSample(): NYI.\n");
    }
 

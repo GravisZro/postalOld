@@ -1855,6 +1855,7 @@ static int16_t GetRealmFileFromRealmTitle(  // Returns 0, if found; non-zero
    int16_t sMaxLen)                         // In:  Max space available at
                                           // pszRealmFileName.
    {
+  (void)sMaxLen;
    int16_t sResult  = 0;  // Assume success.
 
    RPrefs prefsRealm;
@@ -2021,6 +2022,7 @@ static int16_t OnChangedMsg( // Returns 0 on success.
    CNetClient* pnet,       // In:  Network interface.
    NetMsg*     pmsg)       // In:  Changed msg
    {
+  (void)pnet;
    int16_t sRes  = 0;  // Assume success.
 
    ASSERT(pmsg->msg.nothing.ucType == NetMsg::CHANGED);
@@ -2040,6 +2042,7 @@ static void OnChatMsg(
    CNetClient* pnet,          // In:  Network interface.
    NetMsg*     pmsg)          // In:  Chat msg.
    {
+  (void)pnet;
    ASSERT(pmsg->msg.nothing.ucType == NetMsg::CHAT);
    AddConsoleMsg(true, "%s", pmsg->msg.chat.acText);
    }
@@ -2789,7 +2792,7 @@ extern int16_t DoNetGameDialog(                   // Returns 0 if successfull, n
                               else
                                  {
                                  // Assume no problems
-                                 int16_t sProblem = 0;
+                                 //int16_t sProblem = 0;
 
                                  // Process messages from server
                                  pclient->GetMsg(&msg);

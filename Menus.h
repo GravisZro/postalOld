@@ -83,7 +83,6 @@
 // Forward declarations.
 extern Menu menuStart;
 extern Menu menuStartSingle;
-extern Menu menuStartMulti;
 extern Menu menuStartDemo;
 extern Menu menuOptions;
 extern Menu menuControls;
@@ -92,7 +91,6 @@ extern Menu menuMouse;
 extern Menu menuJoystick;
 extern Menu menuHighScores;
 extern Menu menuVerifyExit;
-extern Menu menuMultiOptions;
 extern Menu menuFeatures;
 extern Menu menuChallenge;
 extern Menu menuVolumes;
@@ -100,8 +98,13 @@ extern Menu menuVideoOptions;
 extern Menu menuAudioOptions;
 extern Menu menuPlayOptions;
 extern Menu menuRotation;
+
+#ifndef MULTIPLAYER_REMOVED
+extern Menu menuStartMulti;
+extern Menu menuMultiOptions;
 extern Menu menuJoinMulti;
 extern Menu menuHostMulti;
+#endif
 
 // Main menu
 extern Menu menuMain;
@@ -109,8 +112,10 @@ extern Menu menuMain;
 // Client-game menu
 extern Menu menuClientGame;
 
+#ifndef EDITOR_REMOVED
 // Editor menu.
 extern Menu menuEditor;
+#endif
 
 // Verify Quit Game.
 extern Menu g_menuVerifyQuitGame;

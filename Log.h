@@ -23,10 +23,11 @@
 #ifndef LOG_H
 #define LOG_H
 
+#include <Network/Net.h>
 
 int16_t OpenLogFile();
 int16_t CloseLogFile();
-
+#ifndef MULTIPLAYER_REMOVED
 ////////////////////////////////////////////////////////////////////////////////
 // WriteTimeStamp()
 //       Write the network time log
@@ -46,7 +47,7 @@ int16_t WriteTimeStamp(char const * constpszCaller,                 // Name of c
 //    global variables used:     g_GameSettings
 ////////////////////////////////////////////////////////////////////////////////
 extern int16_t WriteInputData(uint32_t *input);
-
+#endif
 
 #endif //LOG_H
 ////////////////////////////////////////////////////////////////////////////////

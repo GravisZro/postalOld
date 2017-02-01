@@ -341,7 +341,7 @@
 #define SCREEN_DIAMETER_FOR_3D   (MODEL_DIAMETER * SCREEN2MODEL_RATIO)
 
 int16_t gsGlobalBrightnessPerLightAttribute = 5;
-/* int16_t gsGlobalLightingAdjustment = 128; /* neutral center */
+// int16_t gsGlobalLightingAdjustment = 128; // neutral center
 // NOTE: This max value completely depends on the actual lighting effect curve:
 // it should be set near the bright spot of the curve.
 int16_t gsGlobalLightingAdjustment = 128; // NEUTRAL BABY!
@@ -1409,6 +1409,8 @@ void CScene::Render2D(     // Returns nothing.
                      sXRayeeY = ps3XRayee->m_sCenY - sXRayeeH / 2;
                      break;
                      }
+                 default:
+                   ASSERT(0);
                   }
 
                // Do an exteremely cheesy collision detecting by clipping the two rects!!!!

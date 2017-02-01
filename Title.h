@@ -51,7 +51,7 @@
 // total range of the progress bar is determined by lTotalUnits.  As far as
 // this module is concerned, these units are completely abstract.
 extern int16_t StartTitle(                  // Returns 0 if successfull, non-zero otherwise
-   int16_t sStartImage = 1,                 // In:  Image to start with.  Values less
+   size_t szStartImage = 1,                 // In:  Image to start with.  Values less
                                           // than 1 indicate a page relative to the
                                           // end.
    bool  bPlayMusak = false,              // In:  true to play title musak.

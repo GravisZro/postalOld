@@ -87,6 +87,7 @@
 #include <RSPiX.h>
 #include "Socket.h"
 
+#include "ProtoBSDIP.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros
@@ -100,14 +101,14 @@
 bool                    RSocket::ms_bDidStartup = false;
 bool                    RSocket::ms_bAutoShutdown = false;
 RSocket::ProtoType      RSocket::ms_prototype   = RSocket::NO_PROTOCOL;
-int16_t                   RSocket::ms_sNumSockets = 0;
-char const *                     RSocket::ms_apszProtoNames[] =
-                           {
-                           "",
-//                         "Loopback",
+int16_t                 RSocket::ms_sNumSockets = 0;
+char const *            RSocket::ms_apszProtoNames[] =
+{
+  "",
+  //                         "Loopback",
 
-                              "TCP/IP",
-                           };
+  "TCP/IP",
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,44 +121,44 @@ RSocket::ProtoType      RSocket::RProtocol::ms_prototype = RSocket::NO_PROTOCOL;
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////
-RSocket::RSocket()
-   {
-   m_pProtocol = 0;
+RSocket::RSocket(void)
+{
+  m_pProtocol = 0;
 
-   // Update number of sockets
-   ms_sNumSockets++;
-   }
+  // Update number of sockets
+  ms_sNumSockets++;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Destructor
 ////////////////////////////////////////////////////////////////////////////////
-RSocket::~RSocket()
-   {
-   Reset();
+RSocket::~RSocket(void)
+{
+  Reset();
 
-   // Update number of sockets
-   ms_sNumSockets--;
+  // Update number of sockets
+  ms_sNumSockets--;
 
-   // If there's no more sockets and auto-shutdown is enabled, then shtudown
-   if ((ms_sNumSockets == 0) && ms_bAutoShutdown)
-      Shutdown();
-   }
+  // If there's no more sockets and auto-shutdown is enabled, then shtudown
+  if ((ms_sNumSockets == 0) && ms_bAutoShutdown)
+    Shutdown();
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Reset socket to its post-construction state
 ////////////////////////////////////////////////////////////////////////////////
 void RSocket::Reset(void)
-   {
-   // Force it to close now
-   Close(true);
+{
+  // Force it to close now
+  Close(true);
 
-   // If close failed, we're going to delete protocol anyway as part of reset
-   delete m_pProtocol;
+  // If close failed, we're going to delete protocol anyway as part of reset
+  delete m_pProtocol;
 
-   m_pProtocol = nullptr;
-   }
+  m_pProtocol = nullptr;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -166,85 +167,85 @@ void RSocket::Reset(void)
 // If the current protocol is not supported, this function returns the value
 // RSocket::errNotSupported.
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Open(                            // Returns 0 on success, non-zero otherwise
-   uint16_t usPort,                       // In:  Port number or 0 for any port
-   int16_t sType,                                 // In:  Any one RSocket::typ* enum
-   int16_t sOptionFlags,                          // In:  Any combo of RSocket::opt* enums
-   RSocket::BLOCK_CALLBACK callback)            // In:  Blocking callback (or nullptr to keep current)
-   {
-   // Make sure startup was called.  Only this function needs to do this
-   // because all the others check for a valid protocol, which can only be
-   // created via this function.
-   int16_t sResult = 0;
+int16_t RSocket::Open(                          // Returns 0 on success, non-zero otherwise
+  uint16_t usPort,                              // In:  Port number or 0 for any port
+  int16_t sType,                                // In:  Any one RSocket::typ* enum
+  int16_t sOptionFlags,                         // In:  Any combo of RSocket::opt* enums
+  RSocket::BLOCK_CALLBACK callback)             // In:  Blocking callback (or nullptr to keep current)
+{
+  // Make sure startup was called.  Only this function needs to do this
+  // because all the others check for a valid protocol, which can only be
+  // created via this function.
+  int16_t sResult = 0;
 
-   if (ms_bDidStartup)
+  if (ms_bDidStartup)
+  {
+    // Make sure socket isn't already open
+    if (m_pProtocol == nullptr)
+    {
+      // Note that we create the protocol object here instead of when this
+      // socket was itself constructed.  This is preferable because users might
+      // want to create a static RSocket object, which would occur before the
+      // protocol has been set via RSocket::Startup, and therefore wouldn't be
+      // able to know what type of protocol object to create.  By deferring the
+      // creation of the protocol to this point, we allow for the use of static
+      // RSocket objects.
+      m_pProtocol = ConstructProtocol(ms_prototype);
+      if (m_pProtocol)
       {
-      // Make sure socket isn't already open
-      if (m_pProtocol == nullptr)
-         {
-         // Note that we create the protocol object here instead of when this
-         // socket was itself constructed.  This is preferable because users might
-         // want to create a static RSocket object, which would occur before the
-         // protocol has been set via RSocket::Startup, and therefore wouldn't be
-         // able to know what type of protocol object to create.  By deferring the
-         // creation of the protocol to this point, we allow for the use of static
-         // RSocket objects.
-         m_pProtocol = ConstructProtocol(ms_prototype);
-         if (m_pProtocol)
-            {
-            sResult = m_pProtocol->Open(usPort, sType, sOptionFlags, callback);
-            }
-         else
-            {
-            sResult = -1;
-            TRACE("RSocket::Open(): Error constructing protocol!\n");
-            }
-
-         // If there was a problem, get rid of the protocol
-         if (sResult != 0)
-            {
-            delete m_pProtocol;
-            m_pProtocol = 0;
-            }
-         }
+        sResult = m_pProtocol->Open(usPort, sType, sOptionFlags, callback);
+      }
       else
-         {
-         sResult = -1;
-         TRACE("RSocket::Open(): Already open!\n");
-         }
-      }
-   else
       {
-      sResult = -1;
-      TRACE("RSocket::Open(): Didn't call RSocket::Startup()!\n");
+        sResult = -1;
+        TRACE("RSocket::Open(): Error constructing protocol!\n");
       }
 
-   return sResult;
-   }
+      // If there was a problem, get rid of the protocol
+      if (sResult != 0)
+      {
+        delete m_pProtocol;
+        m_pProtocol = 0;
+      }
+    }
+    else
+    {
+      sResult = -1;
+      TRACE("RSocket::Open(): Already open!\n");
+    }
+  }
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Open(): Didn't call RSocket::Startup()!\n");
+  }
+
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Close socket
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Close(                           // Returns 0 if successfull, non-zero otherwise
-   bool bForceNow /*= true */)                  // In:  'true' means do it now, false follows normal rules
-   {
-   int16_t sResult = 0;
+int16_t RSocket::Close(                         // Returns 0 if successfull, non-zero otherwise
+  bool bForceNow /*= true */)                   // In:  'true' means do it now, false follows normal rules
+{
+  int16_t sResult = 0;
 
-   if (m_pProtocol)
-      {
-      // Close socket
-      sResult = m_pProtocol->Close(bForceNow);
-      if (sResult == 0)
-         {
-         // Get rid of protocol
-         delete m_pProtocol;
-         m_pProtocol = nullptr;
-         }
-      }
+  if (m_pProtocol)
+  {
+    // Close socket
+    sResult = m_pProtocol->Close(bForceNow);
+    if (sResult == 0)
+    {
+      // Get rid of protocol
+      delete m_pProtocol;
+      m_pProtocol = nullptr;
+    }
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -254,51 +255,51 @@ int16_t RSocket::Close(                           // Returns 0 if successfull, n
 // been modified, but any such changes must not be relied upon!!!  What can be
 // relied upon is that the client socket will be in a "closed" state.
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Accept(                          // Return 0 if successfull, non-zero otherwise
-   RSocket* psocketClient,                      // Out: Client socket returned here
-   RSocket::Address* paddressClient) const      // Out: Client's address returned here
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::Accept(                        // Return 0 if successfull, non-zero otherwise
+  RSocket* psocketClient,                       // Out: Client socket returned here
+  RSocket::Address* paddressClient) const       // Out: Client's address returned here
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
+  if (m_pProtocol)
+  {
+    // Make sure client doesn't already have a protocol
+    if (psocketClient->m_pProtocol == 0)
+    {
+      // Create protocol
+      psocketClient->m_pProtocol = ConstructProtocol(ms_prototype);
+      if (psocketClient->m_pProtocol)
       {
-      // Make sure client doesn't already have a protocol
-      if (psocketClient->m_pProtocol == 0)
-         {
-         // Create protocol
-         psocketClient->m_pProtocol = ConstructProtocol(ms_prototype);
-         if (psocketClient->m_pProtocol)
-            {
-            sResult = m_pProtocol->Accept(psocketClient->m_pProtocol, paddressClient);
+        sResult = m_pProtocol->Accept(psocketClient->m_pProtocol, paddressClient);
 
-            // If there was a problem, get rid of the protocol
-            if (sResult != 0)
-               {
-                  // Get rid of protocol
-                  delete psocketClient->m_pProtocol;
-                  psocketClient->m_pProtocol = 0;
-               }
-            }
-         else
-            {
-            sResult = -1;
-            TRACE("RSocket::Accept(): Couldn't construct client protocol!\n");
-            }
-         }
+        // If there was a problem, get rid of the protocol
+        if (sResult != 0)
+        {
+          // Get rid of protocol
+          delete psocketClient->m_pProtocol;
+          psocketClient->m_pProtocol = 0;
+        }
+      }
       else
-         {
-            sResult = -1;
-            TRACE("RSocket::Accept(): Client socket already has a protocol!\n");
-         }
-      }
-   else
       {
-      sResult = -1;
-      TRACE("RSocket::Accept(): Not open!\n");
+        sResult = -1;
+        TRACE("RSocket::Accept(): Couldn't construct client protocol!\n");
       }
+    }
+    else
+    {
+      sResult = -1;
+      TRACE("RSocket::Accept(): Client socket already has a protocol!\n");
+    }
+  }
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Accept(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -306,105 +307,105 @@ int16_t RSocket::Accept(                          // Return 0 if successfull, no
 //
 // Most protocols only allow broadcasting on a datagram-style socket.
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Broadcast(void)                  // Returns 0 if successfull, non-zero otherwise
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::Broadcast(void)                // Returns 0 if successfull, non-zero otherwise
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->Broadcast();
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::Broadcast(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->Broadcast();
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Broadcast(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Set socket to listen for connection requests
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::Listen(int16_t sMaxQueued)
-   {
-   int16_t sResult = FAILURE;
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->Listen(sMaxQueued);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::Listen(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->Listen(sMaxQueued);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Listen(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Connect to address
 ////////////////////////////////////////////////////////////////////////////////
 int16_t RSocket::Connect(
-   RSocket::Address* paddress)
-   {
-   int16_t sResult = 0;
+    RSocket::Address* paddress)
+{
+  int16_t sResult = 0;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->Connect(paddress);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::Connect(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->Connect(paddress);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Connect(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Use Send for connected sockets - use SendTo for connectionless
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Send(                            // Return 0 on success, non-zero otherwise
-   void* pBuf,                                  // In:  Pointer to data buffer
-   int32_t lNumBytes,                              // In:  Number of bytes to send
-   int32_t* plActualBytes)                         // Out: Actual number of bytes sent
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::Send(                          // Return 0 on success, non-zero otherwise
+  void* pBuf,                                   // In:  Pointer to data buffer
+  int32_t lNumBytes,                            // In:  Number of bytes to send
+  int32_t* plActualBytes)                       // Out: Actual number of bytes sent
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->Send(pBuf, lNumBytes, plActualBytes);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::Send(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->Send(pBuf, lNumBytes, plActualBytes);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Send(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Send data to specified address.  For connected sockets, address is ignored
 // See Send() for more information.
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::SendTo(                          // Return 0 on success, non-zero otherwise
-   void* pBuf,                                  // In:  Pointer to data buffer
-   int32_t lNumBytes,                              // In:  Number of bytes to send
-   int32_t* plActualBytes,                         // Out: Actual number of bytes sent
-   RSocket::Address* paddress)                  //In:  Address to send to
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::SendTo(                        // Return 0 on success, non-zero otherwise
+  void* pBuf,                                   // In:  Pointer to data buffer
+  int32_t lNumBytes,                            // In:  Number of bytes to send
+  int32_t* plActualBytes,                       // Out: Actual number of bytes sent
+  RSocket::Address* paddress)                   // In:  Address to send to
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->SendTo(pBuf, lNumBytes, plActualBytes, paddress);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::SendTo(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->SendTo(pBuf, lNumBytes, plActualBytes, paddress);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::SendTo(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -426,46 +427,46 @@ int16_t RSocket::SendTo(                          // Return 0 on success, non-ze
 // In all cases, if the connection was abortively disconnected, an error will
 // be returned.
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::Receive(                         // Returns 0 on success, non-zero otherwise
-   void* pBuf,                                  // In:  Pointer to data buffer
-   int32_t lMaxBytes,                              // In:  Maximum bytes that can fit in buffer
-   int32_t* plActualBytes)                         // Out: Actual number of bytes received
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::Receive(                       // Returns 0 on success, non-zero otherwise
+  void* pBuf,                                   // In:  Pointer to data buffer
+  int32_t lMaxBytes,                            // In:  Maximum bytes that can fit in buffer
+  int32_t* plActualBytes)                       // Out: Actual number of bytes received
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->Receive(pBuf, lMaxBytes, plActualBytes);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::Receive(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->Receive(pBuf, lMaxBytes, plActualBytes);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::Receive(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Receive data and get source address
 ////////////////////////////////////////////////////////////////////////////////
-int16_t RSocket::ReceiveFrom(                     // Returns 0 on success, non-zero otherwise
-   void* pBuf,                                  // In:  Pointer to data buffer
-   int32_t lMaxBytes,                              // In:  Maxiumm bytes that fit in buffer
-   int32_t* plActualBytes,                         // Out: Actual number of bytes received into buffer
-   RSocket::Address* paddress)                  // Out: Source address returned here
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::ReceiveFrom(                   // Returns 0 on success, non-zero otherwise
+  void* pBuf,                                   // In:  Pointer to data buffer
+  int32_t lMaxBytes,                            // In:  Maxiumm bytes that fit in buffer
+  int32_t* plActualBytes,                       // Out: Actual number of bytes received into buffer
+  RSocket::Address* paddress)                   // Out: Source address returned here
+{
+  int16_t sResult = FAILURE;
 
-   if (m_pProtocol)
-      sResult = m_pProtocol->ReceiveFrom(pBuf, lMaxBytes, plActualBytes, paddress);
-   else
-      {
-      sResult = -1;
-      TRACE("RSocket::ReceiveFrom(): Not open!\n");
-      }
+  if (m_pProtocol)
+    sResult = m_pProtocol->ReceiveFrom(pBuf, lMaxBytes, plActualBytes, paddress);
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::ReceiveFrom(): Not open!\n");
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -475,56 +476,56 @@ int16_t RSocket::ReceiveFrom(                     // Returns 0 on success, non-z
 // single receive which is normally equal to the total amount of queued data.
 ////////////////////////////////////////////////////////////////////////////////
 int32_t RSocket::CheckReceivableBytes(void)
-   {
-   int32_t lResult = 0;
+{
+  int32_t lResult = 0;
 
-   if (m_pProtocol)
-      lResult = m_pProtocol->CheckReceivableBytes();
+  if (m_pProtocol)
+    lResult = m_pProtocol->CheckReceivableBytes();
 
-   return lResult;
-   }
+  return lResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // CanAcceptWithoutBlocking
 ////////////////////////////////////////////////////////////////////////////////
 bool RSocket::CanAcceptWithoutBlocking(void)
-   {
-   bool bNoBlock = false;
+{
+  bool bNoBlock = false;
 
-   if (m_pProtocol)
-      bNoBlock = m_pProtocol->CanAcceptWithoutBlocking();
+  if (m_pProtocol)
+    bNoBlock = m_pProtocol->CanAcceptWithoutBlocking();
 
-   return bNoBlock;
-   }
+  return bNoBlock;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // CanSendWithoutBlocking
 ////////////////////////////////////////////////////////////////////////////////
 bool RSocket::CanSendWithoutBlocking(void)
-   {
-   bool bNoBlock = false;
+{
+  bool bNoBlock = false;
 
-   if (m_pProtocol)
-      bNoBlock = m_pProtocol->CanSendWithoutBlocking();
+  if (m_pProtocol)
+    bNoBlock = m_pProtocol->CanSendWithoutBlocking();
 
-   return bNoBlock;
-   }
+  return bNoBlock;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // CanReceiveWithoutBlocking
 ////////////////////////////////////////////////////////////////////////////////
 bool RSocket::CanReceiveWithoutBlocking(void)
-   {
-   bool bNoBlock = false;
+{
+  bool bNoBlock = false;
 
-   if (m_pProtocol)
-      bNoBlock = m_pProtocol->CanReceiveWithoutBlocking();
+  if (m_pProtocol)
+    bNoBlock = m_pProtocol->CanReceiveWithoutBlocking();
 
-   return bNoBlock;
-   }
+  return bNoBlock;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -532,14 +533,14 @@ bool RSocket::CanReceiveWithoutBlocking(void)
 // value will be false (no error)
 ////////////////////////////////////////////////////////////////////////////////
 bool RSocket::IsError(void)
-   {
-   bool bResult = false;
+{
+  bool bResult = false;
 
-   if (m_pProtocol)
-      bResult = m_pProtocol->IsError();
+  if (m_pProtocol)
+    bResult = m_pProtocol->IsError();
 
-   return bResult;
-   }
+  return bResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -554,48 +555,48 @@ bool RSocket::IsError(void)
 //
 ////////////////////////////////////////////////////////////////////////////////
 // static
-int16_t RSocket::Startup(                // Returns 0 if successfull, non-zero otherwise
-   RSocket::ProtoType prototype,       // In:  Protocol type
-   bool bAutoShutdown)                 // In:  Whether to perform auto Shutdown()
-   {
-   int16_t sResult = 0;
+int16_t RSocket::Startup(                       // Returns 0 if successfull, non-zero otherwise
+  RSocket::ProtoType prototype,                 // In:  Protocol type
+  bool bAutoShutdown)                           // In:  Whether to perform auto Shutdown()
+{
+  int16_t sResult = 0;
 
-   // Only do this once
-   if (!ms_bDidStartup)
+  // Only do this once
+  if (!ms_bDidStartup)
+  {
+    // Make sure no sockets exist
+    if (ms_sNumSockets == 0)
+    {
+      // Set new stuff
+      ms_prototype = prototype;
+      ms_bAutoShutdown = bAutoShutdown;
+
+      // Call the protocol's startup
+      switch (ms_prototype)
       {
-      // Make sure no sockets exist
-      if (ms_sNumSockets == 0)
-         {
-         // Set new stuff
-         ms_prototype = prototype;
-         ms_bAutoShutdown = bAutoShutdown;
+        case RSocket::TCPIP:
+          ASSERT(sizeof(RProtocolBSDIP::AddressIP) == sizeof(RSocket::Address));
+          sResult = RProtocolBSDIP::Startup();
+          break;
 
-         // Call the protocol's startup
-         switch (ms_prototype)
-            {
-            case RSocket::TCPIP:
-               ASSERT(sizeof(RProtocolBSDIP::AddressIP) == sizeof(RSocket::Address));
-               //sResult = RProtocolBSDIP::Startup();
-               break;
-
-            default:
-               sResult = -1;
-               TRACE("RSocket::Startup(): Unknown procol!\n");
-               break;
-            }
-         }
-      else
-         {
-         sResult = -1;
-         TRACE("RSocket::Startup(): Can't change protocol -- %hd RSockets still exist!\n", (int16_t)ms_sNumSockets);
-         }
-
-      if (sResult == 0)
-         ms_bDidStartup = true;
+        default:
+          sResult = -1;
+          TRACE("RSocket::Startup(): Unknown procol!\n");
+          break;
       }
+    }
+    else
+    {
+      sResult = -1;
+      TRACE("RSocket::Startup(): Can't change protocol -- %hd RSockets still exist!\n", (int16_t)ms_sNumSockets);
+    }
 
-   return sResult;
-   }
+    if (sResult == 0)
+      ms_bDidStartup = true;
+  }
+
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -603,22 +604,22 @@ int16_t RSocket::Startup(                // Returns 0 if successfull, non-zero o
 ////////////////////////////////////////////////////////////////////////////////
 // static
 void RSocket::Shutdown(void)
-   {
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //RProtocolBSDIP::Shutdown();
-         break;
+{
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      RProtocolBSDIP::Shutdown();
+      break;
 
-      default:
-         TRACE("RSocket::Shutdown(): Unknown protocol!\n");
-         break;
-      }
-   ms_bDidStartup = false;
+    default:
+      TRACE("RSocket::Shutdown(): Unknown protocol!\n");
+      break;
+  }
+  ms_bDidStartup = false;
 
-   // Clear protocol so we know it's safe to change it
-   ms_prototype = RSocket::NO_PROTOCOL;
-   }
+  // Clear protocol so we know it's safe to change it
+  ms_prototype = RSocket::NO_PROTOCOL;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -629,25 +630,25 @@ void RSocket::Shutdown(void)
 // function is called before any protocol has been selected, it fails.
 ////////////////////////////////////////////////////////////////////////////////
 // static
-int16_t RSocket::GetMaxDatagramSize(              // Returns 0 on success, non-zero otherwise
-   int32_t* plSize)                                // Out: Maximum datagram size (in bytes)
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::GetMaxDatagramSize(            // Returns 0 on success, non-zero otherwise
+  int32_t* plSize)                              // Out: Maximum datagram size (in bytes)
+{
+  int16_t sResult = FAILURE;
 
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //sResult = RProtocolBSDIP::GetMaxDatagramSize(plSize);
-         break;
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      sResult = RProtocolBSDIP::GetMaxDatagramSize(plSize);
+      break;
 
-      default:
-         sResult = -1;
-         TRACE("RSocket::GetMaxDatagramSize(): Unknown protocol!\n");
-         break;
-      }
+    default:
+      sResult = -1;
+      TRACE("RSocket::GetMaxDatagramSize(): Unknown protocol!\n");
+      break;
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -659,25 +660,25 @@ int16_t RSocket::GetMaxDatagramSize(              // Returns 0 on success, non-z
 // function is called before any protocol has been selected, it fails.
 ////////////////////////////////////////////////////////////////////////////////
 // static
-int16_t RSocket::GetMaxSockets(                   // Returns 0 on success, non-zero otherwise
-   int32_t* plNum)                                 // Out: Maximum number of sockets
-   {
-   int16_t sResult = FAILURE;
+int16_t RSocket::GetMaxSockets(                 // Returns 0 on success, non-zero otherwise
+  int32_t* plNum)                               // Out: Maximum number of sockets
+{
+  int16_t sResult = FAILURE;
 
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //sResult = RProtocolBSDIP::GetMaxSockets(plNum);
-         break;
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      sResult = RProtocolBSDIP::GetMaxSockets(plNum);
+      break;
 
-      default:
-         sResult = -1;
-         TRACE("RSocket::GetMaxSockets(): Unknown protocol!\n");
-         break;
-      }
+    default:
+      sResult = -1;
+      TRACE("RSocket::GetMaxSockets(): Unknown protocol!\n");
+      break;
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -687,66 +688,66 @@ int16_t RSocket::GetMaxSockets(                   // Returns 0 on success, non-z
 // function is called before any protocol has been selected, it fails.
 ////////////////////////////////////////////////////////////////////////////////
 // static
-int16_t RSocket::GetAddress(                      // Returns 0 on success, non-zero otherwise
-   char const *  pszName,                                // In:  Host's name or dotted addres (x.x.x.x)
-   uint16_t usPort,                               // In:  Host's port number
-   RSocket::Address* paddress)                  // Out: Address
-   {
-   int16_t sResult = 0;
+int16_t RSocket::GetAddress(                    // Returns 0 on success, non-zero otherwise
+  char const *  pszName,                        // In:  Host's name or dotted addres (x.x.x.x)
+  uint16_t usPort,                              // In:  Host's port number
+  RSocket::Address* paddress)                   // Out: Address
+{
+  int16_t sResult = 0;
 
-   // Get rid of leading and trailing whitespace
-   char azName[RSP_MAX_PATH];
-   if (strlen(pszName) < RSP_MAX_PATH)
-      {
-      // Skip over leading whitespace
-      while ((*pszName != 0) && isspace(*pszName))
-         pszName++;
+  // Get rid of leading and trailing whitespace
+  char azName[RSP_MAX_PATH];
+  if (strlen(pszName) < RSP_MAX_PATH)
+  {
+    // Skip over leading whitespace
+    while ((*pszName != 0) && isspace(*pszName))
+      pszName++;
 
-      // Copy resulting string
-      strcpy(azName, pszName);
+    // Copy resulting string
+    strcpy(azName, pszName);
 
-      // Convert trailing whitespace to 0's
-      int32_t index;
-      for (index = strlen(azName) - 1; index >= 0; index--)
-         {
-         if (isspace(azName[index]))
-            azName[index] = 0;
-         else
-            break;
-         }
-      if (index < 0)
-         {
-         sResult = -1;
-         TRACE("RSocket::GetAddress(): String is empty (after removing leading & trailing space)\n");
-         }
-      }
-   else
-      {
+    // Convert trailing whitespace to 0's
+    int32_t index;
+    for (index = strlen(azName) - 1; index >= 0; index--)
+    {
+      if (isspace(azName[index]))
+        azName[index] = 0;
+      else
+        break;
+    }
+    if (index < 0)
+    {
       sResult = -1;
-      TRACE("RSocket::GetAddress(): Specified string is too long!\n");
-      }
+      TRACE("RSocket::GetAddress(): String is empty (after removing leading & trailing space)\n");
+    }
+  }
+  else
+  {
+    sResult = -1;
+    TRACE("RSocket::GetAddress(): Specified string is too long!\n");
+  }
 
-   // Make sure we don't accidently use this pointer -- must use azName instead!
-   pszName = 0;
+  // Make sure we don't accidently use this pointer -- must use azName instead!
+  pszName = 0;
 
-   // If the name is ready, try to get the address
-   if (sResult == 0)
-      {
-      switch (ms_prototype)
-         {
-         case RSocket::TCPIP:
-            //sResult = RProtocolBSDIP::GetAddress(azName, usPort, paddress);
-            break;
+  // If the name is ready, try to get the address
+  if (sResult == 0)
+  {
+    switch (ms_prototype)
+    {
+      case RSocket::TCPIP:
+        sResult = RProtocolBSDIP::GetAddress(azName, usPort, paddress);
+        break;
 
-         default:
-            sResult = -1;
-            TRACE("RSocket::GetAddress(): Unknown protocol!\n");
-            break;
-         }
-      }
+      default:
+        sResult = -1;
+        TRACE("RSocket::GetAddress(): Unknown protocol!\n");
+        break;
+    }
+  }
 
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -754,20 +755,20 @@ int16_t RSocket::GetAddress(                      // Returns 0 on success, non-z
 ////////////////////////////////////////////////////////////////////////////////
 // static
 void RSocket::CreateBroadcastAddress(
-   uint16_t usPort,                       // In:  Port to broadcast to
-   RSocket::Address* paddress)                  // Out: Broadcast address returned here
-   {
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //RProtocolBSDIP::CreateBroadcastAddress(usPort, paddress);
-         break;
+  uint16_t usPort,                              // In:  Port to broadcast to
+  RSocket::Address* paddress)                   // Out: Broadcast address returned here
+{
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      RProtocolBSDIP::CreateBroadcastAddress(usPort, paddress);
+      break;
 
-      default:
-         TRACE("RSocket::GetAddress(): Unknown protocol!\n");
-         break;
-      }
-   }
+    default:
+      TRACE("RSocket::GetAddress(): Unknown protocol!\n");
+      break;
+  }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -777,24 +778,25 @@ void RSocket::CreateBroadcastAddress(
 // function is called before any protocol has been selected, it fails.
 ////////////////////////////////////////////////////////////////////////////////
 // static
-uint16_t RSocket::GetAddressPort(         // Returns the port number
-   RSocket::Address* paddress)                  // In:  Address to get port from
-   {
-   uint16_t usPort = 0;
+uint16_t RSocket::GetAddressPort(               // Returns the port number
+  RSocket::Address* paddress)                   // In:  Address to get port from
+{
+  (void)paddress;
+  uint16_t usPort = 0;
 
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //usPort = RProtocolBSDIP::GetAddressPort(paddress);
-         break;
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      usPort = RProtocolBSDIP::GetAddressPort(paddress);
+      break;
 
-      default:
-         TRACE("RSocket::GetAddressPort(): Unknown protocol!\n");
-         break;
-      }
+    default:
+      TRACE("RSocket::GetAddressPort(): Unknown protocol!\n");
+      break;
+  }
 
-   return usPort;
-   }
+  return usPort;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -805,20 +807,20 @@ uint16_t RSocket::GetAddressPort(         // Returns the port number
 ////////////////////////////////////////////////////////////////////////////////
 // static
 void RSocket::SetAddressPort(
-   uint16_t usPort,                               // In:  New port number
-   RSocket::Address* paddress)                  // I/O: Address whose port is to be set
-   {
-   switch (ms_prototype)
-      {
-      case RSocket::TCPIP:
-         //RProtocolBSDIP::SetAddressPort(usPort, paddress);
-         break;
+  uint16_t usPort,                              // In:  New port number
+  RSocket::Address* paddress)                   // I/O: Address whose port is to be set
+{
+  switch (ms_prototype)
+  {
+    case RSocket::TCPIP:
+      RProtocolBSDIP::SetAddressPort(usPort, paddress);
+      break;
 
-      default:
-         TRACE("RSocket::SetAddressPort(): Unknown protocol!\n");
-         break;
-      }
-   }
+    default:
+      TRACE("RSocket::SetAddressPort(): Unknown protocol!\n");
+      break;
+  }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -828,23 +830,23 @@ void RSocket::SetAddressPort(
 // since there can only be one modem in use (unless the user is stupid and wears
 // false antlers), we only need one instance on RProtocolTAPI, which is global:
 RSocket::RProtocol* RSocket::ConstructProtocol( // Returns pointer to prototype if successfull, 0 otherwise
-   RSocket::ProtoType prototype)                // In:  Protocol type to create
-   {
-   RProtocol* pprotocol = 0;
+  RSocket::ProtoType prototype)                 // In:  Protocol type to create
+{
+  RProtocol* pprotocol = 0;
 
-   switch (prototype)
-      {
-      case RSocket::TCPIP:
-         //pprotocol = new RProtocolBSDIP;
-         break;
+  switch (prototype)
+  {
+    case RSocket::TCPIP:
+      pprotocol = new RProtocolBSDIP;
+      break;
 
-      default:
-         TRACE("RSocket::ConstructProtocol(): Unknown protocol!\n");
-         break;
-      }
+    default:
+      TRACE("RSocket::ConstructProtocol(): Unknown protocol!\n");
+      break;
+  }
 
-   return pprotocol;
-   }
+  return pprotocol;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////

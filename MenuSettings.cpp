@@ -83,11 +83,15 @@ static Menu*   ms_apmenus[]   =
    {
    &menuMain,
    &menuClientGame,
+#ifndef EDITOR_REMOVED
    &menuEditor,
+#endif
    &g_menuVerifyQuitGame,
    &menuStart,
    &menuStartSingle,
+#ifndef MULTIPLAYER_REMOVED
    &menuStartMulti,
+#endif
    &menuStartDemo,
    &menuChallenge,
    &menuOptions,
@@ -96,7 +100,9 @@ static Menu*   ms_apmenus[]   =
    &menuMouse,
    &menuJoystick,
    &menuVerifyExit,
+#ifndef MULTIPLAYER_REMOVED
    &menuMultiOptions,
+#endif
    &menuFeatures,
    &menuChallenge,
    &menuVolumes,
@@ -137,8 +143,8 @@ int16_t CMenuSettings::LoadPrefs(
    int16_t sResult = 0;
 
    // Check for entries for all our menus.
-   int16_t sMenu;
-   int16_t sMenuItem;
+   uint16_t sMenu;
+   uint16_t sMenuItem;
    char  szSection[256];
    for (sMenu = 0; sMenu < NUM_ELEMENTS(ms_apmenus); sMenu++)
       {
@@ -180,6 +186,7 @@ int16_t CMenuSettings::SavePrefs(
 int16_t CMenuSettings::LoadGame(
    RFile* pFile)
    {
+    (void)pFile;
    return 0;
    }
 
@@ -190,6 +197,7 @@ int16_t CMenuSettings::LoadGame(
 int16_t CMenuSettings::SaveGame(
    RFile* pFile)
    {
+    (void)pFile;
    return 0;
    }
 
@@ -200,6 +208,7 @@ int16_t CMenuSettings::SaveGame(
 int16_t CMenuSettings::PreDemo(
    RFile* pFile)
    {
+    (void)pFile;
    return 0;
    }
 
@@ -210,6 +219,7 @@ int16_t CMenuSettings::PreDemo(
 int16_t CMenuSettings::PostDemo(
    RFile* pFile)
    {
+    (void)pFile;
    return 0;
    }
 

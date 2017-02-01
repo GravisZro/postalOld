@@ -52,8 +52,10 @@
 #include <Game.h>
 #include <Realm.h>
 #include <Network/Net.h>
-#include <Network/NetClient.h>
 
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/NetClient.h>
+#endif
 
 class CScoreboard
 {
@@ -155,10 +157,10 @@ class CScoreboard
       }
 
       void SetScoringMode(ScoringMode Mode)
-         {m_ScoringMode = Mode;};
+         {m_ScoringMode = Mode;}
 
       int16_t GetScoringMode(void)
-         {return m_ScoringMode;};
+         {return m_ScoringMode;}
 
 };
 

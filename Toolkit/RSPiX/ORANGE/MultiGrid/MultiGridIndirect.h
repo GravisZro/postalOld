@@ -115,6 +115,7 @@ public:
 	//
 	int16_t	GetVal(uint8_t*	pszResult,int16_t sX, int16_t sY,char ucClipVal = -1)
 		{
+     (void)ucClipVal;
 		//-----------------------------------------------------------------
 		ASSERT(m_pmg);
 		ASSERT(m_pucPalette);

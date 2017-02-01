@@ -146,10 +146,14 @@
 #include <RSPiX.h>
 #include "GameSettings.h"
 #include <Game.h>
-#include <Network/Net.h>
 #include <SampleMaster.h>
-#include <Network/Socket.h>
 #include <Thing/Thing3D/Character/Dude.h> // For MaxTextures.
+
+#include <Network/Net.h>
+
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/Socket.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 // Macros.
@@ -213,7 +217,9 @@ CGameSettings::CGameSettings(void)
 
    m_szServerName[0]          = 0;
    m_usServerPort             = 61663;
+#ifndef MULTIPLAYER_REMOVED
    m_usProtocol               = RSocket::FirstProtocol;
+#endif
    m_szPlayerName[0]          = 0;
    m_sPlayerColorIndex        = 0;
    m_sNetBandwidth            = Net::Analog28_8;
@@ -275,7 +281,7 @@ CGameSettings::CGameSettings(void)
    m_eCurSoundQuality         = SampleMaster::SQ_22050_8;
 
    // Initialize all category volumes.
-   int16_t i;
+   uint16_t i;
    for (i = 0; i < SampleMaster::MAX_NUM_SOUND_CATEGORIES; i++)
       {
       m_asCategoryVolumes[i] = SampleMaster::UserDefaultVolume;
@@ -394,8 +400,10 @@ int16_t CGameSettings::LoadPrefs(
    pPrefs->GetVal("Multiplayer", "Server", m_szServerName, m_szServerName);
    pPrefs->GetVal("Multiplayer", "Port", m_usServerPort, &m_usServerPort);
    pPrefs->GetVal("Multiplayer", "Protocol", m_usProtocol, &m_usProtocol);
+#ifndef MULTIPLAYER_REMOVED
    if (m_usProtocol >= RSocket::NumProtocols)
       m_usProtocol = RSocket::FirstProtocol;
+#endif
    pPrefs->GetVal("Multiplayer", "Name", m_szPlayerName, m_szPlayerName);
    pPrefs->GetVal("Multiplayer", "Color", m_sPlayerColorIndex, &m_sPlayerColorIndex);
    pPrefs->GetVal("Multiplayer", "Bandwidth", m_sNetBandwidth, &m_sNetBandwidth);

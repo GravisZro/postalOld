@@ -46,6 +46,8 @@
 #include <RSPiX.h>
 #include <Thing/Hood.h>
 
+class CDude;
+
 // Because I do NOT yet want to be forced to put the entire clas in the header, I
 // am ALIASING the hooks to the toolbar so recompiles will be minimal:
 

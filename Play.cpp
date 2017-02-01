@@ -348,7 +348,6 @@
 #include <Menus.h>
 #include <SampleMaster.h>
 #include <Reality.h>
-#include <Network/NetDlg.h>
 #include <Cutscene.h>
 #include "Play.h"
 #include <Thing/Warp.h>
@@ -359,6 +358,12 @@
 #include <Toolbar.h>
 #include <Title.h>
 #include <Credits.h>
+
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/NetDlg.h>
+#endif
+
+
 #ifdef WIN32
    #include <log.h>
 #endif
@@ -1704,6 +1709,7 @@ class CPlayNet : public CPlay
 
             pinfo->m_bDoRealmFrame = false;
 
+#ifndef MULTIPLAYER_REMOVED
             // Call this periodically to let it know we're not locked up
             NetBlockingWatchdog();
 
@@ -1740,6 +1746,7 @@ class CPlayNet : public CPlay
 
             // Tell the server we've got the realm ready to go
             pclient->SendRealmStatus(true);
+#endif
             }
          return 0;
          }
@@ -1754,6 +1761,10 @@ class CPlayNet : public CPlay
          {
          if (pinfo->IsMP())
             {
+#ifdef MULTIPLAYER_REMOVED
+           ASSERT(0);
+#else
+
             // Most of the players will likely end up waiting for at least one other
             // player to start, which means they are staring at a blank screen.  To
             // alleviate their fears of a lockup, we show this message.
@@ -1772,6 +1783,7 @@ class CPlayNet : public CPlay
                rspUpdateDisplay(ptxt->m_sX, ptxt->m_sY, ptxt->m_im.m_sWidth, ptxt->m_im.m_sHeight);
                m_bShowNetFeedback = true;
                }
+#endif
             }
          return 0;
          }
@@ -1786,6 +1798,9 @@ class CPlayNet : public CPlay
          {
          if (pinfo->IsMP())
             {
+#ifdef MULTIPLAYER_REMOVED
+           ASSERT(0);
+#else
             // Get pointers to make this more readable
             CNetServer* pserver = pinfo->Server();
             CNetClient* pclient = pinfo->Client();
@@ -1943,6 +1958,7 @@ class CPlayNet : public CPlay
 
 
                }
+#endif
             }
          }
 
@@ -1957,7 +1973,9 @@ class CPlayNet : public CPlay
          // If we're in MP mode, then  there's always a client and there may be a server
          if (pinfo->IsMP())
             {
-
+#ifdef MULTIPLAYER_REMOVED
+           ASSERT(0);
+#else
             // Get pointers to make this more readable
             CNetServer* pserver = pinfo->Server();
             CNetClient* pclient = pinfo->Client();
@@ -2203,6 +2221,7 @@ class CPlayNet : public CPlay
                // Move the chats up -- this updates m_lLastChatMoveTime.
                MoveChatsUp(pinfo);
                }
+#endif
             }
          }
 
@@ -2216,6 +2235,9 @@ class CPlayNet : public CPlay
          {
          if (pinfo->IsMP())
             {
+#ifdef MULTIPLAYER_REMOVED
+           ASSERT(0);
+#else
             // Draw chats, if any.
             DrawChats(pinfo);
 
@@ -2234,6 +2256,7 @@ class CPlayNet : public CPlay
                   pinfo->m_drl.Add(ptxt->m_sX, ptxt->m_sY, ptxt->m_im.m_sWidth, ptxt->m_im.m_sHeight);
                   }
                }
+#endif
             }
          }
 
@@ -2348,8 +2371,10 @@ class CPlayStatus : public CPlay
             /*** 12/3/97 AJC ***/
             m_seqCurrFrameSeq = 0;
             m_lFramePerSecond = 0;
+#ifndef MULTIPLAYER_REMOVED
             if (pinfo->IsMP())
                m_seqPrevFrameSeq = pinfo->Client()->GetInputSeqNotYetSent();
+#endif
             m_lPrevSeqTime = rspGetMilliseconds();
             /*** 12/3/97 AJC ***/
 
@@ -2443,7 +2468,9 @@ class CPlayStatus : public CPlay
             /**** 12/3/97  AJC ****/
             if (pinfo->IsMP())
                {
-
+#ifdef MULTIPLAYER_REMOVED
+              ASSERT(0);
+#else
                // Get current frame sequence number
                   m_seqCurrFrameSeq = pinfo->Client()->GetInputSeqNotYetSent();
 
@@ -2456,6 +2483,7 @@ class CPlayStatus : public CPlay
                   m_seqPrevFrameSeq = m_seqCurrFrameSeq;
                   m_lPrevSeqTime = lCurrSeqTime;
                   }
+#endif
                }
             /**** 12/3/97  AJC ****/
 
@@ -2819,11 +2847,15 @@ class CPlayInput : public CPlay
                            case KEY_NEXT_LEVEL:
                               if (pinfo->IsMP())
                                  {
+#ifdef MULTIPLAYER_REMOVED
+                                ASSERT(0);
+#else
                                  // Only the server's local user can advance to the next level, but even
                                  // then only when the game is playing.  The actual handling of this
                                  // is done elsewhere -- we just set the flag here.
                                  if (pinfo->IsServer() && pinfo->Client()->IsPlaying())
                                     pinfo->m_bNextRealmMP = true;
+#endif
                                  }
                               else
                                  {
@@ -2929,6 +2961,10 @@ class CPlayInput : public CPlay
                         // If in talk mode . . .
                         if (pinfo->m_bChatting == true && m_peditChatIn && pinfo->IsMP() )
                            {
+#ifdef MULTIPLAYER_REMOVED
+                          ASSERT(0);
+#else
+
                            switch (pie->lKey)
                               {
                               case KEY_ACCEPT_CHAT:
@@ -2982,6 +3018,7 @@ class CPlayInput : public CPlay
                                  m_peditChatIn->Do(pie);
                                  break;
                               }
+#endif
                            }
                         }
                      else
@@ -3087,11 +3124,15 @@ class CPlayInput : public CPlay
 
                if (pinfo->IsMP())
                   {
+#ifdef MULTIPLAYER_REMOVED
+                 ASSERT(0);
+#else
                   if (pinfo->IsServer() && pinfo->Client()->IsPlaying())
                      {
                      if (prealm->IsEndOfLevelGoalMet(bEndLevelKey))
                         pinfo->m_bNextRealmMP = true;
                      }
+#endif
                   }
                else
                   {
@@ -4148,6 +4189,9 @@ class CPlayRealm : public CPlay
             // Multiplayer mode is handled separately
             if (pinfo->IsMP())
                {
+#ifdef MULTIPLAYER_REMOVED
+              ASSERT(0);
+#else
                // Get convenient pointer
                CNetClient* pclient = pinfo->Client();
 
@@ -4201,6 +4245,7 @@ class CPlayRealm : public CPlay
                      plnWarp  = plnWarp->m_pnNext;
                      }
                   }
+#endif
                }
             else
                {
@@ -4598,9 +4643,13 @@ class CPlayScore : public CPlay
             // Set the scoring type
             if (pinfo->IsMP())
                {
+#ifdef MULTIPLAYER_REMOVED
+              ASSERT(0);
+#else
                ScoreSetMode(CScoreboard::MultiPlayer);
                if (pinfo->Realm()->m_ScoringMode == 0)
                   pinfo->Realm()->m_ScoringMode = CRealm::MPFrag;
+#endif
                }
             else
                {
@@ -5002,6 +5051,9 @@ extern int16_t Play(                              // Returns 0 if successfull, n
                         // the flags passed into play.
                         if (pclient)
                         {
+#ifdef MULTIPLAYER_REMOVED
+                          ASSERT(0);
+#else
                            info.Realm()->m_sKillsGoal = sKillLimit;
                            info.Realm()->m_lScoreInitialTime = info.Realm()->m_lScoreTimeDisplay = (int32_t)sTimeLimit * (int32_t)60000;
 
@@ -5038,7 +5090,9 @@ extern int16_t Play(                              // Returns 0 if successfull, n
                               if (sKillLimit <= 0 && sTimeLimit <= 0)
                                  info.Realm()->m_ScoringMode = CRealm::MPLastMan;
                            }
+#endif
                         }
+
                         // Start realm
                         sResult = playgroup.StartRealm(&info);
                         if (sResult == 0)

@@ -281,7 +281,7 @@ class CBufQ
          int32_t  lNumPut  = -1;
          uint8_t*   pu8Buf   = (uint8_t*)pu16Buf;
 
-         #ifdef SYS_ENDIAN_BIG
+         #ifdef __BIG_ENDIAN__
             while (++lNumPut < lNum)
                {
                Put(*pu8Buf++);
@@ -327,7 +327,7 @@ class CBufQ
          int32_t  lNumPut  = -1;
          uint8_t*   pu8Buf   = (uint8_t*)pu32Buf;
 
-         #ifdef SYS_ENDIAN_BIG
+         #ifdef __BIG_ENDIAN__
             while (++lNumPut < lNum)
                {
                Put(*pu8Buf++);
@@ -420,7 +420,7 @@ class CBufQ
          int32_t  lNumGot  = -1;
          uint8_t*   pu8Buf   = (uint8_t*)pu16Buf;
 
-         #ifdef SYS_ENDIAN_BIG
+         #ifdef __BIG_ENDIAN__
             while (++lNumGot < lNum)
                {
                Get(pu8Buf++);
@@ -454,7 +454,7 @@ class CBufQ
          int32_t  lNumGot  = -1;
          uint8_t*   pu8Buf   = (uint8_t*)pu32Buf;
 
-         #ifdef SYS_ENDIAN_BIG
+         #ifdef __BIG_ENDIAN__
             while (++lNumGot < lNum)
                {
                Get(pu8Buf++);

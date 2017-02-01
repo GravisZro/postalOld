@@ -636,7 +636,7 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
 
    int16_t sCurFontSize = 0;
    int16_t sCurTabX = 0;
-   CTextPhrase::Justify eCurJust = CTextPhrase::Left;
+   //CTextPhrase::Justify eCurJust = CTextPhrase::Left;
    int16_t sCurColor = 255;
 
    CTextChunk* pChunk = new CTextChunk;
@@ -696,13 +696,14 @@ int16_t CFileTextInput::ParseTextInput(FILE* fp)
       if (!strcmp(pszToken+1,"tab"))
          {
          pCurPhrase->m_sLocalX = sCurTabX = atoi(m_bf.NextToken());
-
+/*
          switch   (*pszToken)
             {
             case 'l': eCurJust = pCurPhrase->m_eJust = CTextPhrase::Left; break;
             case 'r': eCurJust = pCurPhrase->m_eJust = CTextPhrase::Right; break;
             case 'c': eCurJust = pCurPhrase->m_eJust = CTextPhrase::Center; break;
             }
+*/
          continue;
          }
       //-----------------------------------------------------
@@ -1046,9 +1047,8 @@ int16_t Credits(SampleMasterID* pMusic,
                      char* pszBackground,
                      char* pszCredits)
 {
-   int16_t sResult = 0;
-
 #ifdef SHOW_EXIT_SCREEN
+  int16_t sResult = 0;
 
    RImage*  pimBackground;
    sResult = rspGetResource(&g_resmgrShell, EXIT_BG, &pimBackground);

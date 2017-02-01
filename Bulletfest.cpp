@@ -297,6 +297,9 @@ bool GetTerrainAngle(         // true, if terrain angle determined.
    int16_t* psAngle)            // Out: Angle of terrain at specified location
                               // on X/Z plane.
    {
+  (void)sMaxOutIterations;
+  (void)sNumScanIterations;
+  (void)sInAngle;
    bool bFoundAngle  = false; // Assume not found.
 #if 0  // NOT WORKING CORRECTLY.
 
@@ -405,7 +408,7 @@ bool GetTerrainAngle(         // true, if terrain angle determined.
 
 #else
    // Check 4 surrounding points.
-   int16_t sIndex   = 0;
+   size_t sIndex   = 0;
    if (GetMaxHeight(pRealm, sX - TERRAIN_CHECK_DIST - TERRAIN_CHECK_GRANULARITY / 2, sZ - TERRAIN_CHECK_DIST - TERRAIN_CHECK_GRANULARITY / 2, TERRAIN_CHECK_GRANULARITY, TERRAIN_CHECK_GRANULARITY) > sY)
       sIndex   = LEFT_TOP;
    if (GetMaxHeight(pRealm, sX + TERRAIN_CHECK_DIST + TERRAIN_CHECK_GRANULARITY / 2, sZ - TERRAIN_CHECK_DIST - TERRAIN_CHECK_GRANULARITY / 2, TERRAIN_CHECK_GRANULARITY, TERRAIN_CHECK_GRANULARITY) > sY)
@@ -458,6 +461,7 @@ bool CBulletFest::FireDeluxe( // Returns what and as Fire() would.
    bool  bTracer /*= true*/,  // In:  Draw a tracer at random point along path.
    SampleMasterID smid  /*= g_smidBulletFire*/) // In:  Use ammo sample.
    {
+  (void)sMaxRicochetAngle;
    bool bHit   = false; // Assume no collision with CThing within u32ThingMask.
 
    // Create a muzzle flare.
@@ -465,7 +469,7 @@ bool CBulletFest::FireDeluxe( // Returns what and as Fire() would.
 
    int16_t sRicochets     = 0;
    bool  bImpact        = false;
-   int16_t sTerrainAngle  = 0;
+//   int16_t sTerrainAngle  = 0;
    // While no hits and not out of ricochets . . .
    while (bHit == false && sRicochets <= sMaxRicochets && bImpact == false)
       {
@@ -602,6 +606,7 @@ void CBulletFest::Flare(      // Returns nothing.
    CRealm* pRealm,            // In:  Realm in which to fire.
    SampleMasterID smid  /*= g_smidBulletFire*/) // In:  Use ammo sample.
    {
+  (void)sAngle;
    // Create the animator . . .
    CAnimThing* pat   = new CAnimThing(pRealm);
    ASSERT(pat);
@@ -634,6 +639,7 @@ void CBulletFest::Impact(  // Returns nothing.
    int16_t sZ,               // In:  Launch position.
    CRealm* pRealm)         // In:  Realm in which to fire.
    {
+  (void)sAngle;
    // Create the animator . . .
    CAnimThing* pat   = new CAnimThing(pRealm);
    ASSERT(pat);
@@ -660,6 +666,7 @@ void CBulletFest::Ricochet(   // Returns nothing.
    int16_t sZ,                  // In:  Launch position.
    CRealm* pRealm)            // In:  Realm in which to fire.
    {
+  (void)sAngle;
    // Create the animator . . .
    CAnimThing* pat   = new CAnimThing(pRealm);
    ASSERT(pat);
@@ -960,6 +967,11 @@ void CBulletFest::UpdateTarget(  // Returns nothing.
    int16_t sZ,                     // In:  Aim position.
    CRealm* pRealm)               // In:  Realm in which to target.
    {
+  (void)sAngle;
+  (void)sX;
+  (void)sY;
+  (void)sZ;
+  (void)pRealm;
    // NYI!
    }
 

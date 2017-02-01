@@ -29,6 +29,12 @@
 #ifndef NET_H
 #define NET_H
 
+#include <stdint.h>
+
+#ifdef MULTIPLAYER_REMOVED
+typedef int CNetClient;
+typedef int CNetServer;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -72,15 +78,8 @@
 
 
 
-#ifdef WIN32
 namespace Net
-   {
-#else
-class Net
-   {
-   public:
-#endif
-
+{
    //------------------------------------------------------------------------------
    // These set some overall limits on various network stuff.
    // The primary reason for moving these into their own file was to get around
@@ -273,17 +272,10 @@ class Net
       NumBandwidths
    };
 
-   // In a namespace this data is extern, but in a class it's static
-   #ifdef WIN32
-      #define NETCRAPTHING extern
-   #else
-      #define NETCRAPTHING static
-   #endif
-
    // Lookup tables associated with the NetBandwidth enums.
-   NETCRAPTHING int32_t const lBandwidthValues[Net::NumBandwidths];
-   NETCRAPTHING char const * const BandwidthText[Net::NumBandwidths];
-   };
+   extern int32_t const lBandwidthValues[Net::NumBandwidths];
+   extern char const * const BandwidthText[Net::NumBandwidths];
+}
 
 
 #endif //NET_H

@@ -25,22 +25,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <RSPiX.h>
 #include "Net.h"
 
-#ifdef WIN32
-   #define NETNAMESPACE
-#else
-   #define NETNAMESPACE    Net::
-#endif
-
 // Lookup tables associated with the CNetLimits::NetBandwidth enums.
-#ifdef WIN32
-namespace Net
-   {
-#endif
-
-   int32_t  const NETNAMESPACE lBandwidthValues[Net::NumBandwidths] =
+namespace
+{
+   int32_t  const lBandwidthValues[Net::NumBandwidths] =
       {
          1400,                // Analog14_4
          2400,                // Analog28_8
@@ -52,7 +42,7 @@ namespace Net
       1000000                 // LAN100Mb
       };
 
-   char const * const NETNAMESPACE BandwidthText[Net::NumBandwidths] =
+   char const * const BandwidthText[Net::NumBandwidths] =
       {
       "14.4 Modem",                 // Analog14_4
       "28.8 Modem",                 // Analog28_8
@@ -63,11 +53,7 @@ namespace Net
       "10Mb LAN (or T1)",           // LAN10Mb
       "100Mb LAN (or T3)"           // LAN100Mb
       };
-
-#ifdef WIN32
-   }
-#endif
-
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

@@ -333,6 +333,10 @@ int16_t RProtocolBSDIP::Open(                     // Returns 0 if successful, no
    {
 
 #if PLATFORM_UNIX
+  (void)usPort;
+  (void)sType;
+  (void)sOptionFlags;
+  (void)callback;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -492,6 +496,7 @@ int16_t RProtocolBSDIP::Close(                    // Returns 0 if successfull, n
    bool bForceNow /*= true */)                  // In:  'true' means do it now, false follows normal rules
    {
 #if PLATFORM_UNIX
+  (void)bForceNow;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -605,6 +610,7 @@ int16_t RProtocolBSDIP::Listen(                   // Returns 0 if successfull, n
    int16_t sMaxQueued /* = 5*/)                   // In:  Maximum number of queued connection requests
    {
 #if PLATFORM_UNIX
+  (void)sMaxQueued;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -666,6 +672,8 @@ int16_t RProtocolBSDIP::Accept(                // Returns 0 on success, non-zero
    RSocket::Address* paddressClient)            // Out: Client address
    {
 #if PLATFORM_UNIX
+  (void)pProtocolClient;
+  (void)paddressClient;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -755,6 +763,7 @@ int16_t RProtocolBSDIP::Connect(                  // Returns 0 if successfull, n
    RSocket::Address* paddress)                  // In:  Remote address to connect to
    {
 #if PLATFORM_UNIX
+  (void)paddress;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -873,6 +882,9 @@ int16_t RProtocolBSDIP::Send(                     // Returns 0 on success, non-z
    int32_t* plActualBytes)                         // Out: Actual number of bytes sent
    {
 #if PLATFORM_UNIX
+  (void)pBuf;
+  (void)lNumBytes;
+  (void)plActualBytes;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -936,6 +948,10 @@ int16_t RProtocolBSDIP::SendTo(                   // Returns 0 on success, non-z
    RSocket::Address* paddress)                  // In:  Address to send to
    {
 #if PLATFORM_UNIX
+  (void)pBuf;
+  (void)lNumBytes;
+  (void)plActualBytes;
+  (void)paddress;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -1007,6 +1023,9 @@ int16_t RProtocolBSDIP::Receive(                // Returns 0 on success, non-zer
    int32_t* plActualBytes)                         // Out: Actual number of bytes recieved into the buffer
    {
 #if PLATFORM_UNIX
+  (void)pBuf;
+  (void)lMaxBytes;
+  (void)plActualBytes;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -1070,6 +1089,10 @@ int16_t RProtocolBSDIP::ReceiveFrom(              // Returns 0 on success, non-z
    RSocket::Address* paddress)                  // Out: Source address returned here
    {
 #if PLATFORM_UNIX
+  (void)pBuf;
+  (void)lMaxBytes;
+  (void)plActualBytes;
+  (void)paddress;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;
@@ -1441,6 +1464,9 @@ int16_t RProtocolBSDIP::GetAddress(               // Returns 0 if successfull, n
    RSocket::Address* paddress)                  // Out: Address
    {
 #if PLATFORM_UNIX
+  (void)pszName;
+  (void)usPort;
+  (void)paddress;
     return(-1);  // !!! FIXME
 #else
    int16_t sResult = 0;

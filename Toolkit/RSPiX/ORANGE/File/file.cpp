@@ -173,18 +173,10 @@ typedef HRESULT (WINAPI *fnSHGetFolderPathW)(HWND hwnd, int nFolder, HANDLE hTok
 //////////////////////////////////////////////////////////////////////////////
 // Module specific macros.
 //////////////////////////////////////////////////////////////////////////////
-#ifdef SYS_ENDIAN_BIG
-	#ifdef SYS_ENDIAN_LITTLE
-		#error SYS_ENDIAN_LITTLE & SYS_ENDIAN_BIG cannot both be defined!
-	#else
-		#define ENDIAN_CONSISTENT	(m_endian != LittleEndian)
-	#endif // SYS_ENDIAN_LITTLE
+#ifdef __BIG_ENDIAN__
+#define ENDIAN_CONSISTENT	(m_endian != LittleEndian)
 #else
-	#ifdef SYS_ENDIAN_LITTLE
-		#define ENDIAN_CONSISTENT	(m_endian != BigEndian)
-	#else
-		#error SYS_ENDIAN_LITTLE or SYS_ENDIAN_BIG must be defined!
-	#endif	// SYS_ENDIAN_LITTLE
+#define ENDIAN_CONSISTENT	(m_endian != BigEndian)
 #endif	// SYS_ENDIAN_BIG
 
 // Defines what is whitespace to this module.

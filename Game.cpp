@@ -119,7 +119,7 @@
 //
 //    06/04/97 JMI   Added AbortAllSamples() call when exitting.
 //
-//    06/04/97 JMI   Added MUST_BE_ON_CD, EDITOR_DISABLED, and CHECK_FOR_COOKIE
+//    06/04/97 JMI   Added MUST_BE_ON_CD, EDITOR_REMOVED, and CHECK_FOR_COOKIE
 //                   conditional compilation macros and added a check for a
 //                   specific uint32_t in the COOKIE file.
 //
@@ -576,14 +576,15 @@
 #include <Thing/GameEdit.h>
 #include <MenuTrans.h>
 #include <SampleMaster.h>
-#include <Network/Net.h>
-#include <Network/NetDlg.h>
 #include <Input.h>
 #include <InputSettingsDlg.h>
 #include <Encrypt.h>
 #include <Credits.h>
 
-
+#include <Network/Net.h>
+#ifndef MULTIPLAYER_REMOVED
+#include <Network/NetDlg.h>
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros/types/etc.
@@ -768,7 +769,9 @@ static int32_t m_lRandom = 1;
 static RFile* m_pfileRandom = 0;
 
 // Used by if-logging schtuff.
+#if defined(_DEBUG) || defined(TRACENASSERT)
 static int32_t ms_lSynchLogSeq   = 0;
+#endif
 
 static RFile   ms_fileSynchLog;
 
@@ -803,11 +806,11 @@ static void GameEndingSequence(void);
 
 static int16_t GetRealmToRecord(
    char * pszRealmFile,
-   int16_t sMaxFileLen);
+   size_t sMaxFileLen);
 
 static int16_t GetDemoFile(
    char * pszDemoFile,
-   int16_t sMaxFileLen);
+   size_t sMaxFileLen);
 
 // Callback gets called when OS is about to switch app into the background
 static void BackgroundCall(void);
@@ -1328,8 +1331,8 @@ static int16_t GameCore(void)      // Returns 0 on success.
    {
    int16_t sResult = 0;
    uint16_t usDemoCount = 0;
-   bool  bMPath = false,
-         bMPathServer = false;
+//   bool  bMPath = false,
+//         bMPathServer = false;
 
 #ifdef CHECK_EXPIRATION_DATE
    #ifdef WIN32
@@ -1555,7 +1558,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
             case ACTION_PLAY_BROWSE:
             case ACTION_PLAY_CONNECT:
 // If multiplayer is disabled, leave out this code to make it harder to hack back in
-#ifndef MULTIPLAYER_DISABLED
+#ifndef MULTIPLAYER_REMOVED
                {
                // Set flag as to whether we're browsing or connecting
                bool bBrowse = (m_action == ACTION_PLAY_BROWSE) ? true : false;
@@ -1631,15 +1634,15 @@ static int16_t GameCore(void)      // Returns 0 on success.
                   rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "The selected network protocol has failed to initialize.  Please contact your system administrator or network vendor.\n");
                   }
                }
-#endif //MULTIPLAYER_DISABLED
+#endif // MULTIPLAYER_REMOVED
                break;
 
             //------------------------------------------------------------------------------
             // Host a multiplayer game
             //------------------------------------------------------------------------------
             case ACTION_PLAY_HOST:
-// If multiplayer is disabled, leave out this code to make it harder to hack back in
-#ifndef MULTIPLAYER_DISABLED
+// If multiplayer has been removed, leave out this code to make it harder to hack back in
+#ifndef MULTIPLAYER_REMOVED
                {
                // Startup sockets with selected protocol
                if (RSocket::Startup((RSocket::ProtoType)g_GameSettings.m_usProtocol, false) == 0)
@@ -1713,7 +1716,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
                   rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "AppName"_lookup, "The selected network protocol has failed to initialize.  Please contact your system administrator or network vendor.\n");
                   }
                }
-#endif //MULTIPLAYER_DISABLED
+#endif // MULTIPLAYER_REMOVED
                break;
 
             //------------------------------------------------------------------------------
@@ -2055,7 +2058,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
             //------------------------------------------------------------------------------
             // Go to the editor
             //------------------------------------------------------------------------------
-            #if !defined(EDITOR_DISABLED)
+            #ifndef EDITOR_REMOVED
                case ACTION_EDITOR:
                   // End menu
                   StopMenu();
@@ -2098,7 +2101,7 @@ static int16_t GameCore(void)      // Returns 0 on success.
 
                // Display option dialog to let user choose a realm file
                #if 1 //PLATFORM_UNIX
-                    char tmp[RSP_MAX_PATH];
+//                    char tmp[RSP_MAX_PATH];
                if (PickFile("Choose Game Slot", EnumExistingSaveGames, szFileSaved, sizeof(szFileSaved)) == 0)
                     {
 #ifdef MOBILE
@@ -2220,7 +2223,7 @@ static void ResetDemoTimer(void)
 static int16_t GetRealmToRecord(   // Returns 0 on success, negative on error, 1 if
                                  // not subpathable (i.e., returned path is full path).
    char * pszRealmFile,
-   int16_t sMaxFileLen)
+   size_t sMaxFileLen)
    {
    int16_t sResult = 0;
 
@@ -2268,10 +2271,11 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
                                           // filter specification.  Ex: ".cpp.h.exe.lib" or "cpp.h.exe.lib"
                                           // Note: Cannot use '.' in filter.  Preceding '.' ignored.
    {
+   (void)sStrSize;
    int16_t sResult;
 
    char    szBasePath[RSP_MAX_PATH];
-   int32_t lBasePathLen   = strlen(pszFullPath);
+   size_t lBasePathLen   = strlen(pszFullPath);
    if (lBasePathLen < sizeof(szBasePath) )
       {
       strcpy(szBasePath, pszFullPath);
@@ -2342,7 +2346,7 @@ extern int16_t SubPathOpenBox(              // Returns 0 on success, negative on
 ////////////////////////////////////////////////////////////////////////////////
 static int16_t GetDemoFile(
    char * pszDemoFile,
-   int16_t sMaxFileLen)
+   size_t sMaxFileLen)
    {
    int16_t sResult = 0;
 
@@ -2397,7 +2401,7 @@ inline void GetSoundPaths(    // Returns nothing.
    char  szAudioResDescriptor[256];
    sprintf(
       szAudioResDescriptor,
-      "%ld%c%ld",
+      "%d%c%d",
       lSamplesPerSec,
       AUDIO_SAK_SEPARATOR_CHAR,
       lBitsPerSample);
@@ -2542,7 +2546,7 @@ static int16_t OpenSaks(void)
       if (sInSoundMode)
          {
          char  szSoundQuality[256];
-         sprintf(szSoundQuality, "%.3f kHz, %hd Bit",
+         sprintf(szSoundQuality, "%.3f kHz, %hd Bit in %s",
             (float)lSamplesPerSec/(float)1000,
             (int16_t)lSrcBitsPerSample,
             (MAIN_AUDIO_CHANNELS == 1) ? "Mono" : "Stereo");
@@ -2574,7 +2578,7 @@ static int16_t OpenSaks(void)
                   { 22050, 16 },
                };
 
-         int16_t sModeIndex;
+         uint16_t sModeIndex;
          bool  bSakFound   = false;
 
          for (sModeIndex = 0; sModeIndex < NUM_ELEMENTS(amodes) && bSakFound == false; sModeIndex++)
@@ -2612,7 +2616,7 @@ static int16_t OpenSaks(void)
    g_GameSettings.m_eCurSoundQuality   = (SampleMaster::SoundQuality)( ( (lSamplesPerSec / 11025) - 1) * 2 + ( (lDevBitsPerSample / 8) - 1) );
 
    // Set volumes based on quality's category adjustor.
-   int16_t i;
+   uint32_t i;
    for (i = 0; i < SampleMaster::MAX_NUM_SOUND_CATEGORIES; i++)
       {
       SetCategoryVolume((SampleMaster::SoundCategory)i, g_GameSettings.m_asCategoryVolumes[i] );
@@ -2809,7 +2813,7 @@ extern void Game_StartSinglePlayerGame(
 #endif // SPAWN
    }
 
-
+#ifndef MULTIPLAYER_REMOVED
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Callback for the "Start MultiPlayer Game" menu
@@ -2818,6 +2822,7 @@ extern void Game_StartSinglePlayerGame(
 extern bool Game_StartMultiPlayerGame(
    int16_t sMenuItem)
    {
+  (void)sMenuItem;
    bool bAccept = true;
 
    #if defined(MULTIPLAYER_DISABLED)
@@ -2894,7 +2899,7 @@ extern void Game_HostMultiPlayerGame(
    // here in recognition of the fact that some kind of user input obviously occurred.
    ResetDemoTimer();
    }
-
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Callback for the "Start Demo Game" menu
@@ -2978,7 +2983,7 @@ extern void Game_Buy(void)
 ////////////////////////////////////////////////////////////////////////////////
 extern void Game_StartEditor(void)
    {
-   #if defined(EDITOR_DISABLED)
+   #ifdef EDITOR_REMOVED
       rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, APP_NAME, "EditorDisabled"_lookup);
    #else
       m_action = ACTION_EDITOR;
@@ -3421,10 +3426,12 @@ void GameEndingSequence(void)
 // Returns a ptr to just the portion of the file path that specifies the file
 // name (excluding the path).
 ////////////////////////////////////////////////////////////////////////////////
+#if defined(_DEBUG) || defined(TRACENASSERT)
 static char const * GetFileNameFromPath(char const * path) {
    char const * p = strrchr(path, RSP_SYSTEM_PATH_SEPARATOR);
    return p ? p+1 : path;
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Opens the synchronization log with the specified access flags if in a
@@ -4476,7 +4483,7 @@ extern char const * FullPathCustom(                   // Returns full path in sy
 ////////////////////////////////////////////////////////////////////////////////
 int16_t CorrectifyBasePath(                       // Returns 0 if successfull, non-zero otherwise
    char * pszBasePath,                          // I/O: Base path to be corrected
-   int16_t sMaxPathLen)                           // In:  Maximum length of base path
+   size_t sMaxPathLen)                           // In:  Maximum length of base path
    {
    int16_t sResult = 0;
 

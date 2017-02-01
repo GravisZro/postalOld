@@ -493,6 +493,7 @@ class CRealm
          Goal,             // Kill the set number of enemies as quickly as possible
          CaptureFlag,      // Capture the flag - no time limit
          Checkpoint,       // Grab all of the flags before time runs out, each flag gives bonus time
+#ifndef MULTIPLAYER_REMOVED
          MPTimed,          // Multiplayer Timed - Score the most frags in the given amount of time
          MPFrag,           // First person to Frag Limit wins
          MPLastMan,        // Last man standing wins - scoring shows who's dead & alive
@@ -502,7 +503,7 @@ class CRealm
          MPLastManFrag,    // No rejuvination with frag limit
          MPLastManTimed,   // No rejuvination with time limit
          MPLastManTimedFrag,//No rejuvination with time and frag limit
-
+#endif
          TotalScoringModes
       };
 
