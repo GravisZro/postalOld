@@ -464,7 +464,7 @@ inline int16_t	_rspBlit(uint8_t* pSrc,int32_t lSrcP,int16_t sSrcW,int16_t sSrcH,
 	}
 
 // do the full transparent case with clipping:
-// (long version... overload int16_ter version...)
+// (long version... overload shorter version...)
 // FOR THE DEMO, do ONLY shrinking, and do clipping AFTER shrinking.....
 //
 int16_t rspBlitT(RImage* pimSrc,RImage* pimDst,RRect* prSrc,const RRect* prDst,

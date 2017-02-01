@@ -335,7 +335,7 @@ static int16_t ms_asUpper2Lower[256]	=
 
 //////////////////////////////////////////////////////////////////////////////
 // Perform a lowercase comparison of strings.
-// If the strings are equal up to the end of the int16_ter string, that
+// If the strings are equal up to the end of the shorter string, that
 // string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
@@ -377,8 +377,8 @@ extern int16_t rspStricmp(	// Returns 0 if equivalent.
 
 //////////////////////////////////////////////////////////////////////////////
 // Perform a lowercase comparison of strings up to n characters.
-// If the int16_ter string ends before n characters and the strings are 
-// equal up to the end of the int16_ter string, that string is lesser.
+// If the shorter string ends before n characters and the strings are 
+// equal up to the end of the shorter string, that string is lesser.
 // Excerpt from VC 5.0 Help on strnicmp():
 // "Two strings containing characters located between 'Z' and 'a' in the ASCII
 // table ('[', '\', ']', '^', '_', and '`') compare differently, depending on
