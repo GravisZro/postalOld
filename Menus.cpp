@@ -284,7 +284,7 @@
 //
 //    08/26/97 JMI   Changed difficulty strings and name of PLAY menu to
 //                   DIFFICULTY.  Also, changed the DIFFICULTY item to something
-//                   int16_ter like SET.
+//                   shorter like SET.
 //
 //    08/27/97 JMI   Now when you choose 'Defaults' from the Mixer menu, it
 //                   plays all the samples at the default volume for feedback

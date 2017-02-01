@@ -326,8 +326,8 @@ TriAIntersectsLineSegmentB(
    };
 
 ////////////////////////////////////////////////////////////////////////////////
-bool int16_terdist(RP3d &pt1, RP3d &pt2)
-// true if pt1 is int16_ter dist than pt2
+bool shorterdist(RP3d &pt1, RP3d &pt2)
+// true if pt1 is shorter dist than pt2
    {
    return ((pt1.x*pt1.x + pt1.y*pt1.y + pt1.z*pt1.z) < (pt2.x*pt2.x + pt2.y*pt2.y + pt2.z*pt2.z));
    };
