@@ -112,7 +112,7 @@
 // C++
 #include <cstdint>
 
-const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept;
+extern const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept;
 
 
 // I went with variables instead of macros for one primary reason.  At some

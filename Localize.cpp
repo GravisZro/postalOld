@@ -255,28 +255,16 @@ static constexpr uint32_t crc_table[256] = {
   0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
   0x2d02ef8dL
 };
-/*
+
 // compiletime hashing
-constexpr uint32_t crc32_compiletime(const char* str, std::size_t idx) noexcept
-  { return idx == std::size_t(-1) ? 0xFFFFFFFF : ((crc32_compiletime(str, idx-1) >> 8) ^ crc_table[(crc32_compiletime(str, idx-1) ^ str[idx]) & 0x000000FF]); }
-constexpr uint32_t operator "" _hash(const char* str, const std::size_t sz) noexcept {
-  return crc32_compiletime(str, sz - 2) ^ 0xFFFFFFFF; }
-*/
-// runtime hashing
-static inline uint32_t crc32_runtime(const char* str, std::size_t idx) noexcept
-{
-  if(idx == std::size_t(-1))
-    return 0xFFFFFFFF;
-  uint32_t result = crc32_runtime(str, idx-1);
-  return (result >> 8) ^ crc_table[(result ^ str[idx]) & 0x000000FF];
-}
+template<size_t idx> constexpr uint32_t crc32(const char * str)
+  { return (crc32<idx-1>(str) >> 8) ^ crc_table[(crc32<idx-1>(str) ^ str[idx]) & 0x000000FF]; }
 
-static uint32_t operator "" _hash(const char* str, const std::size_t sz) noexcept {
-  return crc32_runtime(str, sz - 2) ^ 0xFFFFFFFF; }
+// This is the stop-recursion function
+template<> constexpr uint32_t crc32<size_t(-1)>(const char *) { return 0xFFFFFFFF; }
 
-//static inline uint32_t hash(const char* str) noexcept { return crc32_runtime(str, std::strlen(str) - 2) ^ 0xFFFFFFFF; }
-//static inline uint32_t hash(const std::string& str) noexcept { return crc32_runtime(str.data(), str.size() - 2) ^ 0xFFFFFFFF; }
-
+constexpr uint32_t operator "" _hash(const char* str, const std::size_t) noexcept
+  { return crc32<sizeof(str) - 2>(str) ^ 0xFFFFFFFF; }
 
 // Message used in a few places
 #define CD_DRIVE_CHANGE_MESSAGE     "If you added (or removed) a drive to your system after the game was installed, try putting the CD in another drive (if you have more than one) or re-install the game."
@@ -1327,9 +1315,8 @@ char const * const g_apszScoreExplanations[] =
       };
 #endif // ScoreExplanations
 
-
-const char* operator "" _lookup(const char* str, const std::size_t sz) noexcept
-  { return g_text.at(crc32_runtime(str, sz - 2) ^ 0xFFFFFFFF); }
+const char* operator "" _lookup(const char* str, const std::size_t) noexcept
+  { return g_text.at(crc32<sizeof(str) - 2>(str) ^ 0xFFFFFFFF); }
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

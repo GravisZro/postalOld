@@ -29,7 +29,7 @@
 #ifndef NET_H
 #define NET_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef MULTIPLAYER_REMOVED
 typedef int CNetClient;

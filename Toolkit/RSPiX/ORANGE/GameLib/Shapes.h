@@ -55,7 +55,7 @@
 #ifndef SHAPES_H
 #define SHAPES_H
 
-#include <stdint.h>
+#include <cstdint>
 
 class RPt
 {
