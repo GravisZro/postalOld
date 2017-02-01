@@ -125,7 +125,7 @@
 #include <GREEN/BLiT/Blit.h>
 #include <GREEN/Hot/Hot.h>
 #include <ORANGE/Props/Props.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 #include <CYAN/cyan.h>
 
 #include <Toolkit/variant.h>

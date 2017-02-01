@@ -18,6 +18,7 @@
 
 #include <GREEN/BLiT/Blit.h>
 #include <GREEN/BLiT/BlitInternal.h>
+#include <GREEN/Image/SpecialTyp.h>
 #include <ORANGE/QuickMath/Fractions.h>
 
 

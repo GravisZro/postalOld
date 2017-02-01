@@ -30,6 +30,7 @@
 // Here are some easy utilities that are useful in dealing with alpha masks:
 //***********************************************************************************
 
+#ifdef UNUSED_FUNCTIONS
 /////////////////////////////////////////////////////////////////////////////////////
 //  Allows "Ad Hoc" alpha adjustment with accumulative error.
 //  (CAUTION, not reversable, UNLESS a DIFFERENT destination
@@ -62,7 +63,7 @@ void rspScaleAlphaMask(RImage* pimSrc, double dScale, RImage* pimDst)
 			}
 		}
 	}
-
+#endif
 
 // The mask must be as big as the source
 // Should work on both main types.

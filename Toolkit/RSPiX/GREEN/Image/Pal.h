@@ -54,7 +54,7 @@
 #include <BLUE/Blue.h>
 
 // Orange include files
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macros.

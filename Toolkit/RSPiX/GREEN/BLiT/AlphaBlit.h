@@ -306,10 +306,11 @@ inline int16_t rspSimpleClip(int16_t &sSrcX,int16_t &sSrcY,int16_t &sDstX,int16_
 // NOTE: This process is lossy, and if done repeatedly should use the
 //			original source mask each time.
 //====================================================================
+#ifdef UNUSED_FUNCTIONS
 extern	void rspScaleAlphaMask(RImage* pimSrcMask, // BMP8 alpha mask
 										  double dScale,		 // 1.0 = no change
 										  RImage* pimDstMask);// BMP8 alpha mask
-
+#endif
 
 //===========================================================================
 //  Here are some low level access functions to the alpha stuff so you can

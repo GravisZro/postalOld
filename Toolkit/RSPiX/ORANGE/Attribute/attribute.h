@@ -46,7 +46,7 @@
 #define ATTRIBUTE_H
 
 #include <BLUE/Blue.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 
  #define ATTRIBUTE_MAP_COOKIE 0x4d525441 //Looks like "ATRM" in the file
  #define ATTRIBUTE_CURRENT_VERSION 5

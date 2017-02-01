@@ -18,8 +18,7 @@
 #ifndef CFNT_H
 #define CFNT_H
 //====================
-#include "Blit.h"
-#include "BlitInternal.h"
+#include <cstdint>
 //====================
 
 // This class is used to hold the information for
@@ -28,6 +27,9 @@
 // It will support kerning information.
 // Cell dimensions are in pixels.
 // Fonts are stored in a singly linked list, largest first.
+
+class RImage;
+class RFile;
 
 class RFont
 	{

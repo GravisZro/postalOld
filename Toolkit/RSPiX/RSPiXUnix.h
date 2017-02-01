@@ -81,7 +81,7 @@
 #include <ORANGE/GameLib/Region.h>
 #include <ORANGE/GameLib/Shapes.h>
 #include <ORANGE/GameLib/Sprite.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 #include <ORANGE/IFF/iff.h>
 #include <ORANGE/GUI/dlg.h>
 #include <ORANGE/GUI/btn.h>

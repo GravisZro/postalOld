@@ -68,7 +68,6 @@ HEADERS += \
     Update.h \
     Alpha.h \
     AlphaAnimType.h \
-    AlphaBlit.h \
     Animated3D.h \
     Average.h \
     BufQ.h \
@@ -182,7 +181,6 @@ HEADERS += \
     Toolkit/RSPiX/ORANGE/color/dithermatch.h \
     Toolkit/RSPiX/ORANGE/Debug/profile.h \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.h \
-    Toolkit/RSPiX/ORANGE/File/file.h \
     Toolkit/RSPiX/ORANGE/GameLib/Region.h \
     Toolkit/RSPiX/ORANGE/GameLib/Shapes.h \
     Toolkit/RSPiX/ORANGE/GUI/btn.h \
@@ -228,7 +226,9 @@ HEADERS += \
     Toolkit/RSPiX/GREEN/BLiT/BlitInternal.h \
     Toolkit/RSPiX/GREEN/Image/Pal.h \
     Toolkit/RSPiX/GREEN/Hot/Hot.h \
-    Toolkit/RSPiX/GREEN/BLiT/AlphaBlit.h
+    Toolkit/RSPiX/GREEN/BLiT/AlphaBlit.h \
+    Toolkit/RSPiX/ORANGE/File/RFile.h \
+    ModAlphaBlit.h
 
 SOURCES += \
     Network/ProtoBSDIP.cpp \
@@ -249,7 +249,6 @@ SOURCES += \
     Update.cpp \
     AIVars.cpp \
     Alpha.cpp \
-    AlphaBlit.cpp \
     Animated3D.cpp \
     BufQ.cpp \
     Bulletfest.cpp \
@@ -355,7 +354,6 @@ SOURCES += \
     Toolkit/RSPiX/ORANGE/color/dithermatch.cpp \
     Toolkit/RSPiX/ORANGE/Debug/profile.cpp \
     Toolkit/RSPiX/ORANGE/DirtRect/DirtRect.cpp \
-    Toolkit/RSPiX/ORANGE/File/file.cpp \
     Toolkit/RSPiX/ORANGE/GameLib/Region.cpp \
     Toolkit/RSPiX/ORANGE/GUI/btn.cpp \
     Toolkit/RSPiX/ORANGE/GUI/dlg.cpp \
@@ -399,7 +397,9 @@ SOURCES += \
     Toolkit/RSPiX/GREEN/BLiT/BlitInternal.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Line.cpp \
     Toolkit/RSPiX/GREEN/BLiT/Mono.cpp \
-    Toolkit/RSPiX/GREEN/BLiT/BlitTransparent.cpp
+    Toolkit/RSPiX/GREEN/BLiT/BlitTransparent.cpp \
+    Toolkit/RSPiX/ORANGE/File/RFile.cpp \
+    ModAlphaBlit.cpp
 
 win32:HEADERS += \
     Network/NetBrowse.h \

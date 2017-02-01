@@ -37,7 +37,7 @@
 #include <stdarg.h>
 
 #include <BLUE/System.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 
 class RString
 	{

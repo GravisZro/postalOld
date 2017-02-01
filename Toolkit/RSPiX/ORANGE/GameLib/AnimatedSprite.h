@@ -40,7 +40,7 @@
 #include <BLUE/System.h>
 // Orange includes
 #include <ORANGE/GameLib/Sprite.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 
 #ifdef _MSC_VER
 	#pragma warning (disable:4200) // disable warning about zero-length arrays

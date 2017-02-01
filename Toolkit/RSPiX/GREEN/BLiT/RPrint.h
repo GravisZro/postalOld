@@ -43,6 +43,10 @@
 */
 
 #include "Blit.h"
+
+
+class RFont;
+
 //====================
 class RPrint
 	{

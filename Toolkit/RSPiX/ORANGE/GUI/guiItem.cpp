@@ -379,6 +379,7 @@
 
 #include <ORANGE/GUI/guiItem.h>
 #include <GREEN/BLiT/Blit.h>
+#include <GREEN/BLiT/BlitInternal.h>
 #include <ORANGE/IFF/iff.h>
 
 // Headers for CreateGuiItem.

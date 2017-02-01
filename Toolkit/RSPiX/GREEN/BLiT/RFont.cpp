@@ -21,8 +21,11 @@
 // image type.
 #include "RFont.h"
 
-#include <cstring>
+#include <GREEN/Image/Image.h>
+#include <GREEN/Image/SpecialTyp.h>
+#include <ORANGE/File/RFile.h>
 
+#include <cstring>
 
 //========================================================
 RFont::RFont()

@@ -25,6 +25,9 @@
 #include "RPrint.h"
 #include "RFont.h"
 
+#include "BlitInternal.h"
+#include <GREEN/Image/SpecialTyp.h>
+
 #include <BLUE/System.h>
 
 #include <cstdio>

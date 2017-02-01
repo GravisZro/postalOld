@@ -202,7 +202,7 @@
 
 #include <BLUE/Blue.h>
 #include <CYAN/cyan.h>
-#include <ORANGE/File/file.h>
+#include <ORANGE/File/RFile.h>
 #include <ORANGE/RString/rstring.h>
 
 #if _MSC_VER >= 1020 || __MWERKS__ >= 0x1100 || __GNUC__

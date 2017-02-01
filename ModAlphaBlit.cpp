@@ -41,7 +41,7 @@
 #include <GREEN/BLiT/AlphaBlit.h>
 #include <ResourceManager/resmgr.h>
 
-#include "AlphaBlit.h"
+#include "ModAlphaBlit.h"
 #include <Game.h>
 #include <Update.h>
 

@@ -321,7 +321,7 @@
 #include <RSPiX.h>
 #include "Scene.h"
 #include <Game.h>
-#include <AlphaBlit.h>
+#include <ModAlphaBlit.h>
 #include <Reality.h>
 
 
