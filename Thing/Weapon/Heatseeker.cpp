@@ -88,7 +88,7 @@
 //                   and dNewZ but still created smoke at this unitialized
 //                   position.  Fixed.
 //
-//    07/04/97 BRH   Cut down the trail time to live to make the trails int16_ter.
+//    07/04/97 BRH   Cut down the trail time to live to make the trails shorter.
 //
 //    07/08/97 BRH   Adjusted the position of the smoke trail.
 //
