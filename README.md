@@ -16,6 +16,6 @@ Modern C++ version of Running With Scissors' game 'Postal'
  * `S32`/`long`/`int32` -> `int32_t`
  * `U64`/`uint64` -> `uint64_t`
  * `S64`/`int64` -> `int64_t`
-* Replaced `long*` types being used for arbitrary storage with `Variant`s.
+* Replaced `long*` type being used for arbitrary storage with `Variant`.
 * Replaced Localization system with string literal type hashed lookups. (much cleaner)
 * Network code is no longer compiled when networking is disabled.
