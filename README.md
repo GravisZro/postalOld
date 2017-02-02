@@ -1,4 +1,4 @@
-# postal
+# Postal
 Modern C++ version of Running With Scissors' game 'Postal'
 
 ####Changes made:
