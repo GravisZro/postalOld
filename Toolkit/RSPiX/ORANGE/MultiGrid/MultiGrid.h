@@ -42,7 +42,7 @@
 #include <ORANGE/File/RFile.h>
 #include <GREEN/Image/Image.h> // For Debugging only
  
-#define MULTIGRID_COOKIE "_MultiGrid_"
+#define MULTIGRID_MAGIC_NUMBER "_MultiGrid_"
 #define MULTIGRID_CURRENT_VERSION 1
 
 //////////////////////////////////////////////////////////////////////

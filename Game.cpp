@@ -119,9 +119,9 @@
 //
 //    06/04/97 JMI   Added AbortAllSamples() call when exitting.
 //
-//    06/04/97 JMI   Added MUST_BE_ON_CD, EDITOR_REMOVED, and CHECK_FOR_COOKIE
+//    06/04/97 JMI   Added MUST_BE_ON_CD, EDITOR_REMOVED, and CHECK_FOR_MAGIC_NUMBER
 //                   conditional compilation macros and added a check for a
-//                   specific uint32_t in the COOKIE file.
+//                   specific uint32_t in the MAGIC_NUMBER file.
 //
 //    06/12/97 MJR   Reworked the callbacks so that the game-specific code now
 //                   resides in this module rather than the menu module.
@@ -170,7 +170,7 @@
 //                   functionality details.  See macros in game.h for usage via
 //                   macro(s).
 //
-//    06/24/97 JMI   Undefined CHECK_FOR_COOKIE.
+//    06/24/97 JMI   Undefined CHECK_FOR_MAGIC_NUMBER.
 //
 //             JMI   Changed usage of strcmp to rspStricmp in GetRandom() and
 //                   SynchLog().
@@ -339,7 +339,7 @@
 //                   Also, removed rspLockBuffer() and rspUnlockBuffer() that
 //                   were used to encapsulate the entire app in a lock.
 //
-//    08/22/97 BRH   Changed the cookie position for use with a new smaller
+//    08/22/97 BRH   Changed the magic_number position for use with a new smaller
 //                   res.sak file since we now have Direct X and more sound,
 //                   we needed more space on the CD.
 //
@@ -402,13 +402,13 @@
 //
 //    09/10/97 BRH   Had to change the res.sak in order to fit the MPlayer
 //                   and Heat setups on the CD, so I also had to change the
-//                   cookie.
+//                   magic_number.
 //
 //    09/10/97 MJR   Now properly converts paths from system to rspix format
 //                   on the start single player and start challenge level
 //                   dialogs.  This bug only showed up on the Mac.
 //
-//    09/11/97 BRH   Added different cookie and file position for
+//    09/11/97 BRH   Added different magic_number and file position for
 //                   COMP_USA_VERSION only.
 //
 //    09/11/97 JMI   Removed old code for PLAY_SPECIFIC_LEVEL_ONLY macro which
@@ -544,7 +544,7 @@
 //                   the CD path is to our development server.  This allows
 //                   for easier testing.
 //
-//    06/24/01 MJR   Got rid of CompUSA cookie variation.  Also cleaned up a
+//    06/24/01 MJR   Got rid of CompUSA magic_number variation.  Also cleaned up a
 //                   few other macros.
 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -636,9 +636,9 @@ extern bool EnableSteamCloud;
 
 #define CHECK_FOR_ASSETS_FILENAME   "res/res.sak"
 #define CHECK_FOR_POSTALSD_FILENAME "res/hoods/ezmart.sak"
-#define COOKIE_VALUE                0x9504cc39 //0xb5cf76dd
-#define COOKIE_FILE_POSITION        289546856 //323290320
-#define COOKIE_XOR_MASK             0x6afb39e5 //0x66666666
+#define MAGIC_NUMBER_VALUE                0x9504cc39 //0xb5cf76dd
+#define MAGIC_NUMBER_FILE_POSITION        289546856 //323290320
+#define MAGIC_NUMBER_XOR_MASK             0x6afb39e5 //0x66666666
 
 // Exponent used to define gamma curve.
 #define GAMMA_EXPONENT              1.50
@@ -702,8 +702,8 @@ enum ACTION {
 CGameSettings g_GameSettings;
 
 #ifdef CHECK_EXPIRATION_DATE
-// Cookie flag
-int32_t g_lCookieMonster;
+// Magic_number flag
+int32_t g_lMagic_numberMonster;
 #endif
 
 // Global screen buffer
@@ -749,8 +749,10 @@ int16_t    g_sRealmNumToSave;
 // it has been determined that the player has won.
 bool     g_bLastLevelDemo = false;
 
-// The secret cookie value used to determine if the humongous file exists
-static uint32_t  ms_u32Cookie = COOKIE_VALUE;
+#ifdef CHECK_FOR_MAGIC_NUMBER
+// The secret magic_number value used to determine if the humongous file exists
+static uint32_t  ms_u32Magic_number = MAGIC_NUMBER_VALUE;
+#endif
 
 // These variables are generally controlled via the menu system
 static ACTION m_action;
@@ -963,363 +965,258 @@ static void EnumExistingSaveGames(Menu *menu)
 //
 ////////////////////////////////////////////////////////////////////////////////
 extern void TheGame(void)
-   {
-   int16_t sResult = 0;
+{
+  int16_t sResult = 0;
 
-   // Set up callbacks for when OS sends us to foreground or background.
-   rspSetBackgroundCallback(BackgroundCall);
-   rspSetForegroundCallback(ForegroundCall);
+  // Set up callbacks for when OS sends us to foreground or background.
+  rspSetBackgroundCallback(BackgroundCall);
+  rspSetForegroundCallback(ForegroundCall);
 
 #ifdef CHECK_EXPIRATION_DATE
-  #ifdef CHECK_FOR_COOKIE
-   ms_u32Cookie   = ~ms_u32Cookie;
-  #endif
-   g_lRegValue = 0;
-   g_lExpValue = 0;
-   g_lRegTime = 0;
+#ifdef CHECK_FOR_MAGIC_NUMBER
+  ms_u32Magic_number   = ~ms_u32Magic_number;
+#endif
+  g_lRegValue = 0;
+  g_lExpValue = 0;
+  g_lRegTime = 0;
 
-   g_lExpTime = EXPIRATION_DATE;
-   g_lReleaseTime = RELEASE_DATE;
+  g_lExpTime = EXPIRATION_DATE;
+  g_lReleaseTime = RELEASE_DATE;
 #endif
 
-// To make it more confusing for someone debugging through the code,
-// the flag for the cookie check will be this large number SAFE_DATE.
-// Once the game determines elsewhere that the cookie is correct, it will
-// in some way modify the flag so that it is not SAFE_DATE, then later
-// the check will be for anything other than SAFE_DATE
+  // To make it more confusing for someone debugging through the code,
+  // the flag for the magic_number check will be this large number SAFE_DATE.
+  // Once the game determines elsewhere that the magic_number is correct, it will
+  // in some way modify the flag so that it is not SAFE_DATE, then later
+  // the check will be for anything other than SAFE_DATE
 #ifdef CHECK_EXPIRATION_DATE
-  #ifdef CHECK_FOR_COOKIE
-     g_lCookieMonster = SAFE_DATE;
-  #else
-     g_lCookieMonster = SAFE_DATE - RELEASE_DATE;
-  #endif
+#ifdef CHECK_FOR_MAGIC_NUMBER
+  g_lMagic_numberMonster = SAFE_DATE;
+#else
+  g_lMagic_numberMonster = SAFE_DATE - RELEASE_DATE;
+#endif
 #endif
 
-   g_bTransferStockpile = false;
+  g_bTransferStockpile = false;
 
-   // Get pointer to screen buffer and lock it.  Our Update()
-   // unlocks and re-locks these each time it is called.
-   rspNameBuffers(&g_pimScreenBuf);
+  // Get pointer to screen buffer and lock it.  Our Update()
+  // unlocks and re-locks these each time it is called.
+  rspNameBuffers(&g_pimScreenBuf);
 
-   // Lock the RSPiX composite buffer so we can rect it.
-   rspLockBuffer();
-   // Clear screen buffer
-   rspRect(RSP_BLACK_INDEX, g_pimScreenBuf,
-      0, 0, g_pimScreenBuf->m_sWidth, g_pimScreenBuf->m_sHeight);
-   // Unlock now that we're done with the composite buffer.
-   rspUnlockBuffer();
+  // Lock the RSPiX composite buffer so we can rect it.
+  rspLockBuffer();
+  // Clear screen buffer
+  rspRect(RSP_BLACK_INDEX, g_pimScreenBuf,
+          0, 0, g_pimScreenBuf->m_sWidth, g_pimScreenBuf->m_sHeight);
+  // Unlock now that we're done with the composite buffer.
+  rspUnlockBuffer();
 
-   // Update display
-   rspUpdateDisplay();
+  // Update display
+  rspUpdateDisplay();
 
-   // Read all settings from preference file
-   sResult = CSettings::LoadPrefs("PrefFileName"_lookup);
-   RFile file;
 
-   if (sResult == 0)
-      {
+  try
+  {
+    // Read all settings from preference file
+    if(CSettings::LoadPrefs("PrefFileName"_lookup) != SUCCESS)
+      throw "PrefReadError"_lookup;
+
+    RFile file;
+
 #ifdef PROMPT_FOR_ORIGINAL_CD
-      rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "AppName"_lookup, "PromptForOriginalCD"_lookup);
+    rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "AppName"_lookup, "PromptForOriginalCD"_lookup);
 #endif
 
 #ifdef REQUIRE_POSTAL_CD
-      // Check to make sure the correct CD is in the drive.  The Postal Add On Requires
-      // that the original PostalCD is in the drive.
-      int16_t sCorrectCD = -2;
+    // Check to make sure the correct CD is in the drive.  The Postal Add On Requires
+    // that the original PostalCD is in the drive.
+    int16_t sCorrectCD = -2;
 
-      while (sCorrectCD == -2)
-         {
-         // We are looking for a disc that has a res.sak, but doesn't have ezmart.sak
-         // to insure that they have the original PostalCD in the drive
-         if (file.Open(FullPathCD(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            {
-            file.Close();
-            sCorrectCD++;
-            if (file.Open(FullPathCD(CHECK_FOR_POSTALSD_FILENAME), "r", RFile::LittleEndian) != 0)
-               {
-               sCorrectCD++;
-               }
-            else
-               {
-               file.Close();
-               }
-            }
+    while (sCorrectCD == -2)
+    {
+      // We are looking for a disc that has a res.sak, but doesn't have ezmart.sak
+      // to insure that they have the original PostalCD in the drive
+      if (file.Open(FullPathCD(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
+      {
+        file.Close();
+        sCorrectCD++;
+        if (file.Open(FullPathCD(CHECK_FOR_POSTALSD_FILENAME), "r", RFile::LittleEndian) != 0)
+        {
+          sCorrectCD++;
+        }
+        else
+        {
+          file.Close();
+        }
+      }
 
-         if (sCorrectCD != 0)
-            {
-            TRACE("Game():  Wrong CD in the drive - this is not the original PostalCD\n");
-            if (rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_RETRYCANCEL, "CriticalErrorTitle"_lookup, "WrongCD"_lookup, "Wrong CD") == 3)
-               sCorrectCD = -2;
-            else
-               sCorrectCD = -3;
-            }
-         }
-      // If we have the correct CD in the drive, then we can proceed
-      sResult = sCorrectCD;
+      if (sCorrectCD != 0)
+      {
+        TRACE("Game():  Wrong CD in the drive - this is not the original PostalCD\n");
+        if (rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_RETRYCANCEL, "CriticalErrorTitle"_lookup, "WrongCD"_lookup, "Wrong CD") == 3)
+          sCorrectCD = -2;
+        else
+          sCorrectCD = -3;
+      }
+    }
+    // If we have the correct CD in the drive, then we can proceed
+    sResult = sCorrectCD;
 
 #endif // REQUIRE_POSTAL_CD
 
-      // Try loading special file that exists solely for the purpose of checking for
-      // valid paths in the prefs file.  We do this for each of the paths.
-      if (sResult == 0)
-         {
-         if (file.Open(FullPathHD(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            file.Close();
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on HD path specified in prefs!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "HD");
-            }
-         }
-      if (sResult == 0)
-         {
-         if (file.Open(FullPathVD(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            file.Close();
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on VD path specified in prefs!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "VD");
-            }
-         }
-      if (sResult == 0)
-         {
-         if (file.Open(FullPathSound(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            file.Close();
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on Sound path specified in prefs!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Sound");
-            }
-         }
-      if (sResult == 0)
-         {
-         if (file.Open(FullPathGame(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            file.Close();
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on Game path specified in prefs!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Game");
-            }
-         }
-      if (sResult == 0)
-         {
-         if (file.Open(FullPathHoods(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) == 0)
-            file.Close();
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on Hoods path specified in prefs!\n");
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "Hoods");
-            }
-         }
+    // Try loading special file that exists solely for the purpose of checking for
+    // valid paths in the prefs file.  We do this for each of the paths.
+    if (file.Open(FullPathHD   (CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) != SUCCESS &&
+        file.Open(FullPathVD   (CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) != SUCCESS &&
+        file.Open(FullPathSound(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) != SUCCESS &&
+        file.Open(FullPathGame (CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) != SUCCESS &&
+        file.Open(FullPathHoods(CHECK_FOR_ASSETS_FILENAME), "r", RFile::LittleEndian) != SUCCESS)
+      throw "CantFindAssets"_lookup;
+    file.Close();
 
+#if defined(CHECK_FOR_MAGIC_NUMBER)
+    // Check for special file, MAGIC_NUMBER, and size.
+    ms_u32Magic_number   ^= MAGIC_NUMBER_XOR_MASK;
 
-      // Check for special file, COOKIE, and size.
-      if (sResult == 0)
-         {
-         ms_u32Cookie   ^= COOKIE_XOR_MASK;
-
-         if (file.Open(FullPathCD(CHECK_FOR_ASSETS_FILENAME), "rb", RFile::LittleEndian) == 0)
-            {
-#if defined(CHECK_FOR_COOKIE)
-            if (file.Seek(COOKIE_FILE_POSITION, SEEK_SET) == 0)
-               {
-               uint32_t   u32Cookie   = 0;
-               if (file.Read(&u32Cookie) == 1)
-                  {
-                  if (u32Cookie == ms_u32Cookie)
-                     {
-                     // Okay, you can play.
-                     // This can be any number, the check will verify that the
-                     // g_lCookieMonster is not SAFE_DATE.
-                     g_lCookieMonster += 15;
-                     }
-                  else
-                     {
-                     //sResult   = -4;
-                     TRACE("Game(): Cookie value is incorrect.\n");
-                     }
-                  }
-               else
-                  {
-                  //sResult   = -3;
-                  TRACE("Game(): Failed to read cookie.\n");
-                  }
-               }
-            else
-               {
-               //sResult   = -2;
-               TRACE("Game(): Cookie file is incorrect size!\n");
-               }
-#endif // defined(CHECK_FOR_COOKIE)
-
-            file.Close();
-            }
-         else
-            {
-            sResult = -1;
-            TRACE("Game(): Can't find assets based on CD path specified in prefs!\n");
-            }
-
-         // If any problems . . .
-         if (sResult != 0)
-            {
-            rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "CantFindAssets"_lookup, "CD");
-            }
-         }
-
-      // Check for CDROM drive.
-      if (sResult == 0)
-         {
-#if defined(MUST_BE_ON_CD)
-         // Check for the special case where the path is the one we use for
-         // development.  If someone out there happens to use this as their
-         // own path, then they will defeat this test for CD-ROM.  Oh well.
-         char const * pszDevelopmentPath = "\\\\narnia\\projects\\";
-         if (strnicmp(FullPathCD("."), pszDevelopmentPath, strlen(pszDevelopmentPath)) != 0)
-            {
-#if defined(WIN32)
-            if (GetDriveType(FullPathCD(".") ) != DRIVE_CDROM)
-#else
-            #error MUST_BE_ON_CD feature is currently implemented only for Win32
-#endif
-               {
-               // Only set the error flag if we're in release mode
-               #ifndef _DEBUG
-                  sResult = -1;
-               #endif
-               TRACE("Game(): CD path is not a CDROM!\n");
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "NotOnCDROM"_lookup);
-               }
-            }
-#endif
-         }
-
-      if (sResult == 0)
-         {
-
-         // Set the gamma level to value indicated by settings.
-         SetGammaLevel(g_GameSettings.m_sGammaVal);
-
-         // If trickier quit specified . . .
-         if (g_GameSettings.m_sTrickySystemQuit != FALSE)
-            {
-            // Add shift key as a requirement for the quit status keys.
-            rspSetQuitStatusFlags(RSP_GKF_SHIFT);
-            }
-
-         // Open SAKs or setup equivalent paths.
-         sResult = OpenSaks();
-         if (sResult == 0)
-            {
-            // Start title, passing the "total units" for its progress meter
-            sResult = StartTitle(1, true, &ms_siMusak);
-            if (sResult == 0)
-               {
-
-               // Load assets that we want to keep around at all times
-               sResult = LoadAssets();
-
-               // End title (regardless of previous result)
-               EndTitle();
-               if (sResult == 0)
-                  {
-
-                  // Set the font most GUIs will use (the menu system uses its own RPrint).
-                  // Note that the size does not matter, we just want to set the font ptr.
-                  RGuiItem::ms_print.SetFont(15, &g_fontBig);
-
-                  // Do the core game stuff
-                  sResult = GameCore();
-
-                  // If there weren't any errors, wrap things up
-                  if (!sResult)
-                     {
-
-                     // Do ending credits
-                     if (rspGetQuitStatus() > 1)
-                        {
-                        rspSetQuitStatus(0);
-                        Credits();
-                        }
-                     }
-                  }
-               else
-                  {
-                  rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "GeneralError"_lookup);
-                  }
-
-               // Unload assets loaded earlier
-               UnloadAssets();
-
-               }
-            else
-               {
-               TRACE("Game(): Error returned by StartTitle()!\n");
-               rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "TitleError"_lookup);
-               }
-            }
-         else
-            {
-            TRACE("Game(): Error returned by OpenSaks().\n");
-            }
-
-#if 0
-         // Make sure we're not paused . . .
-         if (RMix::IsPaused() )
-            {
-            RMix::Resume();
-            }
-#endif
-
-         // Abort all samples.
-         AbortAllSamples();
-
-         // We should never need a timeout but I don't want to risk a Muppets
-         // scenario where a shitty sound driver causes us to think a sound is always
-         // playing.
-         // Wait for all samples to finish.
-         int32_t lTimeOutTime   = rspGetMilliseconds() + TIME_OUT_FOR_ABORT_SOUNDS;
-         // Wait for them to stop.
-         while (IsSamplePlaying() == true && rspGetMilliseconds() < lTimeOutTime)
-            {
-            // Always do periodic updates.
-            // Crucial to sound completing.
-            UpdateSystem();
-            }
-
-         // Close SAKs and/or create SAKs??
-         CloseSaks();
-         }
-
-      // Save all settings to preference file
-      sResult = CSettings::SavePrefs("PrefFileName"_lookup);
-      if (sResult > 0)
-         {
-         TRACE("Game(): Read-only prefs file!\n");
-//       rspMsgBox(RSP_MB_ICN_INFO | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefReadOnly"_lookup);
-         }
-      else if (sResult < 0)
-         {
-         TRACE("Game(): Error writing prefs file!\n");
-         rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefWriteError"_lookup);
-         }
-
-      }
-   else
+      if (file.Open(FullPathCD(CHECK_FOR_ASSETS_FILENAME), "rb", RFile::LittleEndian) == 0)
       {
-      TRACE("Game(): Error returned by ReadGamePrefs()!\n");
-      rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "PrefReadError"_lookup);
-      }
+        if (file.Seek(MAGIC_NUMBER_FILE_POSITION, SEEK_SET) == 0)
+        {
+          uint32_t   u32Magic_number   = 0;
+          if (file.Read(&u32Magic_number) == 1)
+          {
+            if (u32Magic_number == ms_u32Magic_number)
+            {
+              // Okay, you can play.
+              // This can be any number, the check will verify that the
+              // g_lMagic_numberMonster is not SAFE_DATE.
+              g_lMagic_numberMonster += 15;
+            }
+            else
+            {
+              //sResult   = -4;
+              TRACE("Game(): Magic_number value is incorrect.\n");
+            }
+          }
+          else
+          {
+            //sResult   = -3;
+            TRACE("Game(): Failed to read magic_number.\n");
+          }
+        }
+        else
+        {
+          //sResult   = -2;
+          TRACE("Game(): Magic_number file is incorrect size!\n");
+        }
 
-   // Remove the callbacks
-   rspSetBackgroundCallback(nullptr);
-   rspSetForegroundCallback(nullptr);
-   }
+        file.Close();
+      }
+#endif // defined(CHECK_FOR_MAGIC_NUMBER)
+
+#if defined(MUST_BE_ON_CD)
+    // Check for CDROM drive.
+    if (sResult == 0)
+    {
+      // Check for the special case where the path is the one we use for
+      // development.  If someone out there happens to use this as their
+      // own path, then they will defeat this test for CD-ROM.  Oh well.
+      char const * pszDevelopmentPath = "\\\\narnia\\projects\\";
+      if (strnicmp(FullPathCD("."), pszDevelopmentPath, strlen(pszDevelopmentPath)) != 0)
+      {
+#if defined(WIN32)
+        if (GetDriveType(FullPathCD(".") ) != DRIVE_CDROM)
+#else
+#error MUST_BE_ON_CD feature is currently implemented only for Win32
+#endif
+        {
+          // Only set the error flag if we're in release mode
+#ifndef _DEBUG
+          sResult = -1;
+#endif
+          TRACE("Game(): CD path is not a CDROM!\n");
+          rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, "NotOnCDROM"_lookup);
+        }
+      }
+    }
+#endif
+
+    SetGammaLevel(g_GameSettings.m_sGammaVal); // Set the gamma level to value indicated by settings.
+
+    if (g_GameSettings.m_sTrickySystemQuit != FALSE) // If trickier quit specified . . .
+      rspSetQuitStatusFlags(RSP_GKF_SHIFT); // Add shift key as a requirement for the quit status keys.
+
+    if(OpenSaks() != SUCCESS) // Open SAKs or setup equivalent paths.
+      throw "Game(): Error returned by OpenSaks().";
+
+    if(StartTitle(1, true, &ms_siMusak) != SUCCESS) // Start title, passing the "total units" for its progress meter
+      throw "TitleError"_lookup;
+
+    // Load assets that we want to keep around at all times
+    sResult = LoadAssets();
+
+    // End title (regardless of previous result)
+    EndTitle();
+
+    if (sResult != SUCCESS)
+      throw "GeneralError"_lookup;
+
+    // Set the font most GUIs will use (the menu system uses its own RPrint).
+    // Note that the size does not matter, we just want to set the font ptr.
+    RGuiItem::ms_print.SetFont(15, &g_fontBig);
+
+    if (GameCore() == SUCCESS) // Do the core game stuff
+    { // If there weren't any errors, wrap things up
+      // Do ending credits
+      if (rspGetQuitStatus() > 1)
+      {
+        rspSetQuitStatus(0);
+        Credits();
+      }
+    }
+
+    // Unload assets loaded earlier
+    UnloadAssets();
+
+    // Abort all samples.
+    AbortAllSamples();
+
+    // We should never need a timeout but I don't want to risk a Muppets
+    // scenario where a shitty sound driver causes us to think a sound is always
+    // playing.
+    // Wait for all samples to finish.
+    int32_t lTimeOutTime   = rspGetMilliseconds() + TIME_OUT_FOR_ABORT_SOUNDS;
+    // Wait for them to stop.
+    while (IsSamplePlaying() == true && rspGetMilliseconds() < lTimeOutTime)
+    {
+      // Always do periodic updates.
+      // Crucial to sound completing.
+      UpdateSystem();
+    }
+
+    // Close SAKs and/or create SAKs??
+    CloseSaks();
+
+    // Save all settings to preference file
+    switch(CSettings::SavePrefs("PrefFileName"_lookup))
+    {
+      case SUCCESS: break;
+      case 1:
+        throw "PrefReadOnly"_lookup;
+      default:
+        throw "PrefWriteError"_lookup;
+    }
+  }
+  catch(const char* message)
+  {
+    TRACE(message);
+    rspMsgBox(RSP_MB_ICN_STOP | RSP_MB_BUT_OK, "CriticalErrorTitle"_lookup, message);
+  }
+
+  // Remove the callbacks
+  rspSetBackgroundCallback(nullptr);
+  rspSetForegroundCallback(nullptr);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3519,7 +3416,7 @@ extern int SynchLog( // Result of expr.
             {
             fprintf(
                ms_fileSynchLog.m_fs,
-               "[Seq: %ld] %s : %ld  <$%s$> == %0.8f; User == %lu\n",
+               "[Seq: %d] %s : %d  <$%s$> == %0.8f; User == %u\n",
                ms_lSynchLogSeq++,
                GetFileNameFromPath(pszFile),
                lLine,
@@ -3538,7 +3435,7 @@ extern int SynchLog( // Result of expr.
 
             if (fscanf(
                ms_fileSynchLog.m_fs,
-               "[Seq: %ld] %s : %ld  <$%1024[^$]$> == %g; User == %lu\n",
+               "[Seq: %d] %s : %d  <$%1024[^$]$> == %lg; User == %u\n",
                &lSeqIn,
                szFileIn,
                &lLineIn,
@@ -3555,9 +3452,9 @@ extern int SynchLog( // Result of expr.
                   char  szOut[2048];
                   sprintf(
                      szOut,
-                     "'If' sequence (%ld) mismatch!\n\n"
-                     "   Was <<%s>> at %s(%ld) which got %g; User == %lu\n\n"
-                     "   Now <<%s>> at %s(%ld) which got %g; User == %lu",
+                     "'If' sequence (%d) mismatch!\n\n"
+                     "   Was <<%s>> at %s(%d) which got %g; User == %u\n\n"
+                     "   Now <<%s>> at %s(%d) which got %g; User == %u",
                      ms_lSynchLogSeq,
                      szExprIn,
                      szFileIn,
@@ -3992,7 +3889,7 @@ extern void SeedRand(
             {
             fprintf(
                m_pfileRandom->m_fs,
-               "%s : %ld rand = %ld\n",
+               "%s : %d rand = %d\n",
                GetFileNameFromPath(FILE_MACRO),
                LINE_MACRO,
                lNewVal);
@@ -4007,7 +3904,7 @@ extern void SeedRand(
             char szSavedFile[1024];
             fscanf(
                m_pfileRandom->m_fs,
-               "%s : %ld rand = %ld\n",
+               "%s : %d rand = %d\n",
                szSavedFile,
                &lSavedLine,
                &lSavedVal);
@@ -4021,8 +3918,8 @@ extern void SeedRand(
                   RSP_MB_ICN_INFO | RSP_MB_BUT_OK,
                   "Postal",
                   "Random number sequence mismatch!\n\n"
-                  "   Was %s(%ld) which got %ld\n\n"
-                  "   Now %s(%ld) which got %ld",
+                  "   Was %s(%d) which got %d\n\n"
+                  "   Now %s(%d) which got %d",
                   szSavedFile,
                   (int32_t)lSavedLine,
                   (int32_t)lSavedVal,

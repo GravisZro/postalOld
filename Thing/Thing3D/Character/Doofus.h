@@ -136,7 +136,7 @@
 //
 //    07/23/97 BRH   Added tunable values for three different timeouts.
 //
-//    07/25/97 BRH   Integrated the cookie check into Cheater.
+//    07/25/97 BRH   Integrated the magic_number check into Cheater.
 //
 //    08/02/97 BRH   Added a few functions for avoiding fire.
 //
@@ -732,7 +732,7 @@ class CDoofus : public CCharacter
       inline void Cheater(void)
       {
             #if 0 //!PLATFORM_UNIX   // This isn't cheating, this is beta expiration. --ryan.
-         if (g_lRegValue < 0 || g_lExpValue < 0 || g_lCookieMonster == SAFE_DATE)
+         if (g_lRegValue < 0 || g_lExpValue < 0 || g_lMagic_numberMonster == SAFE_DATE)
          {
             GameMessage msg;
             CThing* pThing = nullptr;

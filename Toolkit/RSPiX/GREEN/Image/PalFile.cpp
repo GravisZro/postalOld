@@ -220,7 +220,7 @@ int16_t RPalFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 	uint32_t	ulFinger;
 	if (pfile->Read(&ulFinger) == 1)
 		{
-		if (ulFinger == PAL_COOKIE)
+		if (ulFinger == PAL_MAGIC_NUMBER)
 			{
 			uint32_t	ulVersion;
 			if (pfile->Read(&ulVersion) == 1)

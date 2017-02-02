@@ -269,7 +269,9 @@ constexpr uint32_t operator "" _hash(const char* str, const std::size_t) noexcep
 // Message used in a few places
 #define CD_DRIVE_CHANGE_MESSAGE     "If you added (or removed) a drive to your system after the game was installed, try putting the CD in another drive (if you have more than one) or re-install the game."
 
-#define ADVANCED_USERS_CHANGE_PATH  "For advanced users: Instead of re-installing you can edit the '" PREFS_FILE"' file and change the '%s' entry in the [%s] section to the correct drive letter."
+#define ADVANCED_USERS_CHANGE_PATH  "For advanced users: Instead of re-installing you can edit the '" PREFS_FILE "' file and change the '%s' entry in the [%s] section to the correct drive letter."
+
+#define ENGLISH_LOCALE (LOCALE == US || LOCALE == UK || LOCALE == JAPAN)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables/data
@@ -566,7 +568,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 ////////////////////////////////////////////////////////////////////////////////
 
 // NOTICE: These aren't currently available in any language other than english!
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN)
+#if ENGLISH_LOCALE
      { "EditorDisabled"_hash       ,  "The editor is not available in this demo version." },
      { "MultiplayerDisabled"_hash     ,  "Multiplayer is not available in this demo version." },
      { "Buy"_hash                     ,  "You can order the full version of the game from"
@@ -583,7 +585,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 ////////////////////////////////// Menus ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) ////////////////////////////////////////////////////////////
+#if ENGLISH_LOCALE ////////////////////////////////////////////////////////////
 
      { "MainMenu_Title"_hash                      , MAIN_MENU_TITLE },
      { "MainMenu_Start"_hash                      , "START" },
@@ -1000,7 +1002,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 ///////////////////////////// Sample Master ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN)
+#if ENGLISH_LOCALE
 
    char const * const g_apszSoundCategories[] =
       {
@@ -1054,7 +1056,7 @@ std::unordered_map<uint32_t, const char*> g_text =
 // Score module
 ////////////////////////////////////////////////////////////////////////////////
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreDisplayText
+#if ENGLISH_LOCALE // ScoreDisplayText
 
 char const * const g_apszScoreDisplayText[] =
    {
@@ -1119,7 +1121,7 @@ char const * const g_apszScoreDisplayText[] =
    };
 #endif // ScoreDisplayText
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreGoalText
+#if ENGLISH_LOCALE // ScoreGoalText
 char const * const g_apszScoreGoalText[] =
    {
    "      You must kill %d%% of the hostiles.",                                  // Standard
@@ -1185,7 +1187,7 @@ char const * const g_apszScoreGoalText[] =
    };
 #endif // ScoreGoalText
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreUnits
+#if ENGLISH_LOCALE // ScoreUnits
 // Units for the various scoring types.
 char const * const g_apszScoreUnits[] =
       {
@@ -1250,7 +1252,7 @@ char const * const g_apszScoreUnits[] =
       };
 #endif // ScoreUnits
 
-#if (LOCALE == US || LOCALE == UK || LOCALE == JAPAN) // ScoreExplanations
+#if ENGLISH_LOCALE // ScoreExplanations
 // Explanations for the various scoring types.
 char const * const g_apszScoreExplanations[] =
       {

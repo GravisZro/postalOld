@@ -364,7 +364,7 @@ int16_t RSprite::Save(char* pszFilename)
 int16_t RSprite::Save(RFile* pcf)
 {
 	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType = SPRITE_COOKIE;
+	uint32_t ulFileType = SPRITE_MAGIC_NUMBER;
 	uint32_t ulCurrentVersion = SPRITE_CURRENT_VERSION;
 	uint32_t ulImageFlag = 0;
 
@@ -644,7 +644,7 @@ int16_t RSprite::Load(RFile* pcf)
 	{
 		if (pcf->Read(&ulFileType) == 1)
 		{
-			if (ulFileType == SPRITE_COOKIE)
+			if (ulFileType == SPRITE_MAGIC_NUMBER)
 			{
 				if (pcf->Read(&ulVersion) == 1)
 				{

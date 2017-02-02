@@ -1201,7 +1201,7 @@ int16_t RLaymage::Load(RFile* pcf)
 	{
 		if (pcf->Read(&ulFileType) == 1)
 		{
-			if (ulFileType == LAYMAGE_COOKIE)
+			if (ulFileType == LAYMAGE_MAGIC_NUMBER)
 			{
 				if (pcf->Read(&ulVersion) == 1)
 				{

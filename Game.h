@@ -134,8 +134,8 @@
 // Global game settings
 extern CGameSettings g_GameSettings;
 
-// Check for cookie flag
-extern int32_t g_lCookieMonster;
+// Check for magic_number flag
+extern int32_t g_lMagic_numberMonster;
 
 // Global screen buffer
 extern RImage* g_pimScreenBuf;

@@ -578,7 +578,7 @@ int16_t RMultiGrid::Save(RFile* fp)
 		return FAILURE;
 		}
 	
-	fp->Write(MULTIGRID_COOKIE);
+	fp->Write(MULTIGRID_MAGIC_NUMBER);
 	fp->Write(int16_t(MULTIGRID_CURRENT_VERSION));
 
 	fp->Write(m_sWidth);
@@ -644,7 +644,7 @@ int16_t RMultiGrid::Load(RFile* fp)
 	char	string[20];
 
 	fp->Read(&string[0]);
-	if (rspStricmp(string,MULTIGRID_COOKIE))
+	if (rspStricmp(string,MULTIGRID_MAGIC_NUMBER))
 		{
 		TRACE("MultiGrid::Load: Not a MultiGrid File!\n");
 		return FAILURE;

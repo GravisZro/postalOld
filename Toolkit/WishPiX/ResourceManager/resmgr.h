@@ -217,7 +217,7 @@
 	#include <set.h>
 #endif
 
-#define SAK_COOKIE 0x204b4153		// Looks like "SAK " in the file
+#define SAK_MAGIC_NUMBER 0x204b4153		// Looks like "SAK " in the file
 #define SAK_CURRENT_VERSION 1		// Current version of SAK file format
 
 #ifdef __GNUC__

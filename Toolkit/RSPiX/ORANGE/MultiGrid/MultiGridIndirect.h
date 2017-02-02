@@ -38,7 +38,7 @@
 #include <GREEN/BLiT/Blit.h>
 #include <ORANGE/MultiGrid/MultiGrid.h>
  
-#define MGI_COOKIE "_MultiGridIndirect_"
+#define MGI_MAGIC_NUMBER "_MultiGridIndirect_"
 #define MGI_CURRENT_VERSION 1
 #define	MGI_MAX_PLANES	15 // to work wwith multigrid 15-bit
 // NOTE: zero is NOT a valid palette value, but it IS a valid attribute value

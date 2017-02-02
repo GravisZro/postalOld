@@ -60,7 +60,7 @@
 #define ANIMSPRITE_WAITING			-3
 
 #define ANIMSPRITE_CURRENT_VERSION	0
-#define ANIMSPRITE_COOKIE				0x4d494e41	//"ANIM" in the file
+#define ANIMSPRITE_MAGIC_NUMBER				0x4d494e41	//"ANIM" in the file
 
 // Error codes
 #define ANIM_INVALID_FRAME			1			// Current anim does not contain 

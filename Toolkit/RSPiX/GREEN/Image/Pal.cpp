@@ -525,7 +525,7 @@ int16_t RPal::Save(char const * pszFilename)
 int16_t RPal::Save(RFile* pcf)
 {
 	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType = PAL_COOKIE;
+	uint32_t ulFileType = PAL_MAGIC_NUMBER;
 	uint32_t ulCurrentVersion = PAL_CURRENT_VERSION;
 
 	if (pcf && pcf->IsOpen())

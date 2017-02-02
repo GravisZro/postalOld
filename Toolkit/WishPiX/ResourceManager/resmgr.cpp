@@ -798,7 +798,7 @@ int16_t RResMgr::CreateSak(RString strScriptFile, RString strSakFile)
 int16_t RResMgr::WriteSakHeader(RFile* prf)
 {
 	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType = SAK_COOKIE;
+   uint32_t ulFileType = SAK_MAGIC_NUMBER;
 	uint32_t ulCurrentVersion = SAK_CURRENT_VERSION;
 	uint16_t usNumPairs = m_DirectoryMap.size();
 	dirMap::iterator m;
@@ -869,7 +869,7 @@ int16_t RResMgr::OpenSak(RString strSakFile)
 	{
 		m_rfSak.ClearError();
 		m_rfSak.Read(&ulFileType);
-		if (ulFileType == SAK_COOKIE)
+      if (ulFileType == SAK_MAGIC_NUMBER)
 		{
 			m_rfSak.Read(&ulFileVersion);
 			if (ulFileVersion == SAK_CURRENT_VERSION)
@@ -900,7 +900,7 @@ int16_t RResMgr::OpenSak(RString strSakFile)
 		}
 		else
 		{
-			TRACE("RResMgr::OpenSak - Not a valid SAK file, cookie should be 'SAK ' - what's up with dat?\n");
+         TRACE("RResMgr::OpenSak - Not a valid SAK file, magic_number should be 'SAK ' - what's up with dat?\n");
 			sReturn = FAILURE;
 		}		
 	}

@@ -368,7 +368,7 @@ int16_t RImageFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 	uint32_t	ulFinger;
 	if (pfile->Read(&ulFinger) == 1)
 		{
-		if (ulFinger == IMAGE_COOKIE)
+      if (ulFinger == IMAGE_MAGIC_NUMBER)
 			{
 			uint32_t	ulVersion;
 			if (pfile->Read(&ulVersion) == 1)
@@ -432,8 +432,8 @@ int16_t RImageFile::Load(			// Returns SUCCESS on success or FAILURE on failure.
 			}
 		else
 			{
-			// If it matches the BMP cookie . . . 
-			if ((ulFinger & 0x0000FFFF) == BMP_COOKIE)
+         // If it matches the BMP magic_number . . .
+         if ((ulFinger & 0x0000FFFF) == BMP_MAGIC_NUMBER)
 				{
 				// Seek back for LoadDib() call.  99% of the time this will not cause a seek
 				// b/c it's within the buffered i/o's buffer.

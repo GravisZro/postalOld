@@ -127,7 +127,8 @@ void rspTrace(char const *frmt, ... )
 		va_end (varp);
 		LOGI("%s",errortext);
 #else
-		vfprintf(stderr, frmt, varp);
+      vfprintf(stdout, frmt, varp);
+      fflush(stdout);
 #endif
 
 #if defined(RSP_DEBUG_OUT_FILE)
@@ -159,7 +160,7 @@ void rspTrace(char const *frmt, ... )
 
 		va_end(varp);
 
-#if defined(RSP_DEBUG_OUT_MESSAGEBOX)
+#if 0 && defined(RSP_DEBUG_OUT_MESSAGEBOX)
       char szOutput[512];
       vsnprintf(szOutput, 512, frmt, varp);
       //fprintf(fs, szOutput);

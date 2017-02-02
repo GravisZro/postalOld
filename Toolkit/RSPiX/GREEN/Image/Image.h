@@ -145,7 +145,7 @@
 //	12/18/96	JMI	Added TOUCH macros to aid in dynamic linking.  See comment
 //						there for more detail.
 //
-//	02/04/97	JMI	Added BMP_COOKIE for in detecting a .BMP formatted file.
+//	02/04/97	JMI	Added BMP_MAGIC_NUMBER for in detecting a .BMP formatted file.
 //						Made LoadDib() a private member.  Now Load() will load *.BMP
 //						or *.IMG formatted files.
 //
@@ -196,13 +196,13 @@
 #define WIDTHU8(i)   (((i)+3) & ~3)      // uint32_t aligned
 #define WIDTH128(i)		 (((i)+15) & ~15)	 // 128-bit aligned
 
-#define IMAGE_COOKIE	0x20204d49 // Looks like "IM  " in the file
+#define IMAGE_MAGIC_NUMBER	0x20204d49 // Looks like "IM  " in the file
 #define IMAGE_CURRENT_VERSION	5 // Current file version.  Change
 										  // this number if you change the .IMG
 										  // file format.  It will be compared to
 										  // the version number in the file as a check
 
-#define BMP_COOKIE	0x4d42		// Looks like "BM" in the file.
+#define BMP_MAGIC_NUMBER	0x4d42		// Looks like "BM" in the file.
 
 ///////////////////////////////////////////////////////////////////////////////
 // Typedefs.

@@ -502,7 +502,7 @@ int16_t RAttributeMap::Load(RFile* prf)
 	{
 		if (prf->Read(&ulFileType) == 1)
 		{
-			if (ulFileType == ATTRIBUTE_MAP_COOKIE)
+			if (ulFileType == ATTRIBUTE_MAP_MAGIC_NUMBER)
 			{
 				if (prf->Read(&ulVersion) == 1)
 				{

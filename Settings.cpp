@@ -142,51 +142,44 @@ CSettings::~CSettings()
 //
 ////////////////////////////////////////////////////////////////////////////////
 int16_t CSettings::LoadPrefs(               // Returns 0 if successfull, non-zero otherwise
-   char const * pszFile)                           // In:  Name of prefs file
-   {
-   int16_t sResult = 0;
+    char const * pszFile)                           // In:  Name of prefs file
+{
+  int16_t sResult = 0;
 
-   // Make sure container exists
-   if (ms_pSettings != 0)
-      {
+  try
+  {
+    // Make sure container exists
+    if (ms_pSettings == nullptr)
+      throw std::make_pair("CSettings::LoadPrefs(): No container!", -1);
 
-      // Open file for read access (text mode is default)
-      RPrefs prefs;
-      sResult = prefs.Open(pszFile, "r");
-      if (sResult == 0)
-         {
+    // Open file for read access (text mode is default)
+    RPrefs prefs;
+    sResult = prefs.Open(pszFile, "r");
+    if (sResult != SUCCESS)
+      throw std::make_pair(std::make_pair("CSettings::LoadPrefs(): Couldn't open prefs file: %s !\n", pszFile), 1);
 
-         // Do this for all CSettings objects
-         for (SETTINGS::Pointer i = ms_pSettings->GetHead(); i != 0; i = ms_pSettings->GetNext(i))
-            {
-            sResult = ms_pSettings->GetData(i)->LoadPrefs(&prefs);
-            if (sResult)
-               break;
-            }
+    // Do this for all CSettings objects
+    for (SETTINGS::Pointer i = ms_pSettings->GetHead(); i != nullptr && !prefs.IsError(); i = ms_pSettings->GetNext(i))
+      sResult = ms_pSettings->GetData(i)->LoadPrefs(&prefs);
 
-         // If no errors detected, double-check to be sure no I/O errors occurred
-         if (!sResult && prefs.IsError())
-            {
-            sResult = -1;
-            TRACE("CSettings::LoadPrefs(): Error reading prefs file!\n");
-            }
+    // If no errors detected, double-check to be sure no I/O errors occurred
+    if (prefs.IsError())
+      throw std::make_pair("CSettings::LoadPrefs(): Error reading prefs file!", -1);
+    prefs.Close();
+  }
+  catch (std::pair<const char*, int16_t> data)
+  {
+    TRACE(data.first);
+    return data.second;
+  }
+  catch (std::pair<std::pair<const char*, const char*>, int16_t> data)
+  {
+    TRACE(data.first.first, data.first.second);
+    return data.second;
+  }
 
-         prefs.Close();
-         }
-      else
-         {
-         sResult = -1;
-         TRACE("CSettings::LoadPrefs(): Couldn't open prefs file: %s !\n", pszFile);
-         }
-      }
-   else
-      {
-      sResult = -1;
-      TRACE("CSettings::LoadPrefs(): No container!\n");
-      }
-
-   return sResult;
-   }
+  return sResult;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////

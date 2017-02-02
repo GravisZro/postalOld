@@ -214,7 +214,7 @@
 //						color data, just the header if you want.  Each
 //						optional section is flaged in the file.  Also, I
 //						modified the load and save routines to check
-//						only for critical errors like wrong cookie or
+//						only for critical errors like wrong magic_number or
 //						wrong version.  Then the error codee is checked
 //						after all of the reads or writes have been done
 //						before it reports an error.  This cut out most of
@@ -315,7 +315,7 @@
 //						it simply adds the value of an initial Tell() to the address
 //						to Seek().
 //
-//	02/04/97	JMI	Added BMP_COOKIE for in detecting a .BMP formatted file.
+//	02/04/97	JMI	Added BMP_MAGIC_NUMBER for in detecting a .BMP formatted file.
 //						Made LoadDib() a private member.  Now Load() will load *.BMP
 //						or *.IMG formatted files.
 //
@@ -1370,7 +1370,7 @@ int16_t RImage::LoadDib(RFile* pcf)
     if (!pcf->Read(&(dfh.usType), 1))
       throw std::make_pair("RImage::LoadDib(): Unable to read type field of bitmap file header.", -2);
 
-    if (dfh.usType != BMP_COOKIE)
+    if (dfh.usType != BMP_MAGIC_NUMBER)
       throw std::make_pair("RImage::LoadDib(): NOT a BITMAP file.", -3);
 
     if (pcf->Read(&(dfh.ulSize), 1) != TRUE)
@@ -1800,7 +1800,7 @@ int16_t RImage::Save(char const * pszFilename) const
 int16_t RImage::Save(RFile* pcf) const
 {
 	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType = IMAGE_COOKIE;
+   uint32_t ulFileType = IMAGE_MAGIC_NUMBER;
 	uint32_t	ulCurrentVersion = IMAGE_CURRENT_VERSION;
 
 	if (pcf && pcf->IsOpen())

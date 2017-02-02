@@ -36,7 +36,7 @@
 #include <BLUE/Blue.h>
 #include <ORANGE/File/file.h>
 
-#define ATTRIBUTE_MAP_COOKIE 0x4d525441 //Looks like "ATRM" in the file
+#define ATTRIBUTE_MAP_MAGIC_NUMBER 0x4d525441 //Looks like "ATRM" in the file
 #define ATTRIBUTE_CURRENT_VERSION 6
 
 //////////////////////////////////////////////////////////////////////

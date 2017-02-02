@@ -138,7 +138,7 @@ int16_t RAnimSprite::Load(RFile* pcf)
 	{
 		if (pcf->Read(&ulFileType) == 1)
 		{
-			if (ulFileType == ANIMSPRITE_COOKIE)
+			if (ulFileType == ANIMSPRITE_MAGIC_NUMBER)
 			{
 				if (pcf->Read(&m_sVersion) == 1)
 				{
@@ -404,7 +404,7 @@ int16_t RAnimSprite::Save(char* pszFilename)
 int16_t RAnimSprite::Save(RFile* pcf)
 {
 	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType = ANIMSPRITE_COOKIE;
+	uint32_t ulFileType = ANIMSPRITE_MAGIC_NUMBER;
 
 	if (pcf && pcf->IsOpen())
 	{

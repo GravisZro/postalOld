@@ -41,7 +41,7 @@
 #include <ORANGE/CDT/slist.h>
 
 // These values are used to identify the sprite file
-#define SPRITE_COOKIE				0x54525053	// Looks like "SPRT" in file
+#define SPRITE_MAGIC_NUMBER				0x54525053	// Looks like "SPRT" in file
 #define SPRITE_CURRENT_VERSION	3				// Change this whenever you must
 															// change the file format
 
