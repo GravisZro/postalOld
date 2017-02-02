@@ -785,6 +785,7 @@ int16_t	RImage::CreateData(uint32_t ulNewSize)
 	return sCreateAlignedMem((void**) &m_pMem, (void**) &m_pData, ulNewSize);
 #endif
    m_pMem = m_pData = new uint8_t[ulNewSize];
+   return m_pMem != nullptr ? SUCCESS : FAILURE;
 }
 
 //////////////////////////////////////////////////////////////////////
