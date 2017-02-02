@@ -397,13 +397,12 @@ int16_t CGameSettings::LoadPrefs(
       m_sViolence = 11;
    pPrefs->GetVal("Game", "UseCrossHair", m_sCrossHair, &m_sCrossHair);
 
+#ifndef MULTIPLAYER_REMOVED
    pPrefs->GetVal("Multiplayer", "Server", m_szServerName, m_szServerName);
    pPrefs->GetVal("Multiplayer", "Port", m_usServerPort, &m_usServerPort);
    pPrefs->GetVal("Multiplayer", "Protocol", m_usProtocol, &m_usProtocol);
-#ifndef MULTIPLAYER_REMOVED
    if (m_usProtocol >= RSocket::NumProtocols)
       m_usProtocol = RSocket::FirstProtocol;
-#endif
    pPrefs->GetVal("Multiplayer", "Name", m_szPlayerName, m_szPlayerName);
    pPrefs->GetVal("Multiplayer", "Color", m_sPlayerColorIndex, &m_sPlayerColorIndex);
    pPrefs->GetVal("Multiplayer", "Bandwidth", m_sNetBandwidth, &m_sNetBandwidth);
@@ -447,6 +446,7 @@ int16_t CGameSettings::LoadPrefs(
    pPrefs->GetVal("Multiplayer", "PeerDropMaxWaitTime", m_lPeerDropMaxWaitTime, &m_lPeerDropMaxWaitTime);
    m_lPeerDropMaxWaitTime *= 1000;        // Change to milliseconds
 /*** 01/14/98 SPA ***/
+#endif
 
    pPrefs->GetVal("Demo", "InitialTimeOut", m_lInitialDemoTimeOut, &m_lInitialDemoTimeOut);
    pPrefs->GetVal("Demo", "PersistentTimeOut", m_lPersistentDemoTimeOut, &m_lPersistentDemoTimeOut);
