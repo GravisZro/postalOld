@@ -332,7 +332,7 @@ int16_t ConvertToFSPR1(RImage* pImage)
 	pSpecial->m_pCode = pNewCodeBuf;
 	pSpecial->m_lSize = lCompressedSize; // Set font specific stuff yourself!
 	pSpecial->m_u16Width = uint16_t(sW); // so the default kerning makes sense!
-	pimNew->m_pSpecial = pimNew->m_pSpecialMem = (uint8_t*)pSpecial;
+   pimNew->m_pSpecial = pimNew->m_pSpecialMem = (uint8_t*)pSpecial;
 	pimNew->m_sWidth = sW;
 	pimNew->m_sHeight = sH;
 	pimNew->m_sWinWidth = sW;
@@ -350,7 +350,7 @@ int16_t ConvertToFSPR1(RImage* pImage)
 		return RImage::FSPR1;
 		}
 	//---------------- transfer to the original:
-	pImage->m_pSpecial = pImage->m_pSpecialMem = pimNew->m_pSpecialMem;
+   pImage->m_pSpecial = pImage->m_pSpecialMem = pimNew->m_pSpecialMem;
 	// WE MUST REMOVE THE OLD BUFFER:
 	//pImage->DestroyData();
 	void* pTempData = pImage->DetachData();
@@ -666,11 +666,12 @@ int16_t rspBlit(
 	if (sClipT < 0) sClipT = 0;
 	if (sClipB < 0) sClipB = 0;
 
+#ifdef OLD_RENDERER
 	//**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
-	int16_t sBlitTypeDst = 0;
+   int16_t sBlitTypeDst = 0;
 
 	// IN RELEASE MODE, GIVE THE USER A CHANCE:
 #ifndef _DEBUG
@@ -679,13 +680,12 @@ int16_t rspBlit(
 
 #endif
 
-	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
+   // IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-#ifndef BUILD_CHEAT
    if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
-	switch (sBlitTypeDst) // 0 = normal image
+
+   switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
 /*
@@ -727,7 +727,7 @@ int16_t rspBlit(
 			sNeedToUnlock = BUF_VRAM;			
 		break;
 
-		case 0: // normal image
+      case 0: // normal image
 			sNeedToUnlock = 0;
 		break;
 
@@ -742,7 +742,7 @@ int16_t rspBlit(
 		{
 		TRACE("BLiT: nullptr data - possible locking error.\n");
 		return FAILURE;
-		}
+      }
 
 	uint8_t	*pDst,*pDstLine,*pCode,ucCount;
 	pDstLine = pimDst->m_pData + lDstP * sDstY + sDstX;
@@ -844,6 +844,7 @@ int16_t rspBlit(
 		}
 
 //BLIT_DONTUNLOCK:	
+#endif
 	return 0;
 	}
 
@@ -965,7 +966,8 @@ int16_t rspBlit(
 	if (sClipT < 0) sClipT = 0;
 	if (sClipB < 0) sClipB = 0;
 
-	//**************  INSERT BUFFER HOOKS HERE!  ************************
+#ifdef OLD_RENDERER
+   //**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
@@ -981,9 +983,8 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-#ifndef BUILD_CHEAT
    if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
+
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -1041,7 +1042,7 @@ int16_t rspBlit(
 		{
 		TRACE("BLiT: nullptr data - possible locking error.\n");
 		return FAILURE;
-		}
+      }
 
 	uint8_t	*pDst,*pDstLine,*pCode,ucCount;
 	pDstLine = pimDst->m_pData + lDstP * sDstY + sDstX;
@@ -1162,7 +1163,8 @@ int16_t rspBlit(
 			TRACE("BLiT:  Unlocking error!\n");
 		}
 
-//BLIT_DONTUNLOCK:	
+//BLIT_DONTUNLOCK:
+#endif
 	return 0;
 	}
 
@@ -1218,7 +1220,8 @@ int16_t rspBlit(
 	uint8_t	ucForeColor = (uint8_t) ulForeColor;
 	int32_t	lDstP = pimDst->m_lPitch;
 
-	//**************  INSERT BUFFER HOOKS HERE!  ************************
+#ifdef OLD_RENDERER
+   //**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
@@ -1234,9 +1237,8 @@ int16_t rspBlit(
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-#ifndef BUILD_CHEAT
    if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
+
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -1294,7 +1296,7 @@ int16_t rspBlit(
 		{
 		TRACE("Blit: nullptr data - possible locking error.\n");
 		return FAILURE;
-		}
+      }
 
 	uint8_t	*pDst,*pDstLine,*pCode,ucCount;
 	pDstLine = pimDst->m_pData + lDstP * sDstY + sDstX;
@@ -1373,6 +1375,7 @@ int16_t rspBlit(
 		}
 
 //BLIT_DONTUNLOCK:	
+#endif
 	return 0;
 	}
 
@@ -1439,7 +1442,8 @@ int16_t rspBlit(
 	int16_t sH = sDstH; // clippng parameters...
 	int32_t	lDstP = pimDst->m_lPitch;
 
-	//**************  INSERT BUFFER HOOKS HERE!  ************************
+#ifdef OLD_RENDERER
+   //**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
@@ -1452,12 +1456,11 @@ int16_t rspBlit(
 
 #endif
 
-	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
+   // IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-#ifndef BUILD_CHEAT
    if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
+
 	switch (sBlitTypeDst) // 0 = normal image
 		{
 		case BUF_MEMORY: // image to system buffer
@@ -1515,7 +1518,7 @@ int16_t rspBlit(
 		{
 		TRACE("BLiT: nullptr data - possible locking error.\n");
 		return FAILURE;
-		}
+      }
 
 	uint8_t	*pDst,*pDstLine,*pCode,ucCount;
 	pDstLine = pimDst->m_pData + lDstP * sDstY + sDstX;
@@ -1635,6 +1638,7 @@ int16_t rspBlit(
 		}
 
 //BLIT_DONTUNLOCK:	
+#endif
 	return 0;
 	}
 

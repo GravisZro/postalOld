@@ -473,10 +473,10 @@ int16_t	rspGeneralLock(RImage* pimDst)
    {
    ASSERT(pimDst);
 
+#ifdef OLD_RENDERER
    // If it is a stub . . .
    if (pimDst->m_type == RImage::IMAGE_STUB)
       {
-#ifndef BUILD_CHEAT
       switch (((int16_t)(((int32_t)pimDst->m_pSpecial)))) // 0 = normal image
          {
          case 0:	// it's YOUR IMAGE!
@@ -498,8 +498,8 @@ int16_t	rspGeneralLock(RImage* pimDst)
          default:
             TRACE("rspGeneralLock: unrecognized image case - probably FSPR.\n");
          }
-#endif
       }
+#endif
 
    return SUCCESS;
    }
@@ -509,11 +509,10 @@ int16_t	rspGeneralLock(RImage* pimDst)
 int16_t	rspGeneralUnlock(RImage* pimDst)
    {
    ASSERT(pimDst);
-
+#ifdef OLD_RENDERER
    // If it is a stub . . .
    if (pimDst->m_type == RImage::IMAGE_STUB)
       {
-#ifndef BUILD_CHEAT
       switch (((int16_t)(((int32_t)pimDst->m_pSpecial)))) // 0 = normal image
          {
          case 0:	// it's YOUR IMAGE!
@@ -536,8 +535,8 @@ int16_t	rspGeneralUnlock(RImage* pimDst)
          default:
             TRACE("rspGeneralLock: unrecognized image case - probably FSPR.\n");
          }
-#endif
       }
+#endif
 
    return SUCCESS;
    }

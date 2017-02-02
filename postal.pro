@@ -8,7 +8,7 @@ QT=
 #Define this for debug mode, comment it out otherwise.
 #DEFINES += "_DEBUG"
 
-DEFINES += "BUILD_CHEAT"
+#DEFINES += "BUILD_CHEAT"
 DEFINES += "BUILD_CHEAT_NETWORK"
 DEFINES += "PLATFORM_UNIX"
 

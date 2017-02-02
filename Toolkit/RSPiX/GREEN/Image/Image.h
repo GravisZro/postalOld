@@ -282,7 +282,7 @@ class RImage
 			BMP1,						// Monochrome bitmap.  No palette 
 										// (1 == Black, 0 == White).  JMI	09/04/96
 			END_OF_TYPES
-		};
+      };
 
 
 	public:	// Member vars.
@@ -301,7 +301,7 @@ class RImage
 		int16_t			m_sDepth;			// Color depth of image
 		uint8_t*		m_pData;				// Pointer to data
 		RPal*			m_pPalette;			// Pointer to palette class
-		uint8_t*		m_pSpecial;			// Generic pointer for expandability
+      uint8_t*		m_pSpecial;			// Generic pointer for expandability
 												// (other image formats)
 		uint8_t*		m_pSpecialMem;		// Pointer to allocated special memory
 		uint8_t*		m_pMem;				// Pointer to the memory buffer
@@ -465,10 +465,12 @@ class RImage
 		//	To allocate memory for the data buffers of CPal
 		static int16_t sCreateMem(void **hMem,uint32_t ulSize);
 
+#ifdef UNUSED_FUNCTIONS
 		//	To allocate memory and return a pointer aligned to 128-bits
 		//	for optimum blit speed.  This is the function used by
 		//	CImage when it creates memory for the image buffers.
 		static int16_t sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize);
+#endif
 
 		//	To free the data buffers of CPal and CImage that were created 
 		//	using either sCreateMem() or sCreateAlignedMem()

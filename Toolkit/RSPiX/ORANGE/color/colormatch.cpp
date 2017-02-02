@@ -885,19 +885,19 @@ uint8_t*** RMultiAlpha::pppucCreateFastMultiAlpha(
 	// how you seek!
 
 	// I am adding on in BYTES, not words...
-#if BUILD_CHEAT
-   uint8_t*** pppucFastAligned = nullptr;
-#else
+#ifdef ALIGNED_MEMORY
    uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#else
+   uint8_t*** pppucFastAligned = pppucFastMem;
 #endif
 
 	if (!pppucFastMem) return nullptr;
 	uint8_t* pInfo = (uint8_t*)pppucFastAligned;
 	// For freeing:
-#if BUILD_CHEAT
-   int32_t lMemOffset = 0;
-#else
+#ifdef ALIGNED_MEMORY
 	int32_t lMemOffset = uint32_t(pppucFastAligned) - uint32_t(pppucFastMem);
+#else
+   int32_t lMemOffset = 0;
 #endif
 
 	// Remember offsets for each main memory structure:
@@ -1255,19 +1255,19 @@ int16_t RFastMultiAlphaWrapper::Load(RFile* pf)
 	// how you seek!
 
 	// I am adding on in BYTES, not words...
-#if BUILD_CHEAT
-   uint8_t*** pppucFastAligned = nullptr;
-#else
+#ifdef ALIGNED_MEMORY
    uint8_t*** pppucFastAligned = (uint8_t***) ((uint32_t(pppucFastMem)+4095) & (~4095) );
+#else
+   uint8_t*** pppucFastAligned = pppucFastMem;
 #endif
 
    if (!pppucFastMem) return 0;
 //   uint8_t* pInfo = (uint8_t*)pppucFastAligned;
    // For freeing:
-#if BUILD_CHEAT
-   int32_t lMemOffset = 0;
-#else
+#ifdef ALIGNED_MEMORY
    int32_t lMemOffset = uint32_t(pppucFastAligned) - uint32_t(pppucFastMem);
+#else
+   int32_t lMemOffset = 0;
 #endif
 
 	//==============  Idenitfy the different data sections  ===============

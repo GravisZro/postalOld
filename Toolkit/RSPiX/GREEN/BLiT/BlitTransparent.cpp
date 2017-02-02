@@ -163,8 +163,8 @@ int16_t	rspBlitT(uint32_t ucTransparent,RImage* pimSrc,RImage* pimDst,int16_t sS
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
 
-	int16_t sBlitTypeSrc = 0;
-	int16_t sBlitTypeDst = 0;
+   int16_t sBlitTypeSrc = 0;
+   int16_t sBlitTypeDst = 0;
 
 	// IN RELEASE MODE, GIVE THE USER A CHANCE:
 #ifndef _DEBUG
@@ -173,13 +173,13 @@ int16_t	rspBlitT(uint32_t ucTransparent,RImage* pimSrc,RImage* pimDst,int16_t sS
 
 #endif
 
+#ifdef OLD_RENDERER
 	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
-#ifndef BUILD_CHEAT
    if (pimSrc->m_type == RImage::IMAGE_STUB) sBlitTypeSrc = (int16_t)((int32_t)pimSrc->m_pSpecial);
-	if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
+   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+
 	switch ( (sBlitTypeSrc<<3) + sBlitTypeDst) // 0 = normal image
 		{
 		case (BUF_MEMORY<<3) + 0: // system buffer to an image
@@ -267,7 +267,7 @@ int16_t	rspBlitT(uint32_t ucTransparent,RImage* pimSrc,RImage* pimDst,int16_t sS
 		TRACE("rspBlitT: Null data - possible locking error.\n");
 		return FAILURE;
 		}
-
+#endif
 	// Done clipping, convert to bytes to find best alignment:
 	// Currently based on source, assumes source = destination depth:
 	switch (pimSrc->m_sDepth)

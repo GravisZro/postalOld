@@ -359,10 +359,13 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	int32_t	lSizeEstimate = ((int32_t)(pImage->m_sHeight+1))*(pImage->m_sWidth*2+1) + 15;
 	pHeader->m_pCompMem = (uint8_t*)malloc((size_t)pImage->m_sHeight*(size_t)pImage->m_sWidth+15);
 
-#ifndef BUILD_CHEAT
+#ifdef ALIGNED_MEMORY
    pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) + 15) & ~ 15); // align it 128!
-	pHeader->m_pCodeBuf = (uint8_t*)malloc((size_t)lSizeEstimate);
+#else
+   pHeader->m_pCompBuf = pHeader->m_pCompMem;
 #endif
+   pHeader->m_pCodeBuf = (uint8_t*)malloc((size_t)lSizeEstimate);
+
 	//******** For convenience, generate the Compressed Buffer immediately:
 	uint8_t*	pucCPos = pHeader->m_pCompBuf;
 	uint8_t*	pucBPos = pImage->m_pData; // read the actual buffer
@@ -405,8 +408,10 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	// NOTE: pucCPos is an open stack!
 	pHeader->m_pCompMem = (uint8_t*)calloc(1,(size_t)(pucCPos - pHeader->m_pCompBuf + 15));
 	// And align it:
-#ifndef BUILD_CHEAT
+#ifdef ALIGNED_MEMORY
    pHeader->m_pCompBuf = (uint8_t*)(( (int32_t)(pHeader->m_pCompMem) +15)&~15);
+#else
+   pHeader->m_pCompBuf = pHeader->m_pCompMem;
 #endif
 	// Store the size of the Compressed Buffer:
 	pHeader->m_pBufArry[sH] = (uint8_t*)(size_t)(pucCPos - pHeader->m_pCompBuf);
@@ -417,7 +422,7 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	free(pucOldMem);
 	
 	// Now update the indexes (m_pBufArry) which point into PCBuf:
-#ifndef BUILD_CHEAT
+#ifdef ALIGNED_MEMORY
    for (y=0;y<sH;y++) pHeader->m_pBufArry[y] += (int32_t)(pHeader->m_pCompBuf);
 #endif
 
@@ -490,7 +495,7 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 										(size_t)(pucConBlk - pHeader->m_pCodeBuf));	
 
 	// Move the indexes in (m_pCodeArry)
-#ifndef BUILD_CHEAT
+#ifdef ALIGNED_MEMORY
    for (y=0;y<sH;y++) pHeader->m_pCodeArry[y] += (int32_t)(pHeader->m_pCodeBuf);
 #endif
 
@@ -594,7 +599,8 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 		if ((sW <= 0) || (sH <= 0)) return -1; // fully clipped
 		}
 
-		//**************  INSERT BUFFER HOOKS HERE!  ************************
+#ifdef OLD_RENDERER
+      //**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
@@ -612,9 +618,7 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
 	// NOT NECESSARY!!! THe SOURCE WILL ALWAYS BE A BUFFER!
-#ifndef BUILD_CHEAT
    if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
-#endif
 
 	switch (sBlitTypeDst) // 0 = normal image
 		{
@@ -675,8 +679,7 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 		{
 		TRACE("BLiT: nullptr data - possible bad lock.\n");
 		return FALSE;
-		}
-
+      }
 
 	// Right now, pDst refers to the CLIPPED start of the scanline:
 	uint8_t*	pDstLine = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
@@ -970,6 +973,7 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 		}
 
 //BLIT_DONTUNLOCK:	
+#endif
 	return 0;
 	}
 

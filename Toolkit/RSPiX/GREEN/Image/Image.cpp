@@ -484,7 +484,7 @@ int16_t RImage::sCreateMem(void **hMem,uint32_t ulSize)
 //		-2		Buffer could not be allocated
 //
 //////////////////////////////////////////////////////////////////////
-
+#ifdef UNUSED_FUNCTIONS
 int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 {
  	// Make sure the data hasn't already been allocated
@@ -509,9 +509,7 @@ int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 			else
 			{
 				// Set Data buffer to 128-bit alignment
-#ifndef BUILD_CHEAT
            *hData = (void*) (( *hMem + (void*)0x0f) & 0xfffffff0);
-#endif
 				// success		 	
 				return SUCCESS;
 			}
@@ -524,6 +522,7 @@ int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 		}
 	}
 }
+#endif
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -778,13 +777,14 @@ int16_t	RImage::CreateData(uint32_t ulNewSize)
       TRACE("RImage::CreateData - Warning: pData is pointing to data");
 
 	ALLOCFUNC caf = GETALLOCFUNC(m_type);
-	if (caf)
-		if ((*caf)(this) != SUCCESS)
-         TRACE("RImage::CreateData - Error creating data for special type %d", m_type);
+   if (caf && (*caf)(this) != SUCCESS)
+     TRACE("RImage::CreateData - Error creating data for special type %d", m_type);
 
 	m_ulSize = ulNewSize;
-
+#ifdef ALIGNED_MEMORY
 	return sCreateAlignedMem((void**) &m_pMem, (void**) &m_pData, ulNewSize);
+#endif
+   m_pMem = m_pData = new uint8_t[ulNewSize];
 }
 
 //////////////////////////////////////////////////////////////////////

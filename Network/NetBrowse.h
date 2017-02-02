@@ -84,9 +84,7 @@ class CNetBrowse
                {
                // We ignore the user value in comparisons!!!!
                if ((strcmp(m_acName, rhs->m_acName) == 0) &&
-#ifndef BUILD_CHEAT
                    (m_address == rhs->m_address) &&
-#endif
                    (m_lMagic == rhs->m_lMagic))
                   return true;
                return false;

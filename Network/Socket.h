@@ -593,7 +593,7 @@ protected:
       ProtoType prototype);                     // In:  Protocol type to create
 };
 
-#ifndef BUILD_CHEAT_NETWORK
+#ifndef MULTIPLAYER_REMOVED
 #include <Network/ProtoBSDIP.h>
 
 // operator== cannot be defined until after all the protocol address types have been defined.
