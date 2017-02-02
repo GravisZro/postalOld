@@ -1,3 +1,9 @@
+# Postal specific
+*.ini
+*.ini.*
+postal
+res*
+
 # C++ objects and libs
 
 *.slo
