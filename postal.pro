@@ -8,8 +8,7 @@ QT=
 #Define this for debug mode, comment it out otherwise.
 #DEFINES += "_DEBUG"
 
-#DEFINES += "BUILD_CHEAT"
-DEFINES += "BUILD_CHEAT_NETWORK"
+#DEFINES += "SAFETY_LAST"
 DEFINES += "PLATFORM_UNIX"
 
 DEFINES += "US=1"
@@ -62,7 +61,6 @@ LIBS += -lSDL2
 
 HEADERS += \
     PostalAttrib.h \
-    Network/ProtoBSDIP.h \
     Reality.h \
     Realm.h \
     SampleMaster.h \
@@ -70,7 +68,6 @@ HEADERS += \
     Scoreboard.h \
     Settings.h \
     Smash.h \
-    Network/Socket.h \
     Sprites.h \
     StockPile.h \
     TexEdit.h \
@@ -245,7 +242,6 @@ HEADERS += \
     Toolkit/Variant.h
 
 SOURCES += \
-    Network/ProtoBSDIP.cpp \
     Realm.cpp \
     RSPiX.cpp \
     SampleMaster.cpp \
@@ -253,7 +249,6 @@ SOURCES += \
     Scoreboard.cpp \
     Settings.cpp \
     Smash.cpp \
-    Network/Socket.cpp \
     StockPile.cpp \
     TexEdit.cpp \
     Thing.cpp \
@@ -416,6 +411,8 @@ SOURCES += \
     ModAlphaBlit.cpp
 
 win32:HEADERS += \
+    Network/Socket.h \
+    Network/ProtoBSDIP.h \
     Network/NetBrowse.h \
     Network/NetClient.h \
     Network/NetDlg.h \
@@ -424,6 +421,8 @@ win32:HEADERS += \
     Network/NetServer.h
 
 win32:SOURCES += \
+    Network/Socket.cpp \
+    Network/ProtoBSDIP.cpp \
     Network/NetBrowse.cpp \
     Network/NetClient.cpp \
     Network/NetDlg.cpp \

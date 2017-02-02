@@ -593,7 +593,6 @@ protected:
       ProtoType prototype);                     // In:  Protocol type to create
 };
 
-#ifndef MULTIPLAYER_REMOVED
 #include <Network/ProtoBSDIP.h>
 
 // operator== cannot be defined until after all the protocol address types have been defined.
@@ -608,7 +607,6 @@ inline bool operator==(const RSocket::Address& lhs, const RSocket::Address& rhs)
       return false;
   }
 }
-#endif
 
 
 #endif //SOCKET_H
