@@ -20,6 +20,8 @@
 #ifndef RSPIXBLUE_H
 #define RSPIXBLUE_H
 
+#include <cstdint>
+
 ///////////////////////////////////////////////////////////////////////////////
 // Macros.
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,8 +138,8 @@ class EXE2DLL CRSPiXBlue : public CStatic
 			{ return ::Blu_CreateDisplay(lWidth, lHeight, sColorDepth); }
 		void Blu_SetRedrawBuf(	void* pvBuf, 				
 										int32_t lBufW, int32_t lBufH,	
-										long sx, long sy,			
-										long dx, long dy, 		
+                    int32_t sx, int32_t sy,
+                    int32_t dx, int32_t dy,
 										int32_t lBltW, int32_t lBltH,	
 										int16_t sColorDepth,		
 										int16_t sVertFlip = FALSE)
@@ -150,13 +152,13 @@ class EXE2DLL CRSPiXBlue : public CStatic
 			{ ::Blu_SetDisplayBuf(pvBuf, lWidth, lHeight, sColorDepth, sVertFlip); }
 		uint16_t*	Blu_GetPaletteTranslation(void)
 			{ return ::Blu_GetPaletteTranslation(); }
-		int16_t Blu_UpdateDisplay(long sx, long sy, 
-										long dx, long dy, 
-										long w, long h)
+    int16_t Blu_UpdateDisplay(int32_t sx, int32_t sy,
+                    int32_t dx, int32_t dy,
+                    int32_t w, int32_t h)
 			{ return ::Blu_UpdateDisplay(sx, sy, dx, dy, w, h); }
 		int16_t Blu_SetWindowControls(int16_t sControls)
 			{ return ::Blu_SetWindowControls(sControls); }
-		long Blu_GetDisplayInfo(uint16_t usInfo)
+    int32_t Blu_GetDisplayInfo(uint16_t usInfo)
 			{ return ::Blu_GetDisplayInfo(usInfo); }
 		int16_t Blu_SetWindowTitle(char *pszTitleNameText)
 			{ return ::Blu_SetWindowTitle(pszTitleNameText); }
@@ -165,9 +167,9 @@ class EXE2DLL CRSPiXBlue : public CStatic
 		// BJOY.H
 		int16_t Blu_UpdateJoy(int16_t sJoy)
 			{ return ::Blu_UpdateJoy(sJoy); }
-		void Blu_GetJoyPos(int16_t sJoy, long *px, long *py, long *pz)
+    void Blu_GetJoyPos(int16_t sJoy, int32_t *px, int32_t *py, int32_t *pz)
 			{ ::Blu_GetJoyPos(sJoy, px, py, pz); }
-		void Blu_GetJoyPrevPos(int16_t sJoy, long *px, long *py, long *pz)
+    void Blu_GetJoyPrevPos(int16_t sJoy, int32_t *px, int32_t *py, int32_t *pz)
 			{ ::Blu_GetJoyPrevPos(sJoy, px, py, pz); }
 		uint16_t Blu_GetJoyState(int16_t sJoy)
 			{ return ::Blu_GetJoyState(sJoy); }
@@ -186,9 +188,9 @@ class EXE2DLL CRSPiXBlue : public CStatic
 		void Blu_DispatchEvents(int16_t sDispatch)
 			{ ::Blu_DispatchEvents(sDispatch); }
 		// BMOUSE.H
-		int16_t Blu_GetMousePos(long* px, long* py)
+    int16_t Blu_GetMousePos(int32_t* px, int32_t* py)
 			{ return ::Blu_GetMousePos(px, py); }
-		int16_t Blu_SetMousePos(long x, long y)
+    int16_t Blu_SetMousePos(int32_t x, int32_t y)
 			{ return ::Blu_SetMousePos(x, y); }
 		int16_t Blu_GetMouseButton(int16_t sButton)
 			{ return ::Blu_GetMouseButton(sButton); }
@@ -216,11 +218,11 @@ class EXE2DLL CRSPiXBlue : public CStatic
 		char* Blu_GetParm(int16_t sNum)
 			{ return ::Blu_GetParm(sNum); }
 		// BSOUND.H
-		long Blu_GetSoundOutWindowSize(void)
+    int32_t Blu_GetSoundOutWindowSize(void)
 			{ return ::Blu_GetSoundOutWindowSize(); }
 		void Blu_SetSoundOutWindowSize(int32_t lWindowSize)
 			{ ::Blu_SetSoundOutWindowSize(lWindowSize); }
-		long Blu_GetSoundOutPaneSize(void)
+    int32_t Blu_GetSoundOutPaneSize(void)
 			{ return ::Blu_GetSoundOutPaneSize(); }
 		void Blu_SetSoundOutPaneSize(int32_t lPaneSize)
 			{ ::Blu_SetSoundOutPaneSize(lPaneSize); }
@@ -245,12 +247,12 @@ class EXE2DLL CRSPiXBlue : public CStatic
 			{ return ::Blu_PauseSoundOut(); }
 		int16_t Blu_ResumeSoundOut(void)
 			{ return ::Blu_ResumeSoundOut(); }
-		long Blu_GetSoundOutPos(void)
+    int32_t Blu_GetSoundOutPos(void)
 			{ return ::Blu_GetSoundOutPos(); }
-		long Blu_GetSoundOutTime(void)
+    int32_t Blu_GetSoundOutTime(void)
 			{ return ::Blu_GetSoundOutTime(); }
 		// BTIME.H
-		long Blu_GetTime(void)
+    int32_t Blu_GetTime(void)
 			{ return ::Blu_GetTime(); }
 		// SYSINFO
 		SYSINFO* GetSysInfo(void)

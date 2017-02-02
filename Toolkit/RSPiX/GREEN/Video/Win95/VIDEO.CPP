@@ -98,10 +98,10 @@ CVideo::CVideo(void)
 //						05/18/95, PPL, Rewrote using the MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CVideo::CVideo(char* szFilename,						// filename of the video
-					long x, 									// left edge of playback window
-					long y, 									// top of the playback window
-					long w, 									// width of the playback window
-					long h, 									// height of the playback window
+          int32_t x, 									// left edge of playback window
+          int32_t y, 									// top of the playback window
+          int32_t w, 									// width of the playback window
+          int32_t h, 									// height of the playback window
 					int16_t sClip) 							// clipping flag
 	{
 	// Call the default constructor.
@@ -226,10 +226,10 @@ void CVideo::Destroy(void)
 //						05/18/95, PPL, Rewrote using MCIWnd Class.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int16_t CVideo::Open(char* szFilename,						// name of the video file
-						 long x,									// left edge of the playback window
-						 long y,									// top of the playback window
-						 long w,									// width of the playback window
-						 long h,									// height of the playback window
+             int32_t x,									// left edge of the playback window
+             int32_t y,									// top of the playback window
+             int32_t w,									// width of the playback window
+             int32_t h,									// height of the playback window
 						 int16_t sClip)								// clipping flag, use following values:
 				 														//    0: no clipping, window will be resized to 
 																		//			actual video's size.
@@ -239,8 +239,8 @@ int16_t CVideo::Open(char* szFilename,						// name of the video file
 	{
 	int16_t		sResult;
 	RECT		rect;
-	long 		lXdelta;
-	long		lYdelta;
+  int32_t 		lXdelta;
+  int32_t		lYdelta;
 
 	sResult = VIDEO_SUCCESS;		// initially no error.
 
@@ -518,10 +518,10 @@ int16_t CVideo::Stop(void)
 // Name:				GetFrame
 // Description:	This function gets the current frame of a video.
 // Input:			none
-// Output:			long: current frame number.
+// Output:			int32_t: current frame number.
 // History:			05/17/95, PPL,	Started coding.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long CVideo::GetFrame(void)
+int32_t CVideo::GetFrame(void)
 	{
 	int16_t sResult;
 
@@ -545,10 +545,10 @@ long CVideo::GetFrame(void)
 // Name:				GetPosition
 // Description:	This function gets the current position(milliseconds) of a video.
 // Input:			none
-// Output:			long: current position
+// Output:			int32_t: current position
 // History:			05/17/95, PPL,	Started coding.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long CVideo::GetPosition(void)
+int32_t CVideo::GetPosition(void)
 	{
 	int16_t sResult;
 
@@ -699,11 +699,11 @@ void CVideo::Init(void)
 // Description:	This function simply put up a trace message containing the string description of 
 //						the current MCIWndError
 // Input:			szErrOrigin: a description for where the error might have originated.
-// Output:			long: if 0, then error was not shown
+// Output:			int32_t: if 0, then error was not shown
 //								else, the error number is returned.
 // History:			05/17/95, PPL,	Started coding.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long CVideo::TraceMCIError(char* szFunctionName)
+int32_t CVideo::TraceMCIError(char* szFunctionName)
 	{
 	int32_t lResult;
 

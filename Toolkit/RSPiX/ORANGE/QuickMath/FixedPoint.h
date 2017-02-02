@@ -41,7 +41,7 @@ Hungarian:	fp = either generic fixed point or signed 32 (int16_t.uint16_t)
 				a local stack frame which would slow things down by 20 times.
 
 NOTE: Some functions can take a long AS an fpint32_t.  Understand that this is
-a memory cast as a fpint32_t and does NOT represent the actual long "value"!
+a memory cast as a fpint32_t and does NOT represent the actual int32_t "value"!
 Use Get and Set "Value" functions to translate integers to fixed point!
 
 // *****************************************************************
@@ -52,12 +52,12 @@ inline RFixedint32_t rspfpSin(sDeg)
 inline RFixedint32_t rspfpCos(sDeg)
 inline RFixedint32_t rspfpOneOver(sDen)
 
-inline void rspfpSet(&fpX,lVal) // lVal is an fpint32_t in long form (mem)
+inline void rspfpSet(&fpX,lVal) // lVal is an fpint32_t in int32_t form (mem)
 inline void rspfpAdd(f&pDst,&fpAdd)
 inline void rspfpSub(&fpDst,&fpSub)
 inline void rspfpMul(&fpDst,&fpMul)
 inline void rspfpMul(&fpDst,&fpA,&fpB)
-inline void rspfpMul(&fpDst,int32_t lA,int32_t lB) // fpint32_t s as longs (mem)
+inline void rspfpMul(&fpDst,int32_t lA,int32_t lB) // fpint32_t s as int32_ts (mem)
 inline void rspfpAddHalf(&fpDst) // useful for rounding functions
 inline void rspfpSetValue(&fpDst,double dVal) // translates VALUE into fp
 inline double rspfpGetValue(&fpDst)
@@ -66,7 +66,7 @@ inline double rspfpGetValue(&fpDst)
 // Fixed Point 32S
 // ======================================= signed 15:16 fixed point
 typedef union	{
-  long	val; // ********* Full 32 bit signed value
+  int32_t	val; // ********* Full 32 bit signed value
 	struct	
 		{
 #ifdef __BIG_ENDIAN__ // big endian
@@ -135,7 +135,7 @@ inline void rspfpSub(RFixedint32_t& s32fx,RFixedint32_t& s32fxSub)
 			uint32_t val;
 			struct { uint16_t lo; uint16_t hi; };
 			} temp;
-		long temp2;
+      int32_t temp2;
 
 		// Use the 64-bit resultant to get the true value!
 		__asm	
@@ -173,7 +173,7 @@ class RInitNum
 	{
 public:
 	RInitNum();
-	static long OneOver[NUM_ONEOVER_FP32];
+   static int32_t OneOver[NUM_ONEOVER_FP32];
 	};
 
 //======================================= unsigned 8:8 fixed point
@@ -213,7 +213,7 @@ extern RFixedint32_t fpSINQ[csNumRotSteps],fpCOSQ[csNumRotSteps];
 extern	void InitTrigFP();
 inline RFixedint32_t rspfpSin(int16_t sDeg) { return fpSINQ[sDeg]; }
 inline RFixedint32_t rspfpCos(int16_t sDeg) { return fpCOSQ[sDeg]; }
-inline long rspfpOneOver(int16_t sDen) { return RInitNum::OneOver[sDen]; }
+inline int32_t rspfpOneOver(int16_t sDen) { return RInitNum::OneOver[sDen]; }
 
 // Auto Initialize hook!
 class RQuickTrigFP

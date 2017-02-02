@@ -174,11 +174,11 @@ extern int16_t Joy_Update(int16_t sJoy)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Puts the coordinates of joystick sJoy's position in your longs.
+// Puts the coordinates of joystick sJoy's position in your int32_ts.
 // Returns nothing.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern void Joy_GetPos(int16_t sJoy, long *px, long *py, long *pz)
+extern void Joy_GetPos(int16_t sJoy, int32_t *px, int32_t *py, int32_t *pz)
 	{
 	ASSERT(sJoy >= 0 && sJoy < NUM_JOYSTICKS);
 	
@@ -187,11 +187,11 @@ extern void Joy_GetPos(int16_t sJoy, long *px, long *py, long *pz)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Puts the coordinates of the previous joystick sJoy's position in your longs.
+// Puts the coordinates of the previous joystick sJoy's position in your int32_ts.
 // Returns nothing.
 //
 //////////////////////////////////////////////////////////////////////////////
-extern void Joy_GetPrevPos(int16_t sJoy, long *px, long *py, long *pz)
+extern void Joy_GetPrevPos(int16_t sJoy, int32_t *px, int32_t *py, int32_t *pz)
 	{
 	ASSERT(sJoy >= 0 && sJoy < NUM_JOYSTICKS);
 

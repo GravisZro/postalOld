@@ -132,7 +132,7 @@ class RProcessGui
 		// it will not return until a GUI pressed callback occurs on a GUI
 		// with an ID other than 0 or the update callback, m_fnUpdate, if any,
 		// returns non-zero.
-		long DoModal(							// Returns ID of pressed GUI that terminated 
+      int32_t DoModal(							// Returns ID of pressed GUI that terminated
 													// modal loop or value returned from 
 													// m_fnUpdate, if any.
 			RGuiItem* pgui,					// In:  GUI to be processed or nullptr.
@@ -149,7 +149,7 @@ class RProcessGui
 
 		// Call this to process a GUI modelessly.  This function processes the
 		// GUI for only one iteration allowing the caller continuous control.
-		long DoModeless(						// Returns ID of pressed GUI or value.
+      int32_t DoModeless(						// Returns ID of pressed GUI or value.
 			RGuiItem* pgui,					// In:  GUI to be processed or nullptr.
 			RInputEvent* pie,					// In:  Input event to process.
 			RImage* pimDst = nullptr);			// Where to draw dialog and rspBlit from.
@@ -208,7 +208,7 @@ class RProcessGui
 	public:
 
 		// ID of last item pressed.
-		static long ms_lPressedId;
+      static int32_t ms_lPressedId;
 	};
 
 #endif	// PROCESSGUI_H

@@ -97,8 +97,8 @@ class RLaymage
 		int16_t m_sSpecialNumChannels;
 
 		int16_t m_sNumLayers;
-		long	m_lWidth;
-		long	m_lHeight;
+      int32_t	m_lWidth;
+      int32_t	m_lHeight;
 
 		// General Constructor
 		RLaymage();

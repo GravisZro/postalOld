@@ -18,6 +18,7 @@
 #ifndef CVIDEO_H
 #define CVIDEO_H
 
+#include <cstdint>
 
 //////////////////////////////////////////////////////////////////////////////
 // Constants
@@ -60,10 +61,10 @@ class CVideo
 
 		// Extended constructor which also creates the playback window.
 		CVideo(char* szFilename,						// filename of the video
-				 long x, 									// left edge of playback window
-				 long y, 									// top of the playback window
-				 long w, 									// width of the playback window
-				 long h, 									// height of the playback window
+         int32_t x, 									// left edge of playback window
+         int32_t y, 									// top of the playback window
+         int32_t w, 									// width of the playback window
+         int32_t h, 									// height of the playback window
 				 int16_t sClip); 							// clipping flag
 
 		// Default destructor.
@@ -79,10 +80,10 @@ class CVideo
 		
 		// Open a video file and create the playback window.
 		int16_t Open(char* szFileName,						// name of the video file
-					  long x,									// left edge of the playback window
-					  long y,									// top of the playback window
-					  long w,									// width of the playback window
-					  long h,									// height of the playback window
+            int32_t x,									// left edge of the playback window
+            int32_t y,									// top of the playback window
+            int32_t w,									// width of the playback window
+            int32_t h,									// height of the playback window
 					  int16_t sClip);							// clipping flag, use following values:
 						 											//    0: no clipping, window will be resized to 
 																	//			actual video's size.
@@ -115,10 +116,10 @@ class CVideo
 		int16_t Stop(void);
 
 		// Get the current frame number of the video.
-		long GetFrame(void);
+    int32_t GetFrame(void);
 
 		// Get the current position of the video (in milliseconds).
-		long GetPosition(void);
+    int32_t GetPosition(void);
 
 		// The following few functions return status/progress information about the current video.
 		// If the status requested is valid, TRUE will be returned - FALSE otherwise.
@@ -129,13 +130,13 @@ class CVideo
 
 	private:
 		void Init(void);
-		long TraceMCIError(char* szErrOrigin);
+    int32_t TraceMCIError(char* szErrOrigin);
 
 
 	// Data
 	private:
 		uint32_t		m_ulDeviceID;
-		long		m_lhwnd;
+    int32_t		m_lhwnd;
 	};
 
 #endif

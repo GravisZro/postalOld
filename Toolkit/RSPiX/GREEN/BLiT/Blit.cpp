@@ -435,7 +435,7 @@ int16_t	rspBlitA(RImage* pimSrc,RImage* pimDst,int16_t sX,int16_t sY,
 	int16_t sDepthToShift[] = {-1, 0, 1, -1, 2};
 	int16_t sDepthS = sDepthToShift[sDepth]; // convert to a shift value
 
-	const long clChosenAlignment = 4; // in bytes
+   const int32_t clChosenAlignment = 4; // in bytes
 	// govern the best possible alignment based on pitch
 	int16_t sBestAlign = (int16_t)(clChosenAlignment | pimSrc->m_lPitch | pimDst->m_lPitch);
 	

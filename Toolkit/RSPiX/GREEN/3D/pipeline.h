@@ -149,9 +149,9 @@ public:
 	// static storage:
 
 	// Transformation buffer:
-	static long ms_lNumPts;
+   static int32_t ms_lNumPts;
 	static RP3d* ms_pPts;
-	static long	ms_lNumPipes; // used to free ms_pPts
+   static int32_t	ms_lNumPipes; // used to free ms_pPts
 	};
 
 //================================================== 

@@ -60,10 +60,10 @@
 // obstacle was that the original author made a STUPID mistake by failing to
 // write out a version number when saving an RChannel.  Lucky for him, it turns
 // out the first thing an RChannel saves is an RString, and the first thing an
-// RString saves is the string's length as a long (32-bit) value.  We can
+// RString saves is the string's length as a int32_t (32-bit) value.  We can
 // safely assume that an RChannel's name (which was stored in this RString)
 // would never approach, never mind exceed, 65K.  Newer RChannel files are
-// written with a header that is well above 65K, so if the first long in an
+// written with a header that is well above 65K, so if the first int32_t in an
 // RChannel file is less than 65K, we can assume it's an older file.
 //
 //
@@ -247,7 +247,7 @@ class RChanCore
 		// to indicate that this does not apply.
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		virtual long NumItems(void)										// Returns total number of items
+      virtual int32_t NumItems(void)										// Returns total number of items
 			= 0;														// Abstract function!
 
 
@@ -349,7 +349,7 @@ class RChanCore
 		// Get the total amount of time (ms) represented by this channel
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		virtual long TotalTime(void)							// Returns total channel time
+      virtual int32_t TotalTime(void)							// Returns total channel time
 			= 0;														// Abstract function!
 
 
@@ -371,7 +371,7 @@ class RChanCore
 		// return a value of 0 to indicate "not applicable".
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		virtual long Resolution(void)							// Returns timing resolution
+      virtual int32_t Resolution(void)							// Returns timing resolution
 			= 0;														// Abstract function!
 
 
@@ -560,7 +560,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		// to indicate that this does not apply.
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long NumItems(void)										// Returns total number of items
+      int32_t NumItems(void)										// Returns total number of items
 			{
 			return -1;
 			}
@@ -682,7 +682,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		// Get the total amount of time (ms) represented by this channel
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long TotalTime(void)
+      int32_t TotalTime(void)
 			{
 			return 0;
 			}
@@ -708,7 +708,7 @@ class RChanCoreNothing : public RChanCore<datat>
 		// return a value of 0 to indicate "not applicable".
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long Resolution(void)
+      int32_t Resolution(void)
 			{
 			return 0;
 			}
@@ -898,7 +898,7 @@ class RChanCoreArray : public RChanCore<datat>
 		// to indicate that this does not apply.
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long NumItems(void)										// Returns total number of items
+      int32_t NumItems(void)										// Returns total number of items
 			{
 			return m_lNumItems;
 			}
@@ -1034,7 +1034,7 @@ class RChanCoreArray : public RChanCore<datat>
 		// Get the total amount of time (ms) represented by this channel
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long TotalTime(void)
+      int32_t TotalTime(void)
 			{
 			return m_lTotalTime;
 			}
@@ -1060,7 +1060,7 @@ class RChanCoreArray : public RChanCore<datat>
 		// return a value of 0 to indicate "not applicable".
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long Resolution(void)
+      int32_t Resolution(void)
 			{
 			return m_lInterval;
 			}
@@ -1340,7 +1340,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 					else
 						{
 						// Find index of pointer whose data we're pointing to
-						long j;
+                  int32_t j;
 						for (j = 0; j < l; j++)
 							{
 							if (m_pArrayOfPtrs[l] == m_pArrayOfPtrs[j])
@@ -1391,7 +1391,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// to indicate that this does not apply.
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long NumItems(void)										// Returns total number of items
+      int32_t NumItems(void)										// Returns total number of items
 			{
 			return m_lNumItems;
 			}
@@ -1419,12 +1419,12 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 			// aren't already compressed.  If two such items are the same, then change
 			// the second item's pointer to point at the first item, then delete the
 			// second item and mark it as "compressed".
-			for (long i = 0; i < m_lNumItems; i++)
+         for (int32_t i = 0; i < m_lNumItems; i++)
 				{
 				// Only if this isn't already compressed
 				if (m_pArrayOfFlags[i] == 0)
 					{
-					for (long j = i + 1; j < m_lNumItems; j++)
+               for (int32_t j = i + 1; j < m_lNumItems; j++)
 						{
 						// Only if this isn't already compressed
 						if (m_pArrayOfFlags[j] == 0)
@@ -1464,7 +1464,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 			// Any data type that utilizes this type of channel must therefore support the
 			// assignment operator.
 			//
-			for (long i = 0; i < m_lNumItems; i++)
+         for (int32_t i = 0; i < m_lNumItems; i++)
 				{
 				if (m_pArrayOfFlags[i] == 1)
 					{
@@ -1583,7 +1583,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// Get the total amount of time (ms) represented by this channel
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long TotalTime(void)
+      int32_t TotalTime(void)
 			{
 			return m_lTotalTime;
 			}
@@ -1609,7 +1609,7 @@ class RChanCoreArrayOfPtrs: public RChanCore<datat>
 		// return a value of 0 to indicate "not applicable".
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long Resolution(void)
+      int32_t Resolution(void)
 			{
 			return m_lInterval;
 			}
@@ -1858,7 +1858,7 @@ class RChannel
 				// The original versions of RChannel did NOT use an ID or version number.
 				// However, since the first thing that was written to the file was the
 				// RString, and the first thing an RString wrote (at that time, anyway)
-				// was the string's length as a long, we can use that to differentiate
+            // was the string's length as a int32_t, we can use that to differentiate
 				// older versions from newer versions.  Of course, we might be tricked
 				// into thinking it's an older version when it isn't actually ANY TYPE
 				// of RChannel, but that's the way it was back then, so there isn't any
@@ -2000,7 +2000,7 @@ class RChannel
 		// to indicate that this does not apply.
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long NumItems(void)										// Returns total number of items
+      int32_t NumItems(void)										// Returns total number of items
 			{
 			return m_pcore->NumItems();
 			}
@@ -2116,7 +2116,7 @@ class RChannel
 		// Get the total amount of time (ms) represented by this channel
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long TotalTime(void)										// Returns total channel time
+      int32_t TotalTime(void)										// Returns total channel time
 			{
 			return m_pcore->TotalTime();
 			}
@@ -2142,7 +2142,7 @@ class RChannel
 		// return a value of 0 to indicate "not applicable".
 		//
 		////////////////////////////////////////////////////////////////////////////////
-		long Resolution(void)									// Returns timing resolution
+      int32_t Resolution(void)									// Returns timing resolution
 			{
 			return m_pcore->Resolution();
 			}

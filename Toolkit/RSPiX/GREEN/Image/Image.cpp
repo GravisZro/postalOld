@@ -258,7 +258,7 @@
 //						lHeight, lBufferWidth, lBufferHeight, lXPos, & lYPos) to
 //						be int16_ts (i.e., m_sWidth, m_sHeight, m_sBufferWidth,
 //						m_sBufferHeight, m_sXPos, m_sYPos) and functions associated
-//						with these members reflect this change (e.g., long GetWidth()
+//						with these members reflect this change (e.g., int32_t GetWidth()
 //						is now int16_t GetWidth()).  Changed ulType to m_type and 
 //						ulDestinationType to m_typeDestination.  Increased file
 //						version to 5 since members converted to int16_t will affect
@@ -1354,7 +1354,7 @@ int16_t RImage::LoadDib(RFile* pcf)
 {
   DIBHEADER		dh;
   DIBFILEHEADER dfh;
-  long lDibPitch;
+  int32_t lDibPitch;
 
   try
   {
@@ -1597,7 +1597,7 @@ int16_t RImage::SaveDib(RFile* pcf)
 
     int32_t lDibPitch = WIDTHU8((((int32_t)m_sWidth * (int32_t)m_sDepth + 7L) & ~7L) / 8L);
 
-    long	ulColorData	= 0;
+    int32_t	ulColorData	= 0;
     if (m_pPalette)
       ulColorData	= m_pPalette->m_ulSize;
 
