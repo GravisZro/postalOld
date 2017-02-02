@@ -2,7 +2,9 @@
 Modern C++ version of Running With Scissors' game 'Postal'
 
 ####Changes made:
+* Removed unused files.
 * Reorganized files with proper file names.
+* Removed `#include` strangeness and now use the standard include practice.
 * Replaced `CompilerOptions.h` and localization headers with build argument defines.
 * Replaced projects files with a simple QtCreator project file.
 * Replaced non-standard types and platform specific types with standard types.
