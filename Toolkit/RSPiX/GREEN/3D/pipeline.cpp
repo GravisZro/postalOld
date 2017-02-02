@@ -30,8 +30,8 @@
 //
 ///////////////////////////////////////////////////////////////
 
-long RPipeLine::ms_lNumPts = 0;
-long	RPipeLine::ms_lNumPipes = 0;
+int32_t RPipeLine::ms_lNumPts = 0;
+int32_t	RPipeLine::ms_lNumPipes = 0;
 
 RP3d*  RPipeLine::ms_pPts = nullptr;
 
@@ -174,7 +174,7 @@ RPipeLine::~RPipeLine()
 void RPipeLine::Transform(RSop* pPts,RTransform& tObj)
 	{
 	RTransform tFull;
-	long i;
+   int32_t i;
 	// Use to stretch to z-buffer!
 
 	tFull.Make1();
@@ -197,7 +197,7 @@ void RPipeLine::TransformShadow(RSop* pPts,RTransform& tObj,
 	ASSERT(m_pimShadowBuf);
 
 	RTransform tFull;
-	long i;
+   int32_t i;
 	// Use to stretch to z-buffer!
 
 	tFull.Make1();
@@ -270,8 +270,8 @@ int16_t RPipeLine::NotCulled(RP3d *p1,RP3d *p2,RP3d *p3)
 void RPipeLine::Render(RImage* pimDst,int16_t sDstX,int16_t sDstY,
 		RMesh* pMesh,uint8_t ucColor) // wire!
 	{
-	long i;
-	long v1,v2,v3;
+   int32_t i;
+   int32_t v1,v2,v3;
    uint16_t *psVertex = pMesh->m_pArray;
 	int32_t lNumHidden = 0;
 
@@ -300,8 +300,8 @@ void RPipeLine::Render(RImage* pimDst,int16_t sDstX,int16_t sDstY,
 //
 void RPipeLine::RenderShadow(RImage* pimDst,RMesh* pMesh,uint8_t ucColor)
 	{
-	long i;
-	long v1,v2,v3;
+   int32_t i;
+   int32_t v1,v2,v3;
    uint16_t *psVertex = pMesh->m_pArray;
 
 	for (i=0;i < pMesh->m_sNum; i++)
@@ -329,8 +329,8 @@ void RPipeLine::Render(RImage* pimDst,int16_t sDstX,int16_t sDstY,
 		int16_t sOffsetX/* = 0*/,		// In: 2D offset for pimDst and pZB.
 		int16_t sOffsetY/* = 0*/) 	// In: 2D offset for pimDst and pZB.
 	{
-	long i;
-	long v1,v2,v3;
+   int32_t i;
+   int32_t v1,v2,v3;
    uint16_t *psVertex = pMesh->m_pArray;
 	uint8_t *pColor = pTexColors->m_pIndices;
 	int32_t lDstP = pimDst->m_lPitch;
@@ -363,8 +363,8 @@ void RPipeLine::Render(RImage* pimDst,int16_t sDstX,int16_t sDstY,
 		int16_t sOffsetX/* = 0*/,		// In: 2D offset for pimDst and pZB.
 		int16_t sOffsetY/* = 0*/) 	// In: 2D offset for pimDst and pZB.
 	{
-	long i;
-	long v1,v2,v3;
+   int32_t i;
+   int32_t v1,v2,v3;
    uint16_t *psVertex = pMesh->m_pArray;
 	uint8_t *pColor = pTexColors->m_pIndices;
 	int32_t lDstP = pimDst->m_lPitch;
