@@ -515,6 +515,7 @@ int16_t CGameSettings::SavePrefs(
    pPrefs->SetVal("Game", "RecentViolence", m_sViolence);
    pPrefs->SetVal("Game", "UseCrossHair", m_sCrossHair);
 
+#ifndef MULTIPLAYER_REMOVED
    pPrefs->SetVal("Multiplayer", "Server", m_szServerName);
    pPrefs->SetVal("Multiplayer", "Port", m_usServerPort);
    pPrefs->SetVal("Multiplayer", "Protocol", m_usProtocol);
@@ -528,6 +529,7 @@ int16_t CGameSettings::SavePrefs(
    pPrefs->SetVal("Multiplayer", "HostRejuvenate", m_sHostRejuvenate);
    pPrefs->SetVal("Multiplayer", "HostTimeLimit", m_sHostTimeLimit);
    pPrefs->SetVal("Multiplayer", "HostKillLimit", m_sHostKillLimit);
+#endif
 
    pPrefs->SetVal("Video", "GammaVal", m_sGammaVal);
    pPrefs->SetVal("Video", "GameFilmScale", m_dGameFilmScale);
