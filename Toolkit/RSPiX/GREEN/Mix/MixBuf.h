@@ -20,6 +20,8 @@
 #ifndef MIXBUF_H
 #define MIXBUF_H
 
+#include <cstdint>
+
 ///////////////////////////////////////////////////////////////////////////////
 // Macros.
 ///////////////////////////////////////////////////////////////////////////////
@@ -27,12 +29,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Types.
 ///////////////////////////////////////////////////////////////////////////////
-
-// Forward declare class for handy-dandy typedef.
-class RMixBuf;
-
-// Handy-dandy typedef.
-typedef RMixBuf* PMIXBUF;
 
 // Class definition.
 class RMixBuf
@@ -65,9 +61,9 @@ class RMixBuf
 		int16_t Mix(	uint32_t		ulStartPos,
 						uint8_t*		pu8Data, 
 						uint32_t		ulSize, 
-						long		lSampleRate,
-						long		lBitsPerSample,
-						long		lNumChannels,
+                  int32_t		lSampleRate,
+                  int32_t		lBitsPerSample,
+                  int32_t		lNumChannels,
 						uint8_t		ucVolume = uint8_t(255),
 						uint8_t		ucVol2 = uint8_t(255) );
 
@@ -134,15 +130,15 @@ class RMixBuf
 	public:	// It is safe to change these.
 		int16_t			m_sInUse;				// TRUE if in use, FALSE otherwise.
 
-		static long	ms_lSampleRate;		// Sample rate for audio 
+      static int32_t	ms_lSampleRate;		// Sample rate for audio
 													// playback/mix.
 		
-		static long	ms_lSrcBitsPerSample;	// Sample size in bits for sample data.
+      static int32_t	ms_lSrcBitsPerSample;	// Sample size in bits for sample data.
 														// 0 for no preference.
-		static long	ms_lMixBitsPerSample;	// Sample size in bits for mixing.
-		static long	ms_lDstBitsPerSample;	// Sample size in bits for Blue data.
+      static int32_t	ms_lMixBitsPerSample;	// Sample size in bits for mixing.
+      static int32_t	ms_lDstBitsPerSample;	// Sample size in bits for Blue data.
 
-		static long	ms_lNumChannels;		// Number of channels (mono
+      static int32_t	ms_lNumChannels;		// Number of channels (mono
 													//  or stereo).
 		static int16_t ms_sCutOffVolume;	// when to not mix samples...
 	};

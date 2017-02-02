@@ -789,7 +789,7 @@ void* RSnd::StreamCallStatic(	RMix::Msg	msg,
 										uint8_t*		pucVolume,
 										uint8_t*		pucVol2)
 	{
-	return ((PSND)ulUser)->StreamCall(msg, pData, pulBufSize,ulUser,pucVolume,pucVol2);
+   return ((RSnd*)ulUser)->StreamCall(msg, pData, pulBufSize,ulUser,pucVolume,pucVol2);
 	}
 
 //////////////////////////////////////////////////////////////////////////////
@@ -807,7 +807,7 @@ void* RSnd::PlayCallStatic(RMix::Msg	msg,
 									uint8_t*		pucVolume,
 									uint8_t*		pucVol2)
 	{
-	return ((PSND)ulUser)->PlayCall(msg, pData, pulBufSize, pucVolume, pucVol2);
+   return ((RSnd*)ulUser)->PlayCall(msg, pData, pulBufSize, pucVolume, pucVol2);
 	}
 
 //////////////////////////////////////////////////////////////////////////////

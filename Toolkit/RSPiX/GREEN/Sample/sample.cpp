@@ -194,7 +194,7 @@ void RSample::Reset(void)
 // Returns size of chunk on success.
 //
 ///////////////////////////////////////////////////////////////////////////////
-static long IffReadUntil(char const * pcForm, FILE* fsIn)
+static int32_t IffReadUntil(char const * pcForm, FILE* fsIn)
 	{
 	int32_t lRes = 0;
 
@@ -243,7 +243,7 @@ static long IffReadUntil(char const * pcForm, FILE* fsIn)
 // Returns size of data chunk on success, negative on error. (protected)
 //
 ///////////////////////////////////////////////////////////////////////////////
-long RSample::ReadWaveHeader(void)
+int32_t RSample::ReadWaveHeader(void)
 	{
 	int32_t	lRes = 0L; // Assume success.
 
@@ -427,7 +427,7 @@ static int16_t GetFileType(RIff* piff)
 // (public)
 //
 ///////////////////////////////////////////////////////////////////////////////
-long RSample::Open(char const * pszSampleName, int32_t lReadBufSize)
+int32_t RSample::Open(char const * pszSampleName, int32_t lReadBufSize)
 	{
 	int32_t	lRes = 0L;
 
@@ -507,7 +507,7 @@ long RSample::Open(char const * pszSampleName, int32_t lReadBufSize)
 // Returns amount read on success, negative on failure.
 //
 ///////////////////////////////////////////////////////////////////////////////
-long RSample::Read(int32_t lAmount)
+int32_t RSample::Read(int32_t lAmount)
 	{
 	int32_t	lRes	= 0L;
 

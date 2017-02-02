@@ -6,7 +6,9 @@ QT=
 #DEFINES += "DEFINE_NEW_MACRO"
 
 #Define this for debug mode, comment it out otherwise.
-#DEFINES += "_DEBUG"
+DEFINES += "_DEBUG"
+DEFINES += "RESMGR_VERBOSE"
+
 
 #DEFINES += "SAFETY_LAST"
 DEFINES += "PLATFORM_UNIX"

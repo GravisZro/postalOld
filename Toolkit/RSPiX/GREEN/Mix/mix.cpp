@@ -283,7 +283,7 @@ void RMix::Init(void)
 //////////////////////////////////////////////////////////////////////////////
 int16_t RMix::BlueCall(	// Returns FALSE when done.
    int32_t		lDataPos,	// Position that this buffer represents in stream.
-	PMIXBUF	pmb)			// Mix buffer to mix into.
+   RMixBuf*	pmb)			// Mix buffer to mix into.
 	{
    int16_t	sRes	= FALSE;	// Assume no sound mixed in.
 

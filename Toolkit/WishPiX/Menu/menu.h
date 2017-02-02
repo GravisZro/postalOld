@@ -101,12 +101,12 @@
 // Macros.
 //////////////////////////////////////////////////////////////////////////////
 
-#ifdef SYS_ENDIAN_LITTLE
-	#define MAKE_uint32_t_COLOR(u8Red, u8Blue, u8Green, u8Alpha)	\
-		( (u8Alpha << 0) | (u8Red << 8) | (u8Green << 16) | (u8Blue << 24) )
+#ifdef __BIG_ENDIAN__
+  #define MAKE_uint32_t_COLOR(u8Red, u8Blue, u8Green, u8Alpha)	\
+     ( (u8Alpha << 24) | (u8Red << 16) | (u8Green << 8) | (u8Blue << 0) )
 #else
-	#define MAKE_uint32_t_COLOR(u8Red, u8Blue, u8Green, u8Alpha)	\
-		( (u8Alpha << 24) | (u8Red << 16) | (u8Green << 8) | (u8Blue << 0) )
+  #define MAKE_uint32_t_COLOR(u8Red, u8Blue, u8Green, u8Alpha)	\
+     ( (u8Alpha << 0) | (u8Red << 8) | (u8Green << 16) | (u8Blue << 24) )
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

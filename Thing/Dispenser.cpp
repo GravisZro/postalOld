@@ -302,7 +302,7 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
             if (pFile->Read(&lSize) == 1)
                {
                // Open memory file to receive the clone data . . .
-               if (m_fileDispensee.Open(lSize, 1L, (RFile::Endian)pFile->GetEndian()) == 0)
+               if (m_fileDispensee.Open(lSize, 1L, pFile->GetEndian()) == 0)
                   {
                   // Put 'er there.
                   pFile->Read(m_fileDispensee.GetMemory(), lSize);
@@ -380,7 +380,7 @@ int16_t CDispenser::Load(    // Returns 0 if successfull, non-zero otherwise
             if (pFile->Read(&lSize) == 1)
                {
                // Open memory file to receive the clone data . . .
-               if (m_fileDispensee.Open(lSize, 1L, (RFile::Endian)pFile->GetEndian()) == 0)
+               if (m_fileDispensee.Open(lSize, 1L, pFile->GetEndian()) == 0)
                   {
                   // Put 'er there.
                   pFile->Read(m_fileDispensee.GetMemory(), lSize);

@@ -546,7 +546,7 @@ class RFile
       int32_t GetSize(void);
 
 		// Returns the endian setting for this object.
-		int16_t GetEndian(void)
+      Endian GetEndian(void)
 			{ return m_endian; }
 
 		// Returns the memory ptr if this is a memory file; nullptr, otherwise.

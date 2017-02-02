@@ -126,13 +126,13 @@ typedef union
 //////////////////////////////////////////////////////////////////////////////
 // Instantiate static members.
 //////////////////////////////////////////////////////////////////////////////
-long	RMixBuf::ms_lSampleRate;			// Sample rate for audio 
+int32_t	RMixBuf::ms_lSampleRate;			// Sample rate for audio
 													// playback/mix.
-long	RMixBuf::ms_lSrcBitsPerSample;	// Sample size in bits for sample data.
+int32_t	RMixBuf::ms_lSrcBitsPerSample;	// Sample size in bits for sample data.
 													// 0 for no preference.
-long	RMixBuf::ms_lMixBitsPerSample;	// Sample size in bits for mixing.
-long	RMixBuf::ms_lDstBitsPerSample;	// Sample size in bits for Blue data.
-long	RMixBuf::ms_lNumChannels;			// Number of channels (mono
+int32_t	RMixBuf::ms_lMixBitsPerSample;	// Sample size in bits for mixing.
+int32_t	RMixBuf::ms_lDstBitsPerSample;	// Sample size in bits for Blue data.
+int32_t	RMixBuf::ms_lNumChannels;			// Number of channels (mono
 													//  or stereo).
 int16_t	RMixBuf::ms_sNumBufs	= 0;			// Number of RMixBufs allocated.
 uint8_t	RMixBuf::ms_ucGlobalVolume = uint8_t(255);	// Full volume is standard
@@ -844,9 +844,9 @@ CDVA::CDVA()	// Create the tables!
 int16_t RMixBuf::Mix(	uint32_t		ulStartPos,
 							uint8_t*		pu8Data, 
 							uint32_t		ulSize, 
-							long		lSampleRate,
-							long		lBitsPerSample,
-							long		lNumChannels,
+                     int32_t		lSampleRate,
+                     int32_t		lBitsPerSample,
+                     int32_t		lNumChannels,
 							uint8_t		ucVolume,
 							uint8_t		ucVol2)
 	{

@@ -409,7 +409,7 @@ extern const char *FindCorrectFile(const char *_pszName, const char *pszMode)
                 }
             }
 
-            snprintf(prefpath, sizeof (prefpath), "%s%s/PostalPlus/", xdghomedir, append);
+            snprintf(prefpath, sizeof (prefpath), "%s%s/Postal/", xdghomedir, append);
 
             if (homedir)
             {

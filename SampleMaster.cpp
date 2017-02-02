@@ -590,12 +590,12 @@ void PlaySample(                                      // Returns nothing.
 
    if (id.pszId != nullptr && CAN_PLAY_SAMPLE(id) )
       {
-      RSample* psample;
+      RSample* psample = nullptr;
       // Get the sample . . .
       if (rspGetResource(
          &g_resmgrSamples,
          id.pszId,
-         &psample) == 0)
+         &psample) == SUCCESS)
          {
          // Get the duration right away.  We want to return this even if we fail
          // to play the sample.

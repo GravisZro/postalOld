@@ -298,7 +298,7 @@ class RMix
 		// Implied this version of BlueCallStatic, called from BlueCallStatic.
       int16_t BlueCall(			// Returns FALSE when no data mixed.
          int32_t		lDataPos,	// Position that this buffer represents in stream.
-			PMIXBUF	pmb);			// Mix buffer to mix into.
+         RMixBuf*	pmb);			// Mix buffer to mix into.
 
 		// Callbacks from Blue.
       static int16_t BlueCallStatic(	// Returns TRUE to continue mixing in this

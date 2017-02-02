@@ -73,14 +73,14 @@ class RSample
 		int16_t IsLocked(void) { return m_sRefCnt; }
 
 		// Get the duration of this sample in milliseconds.
-		long GetDuration(void)
+      int32_t GetDuration(void)
 			{
 			return GetTime(m_lBufSize);
 			}
 
 		// Get the time in milliseconds indicated by the specified byte position
 		// in the sample.
-		long GetTime(
+      int32_t GetTime(
 			int32_t lPos)	// In:  Position in bytes.
 			{
 			return lPos / (m_lSamplesPerSec * m_sNumChannels * m_sBitsPerSample / 8000);
@@ -88,7 +88,7 @@ class RSample
 
 		// Get the position in bytes indicated by the specified time in milliseconds
 		// in the sample.
-		long GetPos(
+      int32_t GetPos(
 			int32_t lTime)	// In:  Time in milliseconds.
 			{
 			return lTime * (m_lSamplesPerSec * m_sNumChannels * m_sBitsPerSample / 8000);
@@ -101,11 +101,11 @@ class RSample
 
 		// Open a file and read the header.  Locks the RSample automatically.
 		// Returns the size of the file's data on success, negative otherwise.
-		long Open(char const * pszSampleName, int32_t lReadBufSize);
+      int32_t Open(char const * pszSampleName, int32_t lReadBufSize);
 
 		// Read the specified amount of data from the open file.
 		// Returns amount read on success, negative on failure.
-		long Read(int32_t lAmount);
+      int32_t Read(int32_t lAmount);
 		
 		// Close the file opened with Open.  Unlocks the RSample automatically.
 		// Returns 0 on success.
@@ -143,12 +143,12 @@ class RSample
 
 		// Read WAVE info from m_file.
 		// Returns size of sample data on success, negative on error.
-		long ReadWaveHeader(void);
+      int32_t ReadWaveHeader(void);
 
 	////////////////////////// Member vars ////////////////////////////////////
 	public:
-		long			m_lBufSize;			// Amount of data in CSnd.
-		long			m_lSamplesPerSec;	// Rate of data in buffer.
+      int32_t			m_lBufSize;			// Amount of data in CSnd.
+      int32_t			m_lSamplesPerSec;	// Rate of data in buffer.
 		int16_t			m_sNumChannels;	// Number of channels (i.e., 1==mono,
 												// 2==stereo).
 		int16_t			m_sBitsPerSample;	// Number of bits per sample.
