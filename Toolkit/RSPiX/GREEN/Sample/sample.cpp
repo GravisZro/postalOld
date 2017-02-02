@@ -268,8 +268,9 @@ long RSample::ReadWaveHeader(void)
 							{
 							if (m_iff.Read(&m_sBitsPerSample) == 1L)
 								{
+#ifdef ALIGNED_MEMORY
 								ASSERT(m_sBitsPerSample * m_sNumChannels / 8 == sBlockAlign);
-
+#endif
 								// If ADPCM . . .
 								if (usFormatTag == WAVE_FORMAT_ADPCM)
 									{
