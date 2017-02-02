@@ -1,0 +1,1 @@
+/home/gravis/.local/share/Postal/res

@@ -1,7 +1,5 @@
 # Postal specific
 postal
-res*
-*.ini
 
 # C++ objects and libs
 
