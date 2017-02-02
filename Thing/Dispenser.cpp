@@ -739,7 +739,7 @@ inline void SetupLogicParms(  // Returns nothing.
 void LogicItemCall(
    RGuiItem*   pguiLogicItem) // In:  Logic item that was pressed.
    {
-   ASSERT(pguiLogicItem->m_ulUserInstance);
+   ASSERT(pguiLogicItem->m_ulUserInstance.isSet());
    RListBox*   plb   = (RListBox*)pguiLogicItem->m_ulUserInstance;
    ASSERT(plb->m_type == RGuiItem::ListBox);
 

@@ -229,7 +229,7 @@ static bool ms_bDisableRipcordStaticLogo  = false;
 static char const *  ms_apszFiles[] =
    {
    // Even the rating disclaimer is too violent for some countries.
-   #if VIOLENT_LOCALE
+   #ifdef VIOLENT_LOCALE
       "Title/rating.bmp",
    #else
       "Title/ratingUK.bmp",

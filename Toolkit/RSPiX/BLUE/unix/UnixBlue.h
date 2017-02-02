@@ -93,7 +93,9 @@ extern int32_t macReserveMemBytes;
 
 	// ASSERT macro, the preferred method of asserting that expressions are true.
 	//#define ASSERT(a)		while (!(a))  if (rspAssert(__FILE__, __LINE__, #a) == 0)  break
-	#define ASSERT SDL_assert
+//	#define ASSERT SDL_assert
+   #include <cassert>
+   #define ASSERT(...) assert(__VA_ARGS__)
 #else
 	// This causes the compiler to "optimize" out the data and the function call.
 	// We can't simply define TRACE as nothing (like ASSERT) because it takes

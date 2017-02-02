@@ -48,7 +48,7 @@
    void Name(RGuiItem* pgui);                               \
    static void Name##_Static(RGuiItem* pgui)                \
       {                                                     \
-      ASSERT(pgui->m_ulUserInstance);                       \
+      ASSERT(pgui->m_ulUserInstance.isSet());                       \
       CTexEdit* pte  = (CTexEdit*)pgui->m_ulUserInstance;   \
       pte->Name(pgui);                                      \
       }
@@ -57,7 +57,7 @@
    void Name(RGuiItem* pgui, RInputEvent* pie);                \
    static void Name##_Static(RGuiItem* pgui, RInputEvent* pie) \
       {                                                        \
-      ASSERT(pgui->m_ulUserInstance);                          \
+      ASSERT(pgui->m_ulUserInstance.isSet());                          \
       CTexEdit* pte  = (CTexEdit*)pgui->m_ulUserInstance;      \
       pte->Name(pgui, pie);                                    \
       }
@@ -66,7 +66,7 @@
    void Name(RScrollBar* psb);                                 \
    static void Name##_Static(RScrollBar* psb)                  \
       {                                                        \
-      ASSERT(psb->m_ulUserInstance);                           \
+      ASSERT(psb->m_ulUserInstance.isSet());                           \
       CTexEdit* pte  = (CTexEdit*)psb->m_ulUserInstance;       \
       pte->Name(psb);                                          \
       }

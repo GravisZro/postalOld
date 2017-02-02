@@ -519,7 +519,7 @@ int16_t CBand::Init(void)
 int16_t CBand::Startup(void)                      // Returns 0 if successfull, non-zero otherwise
 {
 // If not a violent locale . . .
-#if !VIOLENT_LOCALE
+#ifndef VIOLENT_LOCALE
    // We must kill band members in these countries b/c of their lack of tolerance.
    delete this;
    return 0;

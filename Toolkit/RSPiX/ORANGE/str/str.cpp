@@ -392,9 +392,7 @@ extern int16_t rspStrnicmp(	// Returns 0 if equivalent.
 	char const* pszStr1,		// In:  First string to compare.
 	char const* pszStr2,		// In:  Second string to compare.
 	size_t count)				// In:  Number of characters to compare.
-	{
-	ASSERT(count >= 0);
-
+   {
 	int16_t	sRes	= 0;	// Assume equivalent.
 
 	while (*pszStr1 != '\0' && *pszStr2 != '\0' && sRes == 0 && count--)

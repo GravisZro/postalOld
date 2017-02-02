@@ -196,7 +196,7 @@
 #define SET(ptr, val)   ((ptr) ? *(ptr) = val : 0)
 
 // If not a violent locale . . .
-#if !VIOLENT_LOCALE
+#ifndef VIOLENT_LOCALE
    // No sounds indicating females are in pain or including police references can be played.
    #define CAN_PLAY_SAMPLE(id)   ( (id.usDescFlags & (SMDF_FEMALE_PAIN | SMDF_POLICE_REF) ) == 0)
 #else

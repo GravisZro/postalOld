@@ -57,7 +57,7 @@
 #include <ORANGE/CDT/slist.h>
 #include <ORANGE/CDT/List.h>
 
-#include <Toolkit/variant.h>
+#include <Toolkit/Variant.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macros.

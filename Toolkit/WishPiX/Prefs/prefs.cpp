@@ -76,7 +76,6 @@
 #include <cstring>
 #include <ctype.h>
 #include <cfloat>
-#include <assert.h>
 #include <errno.h>
 
 #include <BLUE/Blue.h>
@@ -802,8 +801,8 @@ int16_t	RPrefs::GetIteratorToSection(		// Returns 0 if successfull, non-zero oth
 	const char* pszSection,					// In:  Section name (without brackets)
 	RPrefsLineList::Pointer* pi)			// Out: iterator to line in list
 	{
-	assert (pszSection);
-	assert (pi);
+   ASSERT (pszSection);
+   ASSERT (pi);
 
 	if (!m_sErrorStatus)
 		{

@@ -128,7 +128,7 @@
 #include <ORANGE/File/RFile.h>
 #include <CYAN/cyan.h>
 
-#include <Toolkit/variant.h>
+#include <Toolkit/Variant.h>
 
 //////////////////////////////////////////////////////////////////////////////
 // Macros.

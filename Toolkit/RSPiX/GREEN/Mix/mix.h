@@ -57,7 +57,7 @@
 #include <GREEN/Mix/MixBuf.h>
 #include <GREEN/SndFx/SndFx.h>
 
-#include <Toolkit/variant.h>
+#include <Toolkit/Variant.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macros.

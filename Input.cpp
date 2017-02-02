@@ -1088,7 +1088,7 @@ extern uint64_t GetLocalInput(           // Returns local input.
       if (WAS_INPUT(CInputSettings::Execute))
          {
 // It is not proper to execute people in non-violent countries.
-#if VIOLENT_LOCALE
+#ifdef VIOLENT_LOCALE
          input |= INPUT_EXECUTE;
 #endif
          CLEAR_INPUT(CInputSettings::Execute);

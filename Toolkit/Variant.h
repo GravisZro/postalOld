@@ -1,7 +1,6 @@
 #ifndef VARIANT_H
 #define VARIANT_H
 
-#include <cassert>
 #include <cstdint>
 
 class Variant
@@ -22,8 +21,6 @@ public:
   Variant& operator = (int16_t  val) { data.i16 = val; return *this; }
   Variant& operator = (int8_t   val) { data.i8  = val; return *this; }
 
-  template<typename T> T& value(void);
-
   template<typename T> operator T*(void) { return static_cast<T*>(data.ptr); }
 
   operator uint64_t&(void) { return data.u64; }
@@ -35,7 +32,6 @@ public:
   operator int16_t& (void) { return data.i16; }
   operator int8_t&  (void) { return data.i8 ; }
 
-
   operator uint64_t(void) const { return data.u64; }
   operator uint32_t(void) const { return data.u32; }
   operator uint16_t(void) const { return data.u16; }
@@ -44,6 +40,9 @@ public:
   operator int32_t (void) const { return data.i32; }
   operator int16_t (void) const { return data.i16; }
   operator int8_t  (void) const { return data.i8 ; }
+
+  // for checking if any data is set in a boolean test
+  bool isSet(void) const { return data.ptr != nullptr; }
 
 private:
   union data_t

@@ -19,6 +19,8 @@ DEFINES += "FRENCH=4"
 DEFINES += "JAPAN=5"
 DEFINES += "LOCALE=US"
 
+DEFINES += "VIOLENT_LOCALE"
+
 #DEFINES += "APP_NAME=\"\\\"Postal Plus MP\\\"\""
 #DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS MP\\\"\""
 
@@ -27,19 +29,22 @@ DEFINES += "LOCALE=US"
 #DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS DEMO\\\"\""
 
 
-#DEFINES += "APP_NAME=\"\\\"Postal Plus\\\"\""
-#DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS\\\"\""
+DEFINES += "APP_NAME=\"\\\"Postal Plus\\\"\""
+DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL PLUS\\\"\""
 
-DEFINES += "APP_NAME=\"\\\"Postal\\\"\""
-DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL\\\"\""
+#DEFINES += "APP_NAME=\"\\\"Postal\\\"\""
+#DEFINES += "MAIN_MENU_TITLE=\"\\\"POSTAL\\\"\""
 
-DEFINES += "PREFS_FILE=\"\\\"Postal.ini\\\"\""
+DEFINES += "PREFS_FILE=\"\\\"postal_plus.ini\\\"\""
 
 DEFINES += "ALLOW_JOYSTICK"
 
 DEFINES += "MULTIPLAYER_REMOVED"
 DEFINES += "EDITOR_REMOVED"
 DEFINES += "LOADLEVEL_REMOVED"
+
+DEFINES += "RSP_DEBUG_OUT_MESSAGEBOX"
+DEFINES += "TRACENASSERT"
 
 INCLUDEPATH += Toolkit/RSPiX
 INCLUDEPATH += Toolkit/WishPiX
@@ -217,7 +222,6 @@ HEADERS += \
     Toolkit/WishPiX/Prefs/prefs.h \
     Toolkit/WishPiX/ResourceManager/resmgr.h \
     Toolkit/WishPiX/Spry/spry.h \
-    Toolkit/variant.h \
     Toolkit/RSPiX/ORANGE/GameLib/AnimatedSprite.h \
     Toolkit/RSPiX/ORANGE/GameLib/Sprite.h \
     Toolkit/RSPiX/ORANGE/CDT/Queue.h \
@@ -228,7 +232,8 @@ HEADERS += \
     Toolkit/RSPiX/GREEN/Hot/Hot.h \
     Toolkit/RSPiX/GREEN/BLiT/AlphaBlit.h \
     Toolkit/RSPiX/ORANGE/File/RFile.h \
-    ModAlphaBlit.h
+    ModAlphaBlit.h \
+    Toolkit/Variant.h
 
 SOURCES += \
     Network/ProtoBSDIP.cpp \

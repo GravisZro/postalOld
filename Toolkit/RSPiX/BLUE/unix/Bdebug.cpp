@@ -160,6 +160,10 @@ void rspTrace(char const *frmt, ... )
 		va_end(varp);
 
 #if defined(RSP_DEBUG_OUT_MESSAGEBOX)
+      char szOutput[512];
+      vsnprintf(szOutput, 512, frmt, varp);
+      //fprintf(fs, szOutput);
+
 		if (rspMsgBox(
 			RSP_MB_ICN_INFO | RSP_MB_BUT_YESNO,
 			"rspTrace",
@@ -167,7 +171,8 @@ void rspTrace(char const *frmt, ... )
 			"Continue?",
 			szOutput) == RSP_MB_RET_NO)
 			{
-			DebugBreak();
+          ASSERT(0);
+//			DebugBreak();
 			exit(EXIT_SUCCESS);
 			}
 #endif	// RSP_DEBUG_OUT_MESSAGEBOX

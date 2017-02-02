@@ -2438,15 +2438,11 @@ static int16_t OpenSaks(void)
    g_resmgrRes.SetBasePath(FullPath(GAME_PATH_HD, "") );
 
    // Attempt to load the Game SAK . . .
-   if (g_resmgrGame.OpenSak(FullPath(GAME_PATH_GAME, GAME_SAK_FILENAME) ) == 0)
-      {
-      }
+   ASSERT(g_resmgrGame.OpenSak(FullPath(GAME_PATH_GAME, GAME_SAK_FILENAME)) == SUCCESS);
 
    // Attempt to load the Shell SAK . . .
-   if ((g_resmgrShell.OpenSak(FullPath(GAME_PATH_HD, SHELL_SAK_FILENAME) ) == 0) ||
-       (g_resmgrShell.OpenSak(FullPath(GAME_PATH_VD, SHELL_SAK_FILENAME) ) == 0))
-      {
-      }
+   ASSERT(g_resmgrShell.OpenSak(FullPath(GAME_PATH_HD, SHELL_SAK_FILENAME)) == SUCCESS ||
+          g_resmgrShell.OpenSak(FullPath(GAME_PATH_VD, SHELL_SAK_FILENAME)) == SUCCESS);
 
    ////////////////////////////////////////////////////////////////////////////
    // The Samples res directory and SAK filename are based on the current
@@ -3305,7 +3301,7 @@ void GameEndingSequence(void)
    // Prepare all settings for demo mode
    CSettings::PreDemo();
 
-#if VIOLENT_LOCALE
+#ifdef VIOLENT_LOCALE
 
    // If demo debug movie file is specified in prefs, open it now.  The RFile*
    // is does double-duty as a flag, where non-zero means movie mode is enabled.

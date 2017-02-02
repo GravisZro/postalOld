@@ -116,7 +116,7 @@ RPrefsLine::RPrefsLine (RPrefsLine::ePrefsLineType Type, const char *pszLine)
 	{
 	m_Type = Type;
 	m_pszLine = new char[strlen (pszLine) + 1];
-	assert (m_pszLine);
+   ASSERT (m_pszLine);
 	strcpy (m_pszLine, pszLine);
 
 	return;
