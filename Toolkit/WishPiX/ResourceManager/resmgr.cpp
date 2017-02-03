@@ -849,69 +849,60 @@ int16_t RResMgr::WriteSakHeader(RFile* prf)
 
 int16_t RResMgr::OpenSak(RString strSakFile)
 {
-	int16_t sReturn = SUCCESS;
-	uint32_t ulFileType;
-	uint32_t ulFileVersion;
-	uint16_t usNumPairs;
-	uint16_t i;
-	char char_buffer[256];
-	int32_t lOffset;
-	RString strFilename;
+  uint32_t ulFileType;
+  uint32_t ulFileVersion;
+  uint16_t usNumPairs;
+  uint16_t i;
+  char char_buffer[256];
+  int32_t lOffset;
+  RString strFilename;
 
-	if (m_rfSak.IsOpen())
-	{
-		TRACE("RResMgr::OpenSak - The currently open SAK file is being closed before loading the new SAK file\n");
-		CloseSak();
-	}
+  if (m_rfSak.IsOpen() == TRUE)
+  {
+    TRACE("RResMgr::OpenSak - The currently open SAK file is being closed before loading the new SAK file\n");
+    CloseSak();
+  }
 
-//	if (m_rfSak.Open((char*) strSakFile.c_str(), "rb", SAK_FILE_ENDIAN) == SUCCESS)
-	if (m_rfSak.Open((char*) strSakFile, "rb", SAK_FILE_ENDIAN) == SUCCESS)
-	{
-		m_rfSak.ClearError();
-		m_rfSak.Read(&ulFileType);
-      if (ulFileType == SAK_MAGIC_NUMBER)
-		{
-			m_rfSak.Read(&ulFileVersion);
-			if (ulFileVersion == SAK_CURRENT_VERSION)
-			{
-				m_rfSak.Read(&usNumPairs);
-				for (i = 0; i < usNumPairs; i++)
-				{
-					// Read the filename
-					m_rfSak.Read(char_buffer);
-					strFilename = char_buffer;
-					// Read the offset
-					m_rfSak.Read(&lOffset);
-					m_SakDirectory.insert(dirMap::value_type (strFilename, lOffset));
-					m_SakDirOffset.insert(lOffset);
-				}			
-				// Insert end of SAK file into offset Set container so there is
-				// always a next offset to look up.
-				m_rfSak.Seek(0, SEEK_END);
-				lOffset = m_rfSak.Tell();
-				m_SakDirOffset.insert(lOffset);
-			}
-			else
-			{
-				TRACE("RResMgr::OpenSak - Break Yo Self! This file is version %d and the current SAK version is %d\n", 
-				       ulFileVersion, SAK_CURRENT_VERSION);
-				sReturn = FAILURE;
-			}		
-		}
-		else
-		{
-         TRACE("RResMgr::OpenSak - Not a valid SAK file, magic_number should be 'SAK ' - what's up with dat?\n");
-			sReturn = FAILURE;
-		}		
-	}
-	else
-	{
-		TRACE("RResMgr::OpenSak - Break Yo Self! Error opening sak file %s\n", 
-		      (char*) strSakFile);
-		sReturn = FAILURE;
-	}
+  try
+  {
+    if (m_rfSak.Open((char*) strSakFile, "rb", SAK_FILE_ENDIAN) != SUCCESS)
+      throw std::string("RResMgr::OpenSak - Error opening sak file ").append((char*)strSakFile);
 
-	return sReturn;
+    m_rfSak.ClearError();
+
+    m_rfSak.Read(&ulFileType);
+    if (ulFileType != SAK_MAGIC_NUMBER)
+      throw std::string("RResMgr::OpenSak - Not a valid SAK file, magic_number should be 'SAK '");
+
+    m_rfSak.Read(&ulFileVersion);
+    if (ulFileVersion != SAK_CURRENT_VERSION)
+      throw std::string("RResMgr::OpenSak - This file is version ").append(std::to_string(ulFileVersion)).append("and the current SAK version is ").append(std::to_string(SAK_CURRENT_VERSION));
+
+    m_rfSak.Read(&usNumPairs);
+    for (i = 0; i < usNumPairs; i++)
+    {
+      // Read the filename
+      m_rfSak.Read(char_buffer);
+      strFilename = char_buffer;
+//      std::cout << "found: " << char_buffer << std::endl;
+      // Read the offset
+      m_rfSak.Read(&lOffset);
+      m_SakDirectory.insert(dirMap::value_type (strFilename, lOffset));
+      m_SakDirOffset.insert(lOffset);
+    }
+    // Insert end of SAK file into offset Set container so there is
+    // always a next offset to look up.
+    m_rfSak.Seek(0, SEEK_END);
+    lOffset = m_rfSak.Tell();
+    m_SakDirOffset.insert(lOffset);
+  }
+  catch(std::string message)
+  {
+    TRACE(message.c_str(), "\n");
+    return FAILURE;
+  }
+
+  return SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////

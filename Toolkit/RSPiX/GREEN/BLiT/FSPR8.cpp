@@ -618,7 +618,8 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
 	// NOT NECESSARY!!! THe SOURCE WILL ALWAYS BE A BUFFER!
-   if (pimDst->m_type == RImage::IMAGE_STUB) sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+   if (pimDst->m_type == RImage::IMAGE_STUB)
+     sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
 
 	switch (sBlitTypeDst) // 0 = normal image
 		{
@@ -680,6 +681,7 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 		TRACE("BLiT: nullptr data - possible bad lock.\n");
 		return FALSE;
       }
+#endif
 
 	// Right now, pDst refers to the CLIPPED start of the scanline:
 	uint8_t*	pDstLine = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
@@ -940,6 +942,7 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const 
 					}
 				}
 
+#ifdef OLD_RENDERER
 	//*******************************************************************
 	// IN RELEASE MODE, GIVE THE USER A CHANCE:
 #ifndef _DEBUG

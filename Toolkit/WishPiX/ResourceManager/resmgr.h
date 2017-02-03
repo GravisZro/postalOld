@@ -337,7 +337,7 @@ class CResourceBlock
 			m_sAccessCount = 0;
 			m_vpRes = nullptr;
 			m_pfnDestroy = 0;
-			};
+         }
 
 		~CResourceBlock()
 			{
@@ -488,22 +488,26 @@ class RResMgr
 		RFile* FromSak(RString strResourceName)
 		{
 			RFile* prf = nullptr;
-			int32_t	lResSeekPos	= m_SakDirectory[strResourceName];
-			if (lResSeekPos > 0)
+         auto pos = m_SakDirectory.find(strResourceName);
+
+//			int32_t	lResSeekPos	= m_SakDirectory[strResourceName];
+//			if (lResSeekPos > 0)
+         if(pos != m_SakDirectory.end())
 				{
-				if (m_rfSak.Seek(lResSeekPos, SEEK_SET) == SUCCESS)
+            if (m_rfSak.Seek(pos->second, SEEK_SET) == SUCCESS)
 					{
 					prf = &m_rfSak;
 					}
 				else
 					{
-					TRACE("RResMgr::FromSak - m_rfSak.Seek(%ld, SEEK_SET) failed.\n", 
-						lResSeekPos);
+               TRACE("RResMgr::FromSak - m_rfSak.Seek(%ld, SEEK_SET) failed.\n",
+                     pos->second);
+//						lResSeekPos);
 					}
 				}
 #ifdef RESMGR_VERBOSE
 			else
-				TRACE("RResMgr::FromSak - Break Yo Self! Resource %s is not in this SAK file\n",
+            TRACE("RResMgr::FromSak - Resource %s is not in this SAK file\n",
 				      (char*) strResourceName);
 //				      (char*) strResourceName.c_str());
 #endif // RESMGR_VERBOSE

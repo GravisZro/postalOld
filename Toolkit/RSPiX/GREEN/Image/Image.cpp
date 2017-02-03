@@ -1889,133 +1889,58 @@ int16_t RImage::Save(RFile* pcf) const
 
 int16_t RImage::WritePixelData(RFile* pcf) const
 {
-	int16_t sReturn = SUCCESS;
-	uint8_t* pLineData = nullptr;
+  int16_t sReturn = SUCCESS;
+  uint8_t* pLineData = nullptr;
 
-	if (m_sWidth <= m_sWinWidth && m_sHeight <= m_sWinHeight)
-	{
-		switch (m_sDepth)
-		{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-				if (pcf->Write(m_pData, m_ulSize) != (int32_t) m_ulSize)
-				{
-               TRACE("RImage::WritePixelData - Error writing 8-bit or less pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+  int32_t divide;
+  switch(m_sDepth)
+  {
+    default:
+      divide = 1;
+      break;
+    case 16:
+      divide = 2;
+      break;
+    case 24:
+      divide = 3;
+      break;
+    case 32:
+      divide = 4;
+      break;
+  }
 
-			case 16:
-				if (pcf->Write((uint16_t*) m_pData, m_ulSize/2) != (int32_t) m_ulSize/2)
-				{
-               TRACE("RImage::WritePixelData - Error writing 16-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+  if (m_sWidth <= m_sWinWidth &&
+      m_sHeight <= m_sWinHeight)
+  {
+    if (pcf->Write((uint16_t*) m_pData, m_ulSize/divide) != (int32_t) m_ulSize/divide)
+    {
+      TRACE("RImage::WritePixelData - Error writing %d-bit pixel data", 8 * divide);
+      return FAILURE;
+    }
+  }
+  else
+  {
+    int32_t	lYPos		= (int32_t)m_sWinY;
+    int32_t	lXPos		= (int32_t)m_sWinX;
+    int32_t	lHeight	= (int32_t)m_sWinHeight;
+    int32_t	lDepth	= (int32_t)m_sDepth;
 
-			case 24:
-				if (pcf->Write((RPixel24*) m_pData, m_ulSize/3) != (int32_t) m_ulSize/3)
-				{
-               TRACE("RImage::WritePixelData - Error writing 24-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+    int32_t l;
+    int32_t lBytesPerLine = (((int32_t)m_sWinWidth * lDepth) / 8);
+    if (m_sDepth < 8 && (((int32_t)m_sWinWidth * lDepth) % 8) > 0)
+      lBytesPerLine++;
 
-			case 32:
-				if (pcf->Write((uint32_t*) m_pData, m_ulSize/4) != (int32_t) m_ulSize/4)
-				{
-               TRACE("RImage::WritePixelData - Error writing 32-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
-			}
-	}
-	else
-	{
-		int32_t	lYPos		= (int32_t)m_sWinY;
-		int32_t	lXPos		= (int32_t)m_sWinX;
-		int32_t	lHeight	= (int32_t)m_sWinHeight;
-		int32_t	lDepth	= (int32_t)m_sDepth;
-
-		int32_t l;
-		int32_t lBytesPerLine;
-		if (m_sDepth < 8)
-		{
-			lBytesPerLine = (((int32_t)m_sWinWidth * lDepth) / 8);
-			if ((((int32_t)m_sWinWidth * lDepth) % 8) > 0)
-				lBytesPerLine++;
-		}
-		else
-		{
-			lBytesPerLine = (((int32_t)m_sWinWidth * lDepth) / 8);
-		}
-
-		switch (m_sDepth)
-		{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos * m_lPitch) + ((lXPos * lDepth)/8);
-					if (pcf->Write(pLineData, lBytesPerLine) != lBytesPerLine)
-					{
-                  TRACE("RImage::WritePixelData - Error writing 8-bit or less line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-				
-			case 16:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos * m_lPitch) + ((lXPos * lDepth)/8);
-					if (pcf->Write((uint16_t*) pLineData, lBytesPerLine/2) != lBytesPerLine/2)
-					{
-                  TRACE("RImage::WritePixelData - Error writing 16-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-
-			case 24:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos * m_lPitch) + ((lXPos * lDepth) / 8);
-					if (pcf->Write((RPixel24*) pLineData, lBytesPerLine/3) != lBytesPerLine/3)
-					{
-                  TRACE("RImage::WritePixelData - Error writing 24-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-
-			case 32:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos * m_lPitch) + ((lXPos * lDepth)/8);
-					if (pcf->Write(pLineData, lBytesPerLine/4) != lBytesPerLine/4)
-					{
-                  TRACE("RImage::WritePixelData - Error writing 32-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-		}
-
-	}
-	return sReturn;
+    for (l = lYPos; l < lYPos + lHeight; l++)
+    {
+      pLineData = m_pData + (lYPos * m_lPitch) + ((lXPos * lDepth) / 8);
+      if (pcf->Write((RPixel24*) pLineData, lBytesPerLine/divide) != lBytesPerLine/divide)
+      {
+        TRACE("RImage::WritePixelData - Error writing %d-bit line %d of image", 8 * divide, l-lYPos);
+        return FAILURE;
+      }
+    }
+  }
+  return sReturn;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -2041,44 +1966,44 @@ int16_t RImage::WritePixelData(RFile* pcf) const
 
 int16_t RImage::Load(char const * pszFilename)
 {
-	RFile cf;
-	int16_t sReturn = SUCCESS;
+  RFile cf;
+  int16_t sReturn = SUCCESS;
 
-	if (cf.Open(pszFilename, "rb", RFile::LittleEndian) != SUCCESS)
-	{
-      TRACE("RImage::Load - could not open file for input");
-	 	return FAILURE;
-	}
+  if (cf.Open(pszFilename, "rb", RFile::LittleEndian) != SUCCESS)
+  {
+    TRACE("RImage::Load - could not open file for input");
+    return FAILURE;
+  }
 
-	sReturn = Load(&cf);
+  sReturn = Load(&cf);
 
-	cf.Close();
+  cf.Close();
 
-	return sReturn;
+  return sReturn;
 }
 
 int16_t RImage::Load(RFile* pcf)
 {	
-	int16_t sReturn = SUCCESS;
+  int16_t sReturn = SUCCESS;
 
-	if (pcf && pcf->IsOpen())
-	{
-		// Load image dependent on version.
-		sReturn	= RImageFile::Load(this, pcf);
-	}
-	else
-	{
-      TRACE("RImage::Load - RFile pointer does not refer to an open file");
-		sReturn = FAILURE;
-	}
+  if (pcf && pcf->IsOpen())
+  {
+    // Load image dependent on version.
+    sReturn = RImageFile::Load(this, pcf);
+  }
+  else
+  {
+    TRACE("RImage::Load - RFile pointer does not refer to an open file");
+    sReturn = FAILURE;
+  }
 
-	// If the file was loaded in as a different type than the
-	// desired destination type, then convert it.
-	if (m_type != m_typeDestination && m_typeDestination != NOT_SUPPORTED)
-		if (Convert(m_typeDestination) != m_typeDestination)
-         TRACE("RImage::Load - Convert to Destination type %d failed", m_typeDestination);
+  // If the file was loaded in as a different type than the
+  // desired destination type, then convert it.
+  if (m_type != m_typeDestination && m_typeDestination != NOT_SUPPORTED &&
+      Convert(m_typeDestination) != m_typeDestination)
+    TRACE("RImage::Load - Convert to Destination type %d failed", m_typeDestination);
 
-	return sReturn;
+  return sReturn;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -2103,132 +2028,56 @@ int16_t RImage::Load(RFile* pcf)
 
 int16_t RImage::ReadPixelData(RFile* pcf)
 {
-	int16_t sReturn = SUCCESS;
-	uint8_t* pLineData = nullptr;
+  uint8_t* pLineData = nullptr;
+  int32_t divide;
+  switch(m_sDepth)
+  {
+    default:
+      divide = 1;
+      break;
+    case 16:
+      divide = 2;
+      break;
+    case 24:
+      divide = 3;
+      break;
+    case 32:
+      divide = 4;
+      break;
+  }
 
-	if (m_sWidth <= m_sWinWidth && m_sHeight <= m_sWinHeight)
-	{
-		switch (m_sDepth)
-		{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-				if (pcf->Read(m_pData, m_ulSize) != (int32_t) m_ulSize)
-				{
-               TRACE("RImage::ReadPixelData - Error reading 8-bit or less pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+  if (m_sWidth <= m_sWinWidth &&
+      m_sHeight <= m_sWinHeight)
+  {
+    if (pcf->Read((uint16_t*) m_pData, m_ulSize/divide) != (int32_t) m_ulSize/divide)
+    {
+      TRACE("RImage::ReadPixelData - Error reading %d-bit pixel data", 8 * divide);
+      return FAILURE;
+    }
+  }
+  else
+  {
+    int32_t	lYPos		= (int32_t)m_sWinY;
+    int32_t	lXPos		= (int32_t)m_sWinX;
+    int32_t	lHeight	= (int32_t)m_sWinHeight;
+    int32_t	lDepth	= (int32_t)m_sDepth;
 
-			case 16:
-				if (pcf->Read((uint16_t*) m_pData, m_ulSize/2) != (int32_t) m_ulSize/2)
-				{
-               TRACE("RImage::ReadPixelData - Error reading 16-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+    int32_t lBytesPerLine = ((int32_t)m_sWinWidth * lDepth) / 8;
+    if (m_sDepth < 8 && (((int32_t)m_sWinWidth * lDepth) % 8) > 0)
+        lBytesPerLine++;
 
-			case 24:
-				if (pcf->Read((RPixel24*) m_pData, m_ulSize/3) != (int32_t) m_ulSize/3)
-				{
-               TRACE("RImage::ReadPixelData - Error reading 24-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
+    for (int32_t l = lYPos; l < lYPos + lHeight; l++)
+    {
+      pLineData = m_pData + (lYPos*m_lPitch) + ((lXPos*lDepth)/8);
+      if (pcf->Read((RPixel24*) pLineData, lBytesPerLine/divide) != lBytesPerLine/divide)
+      {
+        TRACE("RImage::ReadPixelData - Error reading %d-bit line %d of image", 8 * divide, l-lYPos);
+        return FAILURE;
+      }
+    }
+  }
 
-			case 32:
-				if (pcf->Read((uint32_t*) m_pData, m_ulSize/4) != (int32_t) m_ulSize/4)
-				{
-               TRACE("RImage::ReadPixelData - Error reading 32-bit pixel data");
-					sReturn = FAILURE;
-				}
-				break;
-			}
-	}
-	else
-	{
-		int32_t	lYPos		= (int32_t)m_sWinY;
-		int32_t	lXPos		= (int32_t)m_sWinX;
-		int32_t	lHeight	= (int32_t)m_sWinHeight;
-		int32_t	lDepth	= (int32_t)m_sDepth;
-
-		int32_t l;
-		int32_t lBytesPerLine;
-		if (m_sDepth < 8)
-		{
-			lBytesPerLine = (((int32_t)m_sWinWidth * lDepth) / 8);
-			if ((((int32_t)m_sWinWidth * lDepth) % 8) > 0)
-				lBytesPerLine++;
-		}
-		else
-		{
-			lBytesPerLine = (((int32_t)m_sWinWidth * lDepth) / 8);
-		}
-
-		switch (m_sDepth)
-		{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos*m_lPitch) + ((lXPos*lDepth)/8);
-					if (pcf->Read(pLineData, lBytesPerLine) != lBytesPerLine)
-					{
-                  TRACE("RImage::ReadPixelData - Error reading 8-bit or less line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-				
-			case 16:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos*m_lPitch) + ((lXPos*lDepth)/8);
-					if (pcf->Read((uint16_t*) pLineData, lBytesPerLine/2) != lBytesPerLine/2)
-					{
-                  TRACE("RImage::ReadPixelData - Error reading 16-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-
-			case 24:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos*m_lPitch) + ((lXPos*lDepth)/8);
-					if (pcf->Read((RPixel24*) pLineData, lBytesPerLine/3) != lBytesPerLine/3)
-					{
-                  TRACE("RImage::ReadPixelData - Error reading 24-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-
-			case 32:
-				for (l = lYPos; l < lYPos + lHeight; l++)
-				{
-					pLineData = m_pData + (lYPos*m_lPitch) + ((lXPos*lDepth)/8);
-					if (pcf->Read(pLineData, lBytesPerLine/4) != lBytesPerLine/4)
-					{
-                  TRACE("RImage::ReadPixelData - Error reading 32-bit line %d of image", l-lYPos);
-						sReturn = FAILURE;
-					}
-				} 	
-				break;
-		}
-	}
-	return sReturn;
+  return SUCCESS;
 }
 
 
