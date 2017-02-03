@@ -376,27 +376,27 @@
 
 char const * const RImage::ms_astrTypeNames[END_OF_TYPES] = 
 {
-	"Same Type", 
-	"BMP8", 
-	"SYSTEM8", 
-	"SCREEN8_555",
-	"SCREEN8_565",
-	"SCREEN8_888",
-	"BMP24",
-	"SCREEN16_555",
-	"SCREEN16_565",
-	"SCREEN24_RGB",
-	"SCREEN32_ARGB",
-	"FSPR1",
-	"FSPR8",
-	"FSPR16",
-	"FSPR32",
-	"ROTBUF",
-	"SPECIAL",
-	"FLX8_888",
-	"IMAGE_STUB",
-	"BMP8RLE",
-	"BMP1",				// Added 09/04/96	JMI.
+  "Same Type",
+  "BMP8",
+  "SYSTEM8",
+  "SCREEN8_555",
+  "SCREEN8_565",
+  "SCREEN8_888",
+  "BMP24",
+  "SCREEN16_555",
+  "SCREEN16_565",
+  "SCREEN24_RGB",
+  "SCREEN32_ARGB",
+  "FSPR1",
+  "FSPR8",
+  "FSPR16",
+  "FSPR32",
+  "ROTBUF",
+  "SPECIAL",
+  "FLX8_888",
+  "IMAGE_STUB",
+  "BMP8RLE",
+  "BMP1",				// Added 09/04/96	JMI.
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -408,7 +408,7 @@ int16_t	ConvertNoSupport(RImage* pImage);
 IMAGELINKINSTANTIATE();
 
 IMAGELINKLATE(NOT_SUPPORTED, ConvertNoSupport, nullptr, nullptr, nullptr, nullptr, nullptr);
- 
+
 //////////////////////////////////////////////////////////////////////
 //
 //	sCreateMem
@@ -430,37 +430,37 @@ IMAGELINKLATE(NOT_SUPPORTED, ConvertNoSupport, nullptr, nullptr, nullptr, nullpt
 
 int16_t RImage::sCreateMem(void **hMem,uint32_t ulSize)
 {
-	//	Make sure the data
-	//	hasn't already been allocated
-	if (*hMem)
-	{              
-      TRACE("RPal::AllocMem() called by CreateData() -- A buffer has already been allocated");
-		// Image allocated already
-		return ((int16_t)-1);
-	}
-	else
-	{         
-		if (ulSize > 0)
-		{               
-			if ((*hMem = calloc(ulSize, 1)) == nullptr)
-			{
-            TRACE("RPal::AllocMem() called by CreateData() -- The buffer could not be allocated");
-				// Image buffer couldn't be allocated
-				return ((int16_t)-2);
-			} 
-			else
-			{        
-				// Success
-				return ((int16_t)0);
-			}
-		}
-		else
-		{
-         TRACE("RPal::AllocMem() called by CreateData() - Warning attempting to allocate 0 bytes, quit screwing around");
-			*hMem = nullptr;
-			return 0;
-		}
-	}
+  //	Make sure the data
+  //	hasn't already been allocated
+  if (*hMem)
+  {
+    TRACE("RPal::AllocMem() called by CreateData() -- A buffer has already been allocated");
+    // Image allocated already
+    return ((int16_t)-1);
+  }
+  else
+  {
+    if (ulSize > 0)
+    {
+      if ((*hMem = calloc(ulSize, 1)) == nullptr)
+      {
+        TRACE("RPal::AllocMem() called by CreateData() -- The buffer could not be allocated");
+        // Image buffer couldn't be allocated
+        return ((int16_t)-2);
+      }
+      else
+      {
+        // Success
+        return ((int16_t)0);
+      }
+    }
+    else
+    {
+      TRACE("RPal::AllocMem() called by CreateData() - Warning attempting to allocate 0 bytes, quit screwing around");
+      *hMem = nullptr;
+      return 0;
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -487,40 +487,40 @@ int16_t RImage::sCreateMem(void **hMem,uint32_t ulSize)
 #ifdef UNUSED_FUNCTIONS
 int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 {
- 	// Make sure the data hasn't already been allocated
-	if (*hMem)
-	{
-      TRACE("RImage::AllocMem called by CreateData() - buffer has already been allocatd");
-		// buffer already exists
-		return FAILURE;
-	}
-	else
-	{
-		if (ulSize > 0)
-		{
-			// allocate an extra 15 bytes so that the data ponter can be aligned
-			// to the nearest 128-bit boundry for Blit speed reasons
-			if ((*hMem = calloc(ulSize + 15, 1)) == nullptr)
-			{
-            TRACE("RImage::AllocMem() called by CreateData() - buffer could not be allocated");
-				// calloc failed
-				return FAILURE;
-			}
-			else
-			{
-				// Set Data buffer to 128-bit alignment
-           *hData = (void*) (( *hMem + (void*)0x0f) & 0xfffffff0);
-				// success		 	
-				return SUCCESS;
-			}
-		}
-		else
-		{
-         TRACE("RImage::AllocMem() called by CreateData() - Warning attempted to create a buffer of 0 bytes, quit screwing around");
-			*hMem = nullptr;
-			return SUCCESS;
-		}
-	}
+  // Make sure the data hasn't already been allocated
+  if (*hMem)
+  {
+    TRACE("RImage::AllocMem called by CreateData() - buffer has already been allocatd");
+    // buffer already exists
+    return FAILURE;
+  }
+  else
+  {
+    if (ulSize > 0)
+    {
+      // allocate an extra 15 bytes so that the data ponter can be aligned
+      // to the nearest 128-bit boundry for Blit speed reasons
+      if ((*hMem = calloc(ulSize + 15, 1)) == nullptr)
+      {
+        TRACE("RImage::AllocMem() called by CreateData() - buffer could not be allocated");
+        // calloc failed
+        return FAILURE;
+      }
+      else
+      {
+        // Set Data buffer to 128-bit alignment
+        *hData = (void*) (( *hMem + (void*)0x0f) & 0xfffffff0);
+        // success
+        return SUCCESS;
+      }
+    }
+    else
+    {
+      TRACE("RImage::AllocMem() called by CreateData() - Warning attempted to create a buffer of 0 bytes, quit screwing around");
+      *hMem = nullptr;
+      return SUCCESS;
+    }
+  }
 }
 #endif
 
@@ -543,17 +543,17 @@ int16_t RImage::sCreateAlignedMem(void **hMem, void **hData, uint32_t ulSize)
 
 int16_t RImage::sDestroyMem(void **hMem)
 {   
-	// Make sure the memory
-	// hasn't already been freed    
-	if (*hMem)
-	{
-		free(*hMem);
-		*hMem = nullptr;
-	}
+  // Make sure the memory
+  // hasn't already been freed
+  if (*hMem)
+  {
+    free(*hMem);
+    *hMem = nullptr;
+  }
 
-	// Always return success because 
-	// the memory has been freed
-	return SUCCESS;
+  // Always return success because
+  // the memory has been freed
+  return SUCCESS;
 }
 
 
@@ -577,7 +577,7 @@ int16_t RImage::sDestroyMem(void **hMem)
 
 void RImage::Init()
 {
- 	
+
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -602,16 +602,16 @@ void RImage::Init()
 
 int16_t RImage::DestroyDetachedData(void** hMem)
 {
-	if (hMem)
-		if (*hMem)
-			return sDestroyMem(hMem);
-		else
-         TRACE("Image::DestroyDetachedData - Attempted to free a nullptr pointer.");
-	else
-      TRACE("Image::DestroyDetachedData - Attempted to free a nullptr handle.");
+  if (hMem)
+  {
+    if (*hMem)
+      return sDestroyMem(hMem);
+    TRACE("Image::DestroyDetachedData - Attempted to free a nullptr pointer.");
+  }
+  else
+    TRACE("Image::DestroyDetachedData - Attempted to free a nullptr handle.");
 
-	return FAILURE;
-
+  return FAILURE;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -632,8 +632,8 @@ int16_t RImage::DestroyDetachedData(void** hMem)
 
 RImage::RImage()
 {            
-	// Initialize member variables to zero
-	InitMembers();
+  // Initialize member variables to zero
+  InitMembers();
 }	
 
 //////////////////////////////////////////////////////////////////////
@@ -653,10 +653,10 @@ RImage::RImage()
 
 RImage::RImage(uint32_t ulNewSize)
 {
-	// Initialize member variables to zero
-	InitMembers();
+  // Initialize member variables to zero
+  InitMembers();
 
-	CreateData(ulNewSize);
+  CreateData(ulNewSize);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -677,10 +677,10 @@ RImage::RImage(uint32_t ulNewSize)
 
 RImage::RImage(char const * pszFilename)
 {
-	// Initialize member variables to zero
-	InitMembers();
+  // Initialize member variables to zero
+  InitMembers();
 
-	LoadDib(pszFilename);
+  LoadDib(pszFilename);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -700,12 +700,12 @@ RImage::RImage(char const * pszFilename)
 
 RImage::~RImage()
 {
-	// Free Image data
-	// if (m_pMem) // WILL NEVER ALLOW DeleteSpecial
-	DestroyData();
+  // Free Image data
+  // if (m_pMem) // WILL NEVER ALLOW DeleteSpecial
+  DestroyData();
 
-	if (m_pPalMem)
-		delete(m_pPalMem);
+  if (m_pPalMem)
+    delete(m_pPalMem);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -729,24 +729,24 @@ RImage::~RImage()
 
 void RImage::InitMembers(void)
 {
-	// Initialize member variables to zero
-	m_type				= NOT_SUPPORTED;
-	m_typeDestination	= NOT_SUPPORTED;
-	m_ulSize				= 0;
-	m_sWidth				= 0;
-	m_sHeight			= 0;
-	m_sWinWidth			= 0;
-	m_sWinHeight		= 0;
-	m_sWinX				= 0;
-	m_sWinY				= 0;
-	m_lPitch				= 0;
-	m_sDepth				= 0;
-	m_pMem				= nullptr;
-	m_pData				= nullptr;
-	m_pPalette			= nullptr;
-	m_pPalMem			= nullptr;
-	m_pSpecial			= nullptr;
-	m_pSpecialMem		= nullptr;
+  // Initialize member variables to zero
+  m_type				= NOT_SUPPORTED;
+  m_typeDestination	= NOT_SUPPORTED;
+  m_ulSize				= 0;
+  m_sWidth				= 0;
+  m_sHeight			= 0;
+  m_sWinWidth			= 0;
+  m_sWinHeight		= 0;
+  m_sWinX				= 0;
+  m_sWinY				= 0;
+  m_lPitch				= 0;
+  m_sDepth				= 0;
+  m_pMem				= nullptr;
+  m_pData				= nullptr;
+  m_pPalette			= nullptr;
+  m_pPalMem			= nullptr;
+  m_pSpecial			= nullptr;
+  m_pSpecialMem		= nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -767,25 +767,25 @@ void RImage::InitMembers(void)
 
 int16_t	RImage::CreateData(uint32_t ulNewSize)
 {
-	if (m_pMem)
-	{
-      TRACE("RImage::CreateData - Attempting to create data when pMem is still pointing to memory");
-	 	return FAILURE;
-	}
+  if (m_pMem)
+  {
+    TRACE("RImage::CreateData - Attempting to create data when pMem is still pointing to memory");
+    return FAILURE;
+  }
 
-	if (m_pData && !m_pMem)
-      TRACE("RImage::CreateData - Warning: pData is pointing to data");
+  if (m_pData && !m_pMem)
+    TRACE("RImage::CreateData - Warning: pData is pointing to data");
 
-	ALLOCFUNC caf = GETALLOCFUNC(m_type);
-   if (caf && (*caf)(this) != SUCCESS)
-     TRACE("RImage::CreateData - Error creating data for special type %d", m_type);
+  ALLOCFUNC caf = GETALLOCFUNC(m_type);
+  if (caf && (*caf)(this) != SUCCESS)
+    TRACE("RImage::CreateData - Error creating data for special type %d", m_type);
 
-	m_ulSize = ulNewSize;
+  m_ulSize = ulNewSize;
 #ifdef ALIGNED_MEMORY
-	return sCreateAlignedMem((void**) &m_pMem, (void**) &m_pData, ulNewSize);
+  return sCreateAlignedMem((void**) &m_pMem, (void**) &m_pData, ulNewSize);
 #endif
-   m_pMem = m_pData = new uint8_t[ulNewSize];
-   return m_pMem != nullptr ? SUCCESS : FAILURE;
+  m_pMem = m_pData = new uint8_t[ulNewSize];
+  return m_pMem != nullptr ? SUCCESS : FAILURE;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -807,36 +807,36 @@ int16_t	RImage::CreateData(uint32_t ulNewSize)
 //////////////////////////////////////////////////////////////////////
 
 int16_t RImage::CreateImage(		// Returns 0 if successful.
-	int16_t	sWidth,					// Width of new buffer.
-	int16_t	sHeight,					// Height of new buffer.
-	Type	type,						// Type of new buffer.
-	int32_t	lPitch	/*= 0L*/,	// Pitch of new buffer or -1 to calculate.
-	int16_t	sDepth	/*= 8*/)		// Color depth of new buffer.
-	{
-	int16_t	sRes	= SUCCESS;	// Assume success.
+                                 int16_t	sWidth,					// Width of new buffer.
+                                 int16_t	sHeight,					// Height of new buffer.
+                                 Type	type,						// Type of new buffer.
+                                 int32_t	lPitch	/*= 0L*/,	// Pitch of new buffer or -1 to calculate.
+                                 int16_t	sDepth	/*= 8*/)		// Color depth of new buffer.
+{
+  int16_t	sRes	= SUCCESS;	// Assume success.
 
-	// Fill in fields.
-	m_sWidth = m_sWinWidth	 = sWidth;
-	m_sHeight = m_sWinHeight = sHeight;
-	m_type						 = type;
-	m_sDepth						 = sDepth;
-	m_sWinX = m_sWinY			 = 0;
-	// If no pitch specified . . .
-	if (lPitch == 0L)
-		{
-		lPitch	= GetPitch(sWidth, sDepth);
-		}
+  // Fill in fields.
+  m_sWidth = m_sWinWidth	 = sWidth;
+  m_sHeight = m_sWinHeight = sHeight;
+  m_type						 = type;
+  m_sDepth						 = sDepth;
+  m_sWinX = m_sWinY			 = 0;
+  // If no pitch specified . . .
+  if (lPitch == 0L)
+  {
+    lPitch	= GetPitch(sWidth, sDepth);
+  }
 
-	// Update member lPitch.
-	m_lPitch			= lPitch;
-	m_ulSize			= lPitch * (int32_t)sHeight;
-	if (m_ulSize > 0)
-		{
-		sRes	= CreateData(m_ulSize);
-		}
+  // Update member lPitch.
+  m_lPitch			= lPitch;
+  m_ulSize			= lPitch * (int32_t)sHeight;
+  if (m_ulSize > 0)
+  {
+    sRes	= CreateData(m_ulSize);
+  }
 
-	return sRes;
-	}
+  return sRes;
+}
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -874,9 +874,9 @@ int16_t RImage::CreateImage(		// Returns 0 if successful.
 
 void* RImage::DetachData(void)
 {
- 	void* pDetachment = m_pMem;
-	m_pMem = m_pData = nullptr;
-	return pDetachment;
+  void* pDetachment = m_pMem;
+  m_pMem = m_pData = nullptr;
+  return pDetachment;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -915,15 +915,14 @@ void* RImage::DetachData(void)
 
 int16_t RImage::DetachData(void** hMem, void** hData)
 {
-	if (hMem && hData)
-	{
-	 	*hMem = m_pMem;
-		*hData = m_pData;
-		m_pMem = m_pData = nullptr;
-		return SUCCESS;
-	} 	
-	else
-		return FAILURE;
+  if (hMem && hData)
+  {
+    *hMem = m_pMem;
+    *hData = m_pData;
+    m_pMem = m_pData = nullptr;
+    return SUCCESS;
+  }
+  return FAILURE;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -944,40 +943,40 @@ int16_t RImage::DetachData(void** hMem, void** hData)
 //////////////////////////////////////////////////////////////////////
 
 int16_t	RImage::DestroyData()
-	{   
-	int16_t	sRes	= 0;	// Assume success.
-	
-	// Only if the data was not supplied by the user.
-	if (m_pMem)
-		{
-		m_pData = nullptr;
-		sRes	= sDestroyMem((void**) &m_pMem);
-		m_pMem = nullptr;
-		}
-	
-	if (m_pSpecialMem)
-		{
-		// If there is a special delete function for this image type
-		// call it so that it can clean up its pSpecial Memory
-		DELETEFUNC cdf = GETDELETEFUNC(this->m_type);
-		if (cdf)
-			{
-			if ((*cdf)(this) == SUCCESS)
-				{
-				m_pSpecialMem	= nullptr;
-				}
-			}
-		else
-			{
-			// Else do the best you can
-			free(m_pSpecialMem);
-			
-			m_pSpecialMem	= nullptr;
-			}
-		}
-	
-	return sRes;
-	}
+{
+  int16_t	sRes	= 0;	// Assume success.
+
+  // Only if the data was not supplied by the user.
+  if (m_pMem)
+  {
+    m_pData = nullptr;
+    sRes	= sDestroyMem((void**) &m_pMem);
+    m_pMem = nullptr;
+  }
+
+  if (m_pSpecialMem)
+  {
+    // If there is a special delete function for this image type
+    // call it so that it can clean up its pSpecial Memory
+    DELETEFUNC cdf = GETDELETEFUNC(this->m_type);
+    if (cdf)
+    {
+      if ((*cdf)(this) == SUCCESS)
+      {
+        m_pSpecialMem	= nullptr;
+      }
+    }
+    else
+    {
+      // Else do the best you can
+      free(m_pSpecialMem);
+
+      m_pSpecialMem	= nullptr;
+    }
+  }
+
+  return sRes;
+}
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -999,16 +998,13 @@ int16_t	RImage::DestroyData()
 
 int16_t RImage::SetData(void* pUserData)
 {
-	if (m_pMem)
-	{
-      TRACE("Image::SetData - Attempted to set your own data pointer while there was memory allocated");
-		return FAILURE;
-	}
-	else
-	{
-		m_pData = (uint8_t*) pUserData;
-		return SUCCESS;
-	}
+  if (m_pMem)
+  {
+    TRACE("Image::SetData - Attempted to set your own data pointer while there was memory allocated");
+    return FAILURE;
+  }
+  m_pData = (uint8_t*) pUserData;
+  return SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1033,15 +1029,15 @@ int16_t RImage::SetData(void* pUserData)
 
 int16_t RImage::SetPalette(RPal* pPal)
 {
-	if (m_pPalMem)
-	{
-      TRACE("RImage::SetPalette - Warning: m_pPalette points to an Image-allocated palette");
-      TRACE("                     The previous palette will be deleted and your palette will be set");
-		delete(m_pPalMem);
-		m_pPalMem = nullptr;
-	}
-	m_pPalette = pPal;	
-	return SUCCESS;
+  if (m_pPalMem)
+  {
+    TRACE("RImage::SetPalette - Warning: m_pPalette points to an Image-allocated palette");
+    TRACE("                     The previous palette will be deleted and your palette will be set");
+    delete(m_pPalMem);
+    m_pPalMem = nullptr;
+  }
+  m_pPalette = pPal;
+  return SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1062,11 +1058,8 @@ int16_t RImage::SetPalette(RPal* pPal)
 
 int16_t RImage::CreatePalette(void)
 {
-	m_pPalMem = m_pPalette = new RPal();
-	if (m_pPalette == nullptr)
-		return FAILURE;
-	else
-		return SUCCESS;
+  m_pPalMem = m_pPalette = new RPal();
+  return m_pPalette == nullptr ? FAILURE : SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1088,10 +1081,10 @@ int16_t RImage::CreatePalette(void)
 
 int16_t RImage::CreatePalette(uint32_t ulSize)
 {
-	if (CreatePalette() == SUCCESS)
-		return m_pPalette->CreateData(ulSize);
-	else
-		return FAILURE;
+  if (CreatePalette() == SUCCESS)
+    return m_pPalette->CreateData(ulSize);
+  else
+    return FAILURE;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1119,9 +1112,9 @@ int16_t RImage::CreatePalette(uint32_t ulSize)
 
 RPal* RImage::DetachPalette(void)
 {
-	RPal* pDetachment = m_pPalette;
-	m_pPalette = m_pPalMem = nullptr;
-	return pDetachment;	
+  RPal* pDetachment = m_pPalette;
+  m_pPalette = m_pPalMem = nullptr;
+  return pDetachment;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1143,60 +1136,52 @@ RPal* RImage::DetachPalette(void)
 //////////////////////////////////////////////////////////////////////
 
 int16_t RImage::DestroyPalette(void)
-	{
-	if (m_pPalMem)
-		{
-		delete m_pPalMem;
-		m_pPalMem = m_pPalette = nullptr;
-		}
-	return SUCCESS;
-	}
+{
+  if (m_pPalMem)
+  {
+    delete m_pPalMem;
+    m_pPalMem = m_pPalette = nullptr;
+  }
+  return SUCCESS;
+}
 
 //////////////////////////////////////////////////////////////////////
 // Equals overload.
 // Note that this function could fail.
 //////////////////////////////////////////////////////////////////////
 RImage& RImage::operator=(const RImage& imSrc)
-	{
-	// Easiest most likely to succeed way to get an image copy is to
-	// write it to a file.
-	RFile	file;
-	// We know we'll probably need at least m_ulSize bytes so that's a 
-	// good start for the size of the mem file.
-	// Allow it to grow byte let's say 1K at a time for reasonable
-	// efficiency vs memory wastage.
-	if (file.Open(imSrc.m_ulSize, 1024, RFile::LittleEndian) == 0)
-		{
-		// Save the source into the mem file . . .
-		if (imSrc.Save(&file) == 0)
-			{
-			// Go back to beginning.
-			file.Seek(0, SEEK_SET);
+{
+  // Easiest most likely to succeed way to get an image copy is to
+  // write it to a file.
+  RFile	file;
+  // We know we'll probably need at least m_ulSize bytes so that's a
+  // good start for the size of the mem file.
+  // Allow it to grow byte let's say 1K at a time for reasonable
+  // efficiency vs memory wastage.
+  try
+  {
+    if (file.Open(imSrc.m_ulSize, 1024, RFile::LittleEndian) != SUCCESS)
+      throw "operator=(): file.Open() failed.";
 
-			// Load the mem file into the dest (this) . . .
-			if (Load(&file) == 0)
-				{
-				// Successful copy!
-				}
-			else
-				{
-            TRACE("operator=(): Load() from mem file failed.");
-				}
-			}
-		else
-			{
-         TRACE("operator=(): imSrc.Save() to mem file failed.");
-			}
+    // Save the source into the mem file . . .
+    if (imSrc.Save(&file) != SUCCESS)
+      throw "operator=(): imSrc.Save() to mem file failed.";
 
-		file.Close();
-		}
-	else
-		{
-      TRACE("operator=(): file.Open() failed.");
-		}
+    // Go back to beginning.
+    file.Seek(0, SEEK_SET);
 
-	return *this;
-	}
+    // Load the mem file into the dest (this) . . .
+    if (Load(&file) != SUCCESS)
+      throw "operator=(): Load() from mem file failed.";
+    // Successful copy!
+  }
+  catch(const char* message)
+  {
+    TRACE(message);
+  }
+
+  return *this;
+}
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -1227,67 +1212,67 @@ RImage& RImage::operator=(const RImage& imSrc)
 
 RImage::Type RImage::Convert(Type type)
 {
-	Type	typeRes	= NOT_SUPPORTED;	// Assume sux.
+  Type	typeRes	= NOT_SUPPORTED;	// Assume sux.
 
-	// If out of range . . .
-	if (type >= END_OF_TYPES)
-		{
-		// Not supported.
-		}
-	else
-		{
-		// If current format is extended . . .
-		if (m_type > SCREEN32_ARGB)
-			{
-			// Verify function exists . . .
-			CONVFROMFUNC	cft	= GETFROMFUNC(m_type);
-			if (cft)
-				{
-				// Convert to a standard type.
-				typeRes	= (Type)(*cft)(this);
-				}
-			else
-				{
-				TRACE("Convert(): Type exists, but no current link to convert to "
-                  "standard type.  Check for proper module.");
-				typeRes	= NOT_SUPPORTED;
-				}
-			}
+  // If out of range . . .
+  if (type >= END_OF_TYPES)
+  {
+    // Not supported.
+  }
+  else
+  {
+    // If current format is extended . . .
+    if (m_type > SCREEN32_ARGB)
+    {
+      // Verify function exists . . .
+      CONVFROMFUNC	cft	= GETFROMFUNC(m_type);
+      if (cft)
+      {
+        // Convert to a standard type.
+        typeRes	= (Type)(*cft)(this);
+      }
+      else
+      {
+        TRACE("Convert(): Type exists, but no current link to convert to "
+              "standard type.  Check for proper module.");
+        typeRes	= NOT_SUPPORTED;
+      }
+    }
 
-		// If current format is standard . . .
-		if (	m_type	>= BMP8 
-			&&	m_type	<= SCREEN32_ARGB)
-			{
-			// If current format is not the destination format . . .
-			if (m_type	!= type)
-				{
-				// Verify function exists . . .
-				CONVTOFUNC	ctt	= GETTOFUNC(type);
-				if (ctt)
-					{
-					typeRes = (Type)(*ctt)(this);
-					}
-				else
-					{
-					TRACE("Convert(): Type exists, but no current link.  Check for "
-                     "proper module.");
-					typeRes	= NOT_SUPPORTED;
-					}
-				}
-			else
-				{
-				// Already in correct format (after standardization).
-				typeRes	= type;
-				}
-			}
-		else
-			{
-         TRACE("Convert(): Not in a standard format.");
-			// Preserve current return value.
-			}
-		}
+    // If current format is standard . . .
+    if (	m_type	>= BMP8
+         &&	m_type	<= SCREEN32_ARGB)
+    {
+      // If current format is not the destination format . . .
+      if (m_type	!= type)
+      {
+        // Verify function exists . . .
+        CONVTOFUNC	ctt	= GETTOFUNC(type);
+        if (ctt)
+        {
+          typeRes = (Type)(*ctt)(this);
+        }
+        else
+        {
+          TRACE("Convert(): Type exists, but no current link.  Check for "
+                "proper module.");
+          typeRes	= NOT_SUPPORTED;
+        }
+      }
+      else
+      {
+        // Already in correct format (after standardization).
+        typeRes	= type;
+      }
+    }
+    else
+    {
+      TRACE("Convert(): Not in a standard format.");
+      // Preserve current return value.
+    }
+  }
 
-	return typeRes;
+  return typeRes;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1333,21 +1318,21 @@ RImage::Type RImage::Convert(Type type)
 
 int16_t RImage::LoadDib(char const * pszFilename)
 {
-	RFile cf;
-	int16_t sReturn = SUCCESS;
+  RFile cf;
+  int16_t sReturn = SUCCESS;
 
-	if (cf.Open(pszFilename, "rb", RFile::LittleEndian) == SUCCESS)
-	{
-		sReturn = LoadDib(&cf);
-		cf.Close();
-	}
-	else
-	{
-      TRACE("RImage::LoadDib - could not open Dib file %s - well shucks!", pszFilename);
-	 	sReturn = FAILURE;
-	}
+  if (cf.Open(pszFilename, "rb", RFile::LittleEndian) == SUCCESS)
+  {
+    sReturn = LoadDib(&cf);
+    cf.Close();
+  }
+  else
+  {
+    TRACE("RImage::LoadDib - could not open Dib file %s - well shucks!", pszFilename);
+    sReturn = FAILURE;
+  }
 
-	return sReturn;
+  return sReturn;
 }
 
 int16_t RImage::LoadDib(RFile* pcf)
@@ -1388,7 +1373,7 @@ int16_t RImage::LoadDib(RFile* pcf)
 
     // Read BITMAPINFOHEADER
     if (pcf->Read(&(dh.ulSize), 1) != TRUE)
-     throw std::make_pair("RImage::LoadDib(): Unable to read size field of bitmap info header.", -7);
+      throw std::make_pair("RImage::LoadDib(): Unable to read size field of bitmap info header.", -7);
 
     if (pcf->Read(&(dh.lWidth), 1) != TRUE)
       throw std::make_pair("RImage::LoadDib(): Unable to read width field of bitmap info header.", -8);
@@ -1571,21 +1556,21 @@ int16_t RImage::LoadDib(RFile* pcf)
 
 int16_t RImage::SaveDib(char const * pszFilename)
 {
-	RFile cf;
-	int16_t sReturn = SUCCESS;
+  RFile cf;
+  int16_t sReturn = SUCCESS;
 
-	if (cf.Open(pszFilename, "wb", RFile::LittleEndian) == SUCCESS)
-	{
-		sReturn = SaveDib(&cf);		
-		cf.Close();
-	}
-	else
-	{
-      TRACE("RImage::SaveDib - Could not open file %s for saving - huh, ain't that somthing", pszFilename);
-	 	sReturn = FAILURE;
-	}
+  if (cf.Open(pszFilename, "wb", RFile::LittleEndian) == SUCCESS)
+  {
+    sReturn = SaveDib(&cf);
+    cf.Close();
+  }
+  else
+  {
+    TRACE("RImage::SaveDib - Could not open file %s for saving - huh, ain't that somthing", pszFilename);
+    sReturn = FAILURE;
+  }
 
-	return sReturn;
+  return sReturn;
 }
 
 int16_t RImage::SaveDib(RFile* pcf)
@@ -1747,20 +1732,20 @@ int16_t RImage::SaveDib(RFile* pcf)
 
 int16_t RImage::Save(char const * pszFilename) const
 {
-	RFile cf;
-	int16_t sReturn = SUCCESS;
+  RFile cf;
+  int16_t sReturn = SUCCESS;
 
-	if (cf.Open(pszFilename, "wb", RFile::LittleEndian) != SUCCESS)
-	{
-      TRACE("RImage::Save - could not open file for output");
-	 	return FAILURE;
-	}
+  if (cf.Open(pszFilename, "wb", RFile::LittleEndian) != SUCCESS)
+  {
+    TRACE("RImage::Save - could not open file for output");
+    return FAILURE;
+  }
 
-	sReturn = Save(&cf);
+  sReturn = Save(&cf);
 
-	cf.Close();
+  cf.Close();
 
-	return sReturn;
+  return sReturn;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1800,71 +1785,70 @@ int16_t RImage::Save(char const * pszFilename) const
 
 int16_t RImage::Save(RFile* pcf) const
 {
-	int16_t sReturn = SUCCESS;
-   uint32_t ulFileType = IMAGE_MAGIC_NUMBER;
-	uint32_t	ulCurrentVersion = IMAGE_CURRENT_VERSION;
+  int16_t sReturn = SUCCESS;
+  uint32_t ulFileType = IMAGE_MAGIC_NUMBER;
+  uint32_t	ulCurrentVersion = IMAGE_CURRENT_VERSION;
 
-	if (pcf && pcf->IsOpen())
-	{
-		pcf->ClearError();
-		pcf->Write(&ulFileType);
-		pcf->Write(&ulCurrentVersion);
-		// No RFile support for RImage::Type, so we use a uint32_t.
-		uint32_t	u32Temp	= (uint32_t)m_type;
-		pcf->Write(&u32Temp);
-		u32Temp			= (uint32_t)m_typeDestination;
-		pcf->Write(&u32Temp);
-		pcf->Write(&m_ulSize);
-		pcf->Write(&m_sWinWidth);
-		pcf->Write(&m_sWinHeight);
-		pcf->Write(&m_sWidth);
-		pcf->Write(&m_sHeight);
-		pcf->Write(&m_sWinX);
-		pcf->Write(&m_sWinY);
-		pcf->Write(&m_lPitch);
-		pcf->Write(&m_sDepth);
-		
-		if (m_pData)
-		{
-			uint16_t usFlag = 1;
-			pcf->Write(&usFlag);
-			WritePixelData(pcf);
-		}
-		else
-		{
-			uint16_t usFlag = 0;
-			pcf->Write(&usFlag);
-		}
+  if (pcf && pcf->IsOpen())
+  {
+    pcf->ClearError();
+    pcf->Write(&ulFileType);
+    pcf->Write(&ulCurrentVersion);
+    // No RFile support for RImage::Type, so we use a uint32_t.
+    uint32_t	u32Temp	= (uint32_t)m_type;
+    pcf->Write(&u32Temp);
+    u32Temp = (uint32_t)m_typeDestination;
+    pcf->Write(&u32Temp);
+    pcf->Write(&m_ulSize);
+    pcf->Write(&m_sWinWidth);
+    pcf->Write(&m_sWinHeight);
+    pcf->Write(&m_sWidth);
+    pcf->Write(&m_sHeight);
+    pcf->Write(&m_sWinX);
+    pcf->Write(&m_sWinY);
+    pcf->Write(&m_lPitch);
+    pcf->Write(&m_sDepth);
 
-		if (m_pPalette)
-		{
-			uint16_t usOne = 1;
-			pcf->Write(&usOne);
-			m_pPalette->Save(pcf);
-		}
-		else
-		{
-			uint16_t usZero = 0;
-			pcf->Write(&usZero);
-		}
+    if (m_pData)
+    {
+      uint16_t usFlag = 1;
+      pcf->Write(&usFlag);
+      WritePixelData(pcf);
+    }
+    else
+    {
+      uint16_t usFlag = 0;
+      pcf->Write(&usFlag);
+    }
 
+    if (m_pPalette)
+    {
+      uint16_t usOne = 1;
+      pcf->Write(&usOne);
+      m_pPalette->Save(pcf);
+    }
+    else
+    {
+      uint16_t usZero = 0;
+      pcf->Write(&usZero);
+    }
 
-		// Call the special Save function for this type if any
-		SAVEFUNC csf = GETSAVEFUNC(m_type);
-		if (csf)
-			// Note this must be changed to pass the version.
+    // Call the special Save function for this type if any
+    SAVEFUNC csf = GETSAVEFUNC(m_type);
+    if (csf)
+      // Note this must be changed to pass the version.
 #ifdef _MSC_VER
-	//#pragma message( __FILE__ "(2022) : Calls to SAVEFUNC must be changed to take a version!")
+      //#pragma message( __FILE__ "(2022) : Calls to SAVEFUNC must be changed to take a version!")
 #endif
-			sReturn = (*csf)(const_cast<RImage*>(this), pcf/*, ulCurrentVersion*/);
-	}
-	else
-	{
-      TRACE("RImage::Save - RFile pointer does not refer to an open file");
-		sReturn = FAILURE;
-	}
-		
-	return sReturn;
+      sReturn = (*csf)(const_cast<RImage*>(this), pcf/*, ulCurrentVersion*/);
+  }
+  else
+  {
+    TRACE("RImage::Save - RFile pointer does not refer to an open file");
+    sReturn = FAILURE;
+  }
+
+  return sReturn;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -2064,7 +2048,7 @@ int16_t RImage::ReadPixelData(RFile* pcf)
 
     int32_t lBytesPerLine = ((int32_t)m_sWinWidth * lDepth) / 8;
     if (m_sDepth < 8 && (((int32_t)m_sWinWidth * lDepth) % 8) > 0)
-        lBytesPerLine++;
+      lBytesPerLine++;
 
     for (int32_t l = lYPos; l < lYPos + lHeight; l++)
     {
