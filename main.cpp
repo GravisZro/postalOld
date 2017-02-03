@@ -994,15 +994,17 @@ rspSetProfileOutput("profile.out");
                   //------------------------------------------------------------
                   // Run the game
                   //------------------------------------------------------------
-
+#ifndef _DEBUG
                   // Hide system cursor
                   rspHideMouseCursor();
-
+#endif
                   // Run the game
                   TheGame();
+#ifndef _DEBUG
 
                   // Restore system cursor
                   rspShowMouseCursor();
+#endif
 
                   // Kill audio
                   RMix::KillMode();

@@ -52,13 +52,12 @@
 		return;
 		}
 
-#ifdef OLD_RENDERER
 	int16_t sNeedToUnlock = 0;
 
 	//if (gsScreenLocked || gsBufferLocked) goto PLOT_DONTLOCK;
 
 	// removed locking and unlocking except where needed for special cases:
-	switch ((int16_t)(((int32_t)pimDst->m_pSpecial))) // 0 = normal image
+   switch ((int16_t)(((int64_t)pimDst->m_pSpecial))) // 0 = normal image
 		{
 		case 0: // normal image, buffer in image
 		break;
@@ -144,7 +143,6 @@
 		}
 
 //PLOT_DONTUNLOCK:
-#endif
 	return;
 	}
 
@@ -707,7 +705,6 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_
 		if ((sW <= 0) || (sH <= 0)) return -1; // fully clipped
 		}
 
-#ifdef OLD_RENDERER
    //**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	// do OS based copying!
@@ -722,10 +719,10 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
    if (pimSrc->m_type == RImage::IMAGE_STUB)
-     sBlitTypeSrc = (int16_t)((int32_t)pimSrc->m_pSpecial);
+     sBlitTypeSrc = (int16_t)((long)pimSrc->m_pSpecial);
 
    if (pimDst->m_type == RImage::IMAGE_STUB)
-     sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+     sBlitTypeDst = (int16_t)((long)pimDst->m_pSpecial);
 
 	switch ( (sBlitTypeSrc<<3) + sBlitTypeDst) // 0 = normal image
 		{
@@ -923,7 +920,6 @@ int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sSrcX,int16_t sSrcY,int16_
 #endif
 
 //BLIT_DONTUNLOCK:
-#endif
 	return 0;
 	}
 
@@ -1030,7 +1026,6 @@ int16_t rspRect(uint32_t color,RImage* pimDst,int16_t sX,int16_t sY,int16_t sW,i
 
 		if ((sW <= 0) || (sH <= 0)) return -1; // fully clipped
 		}
-#ifdef OLD_RENDERER
 	//**************  INSERT BUFFER HOOKS HERE!  ************************
 
 	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
@@ -1049,7 +1044,7 @@ int16_t rspRect(uint32_t color,RImage* pimDst,int16_t sX,int16_t sY,int16_t sW,i
 	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
 	// has completed. (Lord help me if a blit gets interrupted)
    if (pimDst->m_type == RImage::IMAGE_STUB)
-     sBlitTypeDst = (int16_t)((int32_t)pimDst->m_pSpecial);
+     sBlitTypeDst = (int16_t)((long)pimDst->m_pSpecial);
 
    switch (sBlitTypeDst) // 0 = normal image
 		{
@@ -1193,7 +1188,6 @@ int16_t rspRect(uint32_t color,RImage* pimDst,int16_t sX,int16_t sY,int16_t sW,i
 		}
 
 //RECT_DONTUNLOCK:
-#endif
 
 	return 0;
 	}

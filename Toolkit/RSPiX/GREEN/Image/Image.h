@@ -255,7 +255,8 @@ class RImage
 		// SCREEN32_ARGB) must remain the same.  Always add your enum before
 		// END_OF_TYPES to be safe!  Also remember to add the name of your
 		// type to the string ms_astrTypeNames in image.cpp.
-		enum Type {
+      enum Type : uint32_t
+      {
 			NOT_SUPPORTED,			// To indicate error on load, etc.
 			BMP8,						// Windows BMP 8-bit buffer, RGBQUAD
 			SYSTEM8,					// 8-bit buffer with palette in SYSTEM format (Win/Mac/etc)
