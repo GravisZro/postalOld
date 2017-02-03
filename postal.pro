@@ -245,7 +245,6 @@ HEADERS += \
 
 SOURCES += \
     Realm.cpp \
-    RSPiX.cpp \
     SampleMaster.cpp \
     Scene.cpp \
     Scoreboard.cpp \
