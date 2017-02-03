@@ -335,7 +335,7 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 	//===== The m_pCodeArry ... points to the start of each line in the control block.
 
 	int16_t x,y;  // For now, clear = 0, but this can be EASILY changed.
-	long i;
+   int32_t i;
 	int16_t	sCount;
 	uint8_t *pucOldMem,*pucOldBuf; // For shrinking the buffer while maintaining alignment
 

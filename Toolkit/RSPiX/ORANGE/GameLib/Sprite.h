@@ -86,8 +86,8 @@ class RSprite
 											// m_sZ to get the destination (e.g., screen)
 											// position.
 		int16_t		m_sAngle;			// Angle of rotation
-		long		m_lWidth;			// Sprite's Desired Display Width (for scale blit)
-		long		m_lHeight;			// Sprite's Desired Display Height (for scale blit)
+      int32_t		m_lWidth;			// Sprite's Desired Display Width (for scale blit)
+      int32_t		m_lHeight;			// Sprite's Desired Display Height (for scale blit)
 		double	m_dX;					// Sprite X as a double (for motion)
 		double	m_dY;					// Sprite Y as a double (for motion)
 		double	m_dZ;					// Sprite Z as a double (for motion)

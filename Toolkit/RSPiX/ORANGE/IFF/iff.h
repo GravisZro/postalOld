@@ -148,7 +148,7 @@ class RIff : public RFile
 			{ return m_chunk.ulSize; }
 
 		// Get the file position of the next to the specified chunk.
-		long	GetNextChunkPos(		// Returns the position of the next to the 
+      int32_t	GetNextChunkPos(		// Returns the position of the next to the
 											// chunk specified below.
 			CHUNK* pchunk)				// Chunk to evaluate.
 			{

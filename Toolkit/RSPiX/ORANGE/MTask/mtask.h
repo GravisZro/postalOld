@@ -37,8 +37,8 @@
 //////////////////////////////////////////////////////////////////////
 
 struct TASKINFO {
-	long* plStackAddress;		// Address of allocated memory for stack
-	long* plSP;					// Current saved position of Stack Pointer
+  int32_t* plStackAddress;		// Address of allocated memory for stack
+  int32_t* plSP;					// Current saved position of Stack Pointer
 	char* pszFunctionName;	// Name of task using this stack 
 									// (used for reporting errors)
 };
@@ -79,7 +79,7 @@ void MTaskKill(void);
 // This funciton must be called periodically to allow the
 // other tasks to run.  Your code will resume immediately
 // after this call.
-long* MTaskWait(void);
+int32_t* MTaskWait(void);
 
 #endif // MTASK_H
 

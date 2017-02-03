@@ -2584,7 +2584,7 @@ int16_t RGuiItem::GetText(	// Returns 0 on success.
 // Get the number represented by the text in this item.
 //
 //////////////////////////////////////////////////////////////////////////////
-long RGuiItem::GetVal(void)		// Returns value.
+int32_t RGuiItem::GetVal(void)		// Returns value.
 	{
 	return atol(m_szText);
 	}
@@ -2594,7 +2594,7 @@ long RGuiItem::GetVal(void)		// Returns value.
 // Get the number represented by the text in the specified item.
 //
 //////////////////////////////////////////////////////////////////////////////
-long RGuiItem::GetVal(	// Returns value.
+int32_t RGuiItem::GetVal(	// Returns value.
 	int32_t	lId)				// In:  Child item ID (can identify this item). 
 	{
 	int32_t lRes	= 0;	// Assume value.  Ayuh.

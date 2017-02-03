@@ -58,7 +58,7 @@
 //
 //		* Characters (char), which are treated as ASCII codes
 //
-//		* Integers (int16_t, uint16_t, long, and uint32_t) converted
+//		* Integers (int16_t, uint16_t, int32_t, and uint32_t) converted
 //		  into string representations of their numerical values.  The exception
 //		  is that there are no constructors to take these types, only because
 //		  it caused a conflict with other, more usefull constructors.
@@ -315,7 +315,7 @@ void RString::Compact(void)
 // Returns number of characters written, or -1 if an error occurred (this is
 // basically the value returned by vsprintf.)
 ////////////////////////////////////////////////////////////////////////////////
-long RString::Format(int32_t lMinimumSize, char* format, ...)
+int32_t RString::Format(int32_t lMinimumSize, char* format, ...)
 	{
 	int32_t lWritten = 0;
 	if (lMinimumSize >= 0)

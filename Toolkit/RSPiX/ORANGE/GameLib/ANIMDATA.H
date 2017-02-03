@@ -150,9 +150,9 @@ struct ANIMSET {
 // address to each of the offsets.  This has no memory/file overhead,
 // but requires specific code for this purpose.  A general purpose
 // alternative would be to have relocation data at the start of the
-// file (I saw this on the Atari ST).  If all longs are long-aligned,
-// then each bit could correspond to a long.  If the bit is 0 then
-// we skip that long, if it is 1 we relocate it.  The size of the
+// file (I saw this on the Atari ST).  If all int32_ts are int32_t-aligned,
+// then each bit could correspond to a int32_t.  If the bit is 0 then
+// we skip that int32_t, if it is 1 we relocate it.  The size of the
 // reloc data would be 1/32nd of the actual data.  A similar method
 // could be used on a word-oriented bases, which would increase the
 // overhead to 1/16th of the data.  Since the reloc data is temporary
@@ -223,7 +223,7 @@ struct ANIMSET {
 
 // Sample access stuff.  We coerce generic pointers into pointers to specific
 // structs.
-	ANIM* pAnim = (long*)pLoadingAddress[1];
+  ANIM* pAnim = (int32_t*)pLoadingAddress[1];
 	int16_t sNumFrames = pAnim->sNumFrames;
 	FRAME* pFrame = pAnim->aFrames[3];
 

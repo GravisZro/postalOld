@@ -691,7 +691,7 @@ int16_t RPrint::SetCellW()
 	{
 	if (m_pCurFontSet == nullptr) return -1;
 	// before effects:
-	m_sCellW = int16_t(long(m_sCellH) * m_pCurFontSet->m_sMaxWidth /
+   m_sCellW = int16_t(int32_t(m_sCellH) * m_pCurFontSet->m_sMaxWidth /
 							m_pCurFontSet->m_sCellHeight);
 	// add effects:
 	// MAKE SURE THIS WORKS INSPITE OF NO LEADER!

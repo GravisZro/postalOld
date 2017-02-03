@@ -611,10 +611,10 @@ class RGuiItem : public RProps <uint32_t, uint32_t>
 			size_t sMax);	// In:  Total memory pointed to by pszText.
 
 		// Get the number represented by the text in this item.
-		long GetVal(void);		// Returns value.
+      int32_t GetVal(void);		// Returns value.
 
 		// Get the number represented by the text in the specified item.
-		long GetVal(		// Returns value.
+      int32_t GetVal(		// Returns value.
          int32_t	lId);		// In:  Child item ID (can identify this item).
 
 		// Get the RImage that contains the item.  Feel free to Convert() this

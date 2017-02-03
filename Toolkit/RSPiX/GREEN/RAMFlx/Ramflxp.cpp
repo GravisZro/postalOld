@@ -627,7 +627,7 @@ int16_t CRamFlx::ReadDataBRun(	CImage* pimageRead, CNFile* pfile,
 			}
 		#else
 			// Locals needed (b/c we can't use this->).
-			long		lPitch		= pimageRead->lPitch;
+      int32_t		lPitch		= pimageRead->lPitch;
 			MEM		pCurFlxBuf	= pfile->GetMemory() + pfile->Tell();
 			int16_t		sHeight		= (int16_t)pimageRead->lHeight;
 			int16_t		sWidth		= (int16_t)pimageRead->lWidth;
@@ -877,7 +877,7 @@ int16_t CRamFlx::ReadDataLC(	CImage* pimageRead, CNFile* pfile,
 			}
 	#else
 		// Locals needed (b/c we can't use this->).
-		long		lPitch		= pimageRead->lPitch;
+    int32_t		lPitch		= pimageRead->lPitch;
 		MEM		pCurFlxBuf	= pfile->GetMemory() + pfile->Tell();
 		
 		__asm
@@ -1574,10 +1574,10 @@ void CRamFlx::CopyBuf(CImage* pimageDst, CImage* pimageSrc)
 int16_t CRamFlx::CreateFramePointers(void)
 	{
 	int16_t sError = 0;
-	long  lSizeFrame;
+  int32_t  lSizeFrame;
 
 	// Allocate the space for the frame pointers
-	if ((m_plFrames = (long*)malloc((m_filehdr.sNumFrames+1) * sizeof(int32_t))) == nullptr)
+  if ((m_plFrames = (int32_t*)malloc((m_filehdr.sNumFrames+1) * sizeof(int32_t))) == nullptr)
 		sError = -1;
 	else
 		{

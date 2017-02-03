@@ -77,8 +77,8 @@ struct FRAME {
 	int16_t		sOffsetY;	// amount to add to sprite's Y position for this frame
 	int16_t		sOffsetZ;	// amount to add to sprite's Z position for this frame
 	int16_t		sRotDeg;		// Rotation in Degrees
-	long		lScaleWidth;// Scaled width for this frame
-	long		lScaleHeight;//Scaled height for this frame
+   int32_t		lScaleWidth;// Scaled width for this frame
+   int32_t		lScaleHeight;//Scaled height for this frame
 	uint32_t		ulFlags;		// Flags for this frame
 	int16_t		sHold;		// number of milliseconds to hold this frame
 	int16_t		sPicIndex;	// Animation's picture index for this frame (used to load)
@@ -96,7 +96,7 @@ class RAnimSprite : public RSprite
 		int16_t		m_sNumPictures;	// Number of RImages in this animation
 		int16_t		m_sLoopToFrame;	// -1 if no loop, or frame number to start loop
 		uint32_t		m_ulAnimFlags;		// Animation flags and status
-		long		m_lTimer;			// timer used for animating
+      int32_t		m_lTimer;			// timer used for animating
 		int16_t		m_sCurrFrame;		// current frame in the animation
 		FRAME*	m_aFrames;			// Array of frame structures
 		RImage**	m_apPictures;		// Array of RImage*

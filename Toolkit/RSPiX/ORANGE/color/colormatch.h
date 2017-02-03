@@ -24,7 +24,7 @@
 
 //==================================
 
-extern	uint8_t rspMatchColorRGB(long r,long g,long b,int16_t sStart,int16_t sNum,
+extern	uint8_t rspMatchColorRGB(int32_t r,int32_t g,int32_t b,int16_t sStart,int16_t sNum,
 					 uint8_t const * pr,uint8_t const * pg,uint8_t const * pb,int32_t linc);
 
 // designed for 2 dimenional input. For example, fog = source color +
@@ -134,14 +134,14 @@ public:
 	// Find optimum # of alpha level for your cache
 	static int16_t QueryFastMultiAlpha(
 		int16_t sNumSrcCol, int16_t sNumDstCol,int32_t lTotMem, 
-		long* plHeaderSize = nullptr,long* plDataSize = nullptr);
+      int32_t* plHeaderSize = nullptr,int32_t* plDataSize = nullptr);
 
 	// Create a FastMultiAlpha which MUST be freed BY the USER
 	// USING the DeleteFastMultiAlpha command ising THIS MALPHA:
 	uint8_t*** pppucCreateFastMultiAlpha(
 		int16_t sStartSrc,int16_t sNumSrc,	// color indices
 		int16_t sStartDst,int16_t sNumDst,
-		long*	plAlignedSize = nullptr);
+      int32_t*	plAlignedSize = nullptr);
 
 	// USER MUST call this to free the fast multi alpha
 	static int16_t DeleteFastMultiAlpha(uint8_t ****pfmaDel);

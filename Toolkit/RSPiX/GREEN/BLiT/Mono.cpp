@@ -92,7 +92,7 @@ int16_t rspBlitToMono(
 	afrSkipY = rspfruint16_tStrafe256(sDstH,sDenY);
 	// Make magnification possible:
 	int16_t i;
-	long *alDstSkip = (long*)calloc(sizeof(int32_t),afrSkipY[1].mod + 2);
+   int32_t *alDstSkip = (int32_t*)calloc(sizeof(int32_t),afrSkipY[1].mod + 2);
 	for (i=1;i<(afrSkipY[1].mod + 2);i++) 
 		alDstSkip[i] = alDstSkip[i-1] + lDstP;
 	uint8_t	bits[] = {128,64,32,16,8,4,2,1};

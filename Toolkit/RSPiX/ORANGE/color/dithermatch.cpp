@@ -73,7 +73,7 @@ int16_t	rspDither(
 					int32_t	lInc,
 					// User interaction
 					PDitherCallBack func,
-					long  lMilli // milliseconds per callback
+               int32_t  lMilli // milliseconds per callback
 					)
 	{
 	ASSERT(pimSrc);
@@ -162,9 +162,9 @@ int16_t	rspDither(
 			int16_t sTotErrorR,sTotErrorG,sTotErrorB;
 
 			// This is the desired target color
-			int32_t	lRed = long(pSrc[2] + sNextErrorR + psCurrentErrorR[sErrPos]);
-			int32_t lGreen = long(pSrc[1] + sNextErrorG + psCurrentErrorG[sErrPos]);
-			int32_t	lBlue = long(pSrc[0] + sNextErrorB + psCurrentErrorB[sErrPos]);
+         int32_t	lRed = int32_t(pSrc[2] + sNextErrorR + psCurrentErrorR[sErrPos]);
+         int32_t lGreen = int32_t(pSrc[1] + sNextErrorG + psCurrentErrorG[sErrPos]);
+         int32_t	lBlue = int32_t(pSrc[0] + sNextErrorB + psCurrentErrorB[sErrPos]);
 
 			uint8_t ucIndex = rspMatchColorRGB(lRed,lGreen,lBlue,
 				sStartMap,sNumMap,pRed,pGreen,pBlue,lInc);
@@ -340,7 +340,7 @@ int16_t	rspSimpleMap(
 					int32_t	lInc,
 					// User interaction
 					PDitherCallBack func,
-					long  lMilli // milliseconds per callback
+               int32_t  lMilli // milliseconds per callback
 					)
 	{
 	ASSERT(pimSrc);
@@ -402,9 +402,9 @@ int16_t	rspSimpleMap(
 		for (i=0; i < pimSrc->m_sWidth; i++,pSrc += lSrcXP,pDst++)
 			{
 			// This is the desired target color
-			int32_t	lRed = long(pSrc[2]);
-			int32_t lGreen = long(pSrc[1]);
-			int32_t	lBlue = long(pSrc[0]);
+         int32_t	lRed = int32_t(pSrc[2]);
+         int32_t lGreen = int32_t(pSrc[1]);
+         int32_t	lBlue = int32_t(pSrc[0]);
 
 			uint8_t ucIndex = rspMatchColorRGB(lRed,lGreen,lBlue,
 				sStartMap,sNumMap,pRed,pGreen,pBlue,lInc);
@@ -456,7 +456,7 @@ int16_t	rspDither(
 					int32_t	lInc,
 					// User interaction
 					PDitherCallBack func,
-					long  lMilli // milliseconds per callback
+               int32_t  lMilli // milliseconds per callback
 					)
 	{
 	ASSERT(pimSrc);
@@ -545,16 +545,16 @@ int16_t	rspDither(
 			int16_t sTotErrorR,sTotErrorG,sTotErrorB;
 
 			// This is the desired target color
-			int32_t	lRed = long(pSrc[2]);
-			int32_t lGreen = long(pSrc[1]);
-			int32_t	lBlue = long(pSrc[0]); 
+         int32_t	lRed = int32_t(pSrc[2]);
+         int32_t lGreen = int32_t(pSrc[1]);
+         int32_t	lBlue = int32_t(pSrc[0]);
 
 			if ( (lRed == lBackR) && (lGreen == lBackG) && (lBlue == lBackB) )
 				sBackground = 1;
 
-			lRed += long(sNextErrorR + psCurrentErrorR[sErrPos]);
-			lGreen += long(sNextErrorG + psCurrentErrorG[sErrPos]);
-			lBlue += long(sNextErrorB + psCurrentErrorB[sErrPos]);
+         lRed += int32_t(sNextErrorR + psCurrentErrorR[sErrPos]);
+         lGreen += int32_t(sNextErrorG + psCurrentErrorG[sErrPos]);
+         lBlue += int32_t(sNextErrorB + psCurrentErrorB[sErrPos]);
 
 			uint8_t ucIndex = rspMatchColorRGB(lRed,lGreen,lBlue,
 				sStartMap,sNumMap,pRed,pGreen,pBlue,lInc);
@@ -753,7 +753,7 @@ int16_t	rspDither(
 					int32_t	lInc,
 					// User interaction
 					PDitherCallBack func,
-					long  lMilli // milliseconds per callback
+               int32_t  lMilli // milliseconds per callback
 					)
 	{
 	ASSERT(pimSrc);
@@ -842,10 +842,10 @@ int16_t	rspDither(
 			int16_t sTotErrorR,sTotErrorG,sTotErrorB;
 
 			// This is the desired target color
-			uint8_t	ucAlpha = long(pSrc[3]); 
-			int32_t	lRed = long(pSrc[2] + sNextErrorR + psCurrentErrorR[sErrPos]);
-			int32_t lGreen = long(pSrc[1] + sNextErrorG + psCurrentErrorG[sErrPos]);
-			int32_t	lBlue = long(pSrc[0] + sNextErrorB + psCurrentErrorB[sErrPos]);
+         uint8_t	ucAlpha = int32_t(pSrc[3]);
+         int32_t	lRed = int32_t(pSrc[2] + sNextErrorR + psCurrentErrorR[sErrPos]);
+         int32_t lGreen = int32_t(pSrc[1] + sNextErrorG + psCurrentErrorG[sErrPos]);
+         int32_t	lBlue = int32_t(pSrc[0] + sNextErrorB + psCurrentErrorB[sErrPos]);
 
 			uint8_t ucIndex = rspMatchColorRGB(lRed,lGreen,lBlue,
 				sStartMap,sNumMap,pRed,pGreen,pBlue,lInc);
@@ -1034,7 +1034,7 @@ int16_t	rspSimpleMap(
 					int32_t	lInc,
 					// User interaction
 					PDitherCallBack func,
-					long  lMilli // milliseconds per callback
+               int32_t  lMilli // milliseconds per callback
 					)
 	{
 	ASSERT(pimSrc);
@@ -1097,9 +1097,9 @@ int16_t	rspSimpleMap(
 			{
 			// This is the desired target color
 			uint8_t	ucAlpha = pSrc[3];
-			int32_t	lRed = long(pSrc[2]);
-			int32_t lGreen = long(pSrc[1]);
-			int32_t	lBlue = long(pSrc[0]);
+         int32_t	lRed = int32_t(pSrc[2]);
+         int32_t lGreen = int32_t(pSrc[1]);
+         int32_t	lBlue = int32_t(pSrc[0]);
 
 			uint8_t ucIndex;
 

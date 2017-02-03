@@ -313,7 +313,7 @@ public:
 	int16_t	m_sMaxPlanes;		// Can be custom tailored to save memory
 	RImage*	m_pimTempTile;	// For construction & easy writing.
 	RImage*	m_pimBuffer;	// Large conversion buffer
-	long	m_lTileLen;			// For linear operations
+   int32_t	m_lTileLen;			// For linear operations
 	static int16_t	ms_asColorToPlane[MGI_MAX_PLANES];
 	};
 

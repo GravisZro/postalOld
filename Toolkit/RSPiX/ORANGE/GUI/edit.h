@@ -190,7 +190,7 @@ class REdit : public RTxt
 		char	m_cCaretChar;		// Character to use as caret.
 		uint32_t	m_u32CaretColor;	// Color to use for caret.
 		int16_t	m_sCaretPos;		// Text position of caret.
-		long	m_lCaretBlinkRate;// Rate at which character blinks in ms.  Can be
+      int32_t	m_lCaretBlinkRate;// Rate at which character blinks in ms.  Can be
 										// 0 indicating no blinkage.
 
 		int16_t	m_sMaxText;			// Maximum text to allow.  Limited to GUI_MAX_STR.
@@ -203,7 +203,7 @@ class REdit : public RTxt
 											// in NUMBERS_ONLY mode).  A good place to 
 											// generate a beep or something.
 
-		long	m_lNextCaretUpdate;	// Time in ms of next caret update.
+      int32_t	m_lNextCaretUpdate;	// Time in ms of next caret update.
 		int16_t	m_sCaretState;			// Current state the caret is in until
 											// m_lNextCaretUpdate. (0 == hidden, 
 											// 1 == shown).

@@ -51,7 +51,7 @@ extern void Time_Init(void)
 //////////////////////////////////////////////////////////////////////////////
 //
 // Get the current Windows' time.
-// Returns the time in a long.
+// Returns the time in a int32_t.
 //
 //////////////////////////////////////////////////////////////////////////////
 extern int32_t rspGetMilliseconds(void)
@@ -65,7 +65,7 @@ extern int32_t rspGetMilliseconds(void)
 // not always be accurate to the nearest microsecond.  It is always on the
 // Mac but possibly not in Windows; however, every machine tested produced
 // good to excellent resolution.
-// Returns the time in a long.
+// Returns the time in a int32_t.
 //
 //////////////////////////////////////////////////////////////////////////////
 extern int32_t rspGetMicroseconds(	// Returns microseconds between now and

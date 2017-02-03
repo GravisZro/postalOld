@@ -216,7 +216,7 @@ class CRamFlx
 		
 		uint8_t*			m_pucFlxBuf;		// RAM buffer for flic frames from .FLC file
 
-		long*				m_plFrames;			// Indexices of frames in flics
+    int32_t*				m_plFrames;			// Indexices of frames in flics
 													// with no delta compression
 
 		int16_t				m_sReadColors;		// Whether or not to read colors from flic

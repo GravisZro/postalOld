@@ -86,7 +86,7 @@ static RList<TASKINFO> MTaskList;
 // process.  It is used to transfer control to other tasks.
 // Your task will resume immediately following this call,
 // when its turn comes up again.
-static long* MTaskRun(void);
+static int32_t* MTaskRun(void);
 
 // This function is an error trap in case a task
 // returns.  Tasks are not supposed to return, they
@@ -165,14 +165,14 @@ void MTaskManager(void)
 int16_t MTaskAddFunc(void* pFunction, char* pszFuncName, int16_t sStackSize)
 {
 	PTASKINFO ptiNewTask = nullptr;
-	long* plNewStack = nullptr;
+  int32_t* plNewStack = nullptr;
 	int16_t sLongElements = sStackSize/4;
 	int16_t sReturn = SUCCESS;
 	
 	ptiNewTask = new TASKINFO;
 	if (ptiNewTask)
 	{
-		plNewStack = (long*) calloc(sLongElements, 4);
+    plNewStack = (int32_t*) calloc(sLongElements, 4);
 		if (plNewStack)
 		{
 			plNewStack[sLongElements-1] = (int32_t) MTaskReturnCatcher;
@@ -225,7 +225,7 @@ int16_t MTaskAddFunc(void* pFunction, char* pszFuncName, int16_t sStackSize)
 //
 //////////////////////////////////////////////////////////////////////
 
-__declspec (naked) long* TaskKill(void)
+__declspec (naked) int32_t* TaskKill(void)
 {
 	__asm
 	{
@@ -258,7 +258,7 @@ __declspec (naked) long* TaskKill(void)
 //
 //////////////////////////////////////////////////////////////////////
 
-__declspec (naked) long* MTaskWait(void)
+__declspec (naked) int32_t* MTaskWait(void)
 {
 	__asm
 	{
@@ -285,14 +285,14 @@ __declspec (naked) long* MTaskWait(void)
 //		none
 //
 // Returns:
-//		Note: The function seems to return a long of the
+//		Note: The function seems to return a int32_t of the
 //			   task's stack pointer, but in fact, the return
 //				value does not come from this function, but from
 //				MTaskWait or MTaskKill.
 //
 //////////////////////////////////////////////////////////////////////
 
-__declspec (naked) long* MTaskRun(void)
+__declspec (naked) int32_t* MTaskRun(void)
 {
 	__asm
 	{

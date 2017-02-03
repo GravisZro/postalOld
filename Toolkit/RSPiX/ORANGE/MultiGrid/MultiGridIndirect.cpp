@@ -120,16 +120,16 @@ int16_t	RMultiGridIndirect::Alloc(int16_t sW, int16_t sH, int16_t sMaxPlanes,
 	int16_t sGridW = (sW / sTileW) + 1;
 	int16_t sGridH = (sH / sTileH) + 1;
 
-	m_pucPalette = (uint8_t*) calloc(sMaxPlanes,long(sGridW) * sGridH);
+   m_pucPalette = (uint8_t*) calloc(sMaxPlanes,int32_t(sGridW) * sGridH);
 	ASSERT(m_pucPalette);
 	m_plAccessX = (uint32_t*) calloc(sizeof(int32_t),sGridW * sTileW);
 	ASSERT(m_plAccessX);
-	m_ppucAccessY = (uint8_t**) calloc( sizeof(uint8_t*),long(sGridH)*sTileH );
+   m_ppucAccessY = (uint8_t**) calloc( sizeof(uint8_t*),int32_t(sGridH)*sTileH );
 	ASSERT(m_ppucAccessY);
 
 	// Populate the pointer list:
 	uint8_t*	pY = m_pucPalette;
-	int32_t	lOffset = long(sGridW)*sMaxPlanes;
+   int32_t	lOffset = int32_t(sGridW)*sMaxPlanes;
 	int16_t i,j;
 
 	for (i=0,j=0;i<sGridH;pY += lOffset,i++)
@@ -160,7 +160,7 @@ int16_t	RMultiGridIndirect::Alloc(int16_t sW, int16_t sH, int16_t sMaxPlanes,
 	m_pimTempTile = new RImage;
 	// Keep pitch equal to width:
 	m_pimTempTile->CreateImage(m_sTileW,m_sTileH,RImage::BMP8,m_sTileW);
-	m_lTileLen = long(m_sTileW) * m_sTileH;
+   m_lTileLen = int32_t(m_sTileW) * m_sTileH;
 
 	return SUCCESS;
 	}
@@ -322,7 +322,7 @@ int16_t RMultiGridIndirect::AddFSPR1(RImage* pimSrc,int16_t sLogX,int16_t sLogY,
 		uint16_t*  pDst,*pDstLine = (uint16_t*)m_pmg->m_psGrid;
 
 		// Adjust for actual coordinates!!!!
-		pDstLine += long(m_pmg->m_sWidth) * sDstY + sDstX;
+      pDstLine += int32_t(m_pmg->m_sWidth) * sDstY + sDstX;
 		int16_t	i,j;
 
 		for (j=0;j < sH;j++,pSrcLine += lSrcP,pDstLine += lDstP)
@@ -380,7 +380,7 @@ int16_t RMultiGridIndirect::Load(RFile* fp)
 	fp->Read(&lRes);
 
 	// just the palette data:
-	int32_t lLen = long(m_sGridW) * m_sGridH * m_sMaxPlanes;
+   int32_t lLen = int32_t(m_sGridW) * m_sGridH * m_sMaxPlanes;
 	m_pucPalette = (uint8_t*) calloc(1,lLen);
 
 	fp->Read(m_pucPalette,lLen);
@@ -397,12 +397,12 @@ int16_t RMultiGridIndirect::Load(RFile* fp)
 	// Need to hook up all the access variables!
 	m_plAccessX = (uint32_t*) calloc(sizeof(int32_t),m_sGridW * m_sTileW);
 	ASSERT(m_plAccessX);
-	m_ppucAccessY = (uint8_t**) calloc( sizeof(uint8_t*),long(m_sGridH)*m_sTileH );
+   m_ppucAccessY = (uint8_t**) calloc( sizeof(uint8_t*),int32_t(m_sGridH)*m_sTileH );
 	ASSERT(m_ppucAccessY);
 
 	// Populate the pointer list:
 	uint8_t*	pY = m_pucPalette;
-	int32_t	lOffset = long(m_sGridW)*m_sMaxPlanes;
+   int32_t	lOffset = int32_t(m_sGridW)*m_sMaxPlanes;
 
 	int16_t i,j;
 	for (i=0,j=0;i<m_sGridH;pY += lOffset,i++)
@@ -425,7 +425,7 @@ int16_t RMultiGridIndirect::Load(RFile* fp)
 	m_pimTempTile = new RImage;
 	// Keep pitch equal to width:
 	m_pimTempTile->CreateImage(m_sTileW,m_sTileH,RImage::BMP8,m_sTileW);
-	m_lTileLen = long(m_sTileW) * m_sTileH;
+   m_lTileLen = int32_t(m_sTileW) * m_sTileH;
 
 	return SUCCESS;
 	}
@@ -460,7 +460,7 @@ int16_t RMultiGridIndirect::Save(RFile* fp)
 	fp->Write(lRes);
 
 	// just the palette data:
-	int32_t lLen = long(m_sGridW) * m_sGridH * m_sMaxPlanes;
+   int32_t lLen = int32_t(m_sGridW) * m_sGridH * m_sMaxPlanes;
 	fp->Write(m_pucPalette,lLen);
 
 	// And send out the sttribute map:

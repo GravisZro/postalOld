@@ -11,7 +11,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License along
+// You should have received a copy of the GNU General Public License aint32_t
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
@@ -239,7 +239,7 @@ extern int16_t rspSetFileAttributes(	// Returns 0 on success, non-zero otherwise
 struct RCursor {
 	int16_t sType;			// Indicates type of cursor (b&w or color) and also
 								// whether this struct is valid.
-	int32_t lParam;			// Used as CursHandle or CCrsrHandle but declared as long
+   int32_t lParam;			// Used as CursHandle or CCrsrHandle but declared as int32_t
 								// to avoid requiring the use of MacOS header files.
 };
 
@@ -286,21 +286,21 @@ extern int16_t rspPrinterPageSetupDialog(void);	// Returns 0 if successfull, non
 extern int16_t rspPrinterPrintDialog(void);	// Returns 0 if successfull, non-zero otherwise
 
 extern int16_t rspGetPrinterResolution(		// Returns 0 if successfull, non-zero otherwise
-	long* plHorzRes,								// Out: Horizontal resolution (dpi)
-	long* plVertRes);								// Out: Vertical resolution (dpi)
+   int32_t* plHorzRes,								// Out: Horizontal resolution (dpi)
+   int32_t* plVertRes);								// Out: Vertical resolution (dpi)
 
 extern int16_t rspGetPrinterPageSize(			// Returns 0 if successfull, non-zero otherwise
-	long* plPageWidth,							// Out: Page width (in dots)
-	long* plPageHeight);							// Out: Page height (in dots)
+   int32_t* plPageWidth,							// Out: Page width (in dots)
+   int32_t* plPageHeight);							// Out: Page height (in dots)
 
 extern int16_t rspGetPrinterPageRotation(	// Returns 0 if successfull, non-zero otherwise
 	int16_t* psRotation);							// Out: Rotation (0, 90, or 270 degrees)
 
 extern int16_t rspGetPrinterPageMargins(		// Returns 0 if successfull, non-zero otherwise
-	long* plLeftMargin,							// Out: Page's left margin (in dots)
-	long* plRightMargin,							// Out: Page's right margin (in dots)
-	long* plTopMargin,							// Out: Page's top margin (in dots)
-	long* plBottomMargin);						// Out: Page's bottom margin (in dots)
+   int32_t* plLeftMargin,							// Out: Page's left margin (in dots)
+   int32_t* plRightMargin,							// Out: Page's right margin (in dots)
+   int32_t* plTopMargin,							// Out: Page's top margin (in dots)
+   int32_t* plBottomMargin);						// Out: Page's bottom margin (in dots)
 
 extern int16_t rspGetPrinterJob(				// Returns 0 if successfull, non-zero otherwise
 	int16_t* psFirstPage,							// Out: First page of range to be printed

@@ -161,16 +161,16 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 	if (y2 + y3 == 0) return; // don;t bother drawing horiz line
 
 	// get relative floating point x coordinates: (32-bit differences)
-	long fx1 = pv1->x.val;
-	long fz1 = pv1->z.val;
+   int32_t fx1 = pv1->x.val;
+   int32_t fz1 = pv1->z.val;
 
-	long fx2 = pv2->x.val - fx1;
-	long fx3 = pv3->x.val - fx1;
-	long fz2 = pv2->z.val - fz1;
-	long fz3 = pv3->z.val - fz1;
+   int32_t fx2 = pv2->x.val - fx1;
+   int32_t fx3 = pv3->x.val - fx1;
+   int32_t fz2 = pv2->z.val - fz1;
+   int32_t fz3 = pv3->z.val - fz1;
 
 	// calculate the top two edge slopes with 32-bit accuracy:
-	long fx2inc,fz2inc;
+   int32_t fx2inc,fz2inc;
 	if (y2) 
 		{
 		fx2inc = fx2 / y2; // stuck with division using fx32!
@@ -181,8 +181,8 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 		*/
 		}
 
-	long fx3inc = fx3 / y3; // stuck with division using fx32!
-	long fz3inc = fz3 / y3; // stuck with division using fx32!
+   int32_t fx3inc = fx3 / y3; // stuck with division using fx32!
+   int32_t fz3inc = fz3 / y3; // stuck with division using fx32!
 
 	// Set the two absolute edge positions
 	RFixedint32_t x2,x3,z2,z3; 
@@ -219,7 +219,7 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 
 	if (y2 == 0) // p1.y == p2.y
 		{
-		long fx1inc,fz1inc;
+      int32_t fx1inc,fz1inc;
 		RFixedint32_t x1,z1; // Absolute positions
 
 		// Let point I be to the LEFT of point II:
@@ -264,7 +264,7 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 			xdel = x2.mod - x1.mod;
 			//if (hzdel) hzinc.val = (z3.val - z2.val) / hzdel;
 			//***************8 flipped the inc value:!
-			if (xdel) fzinc.val = long(z2.mod - z1.mod) * RInitNum::OneOver[xdel];
+         if (xdel) fzinc.val = int32_t(z2.mod - z1.mod) * RInitNum::OneOver[xdel];
 			//if (hzdel) Mul(hzinc,z3.val - z2.val,CInitNum::OneOver[hzdel]);
 
 			// Assume 2 to 3:
@@ -346,7 +346,7 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 				fz.mod += sBaseZ;
 				xdel = x3.mod - x2.mod;
 				//if (hzdel) hzinc.val = (z3.val - z2.val) / hzdel;
-				if (xdel) fzinc.val = long(z3.mod - z2.mod) * RInitNum::OneOver[xdel];
+            if (xdel) fzinc.val = int32_t(z3.mod - z2.mod) * RInitNum::OneOver[xdel];
 				//if (hzdel) Mul(hzinc,z3.val - z2.val,CInitNum::OneOver[hzdel]);
 
 				// Assume 2 to 3:
@@ -387,7 +387,7 @@ void	DrawTri_ZColorFog(uint8_t* pDstOffset,int32_t lDstP,
 
 			xdel = x2.mod - x3.mod; //+ x to z
 			//if (hzdel) hzinc.val = (z2.val - z3.val) / hzdel;
-			if (xdel) fzinc.val = long(z2.mod - z3.mod) * RInitNum::OneOver[xdel];
+         if (xdel) fzinc.val = int32_t(z2.mod - z3.mod) * RInitNum::OneOver[xdel];
 			//if (hzdel) Mul(hzinc,z2.val - z3.val,CInitNum::OneOver[hzdel]);
 
 			// Assume 2 to 3:
@@ -519,16 +519,16 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 	if (y2 + y3 == 0) return; // don;t bother drawing horiz line
 
 	// get relative floating point x coordinates: (32-bit differences)
-	long fx1 = pv1->x.val;
-	long fz1 = pv1->z.val;
+   int32_t fx1 = pv1->x.val;
+   int32_t fz1 = pv1->z.val;
 
-	long fx2 = pv2->x.val - fx1;
-	long fx3 = pv3->x.val - fx1;
-	long fz2 = pv2->z.val - fz1;
-	long fz3 = pv3->z.val - fz1;
+   int32_t fx2 = pv2->x.val - fx1;
+   int32_t fx3 = pv3->x.val - fx1;
+   int32_t fz2 = pv2->z.val - fz1;
+   int32_t fz3 = pv3->z.val - fz1;
 
 	// calculate the top two edge slopes with 32-bit accuracy:
-	long fx2inc,fz2inc;
+   int32_t fx2inc,fz2inc;
 	if (y2) 
 		{
 		fx2inc = fx2 / y2; // stuck with division using fx32!
@@ -539,8 +539,8 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 		*/
 		}
 
-	long fx3inc = fx3 / y3; // stuck with division using fx32!
-	long fz3inc = fz3 / y3; // stuck with division using fx32!
+   int32_t fx3inc = fx3 / y3; // stuck with division using fx32!
+   int32_t fz3inc = fz3 / y3; // stuck with division using fx32!
 
 	// Set the two absolute edge positions
 	RFixedint32_t x2,x3,z2,z3; 
@@ -577,7 +577,7 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 
 	if (y2 == 0) // p1.y == p2.y
 		{
-		long fx1inc,fz1inc;
+      int32_t fx1inc,fz1inc;
 		RFixedint32_t x1,z1; // Absolute positions
 
 		// Let point I be to the LEFT of point II:
@@ -622,7 +622,7 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 			xdel = x2.mod - x1.mod;
 			//if (hzdel) hzinc.val = (z3.val - z2.val) / hzdel;
 			//***************8 flipped the inc value:!
-			if (xdel) fzinc.val = long(z2.mod - z1.mod) * RInitNum::OneOver[xdel];
+         if (xdel) fzinc.val = int32_t(z2.mod - z1.mod) * RInitNum::OneOver[xdel];
 			//if (hzdel) Mul(hzinc,z3.val - z2.val,CInitNum::OneOver[hzdel]);
 
 			// Assume 2 to 3:
@@ -704,7 +704,7 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 				fz.mod += sBaseZ;
 				xdel = x3.mod - x2.mod;
 				//if (hzdel) hzinc.val = (z3.val - z2.val) / hzdel;
-				if (xdel) fzinc.val = long(z3.mod - z2.mod) * RInitNum::OneOver[xdel];
+            if (xdel) fzinc.val = int32_t(z3.mod - z2.mod) * RInitNum::OneOver[xdel];
 				//if (hzdel) Mul(hzinc,z3.val - z2.val,CInitNum::OneOver[hzdel]);
 
 				// Assume 2 to 3:
@@ -745,7 +745,7 @@ void	DrawTri_ZColor(uint8_t* pDstOffset,int32_t lDstP,
 
 			xdel = x2.mod - x3.mod; //+ x to z
 			//if (hzdel) hzinc.val = (z2.val - z3.val) / hzdel;
-			if (xdel) fzinc.val = long(z2.mod - z3.mod) * RInitNum::OneOver[xdel];
+         if (xdel) fzinc.val = int32_t(z2.mod - z3.mod) * RInitNum::OneOver[xdel];
 			//if (hzdel) Mul(hzinc,z2.val - z3.val,CInitNum::OneOver[hzdel]);
 
 			// Assume 2 to 3:
@@ -856,13 +856,13 @@ void	DrawTri(uint8_t* pDstOffset,int32_t lDstP,
 	if (y2 + y3 == 0) return; // don;t bother drawing horiz line
 
 	// get relative floating point x coordinates: (32-bit differences)
-	long fx1 = pv1->x.val;
+   int32_t fx1 = pv1->x.val;
 
-	long fx2 = pv2->x.val - fx1;
-	long fx3 = pv3->x.val - fx1;
+   int32_t fx2 = pv2->x.val - fx1;
+   int32_t fx3 = pv3->x.val - fx1;
 
 	// calculate the top two edge slopes with 32-bit accuracy:
-	long fx2inc;
+   int32_t fx2inc;
 	if (y2) 
 		{
 		fx2inc = fx2 / y2; // stuck with division using fx32!
@@ -871,7 +871,7 @@ void	DrawTri(uint8_t* pDstOffset,int32_t lDstP,
 		*/
 		}
 
-	long fx3inc = fx3 / y3; // stuck with division using fx32!
+   int32_t fx3inc = fx3 / y3; // stuck with division using fx32!
 
 	// Set the two absolute edge positions
 	RFixedint32_t x2,x3; 
@@ -900,7 +900,7 @@ void	DrawTri(uint8_t* pDstOffset,int32_t lDstP,
 
 	if (y2 == 0) // p1.y == p2.y
 		{
-		long fx1inc;
+      int32_t fx1inc;
 		RFixedint32_t x1; // Absolute positions
 
 		// Let point I be to the LEFT of point II:

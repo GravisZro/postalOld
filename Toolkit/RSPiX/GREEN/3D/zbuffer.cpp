@@ -49,7 +49,7 @@ int16_t RZBuffer::Create(int16_t sW,int16_t sH)
 
 	m_sW = sW;
 	m_sH = sH;
-	m_lP = long((sW+3)&~3); // keep for emergencies!
+   m_lP = int32_t((sW+3)&~3); // keep for emergencies!
 
 	int32_t lSize = m_lP * m_sH * sizeof(int16_t);
 	m_pBuf = (int16_t*) malloc(lSize);
@@ -101,7 +101,7 @@ void RZBuffer::Clear(int16_t sVal)
 	uint64_t* pWord = (uint64_t*) m_pBuf;
 
 	int32_t lWordLen = lWordP * m_sH;
-	for (long i=0;i < lWordLen; i++) *pWord++ = BigWord.word;
+   for (int32_t i=0;i < lWordLen; i++) *pWord++ = BigWord.word;
 
 	}
 

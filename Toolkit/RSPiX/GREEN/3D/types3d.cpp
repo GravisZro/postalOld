@@ -25,7 +25,7 @@
 //
 //		02/05/97 MJR	Filled in.
 //
-//		02/10/97 MJR	Removed the no-longer-necessary "long" casts for loading
+//		02/10/97 MJR	Removed the no-longer-necessary "int32_t" casts for loading
 //							and saving of RPixel32's.
 //							Renamed RForm3d to RSop (Sea-Of-Points) since that's what
 //							we all think of it as, so it may as well be called that.
@@ -181,9 +181,9 @@ void RTexture::Remap(
 	for (int16_t i = 0; i < m_sNum; i++)
 		{
 		m_pIndices[i] = rspMatchColorRGB(
-			long(m_pColors[i].u8Red),
-			long(m_pColors[i].u8Green),
-			long(m_pColors[i].u8Blue),
+         int32_t(m_pColors[i].u8Red),
+         int32_t(m_pColors[i].u8Green),
+         int32_t(m_pColors[i].u8Blue),
 			sStartIndex,sNumIndex,
 			pr,pg,pb,linc);
 		}

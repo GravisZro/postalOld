@@ -327,7 +327,7 @@ void RProfile::Report()
 
 		if (m_lCount) // safety
 		fprintf(fp,"Profiler overhead: Tot(ms) = %g, # of calls = %ld, Avg(ms) = %g\n\n",
-			double(m_lTotTime)/1000.0,long(m_lCount),double(m_lTotTime)/double(m_lCount * int64_t(1000)));
+         double(m_lTotTime)/1000.0,int32_t(m_lCount),double(m_lTotTime)/double(m_lCount * int64_t(1000)));
 		
 		fprintf(fp,"Number of profile ranges was %hd.\n",m_sNumTracked);
 
@@ -392,7 +392,7 @@ void RProfile::Report()
 				fprintf(fp,"-------------------------------------------------------\n%s:\n",
 					m_aList[i].m_szFieldName);
 				fprintf(fp,"				# of passes = %ld, Tot(ms) = %g, Avg(ms) = %g",
-					long(m_aList[i].m_lNumCalls),
+               int32_t(m_aList[i].m_lNumCalls),
 					double(m_aList[i].m_lTotTime)/1000.0,
 					double(m_aList[i].m_lTotTime)/double(m_aList[i].m_lNumCalls * int64_t(1000)));
 
@@ -400,7 +400,7 @@ void RProfile::Report()
 					{
 					double dRat = double(m_aList[i].m_lTotTime)/dRel;
 
-					fprintf(fp,"  [%+1.6g %%]\n",double( long(dRat*10000.0) )/10000.0);
+               fprintf(fp,"  [%+1.6g %%]\n",double( int32_t(dRat*10000.0) )/10000.0);
 					}
 				else
 					fprintf(fp,"\n");

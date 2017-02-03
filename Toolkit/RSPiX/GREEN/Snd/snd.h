@@ -84,10 +84,10 @@ class RSnd
 		State GetState(void)	{ return m_sState; }
 		
 		// Gets/returns the current position of the audio in bytes.
-		long GetPos(void);
+      int32_t GetPos(void);
 
 		// Gets/returns the current time of the audio in milliseconds.
-		long GetTime(void);
+      int32_t GetTime(void);
 
 		// Gets/returns the current sample.
 		RSample* GetSample(void)
@@ -207,9 +207,9 @@ class RSnd
 	////////////////////////// Member vars ////////////////////////////////////
 	public:
 		int16_t			m_sLoop;				// If TRUE, Play() will loop until FALSE.
-		long			m_lLoopStartPos;	// Where to loop back to in bytes.
+      int32_t			m_lLoopStartPos;	// Where to loop back to in bytes.
 												// Play() only.
-		long			m_lLoopEndPos;		// Where to loop back from in bytes.
+      int32_t			m_lLoopEndPos;		// Where to loop back from in bytes.
 												// Play() only.
 
 		DoneCall		m_dcUser;		// User callback when done playing/streaming
@@ -221,7 +221,7 @@ class RSnd
 		int16_t			m_sTypeVolume;	// 0-255	= Secondary (category) Volume
 				
 	protected:
-		long			m_lBufSize;		// Buffer unit to stream in.
+      int32_t			m_lBufSize;		// Buffer unit to stream in.
 		State			m_sState;		// One of the enums above representing 
 											// this RSnd's state.
 		RMix			m_mix;			// For playing/mixing sound data.

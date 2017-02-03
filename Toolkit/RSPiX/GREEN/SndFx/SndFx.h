@@ -134,19 +134,19 @@ class RSndFx
 
 		/////////////////////// Fade In /////////////////////////////////////////
 		
-		long	m_lFadeInMillisecondsDuration;	// Original duration.
-		long	m_lFadeInBytesDurationAffected;	// Amount left to fade.
-		long	m_lFadeInBytesDuration;				// Duration in bytes.
+      int32_t	m_lFadeInMillisecondsDuration;	// Original duration.
+      int32_t	m_lFadeInBytesDurationAffected;	// Amount left to fade.
+      int32_t	m_lFadeInBytesDuration;				// Duration in bytes.
 
-		long	m_lFadeInRate;
+      int32_t	m_lFadeInRate;
 
 		/////////////////////// Fade Out ////////////////////////////////////////
 
-		long	m_lFadeOutMillisecondsDuration;		// Original duration.
-		long	m_lFadeOutBytesDurationRemaining;	// Amount left to fade.
-		long	m_lFadeOutBytesDuration;				// Duration in bytes.
+      int32_t	m_lFadeOutMillisecondsDuration;		// Original duration.
+      int32_t	m_lFadeOutBytesDurationRemaining;	// Amount left to fade.
+      int32_t	m_lFadeOutBytesDuration;				// Duration in bytes.
 
-		long	m_lFadeOutRate;
+      int32_t	m_lFadeOutRate;
 
 		///////////////////// Protected Typedefs ///////////////////////////////
 		struct PCMINFO {		// Stores info particular PCM type.
@@ -156,11 +156,11 @@ class RSndFx
 
 		/////////////////////// Static members /////////////////////////////////
 
-		static long	ms_lSamplesPerSec;	// Samples per second.
-		static long	ms_lBitsPerSample;	// Bits per sample.
-		static long	ms_lNumChannels;		// Number of channels.
+      static int32_t	ms_lSamplesPerSec;	// Samples per second.
+      static int32_t	ms_lBitsPerSample;	// Bits per sample.
+      static int32_t	ms_lNumChannels;		// Number of channels.
 
-		static long	ms_lBitsPerSec;	// Number of bits per second.
+      static int32_t	ms_lBitsPerSec;	// Number of bits per second.
 												// Can be used to convert bytes to milliseconds
 												// and convert milliseconds into bytes.  See
 												// macros BYTES2MS and MS2BYTES in SndFx.CPP.

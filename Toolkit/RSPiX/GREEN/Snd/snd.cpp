@@ -489,7 +489,7 @@ int16_t RSnd::Abort(void)
 // (public)
 //
 //////////////////////////////////////////////////////////////////////////////
-long RSnd::GetPos(void)
+int32_t RSnd::GetPos(void)
 	{
 	return m_mix.GetPos();
 	}
@@ -500,7 +500,7 @@ long RSnd::GetPos(void)
 // (public)
 //
 //////////////////////////////////////////////////////////////////////////////
-long RSnd::GetTime(void)
+int32_t RSnd::GetTime(void)
 	{
 	return m_mix.GetTime();
 	}

@@ -112,7 +112,7 @@ class RString
 		////////////////////////////////////////////////////////////////////////////////
 		// Get buffer size (this will always be at LEAST one larger than string length)
 		////////////////////////////////////////////////////////////////////////////////
-		long GetSize(void) const
+      int32_t GetSize(void) const
 			{ return m_lBufSize; }
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ class RString
 		// Get string length (does not include the terminating null or any unused buffer
 		// space)
 		////////////////////////////////////////////////////////////////////////////////
-		long GetLen(void) const
+      int32_t GetLen(void) const
 			{ return m_lStrLen; }
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +253,7 @@ class RString
 		// Returns number of characters written, or -1 if an error occurred (this is
 		// basically the value returned by vsprintf.)
 		////////////////////////////////////////////////////////////////////////////////
-		long Format(int32_t lMinSize, char* format, ...);
+      int32_t Format(int32_t lMinSize, char* format, ...);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Create a new RString based on this string's first 'lLen' characters.  If
@@ -416,7 +416,7 @@ class RString
 			}
 
 		// Assign string representation of specified number
-		const RString& operator=(long rhs)
+      const RString& operator=(int32_t rhs)
 			{
 			Grow(MaxLongLen + 1); // size is always > 0, so this will always return with a valid buffer
          m_lStrLen = sprintf(m_pBuf, "%d", (int32_t)rhs);
@@ -507,7 +507,7 @@ class RString
 			}
 
 		// Append string representation of specified number
-		const RString& operator+=(long rhs)
+      const RString& operator+=(int32_t rhs)
 			{
 			Grow(m_lStrLen + MaxLongLen + 1); // size is always > 0, so this will always return with a valid buffer
          m_lStrLen += sprintf(m_pBuf + m_lStrLen, "%d", (int32_t)rhs);
@@ -563,7 +563,7 @@ class RString
 			return str;
 			}
 
-		RString operator+(long rhs) const
+      RString operator+(int32_t rhs) const
 			{
 			RString str = *this;
 			str += rhs;

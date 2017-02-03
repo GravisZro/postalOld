@@ -396,7 +396,7 @@ public:
 	RPrint&	operator|(char* psz);
 	RPrint&	operator<<(char* psz);
 	RPrint& operator|(int16_t	in);
-	RPrint& operator|(long	in);
+   RPrint& operator|(int32_t	in);
 	RPrint& operator|(float	in);
 	RPrint& operator|(double	in);
 	RPrint& operator|(char	in);
