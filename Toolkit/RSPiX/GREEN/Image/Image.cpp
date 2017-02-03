@@ -1785,70 +1785,59 @@ int16_t RImage::Save(char const * pszFilename) const
 
 int16_t RImage::Save(RFile* pcf) const
 {
-  int16_t sReturn = SUCCESS;
   uint32_t ulFileType = IMAGE_MAGIC_NUMBER;
   uint32_t	ulCurrentVersion = IMAGE_CURRENT_VERSION;
 
-  if (pcf && pcf->IsOpen())
+  if (!pcf || !pcf->IsOpen())
   {
-    pcf->ClearError();
-    pcf->Write(&ulFileType);
-    pcf->Write(&ulCurrentVersion);
-    // No RFile support for RImage::Type, so we use a uint32_t.
-    uint32_t	u32Temp	= (uint32_t)m_type;
-    pcf->Write(&u32Temp);
-    u32Temp = (uint32_t)m_typeDestination;
-    pcf->Write(&u32Temp);
-    pcf->Write(&m_ulSize);
-    pcf->Write(&m_sWinWidth);
-    pcf->Write(&m_sWinHeight);
-    pcf->Write(&m_sWidth);
-    pcf->Write(&m_sHeight);
-    pcf->Write(&m_sWinX);
-    pcf->Write(&m_sWinY);
-    pcf->Write(&m_lPitch);
-    pcf->Write(&m_sDepth);
+    TRACE("RImage::Save - RFile pointer does not refer to an open file");
+    return FAILURE;
+  }
 
-    if (m_pData)
-    {
-      uint16_t usFlag = 1;
-      pcf->Write(&usFlag);
-      WritePixelData(pcf);
-    }
-    else
-    {
-      uint16_t usFlag = 0;
-      pcf->Write(&usFlag);
-    }
+  pcf->ClearError();
+  pcf->Write(&ulFileType);
+  pcf->Write(&ulCurrentVersion);
+  pcf->Write(reinterpret_cast<const uint32_t*>(&m_type));
+  pcf->Write(reinterpret_cast<const uint32_t*>(&m_typeDestination));
+  pcf->Write(&m_ulSize);
+  pcf->Write(&m_sWinWidth);
+  pcf->Write(&m_sWinHeight);
+  pcf->Write(&m_sWidth);
+  pcf->Write(&m_sHeight);
+  pcf->Write(&m_sWinX);
+  pcf->Write(&m_sWinY);
+  pcf->Write(&m_lPitch);
+  pcf->Write(&m_sDepth);
 
-    if (m_pPalette)
-    {
-      uint16_t usOne = 1;
-      pcf->Write(&usOne);
-      m_pPalette->Save(pcf);
-    }
-    else
-    {
-      uint16_t usZero = 0;
-      pcf->Write(&usZero);
-    }
-
-    // Call the special Save function for this type if any
-    SAVEFUNC csf = GETSAVEFUNC(m_type);
-    if (csf)
-      // Note this must be changed to pass the version.
-#ifdef _MSC_VER
-      //#pragma message( __FILE__ "(2022) : Calls to SAVEFUNC must be changed to take a version!")
-#endif
-      sReturn = (*csf)(const_cast<RImage*>(this), pcf/*, ulCurrentVersion*/);
+  if (m_pData)
+  {
+    uint16_t usFlag = 1;
+    pcf->Write(&usFlag);
+    WritePixelData(pcf);
   }
   else
   {
-    TRACE("RImage::Save - RFile pointer does not refer to an open file");
-    sReturn = FAILURE;
+    uint16_t usFlag = 0;
+    pcf->Write(&usFlag);
   }
 
-  return sReturn;
+  if (m_pPalette)
+  {
+    uint16_t usOne = 1;
+    pcf->Write(&usOne);
+    m_pPalette->Save(pcf);
+  }
+  else
+  {
+    uint16_t usZero = 0;
+    pcf->Write(&usZero);
+  }
+
+  // Call the special Save function for this type if any
+  SAVEFUNC csf = GETSAVEFUNC(m_type);
+  if (csf)
+    return (*csf)(const_cast<RImage*>(this), pcf/*, ulCurrentVersion*/);
+  return SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1873,7 +1862,6 @@ int16_t RImage::Save(RFile* pcf) const
 
 int16_t RImage::WritePixelData(RFile* pcf) const
 {
-  int16_t sReturn = SUCCESS;
   uint8_t* pLineData = nullptr;
 
   int32_t divide;
@@ -1924,7 +1912,7 @@ int16_t RImage::WritePixelData(RFile* pcf) const
       }
     }
   }
-  return sReturn;
+  return SUCCESS;
 }
 
 //////////////////////////////////////////////////////////////////////
