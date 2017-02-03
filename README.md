@@ -19,3 +19,4 @@ Modern C++ version of Running With Scissors' game 'Postal'
 * Replaced `long*` type being used for arbitrary storage with `Variant`.
 * Replaced Localization system with string literal type hashed lookups. (much cleaner)
 * Network code is no longer compiled when networking is disabled.
+* Replaced some DEEPLY nested condition trees (23 levels!) with simple exception handling.
