@@ -24,14 +24,13 @@ RFixedint32_t fpSINQ[csNumRotSteps],fpCOSQ[csNumRotSteps];
 void InitTrigFP() // fixed point	
 	{
 	int16_t i;
-	double rad;
+//	double rad;
 
-	const double cdStepsToRad = 
-		rspPI * 2.0 / double(csNumRotSteps);
+//	const double cdStepsToRad = rspPI * 2.0 / double(csNumRotSteps);
 
 	for (i=0;i<csNumRotSteps;i++)
 		{
-		rad = (double)i * cdStepsToRad;
+//		rad = (double)i * cdStepsToRad;
 		rspfpSetValue(fpSINQ[i],SINQ[i]);
 		rspfpSetValue(fpCOSQ[i],COSQ[i]);
 		}

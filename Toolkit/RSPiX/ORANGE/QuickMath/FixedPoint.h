@@ -40,7 +40,7 @@ Hungarian:	fp = either generic fixed point or signed 32 (int16_t.uint16_t)
 				& is used in almost all cases to prevent VC from creating
 				a local stack frame which would slow things down by 20 times.
 
-NOTE: Some functions can take a long AS an fpint32_t.  Understand that this is
+NOTE: Some functions can take a int32_t AS an fpint32_t.  Understand that this is
 a memory cast as a fpint32_t and does NOT represent the actual int32_t "value"!
 Use Get and Set "Value" functions to translate integers to fixed point!
 
