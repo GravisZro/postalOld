@@ -1,7 +1,30 @@
 # Postal
 Modern C++ version of Running With Scissors' game 'Postal'
 
-####Changes made:
+## Command Line
+
+### General Options
+* --nomousegrab
+* --nosound
+* --nohomedir
+
+### Display Options
+* --resolution <X>x<Y>
+* --windowed
+* --novsync
+
+#### Rendering Options
+* --direct3d
+* --opengl
+* --software
+
+### Steam Specific Options
+* --nosteamachievements
+* --nosteamcloud
+* --nukesteamcloud
+
+
+##Changes made:
 * Removed unused files.
 * Reorganized files with proper file names.
 * Removed `#include` strangeness and now use the standard include practice.
