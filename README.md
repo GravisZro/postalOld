@@ -9,7 +9,7 @@ Modern C++ version of Running With Scissors' game 'Postal'
 * --nohomedir
 
 ### Display Options
-* --resolution <X>x<Y>
+* --resolution &lt;HORIZONTAL&gt;x&lt;VERTICAL&gt;
 * --windowed
 * --novsync
 
