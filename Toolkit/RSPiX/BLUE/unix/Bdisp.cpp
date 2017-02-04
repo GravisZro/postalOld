@@ -766,7 +766,8 @@ extern int16_t rspSetVideoMode(	// Returns 0 if successfull, non-zero otherwise
         SDL_memset(PalettedTexturePointer, '\0', FramebufferWidth * FramebufferHeight * sizeof (uint8_t));
         SDL_UpdateTexture(sdlTexture, nullptr, TexturePointer, FramebufferWidth * 4);
 
-    	SDL_ShowCursor(0);
+
+       SDL_ShowCursor(0);
         //SDL_SetRelativeMouseMode(mouse_grabbed ? SDL_TRUE : SDL_FALSE);
 
         return 0;

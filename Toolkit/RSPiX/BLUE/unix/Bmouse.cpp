@@ -325,7 +325,7 @@ extern void rspHideMouseCursor(void)
 	{
 	// Decrement show cursor count.
     if (--ms_sCursorShowLevel < 0)
-	    SDL_ShowCursor(0);
+       SDL_ShowCursor(0);
 	}
 
 //////////////////////////////////////////////////////////////////////////////
@@ -338,7 +338,7 @@ extern void rspShowMouseCursor(void)
 	{
 	// Increment show cursor count.
 	if (++ms_sCursorShowLevel >= 0)
-	    SDL_ShowCursor(1);
+       SDL_ShowCursor(1);
 	}
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -523,458 +523,478 @@ int16_t   ConvertToFSPR8(RImage*  pImage)
 // currently 8-bit, but soon to be full color.
 // Must deal with screen locking.
 //
-int16_t	rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const RRect* prDst)
-	{
-	
-	int16_t sClip;
+int16_t rspBlit(RImage* pimSrc,RImage* pimDst,int16_t sDstX,int16_t sDstY,const RRect* prDst)
+{
 
-	// 1) preliminary parameter validation:
+  int16_t sClip;
+
+  // 1) preliminary parameter validation:
 #ifdef _DEBUG
 
-	if ((pimSrc == nullptr) || (pimDst == nullptr))
-		{
-		TRACE("BLiT: null CImage* passed\n");
-		return -1;
-		}
+  if ((pimSrc == nullptr) || (pimDst == nullptr))
+  {
+    TRACE("BLiT: null CImage* passed\n");
+    return -1;
+  }
 
-	if ((!ImageIsUncompressed(pimDst->m_type)))
-		{
-		TRACE("BLiT: Cannot BLiT this into a compressed buffer!\n");
-		return -1;
-		}
+  if ((!ImageIsUncompressed(pimDst->m_type)))
+  {
+    TRACE("BLiT: Cannot BLiT this into a compressed buffer!\n");
+    return -1;
+  }
 
-	if ((pimSrc->m_type == RImage::FSPR16) || (pimSrc->m_type == RImage::FSPR32))
-		{
-		TRACE("BLiT: TC sprites are not YET implemented.\n");
-		return -1;
-		}
+  if ((pimSrc->m_type == RImage::FSPR16) || (pimSrc->m_type == RImage::FSPR32))
+  {
+    TRACE("BLiT: TC sprites are not YET implemented.\n");
+    return -1;
+  }
 
-	if (pimSrc->m_type == RImage::FSPR1)
-		{
-		TRACE("BLiT: Use a different form of parameters for this type (see BLiT.DOC).\n");
-		return -1;
-		}
+  if (pimSrc->m_type == RImage::FSPR1)
+  {
+    TRACE("BLiT: Use a different form of parameters for this type (see BLiT.DOC).\n");
+    return -1;
+  }
 
 #endif
 
-	// HOOK special cases:
-	if (ImageIsUncompressed(pimSrc->m_type)) // for now do an opaque BLiT!
-		{
-		// Doing a background BLiT for speed, although a BlitT is more desired
-		rspBlit(pimSrc,pimDst,0,0,sDstX,sDstY,pimSrc->m_sWidth,pimSrc->m_sHeight,prDst);
-		return 0;
-		}
+  // HOOK special cases:
+  if (ImageIsUncompressed(pimSrc->m_type)) // for now do an opaque BLiT!
+  {
+    // Doing a background BLiT for speed, although a BlitT is more desired
+    rspBlit(pimSrc,pimDst,0,0,sDstX,sDstY,pimSrc->m_sWidth,pimSrc->m_sHeight,prDst);
+    return 0;
+  }
 
-	// 2) Destination Clipping is hard here:
-	int16_t sClipL=0,sClipR=0,sClipT=0,sClipB=0;
-	int16_t sSrcX = 0,sSrcY = 0; // clippng parameters...
-	int16_t sW = pimSrc->m_sWidth; // clippng parameters...
-	int16_t sH = pimSrc->m_sHeight; // clippng parameters...
-	int32_t	lDstP = pimDst->m_lPitch;
+  // 2) Destination Clipping is hard here:
+  int16_t sClipL=0,sClipR=0,sClipT=0,sClipB=0;
+  int16_t sSrcX = 0,sSrcY = 0; // clippng parameters...
+  int16_t sW = pimSrc->m_sWidth; // clippng parameters...
+  int16_t sH = pimSrc->m_sHeight; // clippng parameters...
+  int32_t	lDstP = pimDst->m_lPitch;
 
-	if (prDst)
-		{
-		// clip against user values
-		sClip = prDst->sX - sDstX; // positive = clipped
-		if (sClip > 0) { sW -= sClip; sSrcX += sClip; sDstX = prDst->sX; }
-		sClip = prDst->sY - sDstY; // positive = clipped
-		if (sClip > 0) { sH -= sClip; sSrcY += sClip; sDstY = prDst->sY; }
-		sClip = sDstX + sW - prDst->sX - prDst->sW; // positive = clipped
-		if (sClip > 0) { sW -= sClip; }
-		sClip = sDstY + sH - prDst->sY - prDst->sH; // positive = clipped
-		if (sClip > 0) { sH -= sClip; }
+  if (prDst)
+  {
+    // clip against user values
+    sClip = prDst->sX - sDstX; // positive = clipped
+    if (sClip > 0) { sW -= sClip; sSrcX += sClip; sDstX = prDst->sX; }
+    sClip = prDst->sY - sDstY; // positive = clipped
+    if (sClip > 0) { sH -= sClip; sSrcY += sClip; sDstY = prDst->sY; }
+    sClip = sDstX + sW - prDst->sX - prDst->sW; // positive = clipped
+    if (sClip > 0) { sW -= sClip; }
+    sClip = sDstY + sH - prDst->sY - prDst->sH; // positive = clipped
+    if (sClip > 0) { sH -= sClip; }
 
-		if ( (sW <= 0) || (sH <= 0) ) return -1; // clipped out!
-		}
-	else	
-		{
-		// clip against full destination buffer
-		if (sDstX < 0) { sW += sDstX; sSrcX -= sDstX; sDstX = 0; }
-		if (sDstY < 0) { sH += sDstY; sSrcY -= sDstY; sDstY = 0; }
-		sClip = sDstX + sW - pimDst->m_sWidth; // positive = clipped
-		if (sClip > 0) sW -= sClip; // positive = clipped
-		sClip = sDstY + sH - pimDst->m_sHeight; // positive = clipped
-		if (sClip > 0) sH -= sClip; // positive = clipped
+    if ( (sW <= 0) || (sH <= 0) ) return -1; // clipped out!
+  }
+  else
+  {
+    // clip against full destination buffer
+    if (sDstX < 0) { sW += sDstX; sSrcX -= sDstX; sDstX = 0; }
+    if (sDstY < 0) { sH += sDstY; sSrcY -= sDstY; sDstY = 0; }
+    sClip = sDstX + sW - pimDst->m_sWidth; // positive = clipped
+    if (sClip > 0) sW -= sClip; // positive = clipped
+    sClip = sDstY + sH - pimDst->m_sHeight; // positive = clipped
+    if (sClip > 0) sH -= sClip; // positive = clipped
 
-		if ((sW <= 0) || (sH <= 0)) return -1; // fully clipped
-		}
+    if ((sW <= 0) || (sH <= 0)) return -1; // fully clipped
+  }
 
-      //**************  INSERT BUFFER HOOKS HERE!  ************************
+  //**************  INSERT BUFFER HOOKS HERE!  ************************
 
-	// do OS based copying!
-	int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
+  // do OS based copying!
+  int16_t sNeedToUnlock = 0; // will be the name of a buffer to unlock.
 
-	int16_t sBlitTypeDst = 0; // normal image:
+  int16_t sBlitTypeDst = 0; // normal image:
 
-	// IN RELEASE MODE, GIVE THE USER A CHANCE:
+  // IN RELEASE MODE, GIVE THE USER A CHANCE:
 #ifndef _DEBUG
 
-	//if (gsScreenLocked || gsBufferLocked) goto BLIT_PRELOCKED;
+  //if (gsScreenLocked || gsBufferLocked) goto BLIT_PRELOCKED;
 
 #endif
 
-	// IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
-	// must record which UNLOCK (if any) needs to be done AFTER the BLiT
-	// has completed. (Lord help me if a blit gets interrupted)
-	// NOT NECESSARY!!! THe SOURCE WILL ALWAYS BE A BUFFER!
-   if (pimDst->m_type == RImage::IMAGE_STUB)
-     sBlitTypeDst = (int16_t)((long)pimDst->m_pSpecial);
+  // IN THIS IMPLEMENTATION, we must do LOCK, BLiT, UNLOCK, so I
+  // must record which UNLOCK (if any) needs to be done AFTER the BLiT
+  // has completed. (Lord help me if a blit gets interrupted)
+  // NOT NECESSARY!!! THe SOURCE WILL ALWAYS BE A BUFFER!
+  if (pimDst->m_type == RImage::IMAGE_STUB)
+    sBlitTypeDst = (int16_t)((long)pimDst->m_pSpecial);
 
-	switch (sBlitTypeDst) // 0 = normal image
-		{
-		case BUF_MEMORY: // image to system buffer
-/*
-			// need to lock / unlock this one:
-			if (rspLockBuffer()
-				!=0)
-				{
-				TRACE("BLiT: Unable to lock the system buffer, failed!\n");
-				return -1;
-				}
-			// Locked the system buffer, remember to unlock it:
-			sNeedToUnlock = BUF_MEMORY;
+  switch (sBlitTypeDst) // 0 = normal image
+  {
+    case BUF_MEMORY: // image to system buffer
+      /*
+         // need to lock / unlock this one:
+         if (rspLockBuffer()
+            !=0)
+            {
+            TRACE("BLiT: Unable to lock the system buffer, failed!\n");
+            return -1;
+            }
+         // Locked the system buffer, remember to unlock it:
+         sNeedToUnlock = BUF_MEMORY;
 */
-		break;
+      break;
 
-		case BUF_VRAM: // image to front screen
-/*
-			// need to lock / unlock this one:
-			if (rspLockScreen()
-				!=0)
-				{
-				TRACE("BLiT: Unable to lock the OnScreen system buffer, failed!\n");
-				return -1;
-				}
-			// Locked the front VRAM, remember to unlock it:
-			sNeedToUnlock = BUF_VRAM;	
+    case BUF_VRAM: // image to front screen
+      /*
+         // need to lock / unlock this one:
+         if (rspLockScreen()
+            !=0)
+            {
+            TRACE("BLiT: Unable to lock the OnScreen system buffer, failed!\n");
+            return -1;
+            }
+         // Locked the front VRAM, remember to unlock it:
+         sNeedToUnlock = BUF_VRAM;
 */
-		break;
+      break;
 
-		case BUF_VRAM2: // image to back screen
-			// need to lock / unlock this one:
-			if (rspLockVideoFlipPage((void**)&(pimDst->m_pData),&(pimDst->m_lPitch))
-				!=0)
-				{
-				TRACE("BLiT: Unable to lock the OffScreen system buffer, failed!\n");
-				return -1;
-				}
-			// Locked the front VRAM, remember to unlock it:
-			sNeedToUnlock = BUF_VRAM;			
-		break;
-
-		case 0: // image to image
-			sNeedToUnlock = 0; // no unlock!
-		break;
-
-		default:
-			TRACE("BLiT: This type of copy is not yet supported.\n");
-			return -1;
-		}
-//BLIT_PRELOCKED:
-
-	//*******************************************************************
-	// 8-bit biased!
-	// Check for locking error:
-	if (!pimDst->m_pData)
-		{
-		TRACE("BLiT: nullptr data - possible bad lock.\n");
-		return FALSE;
+    case BUF_VRAM2: // image to back screen
+      // need to lock / unlock this one:
+      if (rspLockVideoFlipPage((void**)&(pimDst->m_pData),&(pimDst->m_lPitch))
+          !=0)
+      {
+        TRACE("BLiT: Unable to lock the OffScreen system buffer, failed!\n");
+        return -1;
       }
+      // Locked the front VRAM, remember to unlock it:
+      sNeedToUnlock = BUF_VRAM;
+      break;
 
-	// Right now, pDst refers to the CLIPPED start of the scanline:
-	uint8_t*	pDstLine = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
-	uint8_t*	pDst;
+    case 0: // image to image
+      sNeedToUnlock = 0; // no unlock!
+      break;
 
-	int16_t	sY=0;
-	RSpecialFSPR8* pInfo = (RSpecialFSPR8*) pimSrc->m_pSpecial;
+    default:
+      TRACE("BLiT: This type of copy is not yet supported.\n");
+      return -1;
+  }
+  //BLIT_PRELOCKED:
 
-	uint8_t	ucCode;
-	uint8_t*	pSrc;
-	uint8_t*	pCB;
-	int16_t sClipWidth;
+  //*******************************************************************
+  // 8-bit biased!
+  // Check for locking error:
+  if (!pimDst->m_pData)
+  {
+    TRACE("BLiT: nullptr data - possible bad lock.\n");
+    return FALSE;
+  }
 
-	//
-	if (sSrcX > 0)	// LClip Situation! => The slowest!
-		{
-		//**** THE WORST OF ALL CASES!  TWO SIDED CLIPPING! ****
-		if (sW < (pimSrc->m_sWidth - sSrcX) )
-			{
-			for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
-				{	// Clip off left side:
-				pSrc = pInfo->m_pBufArry[sY];
-				pDst = pDstLine;
-				pCB = pInfo->m_pCodeArry[sY];
-				sClipWidth = sW; //sSrcX; // initial source...
-				int16_t sLeftClip = sSrcX;
+  // Right now, pDst refers to the CLIPPED start of the scanline:
+  uint8_t*	pDstLine = pimDst->m_pData + sDstX + sDstY * pimDst->m_lPitch;
+  uint8_t*	pDst;
 
-			NextSkip2S:
-				//==============================================================	
-				// 1) Skip a clear run?
-				ucCode = *(pCB++); // Get skip length
-				if (ucCode == 255) continue; // End of line code
+  int16_t	sY=0;
+  RSpecialFSPR8* pInfo = (RSpecialFSPR8*) pimSrc->m_pSpecial;
 
-				// Don't update pDst until you are done skipping!
-				if ((sLeftClip -= ucCode) < 0) 
-					{
-					pDst -= sLeftClip; // NOW advance pDst the remainder of the skip
-					sClipWidth += sLeftClip; // and REDUCE what's left by remainder of skip!
-					if (sClipWidth <= 0)	// done line already?
-						{
-						// must jump past rest of code line
-						do	{
-							ucCode = *(pCB++); // opaque run
-							ucCode = *(pCB++); // clear run
-							} while (ucCode != 255);
+  uint8_t	ucCode;
+  uint8_t*	pSrc;
+  uint8_t*	pCB;
+  int16_t sClipWidth;
 
-						continue; // start next line!
-						}
+  //
+  if (sSrcX > 0)	// LClip Situation! => The slowest!
+  {
+    //**** THE WORST OF ALL CASES!  TWO SIDED CLIPPING! ****
+    if (sW < (pimSrc->m_sWidth - sSrcX) )
+    {
+      for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
+      {	// Clip off left side:
+        pSrc = pInfo->m_pBufArry[sY];
+        pDst = pDstLine;
+        pCB = pInfo->m_pCodeArry[sY];
+        sClipWidth = sW; //sSrcX; // initial source...
+        int16_t sLeftClip = sSrcX;
 
-					goto NormalOpaque2S;// We're done being clipped
-					}
+NextSkip2S:
+        //==============================================================
+        // 1) Skip a clear run?
+        ucCode = *(pCB++); // Get skip length
+        if (ucCode == 255) continue; // End of line code
 
-				//==============================================================	
-				// 2) Skip an opaque run?
-				ucCode = *(pCB++); // Get skip length
+        // Don't update pDst until you are done skipping!
+        if ((sLeftClip -= ucCode) < 0)
+        {
+          pDst -= sLeftClip; // NOW advance pDst the remainder of the skip
+          sClipWidth += sLeftClip; // and REDUCE what's left by remainder of skip!
+          if (sClipWidth <= 0)	// done line already?
+          {
+            // must jump past rest of code line
+            do	{
+              ucCode = *(pCB++); // opaque run
+              ucCode = *(pCB++); // clear run
+            } while (ucCode != 255);
 
-				if (ucCode < sLeftClip) 
-					{
-					sLeftClip -= ucCode; // Adance both pointers, but don't copy!
-					pSrc += ucCode;		// Always need to advance source in an opaque run
-					//pDst += ucCode; // don't move the pDst until done clipping...
-					}
-				else	// We've broken out of the Clipped region!
-					{			// Do a partial opaque run:
-					pSrc += sLeftClip; 			// We DO need to advance the source!
-					//pDst += sClipWidth;				// and the Dest for the clipped part!
-					ucCode -= sLeftClip;			// Remaining part of run is opaque
-					
-					if (ucCode > sClipWidth) // a Contracted Run
-						{
-						ucCode = (uint8_t)sClipWidth;
-						sClipWidth = 0;
-						}
-					else	sClipWidth -= ucCode; // a full opaque run
-					
-					if (ucCode)	// Do an opaque run
-						{
-						do	*(pDst++) = *(pSrc++);	// Copy pixel
-						while (--ucCode);	
-						}
-					
-					if (sClipWidth) goto NormalClear2S;	
-					else continue; // next code line!
-					}
-					
-				goto NextSkip2S;	// Still in the clip region
-				
-			NormalClear2S:
-				//==============================================================	
-				// 1) Do a clear run?
-				ucCode = *(pCB++); // Get skip length
-				if (ucCode == 255) continue; // End of line code
+            continue; // start next line!
+          }
 
-				if ( (sClipWidth -= ucCode) <= 0) continue; // Initial skip is clipped out!
-				
-				pDst += ucCode;
-				//==============================================================	
-				// 2) Do an opaque run?
-			NormalOpaque2S:
-				ucCode = *(pCB++);		// Get run length
-				if (ucCode > sClipWidth) // a Contracted Run
-					{
-					ucCode = (uint8_t)sClipWidth;
-					sClipWidth = 0;
-					}
-				else	sClipWidth -= ucCode; // a full opaque run
-				
-				if (ucCode)	// Do an opaque run
-					{
-					do	*(pDst++) = *(pSrc++);	// Copy pixel
-					while (--ucCode);	
-					}
-				
-				if (sClipWidth) goto NormalClear2S;	
-				else continue; // next code line!
-				// Do next line
-				}
-			}
-		else // This is the Left Clip ONLY case!
-			{
-			for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
-				{	// Clip off left side:
-				pSrc = pInfo->m_pBufArry[sY];
-				pDst = pDstLine;
-				pCB = pInfo->m_pCodeArry[sY];
-				sClipWidth = sSrcX; // initial source...
+          goto NormalOpaque2S;// We're done being clipped
+        }
 
-			NextSkip:
-				//==============================================================	
-				// 1) Skip a clear run?
-				ucCode = *(pCB++); // Get skip length
-				if (ucCode == 255) continue; // End of line code
+        //==============================================================
+        // 2) Skip an opaque run?
+        ucCode = *(pCB++); // Get skip length
 
-				// Don't update pDst until you are done skipping!
-				// pDst += ucCode;
-				if ((sClipWidth -= ucCode) < 0) 
-					{
-					pDst -= sClipWidth; // NOW advance pDst the remainder of the skip
-					goto NormalOpaque;// We're done being clipped
-					}
+        if (ucCode < sLeftClip)
+        {
+          sLeftClip -= ucCode; // Adance both pointers, but don't copy!
+          pSrc += ucCode;		// Always need to advance source in an opaque run
+          //pDst += ucCode; // don't move the pDst until done clipping...
+        }
+        else	// We've broken out of the Clipped region!
+        {			// Do a partial opaque run:
+          pSrc += sLeftClip; 			// We DO need to advance the source!
+          //pDst += sClipWidth;				// and the Dest for the clipped part!
+          ucCode -= sLeftClip;			// Remaining part of run is opaque
 
-				//==============================================================	
-				// 2) Skip an opaque run?
-				ucCode = *(pCB++); // Get skip length
+          if (ucCode > sClipWidth) // a Contracted Run
+          {
+            ucCode = (uint8_t)sClipWidth;
+            sClipWidth = 0;
+          }
+          else
+            sClipWidth -= ucCode; // a full opaque run
 
-				if (ucCode < sClipWidth) 
-					{
-					sClipWidth -= ucCode; // Adance both pointers, but don't copy!
-					pSrc += ucCode;		// Always need to advance source in an opaque run
-					//pDst += ucCode; // don't move the pDst until done clipping...
-					}
-				else	// We've broken out of the Clipped region!
-					{			// Do a partial opaque run:
-					pSrc += sClipWidth; 			// We DO need to advance the source!
-					//pDst += sClipWidth;				// and the Dest for the clipped part!
-					ucCode -= sClipWidth;			// Remaining part of run is opaque
-					if (!ucCode) goto NormalClear;
-					do	*(pDst++) = *(pSrc++);	// Should be an unrolled loop
-					while	(--ucCode);
-						
-					goto NormalClear; // continue
-					}
-					
-				goto NextSkip;	// Still in the clip region
-				
-			NormalClear:
-				//==============================================================	
-				// 1) Do a clear run?
-				ucCode = *(pCB++); // Get skip length
-				if (ucCode == 255) continue; // End of line code
+          if (ucCode)	// Do an opaque run
+          {
+            do	*(pDst++) = *(pSrc++);	// Copy pixel
+            while (--ucCode);
+          }
 
-				pDst += ucCode;
-				//==============================================================	
-				// 2) Do an opaque run?
-			NormalOpaque:
-				ucCode = *(pCB++); // Get skip length
-				
-				if (!ucCode) goto NormalClear;
-				do	*(pDst++) = *(pSrc++);	// Should be an unrolled loop
-				while	(--ucCode);
-				
-				goto NormalClear;	
-				// Do next line
-				}
-			}
-		}
-	else 
-		if (sW < (pimSrc->m_sWidth - sSrcX) )
-			for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
-				{	
-				// Clip Off Right Side:
-				pSrc = pInfo->m_pBufArry[sY];
-				pDst = pDstLine;
-				pCB = pInfo->m_pCodeArry[sY];
-				sClipWidth = sW;
-				
-			NextCodeRC:	// Go until used up sClipWidth
-				//==============================================================	
-				// 1) Do the clear run:
-				ucCode = *(pCB++);	// Get Initial Skip Length
-				if (ucCode == 255) continue; // End of line code
-				
-				if ( (sClipWidth -= ucCode) <= 0) continue; // Initial skip is clipped out!
-				
-				pDst += ucCode; // Advace destination
-				//==============================================================	
-				// 2) Do the opaque run:
-				ucCode = *(pCB++);		// Get run length
-				if (ucCode > sClipWidth) // a Contracted Run
-					{
-					ucCode = (uint8_t)sClipWidth;
-					sClipWidth = 0;
-					}
-				else	sClipWidth -= ucCode; // a full opaque run
-				
-				if (ucCode)	// Do an opaque run
-					{
-					do	*(pDst++) = *(pSrc++);	// Copy pixel
-					while (--ucCode);	
-					}
-				
-				if (sClipWidth) goto NextCodeRC; // any space left?
-				// Do next line!
-				}	
-			else	// do an unclipped BLiT
-				{
-				for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
-					{
-					pSrc = pInfo->m_pBufArry[sY];
-					pDst = pDstLine;
-					pCB = pInfo->m_pCodeArry[sY];
+          if (sClipWidth)
+            goto NormalClear2S;
+          else
+            continue; // next code line!
+        }
 
-				NextCode:
-					//==============================================================	
-					// 1) Do the clear run:
-					ucCode = *(pCB)++;	// Get Skip Length
-					if (ucCode == 255) continue;// End of line code
-					pDst += ucCode;		// Skip
-					
-					//==============================================================	
-					// 2) Do the opaque run:
-					ucCode = *(pCB)++;			// Get Skip Length
-					if (!ucCode) goto NextCode;
-					
-					// Below loop is 15% of our CPU time on OSX,
-					//  but MacOSX ships with a _very_ optimized memcpy()...
-					//  (actually, I bet that's true everywhere vs this shitty loop.  --ryan.)
-					#if 1  //PLATFORM_MACOSX
-					memcpy(pDst, pSrc, ucCode);
-					pDst += ucCode;
-					pSrc += ucCode;
-					#else
-					do	*(pDst++) = *(pSrc++);	// Copy pixel
-					while (--ucCode);	
-					#endif
+        goto NextSkip2S;	// Still in the clip region
 
-					goto NextCode;
-					}
-				}
+NormalClear2S:
+        //==============================================================
+        // 1) Do a clear run?
+        ucCode = *(pCB++); // Get skip length
+        if (ucCode == 255)
+          continue; // End of line code
 
-	//*******************************************************************
-	// IN RELEASE MODE, GIVE THE USER A CHANCE:
+        if ( (sClipWidth -= ucCode) <= 0)
+          continue; // Initial skip is clipped out!
+
+        pDst += ucCode;
+        //==============================================================
+        // 2) Do an opaque run?
+NormalOpaque2S:
+        ucCode = *(pCB++);		// Get run length
+        if (ucCode > sClipWidth) // a Contracted Run
+        {
+          ucCode = (uint8_t)sClipWidth;
+          sClipWidth = 0;
+        }
+        else
+          sClipWidth -= ucCode; // a full opaque run
+
+        if (ucCode)	// Do an opaque run
+        {
+          do {
+          *(pDst++) = *(pSrc++);	// Copy pixel
+          } while (--ucCode);
+        }
+
+        if (sClipWidth)
+          goto NormalClear2S;
+        else
+          continue; // next code line!
+        // Do next line
+      }
+    }
+    else // This is the Left Clip ONLY case!
+    {
+      for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
+      {	// Clip off left side:
+        pSrc = pInfo->m_pBufArry[sY];
+        pDst = pDstLine;
+        pCB = pInfo->m_pCodeArry[sY];
+        sClipWidth = sSrcX; // initial source...
+
+NextSkip:
+        //==============================================================
+        // 1) Skip a clear run?
+        ucCode = *(pCB++); // Get skip length
+        if (ucCode == 255)
+          continue; // End of line code
+
+        // Don't update pDst until you are done skipping!
+        // pDst += ucCode;
+        if ((sClipWidth -= ucCode) < 0)
+        {
+          pDst -= sClipWidth; // NOW advance pDst the remainder of the skip
+          goto NormalOpaque;// We're done being clipped
+        }
+
+        //==============================================================
+        // 2) Skip an opaque run?
+        ucCode = *(pCB++); // Get skip length
+
+        if (ucCode < sClipWidth)
+        {
+          sClipWidth -= ucCode; // Adance both pointers, but don't copy!
+          pSrc += ucCode;		// Always need to advance source in an opaque run
+          //pDst += ucCode; // don't move the pDst until done clipping...
+        }
+        else	// We've broken out of the Clipped region!
+        {			// Do a partial opaque run:
+          pSrc += sClipWidth; 			// We DO need to advance the source!
+          //pDst += sClipWidth;				// and the Dest for the clipped part!
+          ucCode -= sClipWidth;			// Remaining part of run is opaque
+          if (!ucCode)
+            goto NormalClear;
+          do {
+            *(pDst++) = *(pSrc++);	// Should be an unrolled loop
+          }while	(--ucCode);
+
+          goto NormalClear; // continue
+        }
+
+        goto NextSkip;	// Still in the clip region
+
+NormalClear:
+        //==============================================================
+        // 1) Do a clear run?
+        ucCode = *(pCB++); // Get skip length
+        if (ucCode == 255)
+          continue; // End of line code
+
+        pDst += ucCode;
+        //==============================================================
+        // 2) Do an opaque run?
+NormalOpaque:
+        ucCode = *(pCB++); // Get skip length
+
+        if (!ucCode)
+          goto NormalClear;
+
+        do {
+          *(pDst++) = *(pSrc++);	// Should be an unrolled loop
+        } while (--ucCode);
+
+        goto NormalClear;
+        // Do next line
+      }
+    }
+  }
+  else
+  {
+    if (sW < (pimSrc->m_sWidth - sSrcX) )
+    {
+      for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
+      {
+        // Clip Off Right Side:
+        pSrc = pInfo->m_pBufArry[sY];
+        pDst = pDstLine;
+        pCB = pInfo->m_pCodeArry[sY];
+        sClipWidth = sW;
+
+NextCodeRC:	// Go until used up sClipWidth
+        //==============================================================
+        // 1) Do the clear run:
+        ucCode = *(pCB++);	// Get Initial Skip Length
+        if (ucCode == 255)
+          continue; // End of line code
+
+        sClipWidth -= ucCode;
+        if (sClipWidth <= 0)
+          continue; // Initial skip is clipped out!
+
+        pDst += ucCode; // Advace destination
+        //==============================================================
+        // 2) Do the opaque run:
+        ucCode = *(pCB++);		// Get run length
+        if (ucCode > sClipWidth) // a Contracted Run
+        {
+          ucCode = (uint8_t)sClipWidth;
+          sClipWidth = 0;
+        }
+        else
+          sClipWidth -= ucCode; // a full opaque run
+
+        if (ucCode)	// Do an opaque run
+        {
+          do {
+            *(pDst++) = *(pSrc++);	// Copy pixel
+          } while (--ucCode);
+        }
+
+        if (sClipWidth)
+          goto NextCodeRC; // any space left?
+        // Do next line!
+      }
+    }
+    else	// do an unclipped BLiT
+    {
+      for (sY = sSrcY; sY < sSrcY + sH; sY++,pDstLine += lDstP)
+      {
+        pSrc = pInfo->m_pBufArry[sY];
+        pDst = pDstLine;
+        pCB = pInfo->m_pCodeArry[sY];
+
+NextCode:
+        //==============================================================
+        // 1) Do the clear run:
+        ucCode = *(pCB)++;	// Get Skip Length
+        if (ucCode == 255)
+          continue;// End of line code
+        pDst += ucCode;		// Skip
+
+        //==============================================================
+        // 2) Do the opaque run:
+        ucCode = *(pCB)++;			// Get Skip Length
+        if (!ucCode)
+          goto NextCode;
+
+        memcpy(pDst, pSrc, ucCode);
+        pDst += ucCode;
+        pSrc += ucCode;
+
+        goto NextCode;
+      }
+    }
+  }
+
+  //*******************************************************************
+  // IN RELEASE MODE, GIVE THE USER A CHANCE:
 #ifndef _DEBUG
 
-	//if (gsScreenLocked || gsBufferLocked) goto BLIT_DONTUNLOCK;
+  //if (gsScreenLocked || gsBufferLocked) goto BLIT_DONTUNLOCK;
 
 #endif
 
-	//********************
-	// OS_SPECIFIC:
-	//********************  UNLOCK WHATEVER YOU NEED TO
-	switch (sNeedToUnlock)
-		{
-		case 0: // nothing to unlock!
-		break;
+  //********************
+  // OS_SPECIFIC:
+  //********************  UNLOCK WHATEVER YOU NEED TO
+  switch (sNeedToUnlock)
+  {
+    case 0: // nothing to unlock!
+      break;
 
-		case BUF_MEMORY:
-	//		rspUnlockBuffer();
-		break;
-		
-		case BUF_VRAM:
-	//		rspUnlockScreen();
-		break;
-		
-		case BUF_VRAM2:
-			rspUnlockVideoFlipPage();
-		break;
-		
-		default:
-			TRACE("BLiT:  Unlocking error!\n");
-		}
+    case BUF_MEMORY:
+      //		rspUnlockBuffer();
+      break;
 
-//BLIT_DONTUNLOCK:	
-	return 0;
-	}
+    case BUF_VRAM:
+      //		rspUnlockScreen();
+      break;
+
+    case BUF_VRAM2:
+      rspUnlockVideoFlipPage();
+      break;
+
+    default:
+      TRACE("BLiT:  Unlocking error!\n");
+  }
+
+  //BLIT_DONTUNLOCK:
+  return 0;
+}
 
 //------------------------------------------------------------------------
 
